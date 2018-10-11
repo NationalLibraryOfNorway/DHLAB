@@ -995,7 +995,7 @@ def check_vals(korpus, vals):
 def xmlpretty(xmls):
     from bs4 import BeautifulSoup
 
-    soup = BeautifulSoup(xmls)
+    soup = BeautifulSoup(xmls, features='lxml')
     soup.prettify()
     # '<html>\n <head>\n </head>\n <body>\n  <a href="http://example.com/">\n...'
 
