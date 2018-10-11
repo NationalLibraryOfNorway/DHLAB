@@ -26,6 +26,20 @@ def super_search(term, number=50, page=0, mediatype='bilder'):
     )
     return r.json()
 
+def find_urls(term, number=50, page=0, mediatype='bilder'):
+    """generates urls from super_search for pictures"""
+    x = super_search(term, number, page, mediatype=mediatype)
+    try:
+        urls =[
+            f['_links']['thumbnail_custom']['href']
+            for f in x['_embedded']['items'] 
+            if f['accessInfo']['accessAllowedFrom'] == 'EVERYWHERE'
+            and 'thumbnail_custom' in f['_links']
+        ]
+    except:
+        urls = []
+    return urls
+
 def find_urls2(term, number=50, page=0):
     """generates urls from super_search for pictures"""
     x = super_search(term, number, page)
@@ -40,19 +54,7 @@ def find_urls2(term, number=50, page=0):
         urls = [' ... hmm ...']
     return urls
 
-def find_urls(term, number=50, page=0, mediatype='bilder'):
-    """generates urls from super_search for pictures"""
-    x = super_search(term, number, page, mediatype=mediatype)
-    try:
-        urls =[
-            f['_links']['thumbnail_custom']['href']
-            for f in x['_embedded']['items'] 
-            if f['accessInfo']['accessAllowedFrom'] == 'EVERYWHERE'
-            and 'thumbnail_custom' in f['_links']
-        ]
-    except:
-        urls = []
-    return urls
+
 
 def get_picture_from_urn(urn, width=0, height=300):
     meta = iiif_manifest(urn)
