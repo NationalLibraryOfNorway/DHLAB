@@ -12,14 +12,14 @@ def mods(urn):
     return r.json()
 
 
-def super_search(term, number=50, page=0):
+def super_search(term, number=50, page=0, mediatype='bilder'):
     """Søk etter term og få ut json"""
     number = min(number, 50)
     r = requests.get(
         "https://api.nb.no:443/catalog/v1/items", 
          params = {
              'q':term, 
-             'filter':'mediatype:bilder', 
+             'filter':'mediatype:{mediatype}'.format(mediatype=mediatype), 
              'page':page, 
              'size':number
          }
@@ -40,9 +40,9 @@ def find_urls2(term, number=50, page=0):
         urls = [' ... hmm ...']
     return urls
 
-def find_urls(term, number=50, page=0):
+def find_urls(term, number=50, page=0, mediatype='bilder'):
     """generates urls from super_search for pictures"""
-    x = super_search(term, number, page)
+    x = super_search(term, number, page, mediatype=mediatype)
     try:
         urls =[
             f['_links']['thumbnail_custom']['href']

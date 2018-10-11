@@ -1015,18 +1015,16 @@ def dewey(dewey):
         ddc = []
     return ddc
 
-def metadata_mods(URN):
+def metadata_xml(URN, kind='marcxml'):
     if isinstance(URN, int):
-        URN = "URN:NBN"
-    r = requests.get("https://api.nb.no:443/catalog/v1/metadata/{urn}/mods".format(urn=URN))
-    try:
-        res = r.text
-    except:
-        res = ""
-    return res
-
-def metadata_marcxml(URN):
-    r = requests.get("https://api.nb.no:443/catalog/v1/metadata/{id}/marcxml".format(urn=URN))
+        URN = "URN:NBN:no-nb_digibok_{urn}".format(urn=str(URN))
+    elif isinstance(URN, str):
+        if URN.startswith('URN'):
+            URN = URN
+        else:
+            URN = "URN:NBN:no-nb_digibok_{urn}".format(urn=URN)
+    
+    r = requests.get("https://api.nb.no:443/catalog/v1/metadata/{urn}/{kind}".format(urn=URN, kind=kind))
     try:
         res = r.text
     except:
