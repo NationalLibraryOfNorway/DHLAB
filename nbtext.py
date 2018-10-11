@@ -989,3 +989,46 @@ class Corpus_urn:
 
 def check_vals(korpus, vals):
     return korpus[korpus.index.isin(vals)].sort_values(by=0, ascending=False)
+
+#======================== Utilities
+
+def xmlpretty(xmls):
+    from bs4 import BeautifulSoup
+
+    soup = BeautifulSoup(xmls)
+    soup.prettify()
+    # '<html>\n <head>\n </head>\n <body>\n  <a href="http://example.com/">\n...'
+
+    print(soup.prettify())
+
+def dewey(dewey):
+    r = requests.get("https://api.nb.no:443/dewey/v1/list", params={'class':dewey, 'language':'nob'})
+    try:
+        ddk = r.json()
+
+        ddc = dict()
+
+        if 'deweyPathList' in ddk:
+            for item in ddk['deweyPathList']:
+                ddc[str(item['level'])] = [item['classValue'], item['heading']]
+    except:
+        ddc = []
+    return ddc
+
+def metadata_mods(URN):
+    if isinstance(URN, int):
+        URN = "URN:NBN"
+    r = requests.get("https://api.nb.no:443/catalog/v1/metadata/{urn}/mods".format(urn=URN))
+    try:
+        res = r.text
+    except:
+        res = ""
+    return res
+
+def metadata_marcxml(URN):
+    r = requests.get("https://api.nb.no:443/catalog/v1/metadata/{id}/marcxml".format(urn=URN))
+    try:
+        res = r.text
+    except:
+        res = ""
+    return res
