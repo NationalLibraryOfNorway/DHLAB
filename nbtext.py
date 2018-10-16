@@ -156,7 +156,73 @@ def get_papers(top=5, cutoff=5, navn='%', yearfrom=1800, yearto=2020, samplesize
 
     return [dict(x) for x in r]
 
-def collocation(word, yearfrom=2010, yearto=2018, before=3, after=3, limit=1000, corpus='avis'):
+def collocation(
+    word, 
+    yearfrom=2010, 
+    yearto=2018, 
+    before=3, 
+    after=3, 
+    limit=1000, 
+    corpus='avis',
+    lang='nob',
+    title='%',
+    ddk='%', 
+    subtitle='%'):
+    """Defined collects frequencies for a given word"""
+    
+    data =  requests.get(
+        "https://api.nb.no/ngram/collocation", 
+        params={
+            'word':word,
+            'corpus':corpus, 
+            'yearfrom':yearfrom, 
+            'before':before,
+            'after':after,
+            'limit':limit,
+            'yearto':yearto,
+        'title':title,
+        'ddk':ddk,
+        'subtitle':subtitle}).json()
+    return pd.DataFrame.from_dict(data['freq'], orient='index')
+
+
+def collocation_data(words, yearfrom = 2000, yearto = 2005, limit = 1000, before = 5, after = 5, title = '%'):
+    """Collocation for a set of words sum up all the collocations"""
+    a = dict()
+    
+    if isinstance(words, str):
+        words = words.split()
+    
+    for word in words:
+        
+        print(word)
+        try:
+            
+            a[word] = collocation(
+                word, 
+                yearfrom = yearfrom, yearto = yearto, limit = limit, 
+                corpus = 'bok', before = before, 
+                after = after, title = title
+            )
+            
+            a[word].columns = [word]
+        
+        except:    
+            print(w, ' feilsituasjon')    
+    b=b.fillna(0)
+    
+    b = pd.DataFrame(b.sum(axis=1) )
+    
+    return b.sort_values(by=0, ascending=False)
+
+    
+    b = pd.DataFrame()
+    
+    for w in a.keys():
+        b = b.join(a[w], how="outer")
+
+
+def collocation_old(word, yearfrom=2010, yearto=2018, before=3, after=3, limit=1000, corpus='avis'):
     data =  requests.get(
         "https://api.nb.no/ngram/collocation", 
         params={
