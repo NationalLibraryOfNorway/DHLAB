@@ -257,18 +257,6 @@ def make_cliques_from_graph(G, lable_num = 2):
     return (ggg, coms, sg)
 
 
-
-def draw_tree(G, node_size=1, node_color='slategrey', n=5, m=1):
-    ax = plt.subplot()
-    draw_graph(G, h= 5, v=8, layout= lambda g: tree_positions(g, n, increment=m), node_color=node_color, node_size=node_size, fontsize=18,arrows=False)
-    fmin, fmax = plt.xlim()
-    plt.xlim(fmin-10,fmax+10)
-    ax.set_xticks([])
-    ax.set_yticks([])
-    #plt.savefig('krig.svg')
-
-
-
 def my_layout(G):
     """For grafer fra make_cliques der koden ligger i de to første tallene"""
     pos = dict()
@@ -345,21 +333,29 @@ def node_set(root, G):
 
         
     
-def draw_forest(F, spacing, save_name=False):
+def draw_tree(G, node_size=1, node_color='slategrey', n=2, m = 1, h=10, v=10):
+    #plt.subplot()
+    draw_graph(G, h = h, v = v, layout= lambda g: gnl.tree_positions(g, n, increment=m), node_color=node_color, node_size=node_size, fontsize=18,arrows=False)
+    fmin, fmax = plt.xlim()
+    plt.xlim(fmin-10,fmax+10)
+    #ax.set_xticks([])
+    #ax.set_yticks([])
+    #plt.savefig('krig.svg')
+
+def draw_forest(F, spacing, h=15, v=10, save_name=False):
     import matplotlib.pyplot as plt
     
-    rows = len(F)
-    row = 1
+    #rows = len(F)
+    #row = 1
+    #plt.figsize=(15,10)
     for tree in F:
         #print(tree.nodes())
         #plt.subplot(rows,row,1)
-        plt.figure(row)
-        row += 1
-        draw_tree(tree, node_size=0.5)
+        #plt.figure(row)
+        #row += 1
+        draw_tree(tree, node_size=0.5, h=h, v=v)
         if save_name:
             plt.savefig('{name}-{row}.png'.format(name=save_name, row=row, dpi=300))
-
-
 
 def print_list_of_sets(los):
     for x in los:
