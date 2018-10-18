@@ -156,6 +156,16 @@ def get_papers(top=5, cutoff=5, navn='%', yearfrom=1800, yearto=2020, samplesize
 
     return [dict(x) for x in r]
 
+
+def urn_coll(word, urns=[], after=5, before=5, limit=1000):
+    """Find collocations for word in a set of book URNs. Only books at the moment"""
+    if isinstance(urns[0], list):  # urns assumed to be list of list with urn-serial as first element
+        urns = [u[0] for u in urns]
+        
+    r = requests.post("https://api.nb.no/ngram/urncoll", json={'word':word, 'urns':urns, 
+                                                                   'after':after, 'before':before, 'limit':limit})
+    return pd.DataFrame.from_dict(r.json(), orient='index').sort_values(by=0, ascending = False)
+
 def collocation(
     word, 
     yearfrom=2010, 
