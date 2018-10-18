@@ -131,6 +131,7 @@ def draw_graph_centrality2(G, Subsets=[],  h=15, v=10, deltax=0, deltay=0, fonts
     ax.set_xticks([])
     ax.set_yticks([])
     G = G.subgraph(subnodes)
+    glob_col = sns.hls_palette(len(G), h=colstart, l=coldark)[0]
     pos = nx.spring_layout(G, k=k)
     labelpos = dict({k:(pos[k][0]+ deltax, pos[k][1] + deltay) for k in pos })
     #print(labelpos)
@@ -151,8 +152,9 @@ def draw_graph_centrality2(G, Subsets=[],  h=15, v=10, deltax=0, deltay=0, fonts
             nx.draw_networkx_nodes(G, pos, alpha=node_alpha, node_color=sub_col ,  nodelist=sublist.keys(), node_size=[v * multi for v in sublist.values()])
             i += 1
     else:
-        #nx.draw_networkx_nodes(G, pos, alpha=node_alpha, node_color=sub_col ,  nodelist=subnodes.keys(), node_size=[v * multi for v in subnodes.values()])
+        nx.draw_networkx_nodes(G, pos, alpha=node_alpha, node_color= glob_col,  nodelist=subnodes.keys(), node_size=[v * multi for v in subnodes.values()])
         True
+        
     nx.draw_networkx_edges(G, pos, alpha=0.1, arrows=arrows, edge_color=edge_color)
 
     rcParams['figure.figsize'] = x, y
