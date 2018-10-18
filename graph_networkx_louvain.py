@@ -124,13 +124,14 @@ def draw_graph_centrality2(G, Subsets=[],  h=15, v=10, deltax=0, deltay=0, fonts
     colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
     node_dict = centrality(G)
     subnodes = dict({x:node_dict[x] for x in node_dict if node_dict[x] >= threshold})
+    #print(subnodes)
     x, y = rcParams['figure.figsize']
     rcParams['figure.figsize'] = h, v
     
     ax = plt.subplot()
     ax.set_xticks([])
     ax.set_yticks([])
-    G = G.subgraph(subnodes)
+    #G = G.subgraph(subnodes)
     glob_col = sns.hls_palette(len(G), h=colstart, l=coldark)[0]
     pos = nx.spring_layout(G, k=k)
     labelpos = dict({k:(pos[k][0]+ deltax, pos[k][1] + deltay) for k in pos })
@@ -149,16 +150,17 @@ def draw_graph_centrality2(G, Subsets=[],  h=15, v=10, deltax=0, deltay=0, fonts
             #sub_col = list(colors.values())[np.random.randint(20,100)]
             sub_col= colpalette[i]
             #print(i, sub_col, sublist.keys())
-            nx.draw_networkx_nodes(G, pos, alpha=node_alpha, node_color=sub_col ,  nodelist=sublist.keys(), node_size=[v * multi for v in sublist.values()])
+            #print(i, sub_col)
+            nx.draw_networkx_nodes(G, pos, alpha=node_alpha, node_color = [sub_col], nodelist= [x for x in sublist.keys()], node_size = [v * multi for v in sublist.values()])
             i += 1
     else:
-        nx.draw_networkx_nodes(G, pos, alpha=node_alpha, node_color= glob_col,  nodelist=subnodes.keys(), node_size=[v * multi for v in subnodes.values()])
+        nx.draw_networkx_nodes(G, pos, alpha=node_alpha, node_color= glob_col,  nodelist = subnodes.keys(), node_size = [v * multi for v in subnodes.values()])
         True
         
-    nx.draw_networkx_edges(G, pos, alpha=0.1, arrows=arrows, edge_color=edge_color)
+    nx.draw_networkx_edges(G, pos, alpha=0.1, arrows = arrows, edge_color = edge_color)
 
     rcParams['figure.figsize'] = x, y
-
+    return
 
 
 # Set palette using: sns.hls_palette(10, h=.6, l=.1)
