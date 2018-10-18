@@ -777,7 +777,7 @@ def get_konk(word, params=None, kind='html'):
     if kind=='html':
         rows = ""
         row_template = ("<tr>"
-                        "<td><a href='{urn}' target='_'>{urnredux}</a></td>"
+                        "<td><a href='{urn}?searchText={kw}' target='_'>{urnredux}</a></td>"
                         "<td>{b}</td>"
                         "<td>{w}</td>"
                         "<td style='text-align:left'>{a}</td>"
@@ -785,6 +785,7 @@ def get_konk(word, params=None, kind='html'):
         if corpus == 'bok':
             for x in r.json():
                 rows += row_template.format(
+                    kw = word,
                     urn=x['urn'],
                     urnredux=','.join([x['author'], x['title'], str(x['year'])]),
                     b=x['before'],
@@ -858,12 +859,13 @@ def get_urnkonk(word, params=None, html=True):
         for x in r.json():
             rows += """<tr>
                 <td>
-                    <a href='{urn}' target='_blank' style='text-decoration:none'>{urnredux}</a>
+                    <a href='{urn}?searchText={kw}' target='_blank' style='text-decoration:none'>{urnredux}</a>
                 </td>
                 <td>{b}</td>
                 <td>{w}</td>
                 <td style='text-align:left'>{a}</td>
-            </tr>\n""".format(urn=x['urn'],
+            </tr>\n""".format(kw=word,
+                              urn=x['urn'],
                               urnredux="{t}, {f}, {y}".format(t=x['title'], f=x['author'], y=x['year']),
                               b=x['before'],
                               w=x['word'],
