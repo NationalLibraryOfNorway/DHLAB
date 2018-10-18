@@ -335,7 +335,7 @@ def node_set(root, G):
     
 def draw_tree(G, node_size=1, node_color='slategrey', n=2, m = 1, h=10, v=10):
     #plt.subplot()
-    draw_graph(G, h = h, v = v, layout= lambda g: gnl.tree_positions(g, n, increment=m), node_color=node_color, node_size=node_size, fontsize=18,arrows=False)
+    draw_graph(G, h = h, v = v, layout= lambda g: tree_positions(g, n, increment=m), node_color=node_color, node_size=node_size, fontsize=18,arrows=False)
     fmin, fmax = plt.xlim()
     plt.xlim(fmin-10,fmax+10)
     #ax.set_xticks([])
