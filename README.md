@@ -75,6 +75,9 @@ Return a collocation as dataframe.
 Compute an association using PMI.
 ``    return pd.DataFrame(coll_frame[column]**exponent/coll_frame.mean(axis=1))``
 
+### `urn_coll(word, urns=[], after=5, before=5, limit=1000)`
+limit is max number of occurences of word pr. urn. 
+Find collocations for word in a set of book URNs. Only books at the moment
 
 ### `collocation(word, yearfrom=2010, yearto=2018, before=3, after=3, limit=1000, corpus='avis')`
 Compute a collocation for a given word within indicated period.
