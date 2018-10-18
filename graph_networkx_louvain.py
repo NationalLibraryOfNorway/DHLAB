@@ -298,7 +298,7 @@ def root_nodes(G):
 
 def tree_positions(Tree, spacing, increment=1):
     root = root_nodes(Tree)[0]
-    return tree_pos(root, Tree, 1, spacing, 3,1, level_increment=increment)[0]
+    return tree_pos(root, Tree, 1, spacing, 3, 3, level_increment=increment)[0]
 
 def tree_pos(x, G, level, spacing, num, left_edge, level_increment = 1):
     """Draw from left to right for left_edge"""
