@@ -377,7 +377,7 @@ def make_collocation_graph(target, top=15, urns=[], cutoff=10, before=4, after=4
     korpus_totalen = frame(antall, 'total')
     Total = korpus_totalen[korpus_totalen > cutoff]
     
-    I = nb.urn_coll(target, urns=mat, before=before, after=after)
+    I = urn_coll(target, urns=mat, before=before, after=after)
     toppis = frame(I[0]**1.2/Total['total'], target).sort_values(by=target, ascending=False)
 
     #toppis[:top].index
@@ -385,7 +385,7 @@ def make_collocation_graph(target, top=15, urns=[], cutoff=10, before=4, after=4
     isgraf = dict()
     for word in toppis[:top].index:
         if word.isalpha():
-            isgraf[word] = nb.urn_coll(word, urns=urns, before=before, after=after)
+            isgraf[word] = urn_coll(word, urns=urns, before=before, after=after)
 
     isframe = dict()
     for w in isgraf:
