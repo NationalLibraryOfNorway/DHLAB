@@ -15,7 +15,25 @@ try:
 except ImportError:
     print("wordcloud er ikke installert, kan ikke lage ordskyer")
 
-    
+
+def check_navn(navn, limit=2, remove='Ja Nei Nå Dem De Deres Unnskyld Ikke Ah Hmm'.split()):
+    """Removes all items in navn with frequency below limit and words in all case as well as all words in list 'remove'"""
+    r = {x:navn[x] for x in navn if navn[x] > limit and x.upper() != x and not x in remove}
+    return r
+
+def check_edges(G, weight=1):    
+    return nx.Graph([edge for edge in G.edges(data=True) if edge[2]['weight'] >= weight])
+
+def word_freq(urn, words):
+    params = {'urn':urn, 'words':words}
+    r = requests.post("https://api.nb.no/ngram/freq", json=params)
+    return dict(r.json())
+
+def book_count(urns):
+    params = {'urns':urns}
+    r = requests.post("https://api.nb.no/ngram/book_count", json=params)
+    return dict(r.json())
+
 def sttr(urn, chunk=5000):
     r = requests.get("https://api.nb.no/ngram/sttr", json = {'urn':urn, 'chunk':chunk})
     return r.json()
