@@ -410,7 +410,7 @@ def make_collocation_graph(target, top=15, urns=[], cutoff=10, before=4, after=4
     return Ice
 
 def show_graph(G, spread=0.2, fontsize=10, deltax=0.04, deltay=0.04):
-    return draw_graph_centrality2(G, gnl.mcommunity(G),k = spread, fontsize=fontsize, deltax=deltax, deltay=deltay)
+    return draw_graph_centrality2(G, mcommunity(G),k = spread, fontsize=fontsize, deltax=deltax, deltay=deltay)
 
 def show_cliques(G):
     C = make_cliques_from_graph(G.to_undirected())
