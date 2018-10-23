@@ -223,7 +223,7 @@ def collocation_data(words, yearfrom = 2000, yearto = 2005, limit = 1000, before
     result = pd.DataFrame()
     for w in a:
         result = result.join(a[w], how='outer')
-    return pd.DataFrame(result.sum(axis=1))
+    return pd.DataFrame(result.sum(axis=1)).sort_values(by=0, ascending=False)
 
 
 def collocation_old(word, yearfrom=2010, yearto=2018, before=3, after=3, limit=1000, corpus='avis'):
