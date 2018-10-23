@@ -196,8 +196,9 @@ def collocation(
     return pd.DataFrame.from_dict(data['freq'], orient='index')
 
 
-def collocation_data(words, yearfrom = 2000, yearto = 2005, limit = 1000, before = 5, after = 5, title = '%'):
-    """Collocation for a set of words sum up all the collocations"""
+def collocation_data(words, yearfrom = 2000, yearto = 2005, limit = 1000, before = 5, after = 5, title = '%', corpus='bok'):
+    """Collocation for a set of words sum up all the collocations words is a list of words or a blank separated string of words"""
+    import sys
     a = dict()
     
     if isinstance(words, str):
@@ -211,25 +212,18 @@ def collocation_data(words, yearfrom = 2000, yearto = 2005, limit = 1000, before
             a[word] = collocation(
                 word, 
                 yearfrom = yearfrom, yearto = yearto, limit = limit, 
-                corpus = 'bok', before = before, 
+                corpus = corpus, before = before, 
                 after = after, title = title
             )
             
             a[word].columns = [word]
         
         except:    
-            print(w, ' feilsituasjon')    
-    b=b.fillna(0)
-    
-    b = pd.DataFrame(b.sum(axis=1) )
-    
-    return b.sort_values(by=0, ascending=False)
-
-    
-    b = pd.DataFrame()
-    
-    for w in a.keys():
-        b = b.join(a[w], how="outer")
+            print(word, ' feilsituasjon', sys.exc_info())
+    result = pd.DataFrame()
+    for w in a:
+        result = result.join(a[w], how='outer')
+    return pd.DataFrame(result.sum(axis=1))
 
 
 def collocation_old(word, yearfrom=2010, yearto=2018, before=3, after=3, limit=1000, corpus='avis'):
