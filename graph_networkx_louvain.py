@@ -8,7 +8,7 @@ from networkx.algorithms.community import k_clique_communities
 import seaborn as sns
 
 from collections import Counter
-
+from nbtext import urn_coll, frame, get_freq
 from matplotlib import colors as mcolors
 
 
@@ -366,3 +366,45 @@ def print_sets(graph):
         print(x, ', '.join(graph[1][x]),'\n')
     return True
 
+def make_collocation_graph(target, top=15, urns=[], cutoff=10, before=4, after=4):
+    """Make a cascaded network from collocations"""
+
+    
+    antall = Counter()
+    for urn in urns:
+        antall += get_freq(urn[0], top=0, cutoff=0)
+    
+    korpus_totalen = frame(antall, 'total')
+    Total = korpus_totalen[korpus_totalen > cutoff]
+    
+    I = urn_coll(target, urns = urns, before=before, after=after)
+    toppis = frame(I[0]**1.2/Total['total'], target).sort_values(by=target, ascending=False)
+
+    #toppis[:top].index
+
+    isgraf = dict()
+    for word in toppis[:top].index:
+        if word.isalpha():
+            isgraf[word] = urn_coll(word, urns=urns, before=before, after=after)
+
+    isframe = dict()
+    for w in isgraf:
+        isframe[w] = frame(isgraf[w], w)
+
+    
+
+    top = dict()
+    top[target] = toppis
+    for w in isframe:
+        top[w] = frame(isframe[w][w]**1.2/Total['total'], w).sort_values(by=w, ascending=False)
+
+    edges = []
+    for w in top:
+        edges += [(w, coll) for coll in top[w][:15].index if coll.isalpha()]
+
+
+    Ice = nx.Graph()
+
+    Ice.add_edges_from(edges)
+    
+    return Ice
