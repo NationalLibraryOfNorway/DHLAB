@@ -807,6 +807,7 @@ def get_konk(word, params=None, kind='html'):
             #print(r.json())
             for x in r.json():
                 rows += row_template.format(
+                    kw = word,
                     urn=x['urn'],
                     urnredux='-'.join(x['urn'].split('_')[2:6:3]),
                     b=x['before'],
