@@ -8,7 +8,7 @@ from networkx.algorithms.community import k_clique_communities
 import seaborn as sns
 
 from collections import Counter
-from nbtext import urn_coll, frame, get_freq
+from nbtext import urn_coll, urn_coll_words, frame, get_freq
 from matplotlib import colors as mcolors
 
 
@@ -366,7 +366,7 @@ def print_sets(graph):
         print(x, ', '.join(graph[1][x]),'\n')
     return True
 
-def make_collocation_graph(target, top=15, urns=[], cutoff=10, before=4, after=4):
+def make_collocation_graph(target, top=15, urns=[], cutoff=10, cut_val=0, before=4, after=4, limit=1000):
     """Make a cascaded network from collocations"""
 
     
@@ -377,7 +377,7 @@ def make_collocation_graph(target, top=15, urns=[], cutoff=10, before=4, after=4
     korpus_totalen = frame(antall, 'total')
     Total = korpus_totalen[korpus_totalen > cutoff]
     
-    I = urn_coll(target, urns = urns, before=before, after=after)
+    I = urn_coll_words(target, urns = urns, before=before, after=after, limit=limit)
     toppis = frame(I[0]**1.2/Total['total'], target).sort_values(by=target, ascending=False)
 
     #toppis[:top].index

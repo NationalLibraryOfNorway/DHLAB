@@ -184,6 +184,51 @@ def urn_coll(word, urns=[], after=5, before=5, limit=1000):
                                                                    'after':after, 'before':before, 'limit':limit})
     return pd.DataFrame.from_dict(r.json(), orient='index').sort_values(by=0, ascending = False)
 
+
+def urn_coll_words(words, urns=[], after=5, before=5, limit=1000):
+    """Find collocations for a group of words within a set of books given by a list of URNs. Only books at the moment"""
+    if isinstance(urns[0], list):  # urns assumed to be list of list with urn-serial as first element
+        urns = [u[0] for u in urns]
+    colls = Counter()
+    if isinstance(words, str):
+        words = words.split()
+    res = Counter()
+    for word in words: 
+        try:
+            res += Counter(
+                requests.post(
+                    "https://api.nb.no/ngram/urncoll", 
+                    json={
+                        'word':word, 
+                        'urns':urns, 
+                        'after':after, 
+                        'before':before, 
+                        'limit':limit}
+                ).json()
+            )
+        except:
+            True
+    return pd.DataFrame.from_dict(res, orient='index').sort_values(by=0, ascending = False)
+
+def get_aggregated_corpus(urns, top=0, cutoff=0):
+    res = Counter()
+    if isinstance(urns[0], list):  # urns assumed to be list of list with urn-serial as first element
+        urns = [u[0] for u in urns]
+    for u in urns:
+        #print(u)
+        res += get_freq(u, top = top, cutoff = cutoff)
+    return pd.DataFrame.from_dict(res, orient='index').sort_values(by=0, ascending = False)
+
+def compare_word_bags(bag_of_words, another_bag_of_words, first_freq = 0, another_freq = 1, top=100, first_col = 0, another_col= 0):
+    """Compare two columns taken from two or one frame. Parameters x_freq are frequency limits used to cut down candidate words
+    from the bag of words. Compare along the columns where first_col and another_col are column numbers. Typical situation is that
+    bag_of_words is a one column frame and another_bag_of_words is another one column frame. When the columns are all from one frame, 
+    just change column numbers to match the columns"""
+    diff = bag_of_words[bag_of_words > first_freq][bag_of_words.columns[first_col]]/another_bag_of_words[another_bag_of_words > another_freq][another_bag_of_words.columns[another_col]] 
+       
+    return frame(diff, 'diff').sort_values(by='diff', ascending=False)[:top]
+
+
 def collocation(
     word, 
     yearfrom=2010, 
