@@ -210,6 +210,7 @@ def urn_coll_words(words, urns=[], after=5, before=5, limit=1000):
             True
     return pd.DataFrame.from_dict(res, orient='index').sort_values(by=0, ascending = False)
 
+
 def get_aggregated_corpus(urns, top=0, cutoff=0):
     res = Counter()
     if isinstance(urns[0], list):  # urns assumed to be list of list with urn-serial as first element
@@ -218,6 +219,7 @@ def get_aggregated_corpus(urns, top=0, cutoff=0):
         #print(u)
         res += get_freq(u, top = top, cutoff = cutoff)
     return pd.DataFrame.from_dict(res, orient='index').sort_values(by=0, ascending = False)
+
 
 def compare_word_bags(bag_of_words, another_bag_of_words, first_freq = 0, another_freq = 1, top=100, first_col = 0, another_col= 0):
     """Compare two columns taken from two or one frame. Parameters x_freq are frequency limits used to cut down candidate words

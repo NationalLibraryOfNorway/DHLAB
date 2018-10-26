@@ -28,6 +28,8 @@ rcParams['figure.figsize'] = 15, 10
 import matplotlib.pyplot as plt
 
 
+cutdown = lambda x: x.subgraph([n[0] for n in x.degree() if n[1]>1])
+
 def make_graph_corp(word, corpus='eng'):
     result = requests.get("http://www.nb.no/sp_tjenester/beta/ngram_1/galaxies/query?terms={word}&lang=all&corpus={corpus}".
                           format(word=word, corpus=corpus))
@@ -377,8 +379,11 @@ def make_collocation_graph(target, top=15, urns=[], cutoff=10, cut_val=0, before
     korpus_totalen = frame(antall, 'total')
     Total = korpus_totalen[korpus_totalen > cutoff]
     
+    if isinstance(target, str):
+        target = target.split()
+       
     I = urn_coll_words(target, urns = urns, before=before, after=after, limit=limit)
-    toppis = frame(I[0]**1.2/Total['total'], target).sort_values(by=target, ascending=False)
+    toppis = frame(I[0]**1.2/Total['total'], target[0]).sort_values(by=target[0], ascending=False)
 
     #toppis[:top].index
 
@@ -394,7 +399,8 @@ def make_collocation_graph(target, top=15, urns=[], cutoff=10, cut_val=0, before
     
 
     top = dict()
-    top[target] = toppis
+    if len(target) == 1:
+        top[target] = toppis
     for w in isframe:
         top[w] = frame(isframe[w][w]**1.2/Total['total'], w).sort_values(by=w, ascending=False)
 
@@ -409,7 +415,7 @@ def make_collocation_graph(target, top=15, urns=[], cutoff=10, cut_val=0, before
     
     return Ice
 
-def show_graph(G, spread=0.2, fontsize=10, deltax=0.04, deltay=0.04):
+def show_graph(G, spread=0.2, fontsize=10, deltax=0, deltay=0):
     return draw_graph_centrality2(G, mcommunity(G),k = spread, fontsize=fontsize, deltax=deltax, deltay=deltay)
 
 def show_cliques(G):
