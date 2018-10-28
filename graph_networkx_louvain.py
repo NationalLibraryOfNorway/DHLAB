@@ -400,7 +400,9 @@ def make_collocation_graph(target, top=15, urns=[], cutoff=10, cut_val=0, before
 
     top = dict()
     if len(target) == 1:
-        top[target] = toppis
+        top[target[0]] = toppis
+    else:
+        top['_'.join(target[:2])] = toppis
     for w in isframe:
         top[w] = frame(isframe[w][w]**1.2/Total['total'], w).sort_values(by=w, ascending=False)
 
