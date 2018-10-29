@@ -16,8 +16,8 @@ def update(module=""):
         print("An error occured ", module, nba.status_code)
     return
 
-def css(url):
-    """Associate a css stylesheet with the notebook"""
+def css(url = "https://raw.githubusercontent.com/Yoonsen/Modules/master/css_style_sheets/nb_notebook.css"):
+    """Associate a css stylesheet with the notebook, just specify a file or web reference, default is a custom css"""
     
     uri = urlparse(url)
     css_file = ""
