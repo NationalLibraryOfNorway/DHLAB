@@ -1,0 +1,44 @@
+@import url(
+http://fonts.googleapis.com/css?family=Source+Serif+Pro|Crimson+Text|Montserrat|Source+Code+Pro|Roboto:400,700);
+
+#notebook-container {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Montserrat', sans-serif;
+	line-height: 20px;
+    color:RoyalBlue;
+}
+
+h1 { font-size: 4.5em; }
+h2 { font-size: 4rem; }
+h3 { font-size: 3.5rem; }
+h4 { font-size: 3rem; }
+h5 { font-size: 2.5rem; }
+h6 { font-size: 2rem; }
+
+p {
+	font-family: 'Source Serif Pro', sans-serif;
+	font-size: 1.2em;
+	line-height: 1.3em;
+	font-weight: 400;
+	color: 'black';
+}
+	
+.CodeMirror pre {
+	font-family: 'Source Code Pro', monospace;
+	font-size: 1em;
+}
+
+a:link, a:visited { 
+    color: SlateGray;
+    text-decoration: none;
+    cursor: auto;
+}
+
+div.input_area {
+	border: none;
+	background: whitesmoke;
+}
