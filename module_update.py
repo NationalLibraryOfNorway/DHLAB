@@ -1,5 +1,7 @@
 import requests
 from IPython.display import HTML
+from urllib import urljoin
+from urllib.parse import urlparse
 
 def update(module=""):
     """Fetch modules from Github and write them to folder"""
@@ -14,13 +16,29 @@ def update(module=""):
         print("An error occured ", module, nba.status_code)
     return
 
-def css():
+def css(url):
     """Associate a css stylesheet with the notebook"""
-    css_file = requests.get("https://raw.githubusercontent.com/Yoonsen/Modules/master/css_style_sheets/monokai.css")
-    res = ""
-    if css_file.status_code == 200:
-        res = css_file.text
-    return HTML(res)
+    
+    uri = urlparse(url)
+    css_file = ""
+    
+    if uri.scheme.startswith('http'):
+        query = requests.get(url)
+        if query.status_code == 200:
+            css_file  = query.text
+    
+    elif uri.scheme == "file": 
+        # assume on form "file:/// on windows there is drive letter on unix not"
+        file_path = url[7:]
+        if file_path[2] == ':': # then windows drive reference
+            file_path = file_path[1:]
+        with open(file_path, encoding='utf-8') as file:
+            css_file = file.read()
+    else: 
+        # assume string is a file locator
+        with open(url, encoding='utf-8') as file:
+            css_file = file.read()
+    
+    return HTML("<style>{css_code}</style>".format(css_code = css_file))
 
 update("nbtext")
-update("nbpictures")
