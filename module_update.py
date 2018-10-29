@@ -1,7 +1,6 @@
 import requests
 from IPython.display import HTML
-from urllib import urljoin
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 
 def update(module=""):
     """Fetch modules from Github and write them to folder"""
