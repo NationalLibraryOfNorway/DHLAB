@@ -8,7 +8,7 @@ http://fonts.googleapis.com/css?family=Source+Serif+Pro|Crimson+Text|Montserrat|
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Montserrat', sans-serif;
-	line-height: 20px;
+	line-height: 2em;
     color:RoyalBlue;
 }
 
