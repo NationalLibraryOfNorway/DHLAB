@@ -30,8 +30,9 @@ p {
 	color:DarkSlateGray;
 
 
-.inner_cell {
+.input_area {
 	border:none;
+	color: whitesmoke;
 }
 
 .CodeMirror {
