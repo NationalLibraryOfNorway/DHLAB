@@ -33,12 +33,6 @@ p {
 	font-size: 1em;
 }
 
-a:link, a:visited { 
-    color: SlateGray;
-    text-decoration: none;
-    cursor: hand;
-}
-
 div.input_area {
 	border: none;
 	background: whitesmoke;
