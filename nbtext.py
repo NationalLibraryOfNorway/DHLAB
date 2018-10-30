@@ -52,15 +52,18 @@ def urn_from_text(T):
     """Return URNs as 13 digits (any sequence of 13 digits is counted as an URN)"""
     return re.findall("(?<=digibok_)[0-9]{13}", T)
 
-def metadata(urn="""text"""):
+def metadata(urn=[]):
     if type(urn) is str:
-        urns = urn
+        urns = urn.split()
     elif type(urn) is list:
-        urns = '-'.join([str(u) for u in urn])
+        if isinstance(urn[0], list):
+            urns = [u[0] for u in urns]
+        else:
+            urns = urn
     else:
-        urns = str(urn)
-        
-    r = requests.get("https://api.nb.no/ngram/meta", params={'urn':urns})
+        urns = [urn]
+    #print(urns)
+    r = requests.post("https://api.nb.no/ngram/meta", json={'urn':urns})
     return r.json()
 
 
