@@ -10,6 +10,7 @@ def update(module=""):
         nba = nba.text
         with open('{m}.py'.format(m=module),'w', encoding='UTF-8') as pyfile:
             pyfile.write(nba)
+            pyfile.flush()
         print("Updated file {module}.py".format(module=module))
     else:
         print("An error occured ", module, nba.status_code)
