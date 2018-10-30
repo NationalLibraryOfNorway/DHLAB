@@ -28,12 +28,8 @@ p {
 	color: Black;
 }
 	
-.CodeMirror pre {
+.CodeMirror {
 	font-family: 'Source Code Pro', monospace;
 	font-size: 1em;
 }
 
-div.input_area {
-	border: none;
-	background: whitesmoke;
-}
