@@ -1,0 +1,42 @@
+@import url(
+http://fonts.googleapis.com/css?family=Source+Serif+Pro|Crimson+Text|Montserrat|Source+Code+Pro|Roboto:400,700);
+
+/*
+#notebook-container {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+*/
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Montserrat', sans-serif;
+	line-height: 2em;
+    color: DarkSlateGray;
+    font-weight: 600;
+}
+
+h1 { font-size: 4.5em; }
+h2 { font-size: 4em; }
+h3 { font-size: 3.5em; }
+h4 { font-size: 3em; }
+h5 { font-size: 2.5em; }
+h6 { font-size: 2em; }
+
+p {
+	font-family: 'Source Serif Pro', sans-serif;
+	font-size: 1.2em;
+	line-height: 1.3em;
+	font-weight: 400;
+	color:DarkBlue;
+
+
+.inner_cell {
+	border:none;
+}
+
+.CodeMirror {
+	font-family: 'Source Code Pro', monospace;
+	font-size: 1em;
+	
+}
+
