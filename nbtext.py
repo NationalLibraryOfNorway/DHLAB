@@ -190,6 +190,7 @@ def urn_coll(word, urns=[], after=5, before=5, limit=1000):
 
 def urn_coll_words(words, urns=None, after=5, before=5, limit=1000):
     """Find collocations for a group of words within a set of books given by a list of URNs. Only books at the moment"""
+    coll = pd.DataFrame()
     if urns != None:
         if isinstance(urns[0], list):  # urns assumed to be list of list with urn-serial as first element
             urns = [u[0] for u in urns]
@@ -212,7 +213,8 @@ def urn_coll_words(words, urns=None, after=5, before=5, limit=1000):
                 )
             except:
                 True
-    return pd.DataFrame.from_dict(res, orient='index').sort_values(by=0, ascending = False)
+        coll = pd.DataFrame.from_dict(res, orient='index')
+    return coll.sort_values(by=coll.columns[0], ascending = False)
 
 
 def get_aggregated_corpus(urns, top=0, cutoff=0):
