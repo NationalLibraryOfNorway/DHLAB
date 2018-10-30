@@ -368,7 +368,7 @@ def print_sets(graph):
         print(x, ', '.join(graph[1][x]),'\n')
     return True
 
-def make_collocation_graph(target, top=15, urns=[], cutoff=0, cut_val=2, before=4, after=4, limit=1000):
+def make_collocation_graph(target, top = 15, urns=[], cutoff=0, cut_val=2, before=4, after=4, limit=1000):
     """Make a cascaded network from collocations"""
 
     
@@ -398,17 +398,17 @@ def make_collocation_graph(target, top=15, urns=[], cutoff=0, cut_val=2, before=
 
     
 
-    top = dict()
+    tops = dict()
     if len(target) == 1:
-        top[target[0]] = toppis
+        tops[target[0]] = toppis
     else:
-        top['_'.join(target[:2])] = toppis
+        tops['_'.join(target[:2])] = toppis
     for w in isframe:
-        top[w] = frame(isframe[w][w]**1.2/Total['total'], w).sort_values(by=w, ascending=False)
+        tops[w] = frame(isframe[w][w]**1.2/Total['total'], w).sort_values(by=w, ascending=False)
 
     edges = []
-    for w in top:
-        edges += [(w, coll) for coll in top[w][:top].index if coll.isalpha()]
+    for w in tops:
+        edges += [(w, coll) for coll in tops[w][:top].index if coll.isalpha()]
 
 
     Ice = nx.Graph()
