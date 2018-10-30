@@ -31,5 +31,6 @@ p {
 .CodeMirror {
 	font-family: 'Source Code Pro', monospace;
 	font-size: 1em;
+	border:none;
 }
 
