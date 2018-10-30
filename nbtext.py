@@ -188,29 +188,30 @@ def urn_coll(word, urns=[], after=5, before=5, limit=1000):
     return pd.DataFrame.from_dict(r.json(), orient='index').sort_values(by=0, ascending = False)
 
 
-def urn_coll_words(words, urns=[], after=5, before=5, limit=1000):
+def urn_coll_words(words, urns=None, after=5, before=5, limit=1000):
     """Find collocations for a group of words within a set of books given by a list of URNs. Only books at the moment"""
-    if isinstance(urns[0], list):  # urns assumed to be list of list with urn-serial as first element
-        urns = [u[0] for u in urns]
-    colls = Counter()
-    if isinstance(words, str):
-        words = words.split()
-    res = Counter()
-    for word in words: 
-        try:
-            res += Counter(
-                requests.post(
-                    "https://api.nb.no/ngram/urncoll", 
-                    json={
-                        'word':word, 
-                        'urns':urns, 
-                        'after':after, 
-                        'before':before, 
-                        'limit':limit}
-                ).json()
-            )
-        except:
-            True
+    if urns != None:
+        if isinstance(urns[0], list):  # urns assumed to be list of list with urn-serial as first element
+            urns = [u[0] for u in urns]
+        colls = Counter()
+        if isinstance(words, str):
+            words = words.split()
+        res = Counter()
+        for word in words: 
+            try:
+                res += Counter(
+                    requests.post(
+                        "https://api.nb.no/ngram/urncoll", 
+                        json={
+                            'word':word, 
+                            'urns':urns, 
+                            'after':after, 
+                            'before':before, 
+                            'limit':limit}
+                    ).json()
+                )
+            except:
+                True
     return pd.DataFrame.from_dict(res, orient='index').sort_values(by=0, ascending = False)
 
 
