@@ -12,7 +12,7 @@ def update(module="", overwrite=False):
     filename = '{m}.py'.format(m=module)
     if nba.status_code == 200:
         if os.path.exists(filename) and not(overwrite):
-            print("file {f} exists - specify 'overwrite=True' in update({f}, overwrite=True) in order to store {f} anyway".format(f=filename))
+            print("file {f} exists - call update({m}, overwrite=True) in order to store {f} anyway".format(f = filename, m = module))
         else:
             nba = nba.text
             with open(filename,'w', encoding='UTF-8') as pyfile:
