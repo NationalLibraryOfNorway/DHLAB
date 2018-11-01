@@ -31,7 +31,7 @@ p {
 }
 
 div.inner_cell {
-	border:none;
+	border:none !important;
 }
 
 span.nn {
