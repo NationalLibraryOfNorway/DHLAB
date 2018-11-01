@@ -11,7 +11,7 @@ http://fonts.googleapis.com/css?family=Lato|Source+Serif+Pro|Crimson+Text|Montse
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Montserrat', sans-serif;
 	line-height: 2em;
-    color: DarkSlateGray;
+    color: #2e2eb8 ;
     font-weight: 600;
 }
 
@@ -19,7 +19,7 @@ h1 { font-size: 4.5em; }
 h2 { font-size: 4em; }
 h3 { font-size: 3.5em; }
 h4 { font-size: 3em; }
-h5 { font-size: 2.5em; }
+h5 { font-size: 2.5em; color:DarkSlateGray; }
 h6 { font-size: 2em; }
 
 p {
