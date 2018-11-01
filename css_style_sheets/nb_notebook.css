@@ -1,5 +1,5 @@
 @import url(
-http://fonts.googleapis.com/css?family=Lato|Source+Serif+Pro|Crimson+Text|Montserrat|Source+Code+Pro|Roboto:200,400,700);
+http://fonts.googleapis.com/css?family=Lato|Source+Serif+Pro|Crimson+Text|Montserrat|Source+Code+Pro|Inconsolata|Roboto:200,400,700);
 
 /*
 #notebook-container {
@@ -41,7 +41,7 @@ span.nn {  /*span.cm-variable, span.cm-property*/
 	color: #3399ff !important;
 }
 div.CodeMirror {
-	font-family: 'Source Code Pro', monospace;
+	font-family: 'Inconsolata', monospace;
 	font-size: 1em;
 	
 }
