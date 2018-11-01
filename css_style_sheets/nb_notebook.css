@@ -24,9 +24,9 @@ h6 { font-size: 2em; }
 
 p {
 	font-family: 'Roboto', sans-serif;
-	font-size: 1.2em;
-	font-weight:200;
-	line-height: 1.3em;
+	font-size: 1em;
+	font-weight:Light;
+	line-height: 1.1em;
 	color: black;
 }
 
@@ -45,4 +45,3 @@ div.CodeMirror {
 	font-size: 1.1em;
 	
 }
-
