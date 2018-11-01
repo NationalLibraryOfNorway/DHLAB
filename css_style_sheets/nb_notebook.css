@@ -34,7 +34,7 @@ div.inner_cell {
 	border:none !important;
 }
 
-span.nn {
+span.nn, span.cm-variable {
 	color:#33ccff !important;
 }
 div.CodeMirror {
