@@ -1,5 +1,5 @@
 @import url(
-http://fonts.googleapis.com/css?family=Lato|Source+Serif+Pro|Crimson+Text|Montserrat|Source+Code+Pro|Roboto:400,700);
+http://fonts.googleapis.com/css?family=Lato|Source+Serif+Pro|Crimson+Text|Montserrat|Source+Code+Pro|Roboto:200,400,700);
 
 /*
 #notebook-container {
@@ -25,6 +25,7 @@ h6 { font-size: 2em; }
 p {
 	font-family: 'Roboto', sans-serif;
 	font-size: 1.2em;
+	font-weight:200;
 	line-height: 1.3em;
 	color: Black;
 }
