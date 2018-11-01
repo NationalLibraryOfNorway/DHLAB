@@ -4,7 +4,10 @@ from urllib.parse import urlparse, urljoin
 
 def update(module=""):
     """Fetch modules from Github and write them to folder"""
-    nba = requests.get("https://raw.githubusercontent.com/Yoonsen/Modules/master/{module}.py".format(module=module))
+    nba = requests.get(
+        "https://raw.githubusercontent.com/Yoonsen/Modules/master/{module}.py".format(module=module),
+        headers={'Cache-Control': 'no-cache'}
+        )
     
     if nba.status_code == 200:
         nba = nba.text
