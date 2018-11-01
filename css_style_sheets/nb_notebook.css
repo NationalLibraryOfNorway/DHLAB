@@ -30,11 +30,14 @@ p {
 	color: black;
 }
 
-.inner_cell {
+div.inner_cell {
 	border:none;
 }
 
-.CodeMirror {
+span.nn {
+	color:#33ccff ;
+}
+div.CodeMirror {
 	font-family: 'Source Code Pro', monospace;
 	font-size: 1em;
 	
