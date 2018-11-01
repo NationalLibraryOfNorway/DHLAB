@@ -35,7 +35,7 @@ div.inner_cell {
 }
 
 span.nn {
-	color:#33ccff ;
+	color:#33ccff !important;
 }
 div.CodeMirror {
 	font-family: 'Source Code Pro', monospace;
