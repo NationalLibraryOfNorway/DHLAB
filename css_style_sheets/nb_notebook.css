@@ -34,8 +34,11 @@ div.input_area {
 	border:none !important;
 }
 
+span.cm-keyword {
+	color:#339966 !important;
+}
 span.nn, span.cm-variable {
-	color:#0066ff !important;
+	color: #3399ff !important;
 }
 div.CodeMirror {
 	font-family: 'Source Code Pro', monospace;
