@@ -37,7 +37,7 @@ div.input_area {
 span.cm-keyword {
 	color:#339966 !important;
 }
-span.nn, span.cm-property {  /*span.cm-variable*/
+span.nn {  /*span.cm-variable, span.cm-property*/
 	color: #3399ff !important;
 }
 div.CodeMirror {
