@@ -1,5 +1,5 @@
 @import url(
-http://fonts.googleapis.com/css?family=Lato|Source+Serif+Pro|Crimson+Text|Montserrat|Source+Code+Pro|Inconsolata|Roboto:200,400,700);
+http://fonts.googleapis.com/css?family=Lato|Philosopher|Montserrat|Source+Code+Pro|Istok+Web|Philosopher|Pontano+Sans:200,400,700);
 
 /*
 #notebook-container {
@@ -23,7 +23,7 @@ h5 { font-size: 2.5em; color:DarkSlateGray; }
 h6 { font-size: 2em; }
 
 p {
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Istok Web', sans-serif;
 	font-size: 1em;
 	font-weight:Light;
 	line-height: 1.1em;
