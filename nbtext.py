@@ -48,9 +48,13 @@ def navn(urn):
     r = requests.get('https://api.nb.no/ngram/tingnavn', json={'urn':urn})
     return dict(r.json())
     
-def urn_from_text(T):
+def digibokurn_from_text(T):
     """Return URNs as 13 digits (any sequence of 13 digits is counted as an URN)"""
     return re.findall("(?<=digibok_)[0-9]{13}", T)
+
+def urn_from_text(T):
+    """Return URNs as 13 digits (any sequence of 13 digits is counted as an URN)"""
+    return re.findall("[0-9]{13}", T)
 
 def metadata(urn=[]):
     if type(urn) is str:
