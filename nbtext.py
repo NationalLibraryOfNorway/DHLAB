@@ -303,6 +303,28 @@ def collocation_data(words, yearfrom = 2000, yearto = 2005, limit = 1000, before
         result = result.join(a[w], how='outer')
     return pd.DataFrame(result.sum(axis=1)).sort_values(by=0, ascending=False)
 
+class CollocationCorpus:
+    from random import sample
+    
+    def __init__(self, corpus = None, name='', maximum_texts = 500):
+        urns = pure_urn(corpus)
+        
+        if len(urns) > maximum_texts:      
+            selection = random(urns, maximum_texts)
+        else:
+            selection = urns
+            
+        self.corpus_def = selection
+        self.corpus = get_aggregated_corpus(self.corpus_def, top=0, cutoff=0)
+
+
+    def summary(self, head=10):
+        info = {
+            'corpus_definition':self.corpus[:head],
+            'number_of_words':len(self.corpus)
+            
+        }
+        return info
 
 def collocation_old(word, yearfrom=2010, yearto=2018, before=3, after=3, limit=1000, corpus='avis'):
     data =  requests.get(
