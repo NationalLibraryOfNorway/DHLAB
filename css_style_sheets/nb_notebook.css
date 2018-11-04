@@ -1,5 +1,5 @@
 @import url(
-http://fonts.googleapis.com/css?family=Lato|Source+Serif+Pro|Crimson+Text|Montserrat|Source+Code+Pro|Inconsolata|Roboto:200,400,700);
+http://fonts.googleapis.com/css?family=Lato|Philosopher|Montserrat|Source+Code+Pro|Istok+Web|Philosopher|Assistant:200,400,700);
 
 /*
 #notebook-container {
@@ -11,7 +11,7 @@ http://fonts.googleapis.com/css?family=Lato|Source+Serif+Pro|Crimson+Text|Montse
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Montserrat', sans-serif;
 	line-height: 2em;
-    color: #0066ff ;
+    color: #004f99;
     font-weight: 600;
 }
 
@@ -23,15 +23,16 @@ h5 { font-size: 2.5em; color:DarkSlateGray; }
 h6 { font-size: 2em; }
 
 p {
-	font-family: 'Roboto', sans-serif;
-	font-size: 1em;
+	font-family: 'Assistant', sans-serif; 
+	font-size: 1.2em;
 	font-weight:Light;
-	line-height: 1.1em;
+	line-height: 1.4em;
 	color: black;
 }
 
 div.input_area {
 	border:none !important;
+	border-left:1px solid #ff851b !important
 }
 
 span.cm-keyword {
