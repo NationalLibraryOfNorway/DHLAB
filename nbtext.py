@@ -76,19 +76,20 @@ def pure_urn(data):
         List[str]: A list of URNs. Empty list if input is on the wrong
             format or contains no URNs
     """
+    korpus_def = []
     if isinstance(data, list):
         if not data:  # Empty list
-            return []
+            korpus_def = []
         if isinstance(data[0], list):  # List of lists
             try:
-                return [x[0] for x in data]
+                korpus_def = [x[0] for x in data]
             except IndexError:
-                return []
+                korpus_def = []
         else:  # Assume data is already a list of URNs
-            return data
+            korpus_def = data
     elif isinstance(data, str):
-        return urn_from_text(data)
-    return []
+        korpus_def = urn_from_text(data)
+    return korpus_def
 
 
 def difference(first, second, rf, rs, years=(1980, 2000),smooth=1, corpus='bok'):
