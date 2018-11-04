@@ -32,6 +32,7 @@ p {
 
 div.input_area {
 	border:none !important;
+	border-left:1px solid #ff851b !important
 }
 
 span.cm-keyword {
