@@ -93,6 +93,8 @@ def pure_urn(data):
             korpus_def = data
     elif isinstance(data, str):
         korpus_def = urn_from_text(data)
+    elif isinstance(data, int):
+        korpus_def = [urn]
     return korpus_def
 
 
