@@ -25,11 +25,13 @@ h6 { font-size: 2em; }
 p {
 	font-family: 'Assistant', sans-serif; 
 	font-size: 1.2em;
-	font-weight:Light;
+	font-weight:Regular;
 	line-height: 1.4em;
 	color: black;
 }
-
+p code {
+	font-size:1em;
+}
 div.input_area {
 	border:none !important;
 	border-left:1px solid #ff851b !important
