@@ -3,7 +3,7 @@ import os
 from IPython.display import HTML
 from urllib.parse import urlparse, urljoin
 
-def update(module="", overwrite=False):
+def update(module="", overwrite=False, silent=False):
     """Fetch modules from Github and write them to folder"""
     nba = requests.get(
         "https://raw.githubusercontent.com/Yoonsen/Modules/master/{module}.py".format(module=module),
@@ -11,16 +11,20 @@ def update(module="", overwrite=False):
         )
     filename = '{m}.py'.format(m=module)
     if nba.status_code == 200:
-        if os.path.exists(filename) and not(overwrite):
-            print("file {f} exists - call update('{m}', overwrite=True) in order to download {f} anyway".format(f = filename, m = module))
+        file_exists = os.path.exists(filename)
+        if file_exists and not(overwrite):
+            if not silent:
+                print("File {f} exists - call update('{m}', overwrite=True) in order to download {f} anyway".format(f = filename, m = module))
         else:
             nba = nba.text
             with open(filename,'w', encoding='UTF-8') as pyfile:
                 pyfile.write(nba)
                 pyfile.flush()
-            print("Updated file {module}.py stored".format(module=module))
+        # if file was already there print a message, otherwise remain silent
+        if not silent:
+            print("Updated file {module}.py".format(module= os.path.abspath(module)))
     else:
-        print("An error occured during download ", module, nba.status_code)
+        print("An error occured during download", module, nba.status_code)
     return
 
 def css(url = "https://raw.githubusercontent.com/Yoonsen/Modules/master/css_style_sheets/nb_notebook.css"):
@@ -48,4 +52,4 @@ def css(url = "https://raw.githubusercontent.com/Yoonsen/Modules/master/css_styl
     
     return HTML("<style>{css_code}</style>".format(css_code = css_file))
 
-update("nbtext")
+update("nbtext", silent=True)
