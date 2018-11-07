@@ -1,7 +1,12 @@
 import requests
 import os
-from IPython.display import HTML
+from IPython.display import HTML, Markdown, display
 from urllib.parse import urlparse, urljoin
+
+
+def printmd(S):
+    display(Markdown(S))
+    return
 
 def update(module="", overwrite=False, silent=False):
     """Fetch modules from Github and write them to folder"""
@@ -14,17 +19,16 @@ def update(module="", overwrite=False, silent=False):
         file_exists = os.path.exists(filename)
         if file_exists and not(overwrite):
             if not silent:
-                print("File {f} exists - call update('{m}', overwrite=True) in order to download module {m} anyway".format(f = os.path.abspath(filename), m = module))
+                printmd("File {f} exists - call `update('{m}', overwrite = True)` in order to download module `{m}` anyway".format(f = os.path.abspath(filename), m = module))
         else:
             nba = nba.text
             with open(filename,'w', encoding='UTF-8') as pyfile:
                 pyfile.write(nba)
                 pyfile.flush()
-        # if file was already there print a message, otherwise remain silent
             if not silent:
-                print("Updated file {module}.py".format(module= os.path.abspath(module)))
+                printmd("Updated file `{module}.py`".format(module= os.path.abspath(module)))
     else:
-        print("An error occured during download", module, nba.status_code)
+        printmd("An error occured during download", module, nba.status_code)
     return
 
 def css(url = "https://raw.githubusercontent.com/Yoonsen/Modules/master/css_style_sheets/nb_notebook.css"):
