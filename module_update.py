@@ -21,8 +21,8 @@ def update(module="", overwrite=False, silent=False):
                 pyfile.write(nba)
                 pyfile.flush()
         # if file was already there print a message, otherwise remain silent
-        if not silent:
-            print("Updated file {module}.py".format(module= os.path.abspath(module)))
+            if not silent:
+                print("Updated file {module}.py".format(module= os.path.abspath(module)))
     else:
         print("An error occured during download", module, nba.status_code)
     return
