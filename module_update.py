@@ -14,7 +14,7 @@ def update(module="", overwrite=False, silent=False):
         file_exists = os.path.exists(filename)
         if file_exists and not(overwrite):
             if not silent:
-                print("File {f} exists - call update('{m}', overwrite=True) in order to download {f} anyway".format(f = filename, m = module))
+                print("File {f} exists - call update('{m}', overwrite=True) in order to download {f} anyway".format(f = os.path.abspath(filename), m = module))
         else:
             nba = nba.text
             with open(filename,'w', encoding='UTF-8') as pyfile:
