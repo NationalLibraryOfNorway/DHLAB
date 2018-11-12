@@ -159,6 +159,20 @@ def get_urn(metadata=None):
     r = requests.get('https://api.nb.no/ngram/urn', json=metadata)
     return r.json()
 
+def refine_urn(urns, metadata=None):
+    """Get urns from metadata"""
+    if metadata is None:
+        metadata = {}
+    metadata['urns'] = urns
+    if not ('words' in metadata):
+        metadata['words'] = []
+    if not ('next' in metadata or 'neste' in metadata):
+        metadata['next'] = 520
+    if not 'year' in metadata:
+        metadata['year'] = 1500
+    r = requests.post('https://api.nb.no/ngram/refineurn', json=metadata)
+    return r.json()
+
 def get_papers(top=5, cutoff=5, navn='%', yearfrom=1800, yearto=2020, samplesize=100):
     """Get newspapers"""
     div = lambda x, y: (int(x/y), x % y)
