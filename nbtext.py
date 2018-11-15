@@ -16,10 +16,11 @@ except ImportError:
     print("wordcloud er ikke installert, kan ikke lage ordskyer")
 
 
-def ner(text = None):
+def ner(text = None, dist=False):
+    """Analyze text for named entities - set dist = True will return the four values that go into decision"""
     r = []
     if text != None:
-        r = requests.post("https://api.nb.no/ngram/ner", json={'text':text})
+        r = requests.post("https://api.nb.no/ngram/ner", json={'text':text,'dist':dist})
     return r.json()
     
 def check_navn(navn, limit=2, remove='Ja Nei Nå Dem De Deres Unnskyld Ikke Ah Hmm'.split()):
