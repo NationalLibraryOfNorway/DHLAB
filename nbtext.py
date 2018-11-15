@@ -16,6 +16,12 @@ except ImportError:
     print("wordcloud er ikke installert, kan ikke lage ordskyer")
 
 
+def ner(text = None):
+    r = []
+    if text != None:
+        r = requests.post("https://api.nb.no/ngram/ner", json={'text':text})
+    return r.json()
+    
 def check_navn(navn, limit=2, remove='Ja Nei Nå Dem De Deres Unnskyld Ikke Ah Hmm'.split()):
     """Removes all items in navn with frequency below limit and words in all case as well as all words in list 'remove'"""
     r = {x:navn[x] for x in navn if navn[x] > limit and x.upper() != x and not x in remove}
