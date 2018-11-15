@@ -8,7 +8,7 @@ def printmd(S):
     display(Markdown(S))
     return
 
-def update(module="", overwrite=False, silent=False):
+def update(module="", overwrite=True, silent=False):
     """Fetch modules from Github and write them to folder"""
     nba = requests.get(
         "https://raw.githubusercontent.com/Yoonsen/Modules/master/{module}.py".format(module=module),
@@ -56,4 +56,4 @@ def css(url = "https://raw.githubusercontent.com/Yoonsen/Modules/master/css_styl
     
     return HTML("<style>{css_code}</style>".format(css_code = css_file))
 
-update("nbtext", silent=True)
+update("nbtext", overwrite=False, silent=True)
