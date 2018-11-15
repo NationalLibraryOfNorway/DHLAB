@@ -15,15 +15,25 @@ def mods(urn):
 def super_search(term, number=50, page=0, mediatype='bilder'):
     """Søk etter term og få ut json"""
     number = min(number, 50)
-    r = requests.get(
-        "https://api.nb.no:443/catalog/v1/items", 
-         params = {
-             'q':term, 
-             'filter':'mediatype:{mediatype}'.format(mediatype=mediatype), 
-             'page':page, 
-             'size':number
-         }
-    )
+    if term == '':
+        r = requests.get(
+            "https://api.nb.no:443/catalog/v1/items", 
+             params = { 
+                 'filter':'mediatype:{mediatype}'.format(mediatype=mediatype), 
+                 'page':page, 
+                 'size':number
+             }
+        )
+    else:        
+        r = requests.get(
+            "https://api.nb.no:443/catalog/v1/items", 
+             params = {
+                 'q':term, 
+                 'filter':'mediatype:{mediatype}'.format(mediatype=mediatype), 
+                 'page':page, 
+                 'size':number
+             }
+        )
     return r.json()
 
 def find_urls(term, number=50, page=0, mediatype='bilder'):
