@@ -28,7 +28,7 @@ def update(module="", overwrite=True, silent=False):
             if not silent:
                 printmd("Updated file `{module}.py`".format(module= os.path.abspath(module)))
     else:
-        printmd("An error occured during download", module, nba.status_code)
+        printmd("{intro} {module} {code}".format(intro="An error occured during download", module= module, code= nba.status_code)
     return
 
 def css(url = "https://raw.githubusercontent.com/Yoonsen/Modules/master/css_style_sheets/nb_notebook.css"):
