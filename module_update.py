@@ -71,7 +71,7 @@ def update(module="", overwrite=True, silent=False):
                 printmd("Updated file `{module}.py`".format(module= os.path.abspath(module)))
     else:
         printmd( 
-            "{intro} {module} {code}".format(
+            """{intro} for {module} with error {code}""".format(
                 intro = "An error occured during download", 
                 module = module, 
                 code= nba.status_code
