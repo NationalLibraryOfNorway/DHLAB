@@ -13,7 +13,22 @@ def code_toggle(button_text = "Klikk for å vise/skjule kodeceller"):
 
     display(
         HTML(
-        '''<script>
+        '''<div>
+                <style>
+                 .mybutton {
+                    background-color: #4CAF50;
+                    border: none;
+                    color: white;
+                    padding: 10px 16px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                }
+            </style>
+            <script>
                 code_show=true; 
                 function code_toggle() {
                  if (code_show){
@@ -25,11 +40,11 @@ def code_toggle(button_text = "Klikk for å vise/skjule kodeceller"):
                 } 
                 $( document ).ready(code_toggle);
             </script>
-            <form action="javascript:code_toggle()">
-                <input type="submit" value=''' + '"'  + button_text + '"' + '''>
-            </form>'''
-        )
-    )
+            <form  action="javascript:code_toggle()">
+                <input class='mybutton' type="submit" value=''' + '"'  + button_text + '"' + '''>
+            </form>
+        </div>'''
+        ))
     
 def printmd(S):
     display(Markdown(S))
