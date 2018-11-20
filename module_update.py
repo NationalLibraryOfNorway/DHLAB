@@ -7,44 +7,29 @@ import ipywidgets as widgets
 
 
 
-def code_toggle():
-    """Code taken from Erick Shepherd at 
-    stackoverflow https://stackoverflow.com/questions/27934885/how-to-hide-code-from-cells-in-ipython-notebook-visualized-with-nbviewer"""
-    javascript_functions = {False: "hide()", True: "show()"}
-    button_descriptions  = {False: "Show code", True: "Hide code"}
-    def toggle_code(state):
 
-        """
-        Toggles the JavaScript show()/hide() function on the div.input element.
-        """
+def code_toggle(button_text = "Klikk for å vise/skjule kodeceller"):
+    from IPython.display import HTML, display
 
-        output_string = "<script>$(\"div.input\").{}</script>"
-        output_args   = (javascript_functions[state],)
-        output        = output_string.format(*output_args)
-
-        display(HTML(output))
-
-
-    def button_action(value):
-
-        """
-        Calls the toggle_code function and updates the button description.
-        """
-
-        state = value.new
-
-        toggle_code(state)
-
-        value.owner.description = button_descriptions[state]
-
-
-    state = False
-    toggle_code(state)
-
-    button = widgets.ToggleButton(state, description = button_descriptions[state])
-    button.observe(button_action, "value")
-
-    display(button)
+    display(
+        HTML(
+        '''<script>
+                code_show=true; 
+                function code_toggle() {
+                 if (code_show){
+                 $('div.input').hide();
+                 } else {
+                 $('div.input').show();
+                 }
+                 code_show = !code_show
+                } 
+                $( document ).ready(code_toggle);
+            </script>
+            <form action="javascript:code_toggle()">
+                <input type="submit" value={button_text}>
+            </form>'''.format(button_text=button_text)
+        )
+    )
     
 def printmd(S):
     display(Markdown(S))
