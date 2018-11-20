@@ -167,7 +167,7 @@ def get_urn(metadata=None):
     return r.json()
 
 def refine_urn(urns, metadata=None):
-    """Get urns from metadata"""
+    """Refine a list urns using extra information"""
     if metadata is None:
         metadata = {}
     metadata['urns'] = urns
@@ -178,6 +178,16 @@ def refine_urn(urns, metadata=None):
     if not 'year' in metadata:
         metadata['year'] = 1500
     r = requests.post('https://api.nb.no/ngram/refineurn', json=metadata)
+    return r.json()
+
+def get_best_urn(word, metadata=None):
+    """Get the best urns from metadata containing a specific word"""
+    metadata['word'] = word
+    if not ('next' in metadata or 'neste' in metadata):
+        metadata['next'] = 600
+    if not 'year' in metadata:
+        metadata['year'] = 1500
+    r = requests.get('https://api.nb.no/ngram/best_urn', json=metadata)
     return r.json()
 
 def get_papers(top=5, cutoff=5, navn='%', yearfrom=1800, yearto=2020, samplesize=100):
