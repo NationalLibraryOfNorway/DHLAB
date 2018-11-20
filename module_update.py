@@ -26,8 +26,8 @@ def code_toggle(button_text = "Klikk for å vise/skjule kodeceller"):
                 $( document ).ready(code_toggle);
             </script>
             <form action="javascript:code_toggle()">
-                <input type="submit" value={button_text}>
-            </form>'''.format(button_text=button_text)
+                <input type="submit" value=''' + '"'  + button_text + '"' + '''>
+            </form>'''
         )
     )
     
