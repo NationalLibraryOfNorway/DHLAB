@@ -63,12 +63,12 @@ def urn_from_text(T):
     """Return URNs as 13 digits (any sequence of 13 digits is counted as an URN)"""
     return re.findall("[0-9]{13}", T)
 
-def metadata(urn=[]):
+def metadata(urn=None):
     if type(urn) is str:
         urns = urn.split()
     elif type(urn) is list:
         if isinstance(urn[0], list):
-            urns = [u[0] for u in urns]
+            urns = [u[0] for u in urn]
         else:
             urns = urn
     else:
