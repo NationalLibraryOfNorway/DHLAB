@@ -661,7 +661,7 @@ def compute_assoc(coll_frame, column, exponent=1.1, refcolumn = 'reference_corpu
     return pd.DataFrame(coll_frame[column]**exponent/coll_frame.mean(axis=1))
     
 
-class neo_Corpus:
+class Corpus:
     def __init__(self, filename = '', target_urns = None, reference_urns = None,  period = (1950,1960), author='%', 
                  title='%', ddk='%', gender='%', subject='%', reference = 100, max_books=100):
         params = {
@@ -867,8 +867,10 @@ def check_words(urn, ordbag):
     return True
 
 def nb_ngram(terms, corpus='bok', smooth=3, years=(1810, 2010), mode='relative'):
-    return ngram_conv(get_ngram(terms, corpus=corpus), smooth=smooth, years=years, mode=mode)
-    
+    df = ngram_conv(get_ngram(terms, corpus=corpus), smooth=smooth, years=years, mode=mode)
+    df.index = df.index.astype(int)
+    return df
+
 def get_ngram(terms, corpus='avis'):
     req = requests.get(
         "http://www.nb.no/sp_tjenester/beta/ngram_1/ngram/query?terms={terms}&corpus={corpus}".format(
