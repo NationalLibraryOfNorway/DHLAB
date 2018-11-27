@@ -708,17 +708,17 @@ class Corpus:
             referanse_txt = get_corpus_text(referanse_urn)
             målkorpus_txt = get_corpus_text(target_urn)
 
-            #normalize_corpus_dataframe(referanse_txt)
-            #normalize_corpus_dataframe(målkorpus_txt)
+            normalize_corpus_dataframe(referanse_txt)
+            normalize_corpus_dataframe(målkorpus_txt)
 
             combo = målkorpus_txt.join(referanse_txt)
 
-            #self.combo = combo 
-            #self.reference = referanse_txt
-            #self.target = målkorpus_txt
+            self.combo = combo 
+            self.reference = referanse_txt
+            self.target = målkorpus_txt
 
-            #self.reference = aggregate(reference)
-            #self.reference.columns = ['reference_corpus']
+            self.reference = aggregate(reference)
+            self.reference.columns = ['reference_corpus']
 
             ## dokumentfrekvenser
 
@@ -727,9 +727,9 @@ class Corpus:
             ref_docf = pd.DataFrame(pd.DataFrame(referanse_txt/referanse_txt).sum(axis=1))
 
             ### Normaliser dokumentfrekvensene
-            #normalize_corpus_dataframe(mål_docf)
-            #normalize_corpus_dataframe(combo_docf)
-            #normalize_corpus_dataframe(ref_docf)
+            normalize_corpus_dataframe(mål_docf)
+            normalize_corpus_dataframe(combo_docf)
+            normalize_corpus_dataframe(ref_docf)
 
             self.målkorpus_tot = aggregate(målkorpus_txt)
             self.combo_tot = aggregate(combo)
@@ -799,6 +799,7 @@ class Corpus:
         )
 
         self.coll[word] = pd.DataFrame.from_dict(r.json(), orient='index')
+        normalize_corpus_dataframe(self.coll[word])
         self.coll[word] = self.coll[word].sort_values(by=self.coll[word].columns[0], ascending = False)
         return True
 
