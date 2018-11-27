@@ -690,34 +690,39 @@ class Corpus:
             else:
                 target_urn = målkorpus_urn
 
-            if type(reference) is pd.core.frame.DataFrame:
-                reference = reference
-            elif reference_urns != None:
+            if reference_urns != None:
                 referansekorpus_def = reference_urns
             else:
+                # select from period, usually used only of target is by metadata
                 referansekorpus_def = get_urn({'year':period[0], 'next':period[1]-period[0], 'limit':reference})
 
 
             #print("Antall bøker i referanse: ", len(referansekorpus_def))
-            referanse_urn = [x[0] for x in referansekorpus_def]
+            # referansen skal være distinkt fra målkorpuset
+            referanse_urn = [x[0] for x in referansekorpus_def and not x[0] in målkorpus_urn]
             self.reference_urn = referanse_urn
             self.target_urn = target_urn
             # make sure there is no overlap between target and reference
-            referanse_urn = list(set(referanse_urn) - set(target_urn))
+            # see above
+            # referanse_urn = list(set(referanse_urn) - set(target_urn))
 
-            referanse_txt = get_corpus_text(referanse_urn)
+
             målkorpus_txt = get_corpus_text(target_urn)
-
-            normalize_corpus_dataframe(referanse_txt)
             normalize_corpus_dataframe(målkorpus_txt)
+            if referanse_urn != []:
+                referanse_txt = get_corpus_text(referanse_urn)
+                normalize_corpus_dataframe(referanse_txt)
+                combo = målkorpus_txt.join(referanse_txt)
 
-            combo = målkorpus_txt.join(referanse_txt)
-
+            else:
+                referanse_txt = målkorpus_txt
+                combo = målkorpus_txt
+                
             self.combo = combo 
             self.reference = referanse_txt
             self.target = målkorpus_txt
 
-            self.reference = aggregate(reference)
+            self.reference = aggregate(self.reference)
             self.reference.columns = ['reference_corpus']
 
             ## dokumentfrekvenser
@@ -802,7 +807,44 @@ class Corpus:
         normalize_corpus_dataframe(self.coll[word])
         self.coll[word] = self.coll[word].sort_values(by=self.coll[word].columns[0], ascending = False)
         return True
-
+    
+    def conc(self, word, before=8, after=8, size=10, combo=0):
+        import numpy.random
+        
+        if combo == 0:
+            urns = self.target_urn + self.reference_urn
+        elif combo == 1:
+            urns = self.target_urn
+        else:
+            urns = self.reference_urn
+        if len(urns) > 300:
+            urns = numpy.random.choice(urns, 300, replace=False)
+        return get_urnkonk(word, {'urns':urns, 'before':before, 'after':after, 'limit':size})
+    
+    def sort_collocations(self, word, comparison = None, exp = 1.0):
+        
+        if comparison == None:
+            comparison = self.combo_tot[0]
+        try:
+            res = pd.DataFrame(self.coll[word][0]**exp/comparison)
+        except KeyError:
+            print('Constructing a collocation for {w} with default parameters.'.format(w=word))
+            self.collocations(word)
+            res = pd.DataFrame(self.coll[word][0]**exp/comparison)
+        return res.sort_values(by = 0, ascending = False)
+    
+    def search_collocations(self, word, words, comparison = None, exp = 1.0):
+        
+        if comparison == None:
+            comparison = self.combo_tot[0]
+        try:
+            res = pd.DataFrame(self.coll[word][0]**exp/comparison)
+        except KeyError:
+            print('Constructing a collocation for {w} with default parameters.'.format(w=word))
+            self.collocations(word)
+            res = pd.DataFrame(self.coll[word][0]**exp/comparison)
+        search_items = list(set(res.index) & set(words))
+        return res.transpose()[search_items].transpose().sort_values(by = 0, ascending = False)
     
     def summary(self, head=10):
         info = {
