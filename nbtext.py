@@ -661,6 +661,9 @@ def compute_assoc(coll_frame, column, exponent=1.1, refcolumn = 'reference_corpu
     return pd.DataFrame(coll_frame[column]**exponent/coll_frame.mean(axis=1))
     
 
+import pandas as pd
+from nbtext import *
+
 class Corpus:
     def __init__(self, filename = '', target_urns = None, reference_urns = None,  period = (1950,1960), author='%', 
                  title='%', ddk='%', gender='%', subject='%', reference = 100, max_books=100):
@@ -677,6 +680,7 @@ class Corpus:
         }
         self.params = params
         self.coll = dict()
+        self.coll_graph = dict()
         if filename == '':
             if target_urns != None:
                 målkorpus_def = target_urns
@@ -862,7 +866,27 @@ class Corpus:
         sub = [w for w in words if w in df.index]
         res = df.transpose()[sub].transpose().sort_values(by=df.columns[0], ascending=False)
         return res
-            
+    
+    def make_collocation_graph(self, target_word, top = 15, before = 4, after = 4, limit = 1000, exp=1):
+        """Make a cascaded network of collocations"""
+
+        self.collocations(target_word, before=before, after=after, limit=limit)
+        coll = self.sort_collocations(target_word)
+        target_graf = dict()
+        edges = []
+        for word in coll[:top].index:
+            edges.append((target_word, word))
+            if word.isalpha():
+                self.collocations(word, before=before, after=after,  limit=limit)
+                for w in self.sort_collocations(word)[:top].index:
+                    if w.isalpha():
+                        edges.append((word, w)) 
+
+        target_graph = nx.Graph()
+        target_graph.add_edges_from(edges)
+        self.coll_graph[target_word] = target_graph
+        return target_graph
+
         
 def vekstdiagram(urn, params=None):
     if params is None:
