@@ -23,7 +23,7 @@ def ner(text = None, dist=False):
         r = requests.post("https://api.nb.no/ngram/ner", json={'text':text,'dist':dist})
     return r.json()
     
-def check_navn(navn, limit=2, remove='Ja Nei Nå Dem De Deres Unnskyld Ikke Ah Hmm'.split()):
+def check_navn(navn, limit=2, remove='Ja Nei Nå Dem De Deres Unnskyld Ikke Ah Hmm Javel Akkurat Jaja Jaha'.split()):
     """Removes all items in navn with frequency below limit and words in all case as well as all words in list 'remove'"""
     r = {x:navn[x] for x in navn if navn[x] > limit and x.upper() != x and not x in remove}
     return r
