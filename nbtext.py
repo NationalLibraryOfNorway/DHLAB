@@ -690,7 +690,7 @@ class Corpus:
             #print("Antall bøker i målkorpus ", len(målkorpus_def))
             if isinstance(målkorpus_def[0], list):
                 målkorpus_urn = [x[0] for x in målkorpus_def]
-                print(målkorpus_urn)
+                #print(målkorpus_urn)
             else:
                 målkorpus_urn = målkorpus_def
             if len(målkorpus_urn) > max_books and max_books > 0:
