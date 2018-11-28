@@ -1,5 +1,6 @@
 import json
 import random
+import numpy.random
 import re
 from collections import Counter
 
@@ -661,9 +662,8 @@ def compute_assoc(coll_frame, column, exponent=1.1, refcolumn = 'reference_corpu
     return pd.DataFrame(coll_frame[column]**exponent/coll_frame.mean(axis=1))
     
 
-import pandas as pd
 from nbtext import *
-
+import numpy.random
 class Corpus:
     def __init__(self, filename = '', target_urns = None, reference_urns = None,  period = (1950,1960), author='%', 
                  title='%', ddk='%', gender='%', subject='%', reference = 100, max_books=100):
@@ -688,9 +688,13 @@ class Corpus:
                 målkorpus_def = get_urn(params)
 
             #print("Antall bøker i målkorpus ", len(målkorpus_def))
-            målkorpus_urn = [x[0] for x in målkorpus_def]
+            if isinstance(målkorpus_def[0], list):
+                målkorpus_urn = [x[0] for x in målkorpus_def]
+                print(målkorpus_urn)
+            else:
+                målkorpus_urn = målkorpus_def
             if len(målkorpus_urn) > max_books and max_books > 0:
-                target_urn = random.sample(målkorpus_urn,max_books)
+                target_urn = list(numpy.random.choice(målkorpus_urn, max_books))
             else:
                 target_urn = målkorpus_urn
 
@@ -703,12 +707,12 @@ class Corpus:
 
             #print("Antall bøker i referanse: ", len(referansekorpus_def))
             # referansen skal være distinkt fra målkorpuset
-            referanse_urn = [x[0] for x in referansekorpus_def and not x[0] in målkorpus_urn]
+            referanse_urn = [x[0] for x in referansekorpus_def]
             self.reference_urn = referanse_urn
             self.target_urn = target_urn
             # make sure there is no overlap between target and reference
-            # see above
-            # referanse_urn = list(set(referanse_urn) - set(target_urn))
+            # 
+            referanse_urn = list(set(referanse_urn) - set(target_urn))
 
 
             målkorpus_txt = get_corpus_text(target_urn)
@@ -765,6 +769,7 @@ class Corpus:
     
 
     def save(self, filename):
+
         model = {
             'params':self.params,   
             'target': self.målkorpus_tot.to_json(),
@@ -795,25 +800,25 @@ class Corpus:
     
     def collocations(self, word, after=5, before=5, limit=1000):
         """Find collocations for word in a set of book URNs. Only books at the moment"""
-        urns = self.target_urn
+        
         r = requests.post(
             "https://api.nb.no/ngram/urncoll", 
             json={
-                'word':word, 
-                'urns':urns,
-                'after':after, 
-                'before':before, 
-                'limit':limit
+                'word': word, 
+                'urns': self.target_urn,
+                'after': after, 
+                'before': before, 
+                'limit': limit
             }
         )
 
-        self.coll[word] = pd.DataFrame.from_dict(r.json(), orient='index')
-        normalize_corpus_dataframe(self.coll[word])
-        self.coll[word] = self.coll[word].sort_values(by=self.coll[word].columns[0], ascending = False)
+        temp = pd.DataFrame.from_dict(r.json(), orient='index')
+        normalize_corpus_dataframe(temp)
+        self.coll[word] = temp.sort_values(by = temp.columns[0], ascending = False)
         return True
     
     def conc(self, word, before=8, after=8, size=10, combo=0):
-        import numpy.random
+        
         
         if combo == 0:
             urns = self.target_urn + self.reference_urn
@@ -822,7 +827,7 @@ class Corpus:
         else:
             urns = self.reference_urn
         if len(urns) > 300:
-            urns = numpy.random.choice(urns, 300, replace=False)
+            urns = list(numpy.random.choice(urns, 300, replace=False))
         return get_urnkonk(word, {'urns':urns, 'before':before, 'after':after, 'limit':size})
     
     def sort_collocations(self, word, comparison = None, exp = 1.0):
@@ -886,7 +891,6 @@ class Corpus:
         target_graph.add_edges_from(edges)
         self.coll_graph[target_word] = target_graph
         return target_graph
-
         
 def vekstdiagram(urn, params=None):
     if params is None:
