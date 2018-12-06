@@ -662,8 +662,7 @@ def compute_assoc(coll_frame, column, exponent=1.1, refcolumn = 'reference_corpu
     return pd.DataFrame(coll_frame[column]**exponent/coll_frame.mean(axis=1))
     
 
-from nbtext import *
-import numpy.random
+
 class Corpus:
     def __init__(self, filename = '', target_urns = None, reference_urns = None,  period = (1950,1960), author='%', 
                  title='%', ddk='%', gender='%', subject='%', reference = 100, max_books=100):
@@ -748,7 +747,7 @@ class Corpus:
             self.combo_tot = aggregate(combo)
             self.mål_docf = mål_docf
             self.combo_docf = combo_docf
-            
+            self.lowest = self.combo_tot.sort_values(by=0)[0][0]
         else:
             self.load(filename)
         return 
@@ -830,16 +829,18 @@ class Corpus:
             urns = list(numpy.random.choice(urns, 300, replace=False))
         return get_urnkonk(word, {'urns':urns, 'before':before, 'after':after, 'limit':size})
     
-    def sort_collocations(self, word, comparison = None, exp = 1.0):
+    def sort_collocations(self, word, comparison = None, exp = 1.0, above = self.lowest):
         
         if comparison == None:
             comparison = self.combo_tot[0]
         try:
             res = pd.DataFrame(self.coll[word][0]**exp/comparison)
+
         except KeyError:
             print('Constructing a collocation for {w} with default parameters.'.format(w=word))
             self.collocations(word)
             res = pd.DataFrame(self.coll[word][0]**exp/comparison)
+        res = res[self.combo_tot > above]
         return res.sort_values(by = 0, ascending = False)
     
     def search_collocations(self, word, words, comparison = None, exp = 1.0):
