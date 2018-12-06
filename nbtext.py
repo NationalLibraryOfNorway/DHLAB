@@ -374,7 +374,7 @@ def collocation_old(word, yearfrom=2010, yearto=2018, before=3, after=3, limit=1
 def heatmap(df, color='green'):
     return df.fillna(0).style.background_gradient(cmap=sns.light_palette(color, as_cmap=True))
 
-def get_corpus_text(urns, top = 10000, cutoff=5):
+def get_corpus_text(urns, top = 0, cutoff=0):
     k = dict()
     for u in urns:
         #print(u)
@@ -412,7 +412,7 @@ def convert_list_of_freqs_to_dataframe(referanse):
     normalize_corpus_dataframe(result)
     return result
 
-def get_corpus(top=5, cutoff=5, navn='%', corpus='avis', yearfrom=1800, yearto=2020, samplesize=10):
+def get_corpus(top=0, cutoff=0, navn='%', corpus='avis', yearfrom=1800, yearto=2020, samplesize=10):
     if corpus == 'avis':
         result = get_papers(top=top, cutoff=cutoff, navn=navn, yearfrom=yearfrom, yearto=yearto, samplesize=samplesize)
         res = convert_list_of_freqs_to_dataframe(result)
