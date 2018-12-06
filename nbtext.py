@@ -829,7 +829,7 @@ class Corpus:
             urns = list(numpy.random.choice(urns, 300, replace=False))
         return get_urnkonk(word, {'urns':urns, 'before':before, 'after':after, 'limit':size})
     
-    def sort_collocations(self, word, comparison = None, exp = 1.0, above = self.lowest):
+    def sort_collocations(self, word, comparison = None, exp = 1.0, above = None):
         
         if comparison == None:
             comparison = self.combo_tot[0]
@@ -840,6 +840,8 @@ class Corpus:
             print('Constructing a collocation for {w} with default parameters.'.format(w=word))
             self.collocations(word)
             res = pd.DataFrame(self.coll[word][0]**exp/comparison)
+        if above == None:
+        	above = self.lowest
         res = res[self.combo_tot > above]
         return res.sort_values(by = 0, ascending = False)
     
