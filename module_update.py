@@ -16,7 +16,7 @@ def code_toggle(button_text = "Klikk for å vise/skjule kodeceller"):
         '''<div>
                 <style>
                  .mybutton {
-                    background-color: #4CAF50;
+                    background-color: lightgrey;
                     border: none;
                     color: white;
                     padding: 10px 16px;
