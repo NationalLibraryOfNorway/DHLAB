@@ -156,6 +156,17 @@ def get_freq(urn, top=50, cutoff=3):
     return Counter(dict(r.json()))
 
 
+def book_urn(author='%', title="%", ddk="%", subject="", period=(1100, 2020), gender="", limit=20 ):
+    return get_urn({
+        "author": author,
+        "title":title,
+        "ddk":ddk,
+        "subject":subject,
+        "year":period[0],
+        'next':period[1] - period[0],
+        "limit":limit
+    })
+
 def get_urn(metadata=None):
     """Get urns from metadata"""
     if metadata is None:
