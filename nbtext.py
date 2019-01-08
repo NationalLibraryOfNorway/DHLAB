@@ -891,14 +891,14 @@ class Corpus:
         """Make a cascaded network of collocations"""
 
         self.collocations(target_word, before=before, after=after, limit=limit)
-        coll = self.sort_collocations(target_word)
+        coll = self.sort_collocations(target_word, exp = exp)
         target_graf = dict()
         edges = []
         for word in coll[:top].index:
             edges.append((target_word, word))
             if word.isalpha():
                 self.collocations(word, before=before, after=after,  limit=limit)
-                for w in self.sort_collocations(word)[:top].index:
+                for w in self.sort_collocations(word, exp = exp)[:top].index:
                     if w.isalpha():
                         edges.append((word, w)) 
 
