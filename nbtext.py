@@ -157,6 +157,7 @@ def get_freq(urn, top=50, cutoff=3):
 
 
 def book_urn(author='%', title="%", ddk="%", subject="", period=(1100, 2020), gender="", limit=20 ):
+    """Get URNs for books with metadata"""
     return get_urn({
         "author": author,
         "title":title,
