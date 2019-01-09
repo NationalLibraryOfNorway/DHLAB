@@ -700,7 +700,7 @@ class Corpus:
 
             #print("Antall bøker i målkorpus ", len(målkorpus_def))
             if isinstance(målkorpus_def[0], list):
-                målkorpus_urn = [x[0] for x in målkorpus_def]
+                målkorpus_urn = [str(x[0]) for x in målkorpus_def]
                 #print(målkorpus_urn)
             else:
                 målkorpus_urn = målkorpus_def
@@ -718,7 +718,7 @@ class Corpus:
 
             #print("Antall bøker i referanse: ", len(referansekorpus_def))
             # referansen skal være distinkt fra målkorpuset
-            referanse_urn = [x[0] for x in referansekorpus_def]
+            referanse_urn = [str(x[0]) for x in referansekorpus_def]
             self.reference_urn = referanse_urn
             self.target_urn = target_urn
             # make sure there is no overlap between target and reference
