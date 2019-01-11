@@ -105,3 +105,4 @@ def css(url = "https://raw.githubusercontent.com/Yoonsen/Modules/master/css_styl
     return HTML("<style>{css_code}</style>".format(css_code = css_file))
 
 update("nbtext", overwrite=False, silent=True)
+update("graph_networkx_louvain", overwrite=False, silent=True)
