@@ -982,8 +982,17 @@ def ngram_conv(ngrams, smooth=1, years=(1810,2013), mode='relative'):
     return pd.DataFrame(ngc).rolling(window=smooth, win_type='triang').mean()
 
 
-def make_graph(word):
-    result = requests.get("https://www.nb.no/sp_tjenester/beta/ngram_1/galaxies/query?terms={word}".format(word=word))
+def make_graph(words, lang='nob', cutoff=20, leaves=0):
+    """Get galaxy from ngram-database. English and German provided by Google N-gram. 
+    Set leaves=1 to get the leaves. Parameter cutoff only works for lang='nob'. 
+    Specify English by setting lang='eng' and German by lang='ger'"""
+    
+    params = dict()
+    params['terms'] = words
+    params['corpus'] = lang
+    params['limit'] = cutoff
+    params['leaves'] = leaves
+    result = requests.get("https://www.nb.no/sp_tjenester/beta/ngram_1/galaxies/query", params=params)
     G = nx.DiGraph()
     edgelist = []
     if result.status_code == 200:
@@ -995,6 +1004,7 @@ def make_graph(word):
             edgelist += [(nodes[edge['source']]['name'], nodes[edge['target']]['name'], abs(edge['value']))]
     #print(edgelist)
     G.add_weighted_edges_from(edgelist)
+
     return G
 
 
