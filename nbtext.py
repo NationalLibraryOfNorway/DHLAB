@@ -56,11 +56,19 @@ def navn(urn):
     r = requests.get('https://api.nb.no/ngram/tingnavn', json={'urn':urn})
     return dict(r.json())
 
-def names(urn, ratio=0.3, cutoff=5):
+def names(urn, ratio = 0.3, cutoff = 2):
+    """ Return namens in book with urn. Returns uni- , bi-, tri- and quadgrams """
     if type(urn) is list:
         urn = urn[0]
     r = requests.get('https://api.nb.no/ngram/names', json={'urn':urn, 'ratio':ratio, 'cutoff':cutoff})
-    return r.json()
+    x = r.json()
+    result = (
+        Counter(x[0][0]),
+        Counter({tuple(x[1][i][0]):x[1][i][1] for i in range(len(x[1]))}),
+        Counter({tuple(x[2][i][0]):x[2][i][1] for i in range(len(x[2]))}),
+        Counter({tuple(x[3][i][0]):x[3][i][1] for i in range(len(x[3]))})
+    )
+    return result
 
 def digibokurn_from_text(T):
     """Return URNs as 13 digits (any sequence of 13 digits is counted as an URN)"""
