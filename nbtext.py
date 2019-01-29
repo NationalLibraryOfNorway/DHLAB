@@ -55,7 +55,13 @@ def navn(urn):
         urn = urn[0]
     r = requests.get('https://api.nb.no/ngram/tingnavn', json={'urn':urn})
     return dict(r.json())
-    
+
+def names(urn, ratio=0.3, cutoff=5):
+    if type(urn) is list:
+        urn = urn[0]
+    r = requests.get('https://api.nb.no/ngram/names', json={'urn':urn, 'ratio':ratio, 'cutoff':cutoff})
+    return r.json()
+
 def digibokurn_from_text(T):
     """Return URNs as 13 digits (any sequence of 13 digits is counted as an URN)"""
     return re.findall("(?<=digibok_)[0-9]{13}", T)
