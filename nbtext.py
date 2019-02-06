@@ -942,7 +942,11 @@ def plot_sammen_vekst(urn, ordlister, window=5000, pr = 100):
         vekst = vekstdiagram(urn, params = {'words': ordbag, 'window':window, 'pr': pr} )
         vekst.columns = [ordbag[0]]
         rammer.append(vekst)
-    return pd.concat(rammer)
+    return pd.concat(rammer, sort=True)
+
+def plot_growth(urn, ordlister, window=5000, pr = 100):
+    """Wrapper for plot_sammen_vekst"""
+    return plot_sammen_vekst(urn, ordlister, window, pr)
 
 def relaterte_ord(word, number = 20, score=False):
     G = make_graph(word)
