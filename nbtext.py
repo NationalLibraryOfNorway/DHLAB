@@ -23,6 +23,14 @@ def ner(text = None, dist=False):
     if text != None:
         r = requests.post("https://api.nb.no/ngram/ner", json={'text':text,'dist':dist})
     return r.json()
+
+def sentences(urns, num=300):
+    if isinstance(urns[0], list):
+        urns = [str(x[0]) for x in urns]
+    params = {'urns':urns,
+             'num':num}
+    res = requests.get("https://api.nb.no/ngram/sentences", params=params)
+    return res.json()
     
 def check_navn(navn, limit=2, remove='Ja Nei Nå Dem De Deres Unnskyld Ikke Ah Hmm Javel Akkurat Jaja Jaha'.split()):
     """Removes all items in navn with frequency below limit and words in all case as well as all words in list 'remove'"""
