@@ -44,7 +44,11 @@ def name_graph(name_struct):
         for y in m:
             if x < y:
                 G.append((' '.join(x), ' '.join(y)))
+    N = []
+    for x in m:
+        N.append(' '.join(x))
     Gg = nx.Graph()
+    Gg.add_nodes_from(N)
     Gg.add_edges_from(G)
     return Gg
 
