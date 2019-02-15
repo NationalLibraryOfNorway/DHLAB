@@ -31,7 +31,23 @@ def sentences(urns, num=300):
              'num':num}
     res = requests.get("https://api.nb.no/ngram/sentences", params=params)
     return res.json()
-    
+
+def name_graph(name_struct):
+    m = []
+    for n in name_struct[0]:
+        m.append(frozenset([n]))
+    for n in name_struct[1:]:
+        m += [frozenset(x) for x in n]
+        
+    G = []
+    for x in m:
+        for y in m:
+            if x < y:
+                G.append((' '.join(x), ' '.join(y)))
+    Gg = nx.Graph()
+    Gg.add_edges_from(G)
+    return Gg
+
 def check_navn(navn, limit=2, remove='Ja Nei Nå Dem De Deres Unnskyld Ikke Ah Hmm Javel Akkurat Jaja Jaha'.split()):
     """Removes all items in navn with frequency below limit and words in all case as well as all words in list 'remove'"""
     r = {x:navn[x] for x in navn if navn[x] > limit and x.upper() != x and not x in remove}
