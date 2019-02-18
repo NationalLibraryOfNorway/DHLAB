@@ -36,6 +36,10 @@ def def2dict(ddef):
             hyper = lex[0].strip()
             occurrences = [x.strip() for x in lex[1].split(',')]
             res[hyper] = occurrences
+    for x in res:
+        for y in res[x]:
+            if y.capitalize() not in res[x]:
+                res[x].append(y.capitalize())
     return res
 
 def wordbag_eval(wordbag, urns):
