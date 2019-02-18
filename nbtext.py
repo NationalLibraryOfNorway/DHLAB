@@ -17,6 +17,20 @@ except ImportError:
     print("wordcloud er ikke installert, kan ikke lage ordskyer")
 
 
+def dict2pd(dictionary):
+    res = pd.DataFrame(dictionary).fillna(0)
+    s = (res.mean(axis=0))
+    s = s.rename('snitt')
+    res = res.append(s)
+    return res.sort_values(by='snitt', axis=1, ascending=False).transpose()
+
+def wordbag_eval(wordbag, urns):
+    param = dict()
+    param['wordbags'] = wordbag
+    param['urns'] = urns
+    r = requests.post("https://api.nb.no/ngram/wordbags", json = param)
+    return dict2pd(r.json())
+
 def ner(text = None, dist=False):
     """Analyze text for named entities - set dist = True will return the four values that go into decision"""
     r = []
