@@ -40,7 +40,7 @@ def def2dict(ddef):
 
 def wordbag_eval(wordbag, urns):
     if type(urns) is list:
-        if isinstance(urn[0], list):
+        if isinstance(urns[0], list):
             urns = [u[0] for u in urns]
         else:
             urns = urns
