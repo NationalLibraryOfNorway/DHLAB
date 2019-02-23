@@ -27,8 +27,9 @@ p {
 	font-family: 'Assistant', sans-serif; 
 	font-size: 1.2em;
 	line-height: 1.4em;
-	background-color: #efd469;
+	/*background-color: #efd469;*/
 	color: #131516;
+	border-left:1px solid #004f99; !important
 }
 p code {
 	font-size:0.9em;
