@@ -28,8 +28,8 @@ p {
 	font-size: 1.2em;
 	line-height: 1.4em;
 	/*background-color: #efd469;*/
-	color: #1315a6;
-	border-left:1px solid #004f99; !important
+	color: #131516;
+	padding-left:10px;
 }
 p code {
 	font-size:0.9em;
