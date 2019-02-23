@@ -27,11 +27,11 @@ p {
 	font-family: 'Assistant', sans-serif; 
 	font-size: 1.2em;
 	line-height: 1.4em;
-	color: black;
+	color: #003366;
 }
 p code {
 	font-size:0.9em;
-  color: #003366;
+ 
 }
 div.input_area {
 	border:none !important;
