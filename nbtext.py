@@ -118,7 +118,19 @@ def name_graph(name_struct):
     Gg.add_edges_from(G)
     return Gg
 
+def aggregate_urns(urnlist):
+    """Sum up word frequencies across urns"""
+    
+    if isinstance(urnlist[0], list):
+        urnlist = [u[0] for u in urnlist]
+    r = requests.post("https://api.nb.no/ngram/book_aggregates", json={'urns':urnlist})
+    return r.json()
 
+# Norweigan word bank
+def word_variant(word, form):
+    """ Find alternative form for a given word form, e.g. word_variant('spiste', 'pres-part') """
+    r = requests.get("https://api.nb.no/ngram/variant_form", params={'word':word, 'form':form})
+    return r.json()
 
 def check_edges(G, weight=1):    
     return nx.Graph([edge for edge in G.edges(data=True) if edge[2]['weight'] >= weight])
