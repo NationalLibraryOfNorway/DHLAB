@@ -66,10 +66,59 @@ def ner(text = None, dist=False):
         r = requests.post("https://api.nb.no/ngram/ner", json={'text':text,'dist':dist})
     return r.json()
     
+#**** names ****
+
 def check_navn(navn, limit=2, remove='Ja Nei Nå Dem De Deres Unnskyld Ikke Ah Hmm Javel Akkurat Jaja Jaha'.split()):
     """Removes all items in navn with frequency below limit and words in all case as well as all words in list 'remove'"""
     r = {x:navn[x] for x in navn if navn[x] > limit and x.upper() != x and not x in remove}
     return r
+
+
+def sentences(urns, num=300):
+    if isinstance(urns[0], list):
+        urns = [str(x[0]) for x in urns]
+    params = {'urns':urns,
+             'num':num}
+    res = requests.get("https://api.nb.no/ngram/sentences", params=params)
+    return res.json()
+
+
+def names(urn, ratio = 0.3, cutoff = 2):
+    """ Return namens in book with urn. Returns uni- , bi-, tri- and quadgrams """
+    if type(urn) is list:
+        urn = urn[0]
+    r = requests.get('https://api.nb.no/ngram/names', json={'urn':urn, 'ratio':ratio, 'cutoff':cutoff})
+    x = r.json()
+    result = (
+        Counter(x[0][0]),
+        Counter({tuple(x[1][i][0]):x[1][i][1] for i in range(len(x[1]))}),
+        Counter({tuple(x[2][i][0]):x[2][i][1] for i in range(len(x[2]))}),
+        Counter({tuple(x[3][i][0]):x[3][i][1] for i in range(len(x[3]))})
+    )
+    return result
+
+
+def name_graph(name_struct):
+    m = []
+    for n in name_struct[0]:
+        m.append(frozenset([n]))
+    for n in name_struct[1:]:
+        m += [frozenset(x) for x in n]
+        
+    G = []
+    for x in m:
+        for y in m:
+            if x < y:
+                G.append((' '.join(x), ' '.join(y)))
+    N = []
+    for x in m:
+        N.append(' '.join(x))
+    Gg = nx.Graph()
+    Gg.add_nodes_from(N)
+    Gg.add_edges_from(G)
+    return Gg
+
+
 
 def check_edges(G, weight=1):    
     return nx.Graph([edge for edge in G.edges(data=True) if edge[2]['weight'] >= weight])
