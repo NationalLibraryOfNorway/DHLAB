@@ -450,7 +450,7 @@ def show_communities(G):
         print(c,': ', ', '.join(Gc[c]))
         print()
         
-def reduce_MxM_graph(G, factor=0.01):
+def reduce_MxM_graph(G, words, factor=0.01):
     Gm = nx.Graph()
     edges = []
     for x in G.edges(data=True):
