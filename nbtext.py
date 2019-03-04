@@ -1054,7 +1054,7 @@ def plot_sammen_vekst(urn, ordlister, window=5000, pr = 100):
     return pd.concat(rammer, sort = True)
 
 def spurious_names(n=300):
-    topwords = nb.totals(n)
+    topwords = totals(n)
     Removals = [x.capitalize() for x in topwords if x.isalpha()]
     return Removals
 
