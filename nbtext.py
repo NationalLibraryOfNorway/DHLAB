@@ -1029,6 +1029,9 @@ def vekstdiagram(urn, params=None):
     r = requests.post('https://api.nb.no/ngram/vekstdiagram', json = para)
     return pd.DataFrame(r.json())
 
+def plot_book_wordbags(urn, wordbags, window=5000, pr = 100):
+    return plot_sammen_vekst(urn, wordbags, window=window, pr=pr)
+    
 def plot_sammen_vekst(urn, ordlister, window=5000, pr = 100):
     """Plott alle seriene sammen"""
     rammer = []
@@ -1036,7 +1039,7 @@ def plot_sammen_vekst(urn, ordlister, window=5000, pr = 100):
         vekst = vekstdiagram(urn, params = {'words': ordbag, 'window':window, 'pr': pr} )
         vekst.columns = [ordbag[0]]
         rammer.append(vekst)
-    return pd.concat(rammer)
+    return pd.concat(rammer, sort = True)
 
 def relaterte_ord(word, number = 20, score=False):
     G = make_graph(word)
