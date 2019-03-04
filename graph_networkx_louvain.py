@@ -436,7 +436,7 @@ def show_community(G):
 def community_dict(G):
     sorter = Counter(dict(nx.degree(G)))
     cd = dict()
-    for c in gnl.mcommunity(G):
+    for c in mcommunity(G):
         l = [(x, sorter[x]) for x in c if sorter[x]>0]
         #print(l)
         l.sort(key=lambda i: i[1], reverse=True)
