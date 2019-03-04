@@ -1030,16 +1030,33 @@ def vekstdiagram(urn, params=None):
     return pd.DataFrame(r.json())
 
 def plot_book_wordbags(urn, wordbags, window=5000, pr = 100):
+    """Generate a diagram of wordbags in book """
     return plot_sammen_vekst(urn, wordbags, window=window, pr=pr)
     
+
 def plot_sammen_vekst(urn, ordlister, window=5000, pr = 100):
     """Plott alle seriene sammen"""
     rammer = []
-    for ordbag in ordlister:
-        vekst = vekstdiagram(urn, params = {'words': ordbag, 'window':window, 'pr': pr} )
-        vekst.columns = [ordbag[0]]
+    c = dict()
+    if isinstance(ordlister, list):
+        if isinstance(ordlister[0], list):
+            for l in ordlister:
+                if l != []:
+                    c[l[0]] = l
+        else:
+            c[ordlister[0]] = ordlister
+    else:
+        c = ordlister
+    for key in c:
+        vekst = vekstdiagram(urn, params = {'words': c[key], 'window':window, 'pr': pr} )
+        vekst.columns = [key]
         rammer.append(vekst)
     return pd.concat(rammer, sort = True)
+
+def spurious_names(n=300):
+    topwords = nb.totals(n)
+    Removals = [x.capitalize() for x in topwords if x.isalpha()]
+    return Removals
 
 def relaterte_ord(word, number = 20, score=False):
     G = make_graph(word)

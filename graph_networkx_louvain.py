@@ -431,3 +431,35 @@ def show_community(G):
     for i in range(len(MC)):
         print(i + 1, ', '.join(MC[i]))
         print()
+    return True
+
+def community_dict(G):
+    sorter = Counter(dict(nx.degree(G)))
+    cd = dict()
+    for c in gnl.mcommunity(G):
+        l = [(x, sorter[x]) for x in c if sorter[x]>0]
+        #print(l)
+        l.sort(key=lambda i: i[1], reverse=True)
+        #print(l)
+        cd['-'.join([x[0] for x in l[:2]])] = [x[0] for x in l]
+    return cd
+
+def show_communities(G):
+    Gc = community_dict(G)
+    for c in Gc:
+        print(c,': ', ', '.join(Gc[c]))
+        print()
+        
+def reduce_MxM_graph(G, factor=0.01):
+    Gm = nx.Graph()
+    edges = []
+    for x in G.edges(data=True):
+        w = x[2]['weight']
+        w1 = x[0]
+        w2 = x[1]
+        new_weight =  w/(int(words.loc[w1])*int(words.loc[w2]))
+        if new_weight > factor:
+            edges.append((w1, w2, new_weight))
+    Gm.add_weighted_edges_from(edges)
+    return Gm
+       
