@@ -1053,7 +1053,7 @@ def plot_sammen_vekst(urn, ordlister, window=5000, pr = 100):
         vekst = vekstdiagram(urn, params = {'words': c[key], 'window':window, 'pr': pr} )
         vekst.columns = [key]
         rammer.append(vekst)
-    return pd.concat(rammer, sort = True)
+    return pd.concat(rammer)
 
 def spurious_names(n=300):
     topwords = totals(n)
