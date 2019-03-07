@@ -68,10 +68,11 @@ def wordbag_eval_para(wordbag, urns):
     param['wordbags'] = wordbag
     param['urns'] = urns
     r = requests.post("https://api.nb.no/ngram/wordbags_para", json = param)
-    return dict2pd(r.json())
+    return r.json()
 
 def get_paragraphs(urn, paras):
     """Return paragraphs for urn"""
+    param = dict()
     param['paragraphs'] = paras
     param['urn'] = urn
     r = requests.get("https://api.nb.no/ngram/paragraphs", json=param)
