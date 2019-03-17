@@ -1114,6 +1114,18 @@ def check_words(urn, ordbag):
             break
     return True
 
+
+def unigram(word, period=(1800, 2000), corpus='bok'):
+    r = requests.get("https://api.nb.no/ngram/ngram", 
+                     params =
+                     {
+                         'word':word, 
+                         'corpus':corpus,
+                         'yearfrom':period[0],
+                         'yearto':period[1]
+                     })
+    return frame(r.json())
+
 def nb_ngram(terms, corpus='bok', smooth=3, years=(1810, 2010), mode='relative'):
     df = ngram_conv(get_ngram(terms, corpus=corpus), smooth=smooth, years=years, mode=mode)
     df.index = df.index.astype(int)
