@@ -1116,13 +1116,13 @@ def check_words(urn, ordbag):
 
 
 def unigram(word, period=(1800, 2000), corpus='bok'):
-    r = requests.get("https://api.nb.no/ngram/ngram", 
+    r = requests.get("https://api.nb.no/ngram/unigrams", 
                      params =
                      {
                          'word':word, 
                          'corpus':corpus,
-                         'yearfrom':period[0],
-                         'yearto':period[1]
+                         'period0':period[0],
+                         'period1':period[1]
                      })
     return frame(r.json())
 
