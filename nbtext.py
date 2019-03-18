@@ -257,7 +257,7 @@ def book_counts(period=(1800, 2050)):
         'period0':period[0],
         'period1':period[1],
     })
-    return r.json()
+    return frame(dict(r.json()))
 
 ####    
 
