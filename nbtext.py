@@ -242,14 +242,14 @@ def pure_urn(data):
 
 ####  N-Grams from fulltext updated
 
-def unigram(word, period=(1800, 2050), media = 'bok'):
+def unigram(word, period=(1950, 2020), media = 'bok'):
     r = requests.get("https://api.nb.no/ngram/unigrams", params={
         'word':word,
         'period0':period[0],
         'period1':period[1],
         'media':media
     })
-    return r.json()
+    return frame(dict(r.json())
 
 def book_counts(period=(1800, 2050)):
     r = requests.get("https://api.nb.no/ngram/book_counts", params={
@@ -1134,17 +1134,6 @@ def check_words(urn, ordbag):
             break
     return True
 
-
-def unigram(word, period=(1800, 2000), corpus='bok'):
-    r = requests.get("https://api.nb.no/ngram/unigrams", 
-                     params =
-                     {
-                         'word':word, 
-                         'corpus':corpus,
-                         'period0':period[0],
-                         'period1':period[1]
-                     })
-    return frame(r.json())
 
 def nb_ngram(terms, corpus='bok', smooth=3, years=(1810, 2010), mode='relative'):
     df = ngram_conv(get_ngram(terms, corpus=corpus), smooth=smooth, years=years, mode=mode)
