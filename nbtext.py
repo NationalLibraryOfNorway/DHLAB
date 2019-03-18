@@ -240,6 +240,26 @@ def pure_urn(data):
         korpus_def = [data]
     return korpus_def
 
+####  N-Grams from fulltext updated
+
+def unigram(word, period=(1800, 2050), media = 'bok'):
+    r = requests.get("https://api.nb.no/ngram/unigrams", params={
+        'word':word,
+        'period0':period[0],
+        'period1':period[1],
+        'media':media
+    })
+    return r.json()
+
+def book_counts(period=(1800, 2050)):
+    r = requests.get("https://api.nb.no/ngram/book_counts", params={
+    
+        'period0':period[0],
+        'period1':period[1],
+    })
+    return r.json()
+
+####    
 
 def difference(first, second, rf, rs, years=(1980, 2000),smooth=1, corpus='bok'):
     """Compute difference of difference (first/second)/(rf/rs)"""
