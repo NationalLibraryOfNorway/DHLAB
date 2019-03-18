@@ -249,7 +249,7 @@ def unigram(word, period=(1950, 2020), media = 'bok'):
         'period1':period[1],
         'media':media
     })
-    return frame(dict(r.json())
+    return frame(dict(r.json()))
 
 def book_counts(period=(1800, 2050)):
     r = requests.get("https://api.nb.no/ngram/book_counts", params={
