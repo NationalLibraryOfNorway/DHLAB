@@ -242,9 +242,15 @@ def pure_urn(data):
 
 ####  N-Grams from fulltext updated
 
-def unigram(word, period=(1950, 2020), media = 'bok'):
+def unigram(word, period=(1950, 2020), media = 'bok', ddk=None, topic=None, gender=None, publisher=None, lang=None, trans=None):
     r = requests.get("https://api.nb.no/ngram/unigrams", params={
         'word':word,
+        'ddk':ddk,
+        'topic':topic,
+        'gender':gender,
+        'publisher':publisher,
+        'lang':lang,
+        'trans':trans,
         'period0':period[0],
         'period1':period[1],
         'media':media
