@@ -1238,6 +1238,22 @@ def make_graph(words, lang='nob', cutoff=20, leaves=0):
 
     return G
 
+def urn_concordance(urns = None, word = None, size = 5, before = None, after = None ):
+    if urns is None or word is None:
+        return []
+    frame = inspect.currentframe()
+    args, _, _, values = inspect.getargvalues(frame)
+    query = {i:values[i] for i in args if values[i] != None and i != 'word'}
+    return get_urnkonk(word, query)
+    
+def concordance(word = None, corpus='bok', author=None, title=None, subtitle=None, lang=None, ddk=None, subject=None,
+               yearfrom = None, yearto=None, before=None, after=None, size=5, gender=None, offset=None, kind='html'):
+    if word == None:
+        return []
+    frame = inspect.currentframe()
+    args, _, _, values = inspect.getargvalues(frame)
+    query = {i:values[i] for i in args if values[i] != None and i != 'word'  and i != 'kind'}
+    return get_konk(word, query, kind=kind)
 
 def get_konk(word, params=None, kind='html'):
     if params is None:
