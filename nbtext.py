@@ -3,6 +3,7 @@ import random
 import numpy.random
 import re
 from collections import Counter
+import inspect
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -319,17 +320,13 @@ def get_freq(urn, top=50, cutoff=3):
     return Counter(dict(r.json()))
 
 
-def book_urn(author='%', title="%", ddk="%", subject="", period=(1100, 2020), gender="", limit=20 ):
+def book_urn(author = None, title = None, ddk  = None, subject = None, period=(1100, 2020), gender=None, limit=20 ):
+
     """Get URNs for books with metadata"""
-    return get_urn({
-        "author": author,
-        "title":title,
-        "ddk":ddk,
-        "subject":subject,
-        "year":period[0],
-        'next':period[1] - period[0],
-        "limit":limit
-    })
+    frame = inspect.currentframe()
+    args, _, _, values = inspect.getargvalues(frame)
+    query = {i:values[i] for i in args if values[i] != None}
+    return get_urn(query)
 
 def get_urn(metadata=None):
     """Get urns from metadata"""
