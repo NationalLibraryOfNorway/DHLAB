@@ -359,6 +359,20 @@ def refine_book_urn(urns = None, words = None, author = None,
     #print(query)
     return refine_urn(urns, query)
 
+def best_book_urn(word = None, author = None, 
+             title = None, ddk  = None, subject = None, period=(1100, 2020), gender=None, lang = None, trans= None, limit=20 ):
+    """Get URNs for books with metadata"""
+    
+    if word is None:
+        return []
+    
+    frame = inspect.currentframe()
+    args, _, _, values = inspect.getargvalues(frame)
+    query = {i:values[i] for i in args if values[i] != None and i != 'period' and i != 'word'}
+    query['year'] = period[0]
+    query['next'] = period[1] - period[0]
+    return get_best_urn(word, query)
+
 def get_urn(metadata=None):
     """Get urns from metadata"""
     if metadata is None:
