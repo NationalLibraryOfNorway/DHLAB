@@ -609,6 +609,13 @@ def heatmap(df, color='green'):
 
 def get_corpus_text(urns, top = 0, cutoff=0):
     k = dict()
+    if isinstance(urns, list):
+        # a list of urns, or a korpus with urns as first element
+        if isintance(urns[0], list):
+            urns = [u[0] for u in urns]
+    else:
+        # assume it is a single urn, text or number
+        urns = [urns]
     for u in urns:
         #print(u)
         k[u] = get_freq(u, top = top, cutoff = cutoff)
