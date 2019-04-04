@@ -619,7 +619,10 @@ def get_corpus_text(urns, top = 0, cutoff=0):
     for u in urns:
         #print(u)
         k[u] = get_freq(u, top = top, cutoff = cutoff)
-    return pd.DataFrame(k)
+    df = pd.DataFrame(k)
+    res = df.sort_values(by=df.columns[0], ascending=False)
+    return res
+
 
 def normalize_corpus_dataframe(df):
     colsums = df.sum()
