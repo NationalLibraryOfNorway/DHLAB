@@ -345,7 +345,7 @@ def unique_urns(korpus, newest=True):
     if newest == True:
         res = [corpus[c][-1] for c in corpus]
     else:
-        res = {corpus[c][0] for c in corpus}
+        res = [corpus[c][0] for c in corpus]
     return res
 
 def refine_book_urn(urns = None, words = None, author = None, 
