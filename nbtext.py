@@ -336,6 +336,17 @@ def book_urn(words = None, author = None,
     query['next'] = period[1] - period[0]
     return get_urn(query)
 
+def unique_urns(korpus, newest=True):
+    author_title = {(c[1],c[2]) for c in korpus}
+    corpus = {(c[0], c[1]):[d for d in korpus if c[0] == d[1] and c[1]==d[2]] for c in author_title  }
+    for c in corpus:
+        corpus[c].sort(key=lambda c: c[3])
+
+    if newest == True:
+        res = [corpus[c][-1] for c in corpus]
+    else:
+        res = {corpus[c][0] for c in corpus}
+    return res
 
 def refine_book_urn(urns = None, words = None, author = None, 
              title = None, ddk  = None, subject = None, period=(1100, 2020), gender=None, lang = None, trans= None, limit=20 ):
