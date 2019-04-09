@@ -798,6 +798,14 @@ def make_network_graph(urn, wordbag, cutoff=0):
     G.add_weighted_edges_from([(x,y,z) for (x,y,z) in r.json() if z > cutoff and x != y])
     return G
 
+def make_network_name_graph(urn, tokens, tokenmap=None, cutoff=2):
+    if isinstance(urn, list):
+        urn = urn[0]
+    r = requests.post("https://api.nb.no/ngram/word_graph", json={'urn':urn, 'tokens':tokens, 'tokenmap':tokenmap})
+    G = nx.Graph()
+    G.add_weighted_edges_from([(x,y,z) for (x,y,z) in r.json() if z > cutoff and x != y])
+    return G
+
 def draw_graph_centrality(G, h=15, v=10, fontsize=20, k=0.2, arrows=False, font_color='black', threshold=0.01): 
     node_dict = nx.degree_centrality(G)
     subnodes = dict({x:node_dict[x] for x in node_dict if node_dict[x] >= threshold})
