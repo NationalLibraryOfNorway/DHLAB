@@ -806,6 +806,43 @@ def make_network_name_graph(urn, tokens, tokenmap=None, cutoff=2):
     G.add_weighted_edges_from([(x,y,z) for (x,y,z) in r.json() if z > cutoff and x != y])
     return G
 
+def token_map(tokens, strings=False):
+    """ tokens as from nb.names()"""
+    tokens = [list(x.keys()) for x in tokens]
+    tokens = [(x,) for x in tokens[0]] + tokens[1] + tokens[2] + tokens[3]
+    tm = dict()
+    #print(tokens)
+    for token in tokens:
+        if isinstance(token, str):
+            trep = (token,)
+        elif isinstance(token, list):
+            trep = tuple(token)
+            token = tuple(token)
+        else:
+            trep = token
+        n = len(trep)
+        #print(trep)
+
+        if trep[-1].endswith('s'):
+            cp = list(trep[:n-1])
+            cp.append(trep[-1][:-1])
+            cp = tuple(cp)
+
+            #print('copy', cp, trep)
+            if cp in tokens:
+                #print(trep, cp)
+                trep = cp
+
+        larger = [ts for ts in tokens if set(ts) >= set(trep)]
+        #print(trep, ' => ', larger)
+        larger.sort(key=lambda x: len(x), reverse=True)
+        tm[token] = larger[0]
+        res = tm
+        if strings == True:
+            res = ['_'.join(x) + " --> " + '_'.join(tm[x]) for x in tm]
+            
+    return res
+
 def draw_graph_centrality(G, h=15, v=10, fontsize=20, k=0.2, arrows=False, font_color='black', threshold=0.01): 
     node_dict = nx.degree_centrality(G)
     subnodes = dict({x:node_dict[x] for x in node_dict if node_dict[x] >= threshold})
