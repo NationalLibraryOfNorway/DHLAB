@@ -808,7 +808,11 @@ def make_network_name_graph(urn, tokens, tokenmap=None, cutoff=2):
 
 def token_map(tokens, strings=False):
     """ tokens as from nb.names()"""
-    tokens = [list(x.keys()) for x in tokens]
+    if isinstance(tokens[0], dict):
+        # get the keys(), otherwise it is already just a list of tokens up to length 4
+        tokens = [list(x.keys()) for x in tokens]
+        
+    # convert tokens to tuples and put them all in one list
     tokens = [(x,) for x in tokens[0]] + tokens[1] + tokens[2] + tokens[3]
     tm = dict()
     #print(tokens)
