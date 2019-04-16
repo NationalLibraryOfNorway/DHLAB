@@ -801,12 +801,46 @@ def make_network_graph(urn, wordbag, cutoff=0):
 def make_network_name_graph(urn, tokens, tokenmap=None, cutoff=2):
     if isinstance(urn, list):
         urn = urn[0]
+        
+    # tokens should be a list of list of tokens. If it is list of dicts pull out the keys (= tokens)   
+    if isinstance(tokens[0], dict):
+        tokens = [list(x.keys()) for x in tokens]
+        
     r = requests.post("https://api.nb.no/ngram/word_graph", json={'urn':urn, 'tokens':tokens, 'tokenmap':tokenmap})
+    #print(r.text)
     G = nx.Graph()
     G.add_weighted_edges_from([(x,y,z) for (x,y,z) in r.json() if z > cutoff and x != y])
     return G
 
-def token_map(tokens, strings=False):
+def token_convert_back(tokens, sep='_'):
+    """ convert a list of tokens to string representation"""
+    res = [tokens[0]]
+    for y in tokens:
+        res.append([tuple(x.split(sep)) for x in y])
+    l = len(res)
+    for x in range(1, 4-l):
+        res.append([])
+    return res
+
+def token_convert(tokens, sep='_'):
+    """ convert back to tuples """
+    tokens = [list(x.keys()) for x in tokens]
+    tokens = [[(x,) for x in tokens[0]], tokens[1], tokens[2], tokens[3]]
+    conversion = []
+    for x in tokens:
+        conversion.append([sep.join(t) for t in x])
+    return conversion
+
+def token_map_to_tuples(tokens_as_strings, sep='_', arrow='==>'):
+    tuples = []
+    for x in tokens_as_strings:
+        token = x.split(arrow)[0].strip()
+        mapsto = x.split(arrow)[1].strip()
+        tuples.append((tuple(token.split(sep)), tuple(mapsto.split(sep))))
+    #tuples = [(tuple(x.split(arrow).strip()[0].split(sep)), tuple(x.split(arrow)[1].strip().split(sep))) for x in tokens_as_strings]
+    return tuples
+        
+def token_map(tokens, strings=False, sep='_', arrow= '==>'):
     """ tokens as from nb.names()"""
     if isinstance(tokens[0], dict):
         # get the keys(), otherwise it is already just a list of tokens up to length 4
@@ -814,7 +848,7 @@ def token_map(tokens, strings=False):
         
     # convert tokens to tuples and put them all in one list
     tokens = [(x,) for x in tokens[0]] + tokens[1] + tokens[2] + tokens[3]
-    tm = dict()
+    tm = []
     #print(tokens)
     for token in tokens:
         if isinstance(token, str):
@@ -840,12 +874,14 @@ def token_map(tokens, strings=False):
         larger = [ts for ts in tokens if set(ts) >= set(trep)]
         #print(trep, ' => ', larger)
         larger.sort(key=lambda x: len(x), reverse=True)
-        tm[token] = larger[0]
+        tm.append((token,larger[0]))
         res = tm
         if strings == True:
-            res = ['_'.join(x) + " --> " + '_'.join(tm[x]) for x in tm]
+            res = [sep.join(x[0]) + ' ' + arrow + ' ' + sep.join(x[1]) for x in tm]
             
     return res
+
+
 
 def draw_graph_centrality(G, h=15, v=10, fontsize=20, k=0.2, arrows=False, font_color='black', threshold=0.01): 
     node_dict = nx.degree_centrality(G)
