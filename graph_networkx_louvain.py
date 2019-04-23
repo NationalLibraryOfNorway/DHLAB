@@ -115,6 +115,7 @@ def draw_graph_centrality2(G, Subsets=[],  h=15, v=10, deltax=0, deltay=0, fonts
                            threshold=0.01, 
                            multi=3000,
                           edge_color='olive',
+                           edge_alpha = 0.1,
                           colstart=0.2,
                           coldark=0.5):
     
@@ -159,7 +160,7 @@ def draw_graph_centrality2(G, Subsets=[],  h=15, v=10, deltax=0, deltay=0, fonts
         nx.draw_networkx_nodes(G, pos, alpha=node_alpha, node_color= glob_col,  nodelist = subnodes.keys(), node_size = [v * multi for v in subnodes.values()])
         True
         
-    nx.draw_networkx_edges(G, pos, alpha=0.1, arrows = arrows, edge_color = edge_color)
+    nx.draw_networkx_edges(G, pos, alpha= edge_alpha, arrows = arrows, edge_color = edge_color)
 
     rcParams['figure.figsize'] = x, y
     return
