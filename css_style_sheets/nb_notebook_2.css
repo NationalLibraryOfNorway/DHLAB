@@ -16,10 +16,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 { font-size: 4.5em; }
-h2 { font-size: 4em; }
-h3 { font-size: 3.5em; }
-h4 { font-size: 3em; }
-h5 { font-size: 2.5em; }
+h2 { font-size: 4em; color: black }
+h3 { font-size: 3.5em; color:black }
+h4 { font-size: 3em; color:black}
+h5 { font-size: 2.5em; color:black}
 h6 { font-size: 2em; }
 
 p {
