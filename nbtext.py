@@ -322,7 +322,7 @@ def get_freq(urn, top=50, cutoff=3):
 ####=============== GET URNS ==================##########
 
 def book_urn(words = None, author = None, 
-             title = None, ddk  = None, subject = None, 
+             title = None, subtitle = None, ddk  = None, subject = None, 
              period=(1100, 2020), 
              gender=None, 
              lang = None, 
