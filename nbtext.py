@@ -1351,7 +1351,13 @@ def urn_concordance(urns = None, word = None, size = 5, before = None, after = N
     args, _, _, values = inspect.getargvalues(frame)
     query = {i:values[i] for i in args if values[i] != None and i != 'word'}
     return get_urnkonk(word, query)
-    
+
+from random import sample
+def konk(word, urns=korpus, before=5, after=5):
+    urner = nb.refine_book_urn(words=[word], urns=urns)
+    return urn_concordance(word=word, urns = sample(urner, min(20, len(urner))),before = before, after = after)
+
+
 def concordance(word = None, corpus='bok', author=None, title=None, subtitle=None, lang=None, ddk=None, subject=None,
                yearfrom = None, yearto=None, before=None, after=None, size=5, gender=None, offset=None, kind='html'):
     if word == None:
