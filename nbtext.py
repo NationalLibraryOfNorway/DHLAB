@@ -1353,7 +1353,10 @@ def urn_concordance(urns = None, word = None, size = 5, before = None, after = N
     return get_urnkonk(word, query)
 
 from random import sample
-def konk(word, urns=korpus, before=5, after=5):
+def konk(word, urns=None, before=5, after=5):
+    if urns == None:
+        print('URNer mangler')
+        return
     urner = nb.refine_book_urn(words=[word], urns=urns)
     return urn_concordance(word=word, urns = sample(urner, min(20, len(urner))),before = before, after = after)
 
