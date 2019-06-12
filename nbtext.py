@@ -165,7 +165,10 @@ def word_form(word):
     r = requests.get("https://api.nb.no/ngram/word_form", params = {'word': word})
     return r.json()
 
-
+def word_lemma(word):
+    """ Find lemma form for a given word form """
+    r = requests.get("https://api.nb.no/ngram/word_lemma", params = {'word': word})
+    return r.json()
 
 
 def word_freq(urn, words):
