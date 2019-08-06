@@ -1603,3 +1603,24 @@ def metadata_xml(URN, kind='marcxml'):
     except:
         res = ""
     return res
+
+
+def save_frame_to_excel(df, filename):
+    import os
+    if os.path.exists(filename):
+        print('Det eksisterer allerede en fil {filename} - velg nytt navn og prøv igjen'.format(filename=filename))
+    else:
+        df.to_excel(filename)
+    return
+
+def restore_metadata_from_excel(data):
+    import os
+    df = pd.DataFrame()
+    try:
+        df = pd.read_excel(data)
+    except:
+        if not os.path.exists(data):
+            print('filen {data} ble ikke funnet'.format(data=data))
+        else:
+            print('noe gikk galt ved import av dataene')
+    return df
