@@ -204,15 +204,7 @@ def urn_from_text(T):
     return re.findall("[0-9]{13}", T)
 
 def metadata(urn=None):
-    if type(urn) is str:
-        urns = urn.split()
-    elif type(urn) is list:
-        if isinstance(urn[0], list):
-            urns = [u[0] for u in urn]
-        else:
-            urns = urn
-    else:
-        urns = [urn]
+    urns = pure_urn(urn)
     #print(urns)
     r = requests.post("https://api.nb.no/ngram/meta", json={'urn':urns})
     return r.json()
