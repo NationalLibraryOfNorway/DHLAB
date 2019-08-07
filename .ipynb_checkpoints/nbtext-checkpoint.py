@@ -242,6 +242,10 @@ def pure_urn(data):
         korpus_def = urn_from_text(data)
     elif isinstance(data, int):
         korpus_def = [data]
+    elif isinstance(data, pd.DataFrame):
+        korpus_def = list(data[0])
+    elif isinstance(data, pd.Series):
+        korpus_def = list(data)
     return korpus_def
 
 ####  N-Grams from fulltext updated
