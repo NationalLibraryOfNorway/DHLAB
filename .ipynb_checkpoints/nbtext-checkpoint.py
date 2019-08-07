@@ -327,7 +327,16 @@ def get_freq(urn, top=50, cutoff=3):
     return Counter(dict(r.json()))
 
 ####=============== GET URNS ==================##########
-
+def book_corpus(words = None, author = None, 
+             title = None, subtitle = None, ddk  = None, subject = None, 
+             period=(1100, 2020), 
+             gender=None, 
+             lang = None, 
+             trans= None, 
+             limit=20 ):
+    return frame(book_urn(words, author, title, subtitle, ddk, subject, period, gender, lang, trans, limit),
+                "urn author title year".split())
+                
 def book_urn(words = None, author = None, 
              title = None, subtitle = None, ddk  = None, subject = None, 
              period=(1100, 2020), 
