@@ -35,7 +35,7 @@ def names_to_token_map_file(wp, filename='', orient='column'):
     # if all ok go ahead
     
     table_names = dict()
-    print(wp)
+    #print(wp)
     tmap = token_map(wp)
     ##print(tmap)
     for (name, target) in tmap:
