@@ -63,6 +63,7 @@ def update(module="", overwrite=True, silent=False):
             with open(filename,'w', encoding='UTF-8') as pyfile:
                 pyfile.write(nba)
                 pyfile.flush()
+                pyfile.close()
             if not silent:
                 printmd("Updated file `{module}.py`".format(module= os.path.abspath(module)))
     else:
@@ -102,3 +103,4 @@ def css(url = "https://raw.githubusercontent.com/Yoonsen/Modules/master/css_styl
 
 update("nbtext", overwrite=False, silent=True)
 update("graph_networkx_louvain", overwrite=False, silent=True)
+update('token_map', overwrite=False, silent=True)
