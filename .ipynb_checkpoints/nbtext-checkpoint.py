@@ -1,5 +1,7 @@
 import json
+import os
 import random
+import numpy as np
 import numpy.random
 import re
 from collections import Counter
@@ -219,6 +221,7 @@ def pure_urn(data):
         List[str]: A list of URNs. Empty list if input is on the wrong
             format or contains no URNs
     """
+    
     korpus_def = []
     if isinstance(data, list):
         if not data:  # Empty list
@@ -232,10 +235,10 @@ def pure_urn(data):
             korpus_def = data
     elif isinstance(data, str):
         korpus_def = urn_from_text(data)
-    elif isinstance(data, int):
-        korpus_def = [data]
+    elif isinstance(data, (int, np.integer)):
+        korpus_def = [str(data)]    
     elif isinstance(data, pd.DataFrame):
-        korpus_def = list(data[0])
+        korpus_def = list(data[data.columns[0]])
     elif isinstance(data, pd.Series):
         korpus_def = list(data)
     return korpus_def
@@ -258,7 +261,7 @@ def unigram(word, period=(1950, 2020), media = 'bok', ddk=None, topic=None, gend
     return frame(dict(r.json()))
 
 def bigram(first,second, period=(1950, 2020), media = 'bok', ddk=None, topic=None, gender=None, publisher=None, lang=None, trans=None):
-    r = requests.get("https://api.nb.no/ngram/unigrams", params={
+    r = requests.get("https://api.nb.no/ngram/bigrams", params={
         'first':first,
         'second':second,
         'ddk':ddk,

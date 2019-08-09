@@ -261,7 +261,7 @@ def unigram(word, period=(1950, 2020), media = 'bok', ddk=None, topic=None, gend
     return frame(dict(r.json()))
 
 def bigram(first,second, period=(1950, 2020), media = 'bok', ddk=None, topic=None, gender=None, publisher=None, lang=None, trans=None):
-    r = requests.get("https://api.nb.no/ngram/unigrams", params={
+    r = requests.get("https://api.nb.no/ngram/bigrams", params={
         'first':first,
         'second':second,
         'ddk':ddk,
