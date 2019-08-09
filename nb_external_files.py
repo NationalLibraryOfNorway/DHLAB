@@ -36,6 +36,6 @@ def growth_diagram_from_text(tekst, ordlister, window = 5000, pr = 100):
         for key in c:
             key_counts = sum([word_counts[word] for word in c[key]])
             rammer[key].append(key_counts)
-        if i + windows > len(tekst):
+        if i + window > len(tekst):
             break
     return pd.DataFrame(rammer)
