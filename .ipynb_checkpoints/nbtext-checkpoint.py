@@ -257,6 +257,22 @@ def unigram(word, period=(1950, 2020), media = 'bok', ddk=None, topic=None, gend
     })
     return frame(dict(r.json()))
 
+def bigram(first,second, period=(1950, 2020), media = 'bok', ddk=None, topic=None, gender=None, publisher=None, lang=None, trans=None):
+    r = requests.get("https://api.nb.no/ngram/unigrams", params={
+        'first':first,
+        'second':second,
+        'ddk':ddk,
+        'topic':topic,
+        'gender':gender,
+        'publisher':publisher,
+        'lang':lang,
+        'trans':trans,
+        'period0':period[0],
+        'period1':period[1],
+        'media':media
+    })
+    return frame(dict(r.json()))
+
 def book_counts(period=(1800, 2050)):
     r = requests.get("https://api.nb.no/ngram/book_counts", params={
     
