@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 from nbtext import make_network_name_graph, token_map, urn_concordance
 
 
@@ -18,12 +19,25 @@ def token_map_names(tmap):
 # see nb.make_network_name_graph in nbtext
 
 
-def names_to_token_map_file(wp, filename='', orient='row'):
-    """Save token map to file for editing"""
+
+def names_to_token_map_file(wp, filename='', orient='column'):
+    """Save token map to file for editing, exit if file exists"""
+    
+    # check  exit conditions
+    if filename != '':
+        if os.path.exists(filename):
+            print('filen {f} eksisterer - prøve et nytt filnavn'.format(f=filename))
+            return 
+    else:
+        print('angi et filnavn')
+        return
+        
+    # if all ok go ahead
     
     table_names = dict()
+    #print(wp)
     tmap = token_map(wp)
-    #print(tmap)
+    ##print(tmap)
     for (name, target) in tmap:
         x_str = ' '.join(target)
         y_str = ' '.join(name)
@@ -35,25 +49,27 @@ def names_to_token_map_file(wp, filename='', orient='row'):
     dfs = []
     for x in table_names:
         dfs.append( pd.DataFrame({x:table_names[x]}))
-        
-    df = pd.concat(dfs, axis=1).transpose()
+    df = pd.concat(dfs, axis=1)
+    if orient == 'row':    
+        df = df.transpose()
     rv = True
     if filename.endswith('csv'):
         df.to_csv(filename)
     elif filename.endswith('xls'):
-        df.to_excel(filename)
+        df.to_excel(filename, index = False)
     else:
         rv = df
     return rv
 
-def read_token_map_file(filename, sep=', '):
+def read_token_map_file(filename, sep=', ', orient = 'column'):
     """Read a token map from file, either xls or csv"""
     
     if filename.endswith('xls'):
         res = pd.read_excel(filename, index_col=0 ).dropna(how='all').fillna('')
     elif filename.endswith('csv'):
         res = pd.read_csv(filename, sep=sep, index_col=0).dropna(how='all').fillna('')
-    res = res.transpose()
+    if orient.startswith('row'):
+        res = res.transpose()
     result = []
     for x in res:
         xt = tuple(x.split())
