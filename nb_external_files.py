@@ -31,8 +31,11 @@ def growth_diagram_from_text(tekst, ordlister, window = 5000, pr = 100):
     for key in c:
         rammer[key] = []
     for i in range(0, len(tekst), pr):
+        # count words of size windows - check below if text is overrun
         word_counts = Counter(tekst[i : i + window])
         for key in c:
             key_counts = sum([word_counts[word] for word in c[key]])
             rammer[key].append(key_counts)
+        if i + windows > len(tekst):
+            break
     return pd.DataFrame(rammer)
