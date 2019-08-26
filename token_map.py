@@ -95,6 +95,23 @@ def show_names(wp):
                 print("   ", ' '.join(x[0]) + ' - ' + str(x[1]))
         print()
 
+def count_name_strings(urn, token_map, names=None):
+    """ return a count of the names in tokens"""
+    if names == None:
+        names = token_map_names(token_map)
+    
+    if isinstance(urn, list):
+        urn = urn[0]
+        
+    # tokens should be a list of list of tokens. If it is list of dicts pull out the keys (= tokens)   
+    if isinstance(tokens[0], dict):
+        tokens = [list(x.keys()) for x in tokens]
+        
+    res = requests.post("https://api.nb.no/ngram/word_counts", json={'urn':urn, 'tokens':names, 'tokenmap':tokenmap})
+    #print(r.text)
+   
+    return res
+        
 def character_network(urn, token_map, names = None):
     if names == None:
         names = token_map_names(token_map)
