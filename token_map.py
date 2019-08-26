@@ -56,7 +56,7 @@ def names_to_token_map_file(wp, filename='', orient='column'):
     if filename.endswith('csv'):
         df.to_csv(filename)
     elif filename.endswith('xls'):
-        df.to_excel(filename, index = False)
+        df.to_excel(filename, index = orient == "row")
     else:
         rv = df
     return rv
