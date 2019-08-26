@@ -839,6 +839,20 @@ def make_network_name_graph(urn, tokens, tokenmap=None, cutoff=2):
     G.add_weighted_edges_from([(x,y,z) for (x,y,z) in r.json() if z > cutoff and x != y])
     return G
 
+def count_name_strings(urn, tokens, tokenmap=None, cutoff=2):
+    """ return a count of the names in tokens"""
+    if isinstance(urn, list):
+        urn = urn[0]
+        
+    # tokens should be a list of list of tokens. If it is list of dicts pull out the keys (= tokens)   
+    if isinstance(tokens[0], dict):
+        tokens = [list(x.keys()) for x in tokens]
+        
+    res = requests.post("https://api.nb.no/ngram/word_counts", json={'urn':urn, 'tokens':tokens, 'tokenmap':tokenmap})
+    #print(r.text)
+   
+    return res
+
 def token_convert_back(tokens, sep='_'):
     """ convert a list of tokens to string representation"""
     res = [tokens[0]]
