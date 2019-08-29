@@ -233,15 +233,15 @@ def pure_urn(data):
             except IndexError:
                 korpus_def = []
         else:  # Assume data is already a list of URNs
-            korpus_def = [str(x) for x in data]
+            korpus_def = [str(int(x)) for x in data]
     elif isinstance(data, str):
         korpus_def = [str(x) for x in urn_from_text(data)]
     elif isinstance(data, (int, np.integer)):
         korpus_def = [str(data)]    
     elif isinstance(data, pd.DataFrame):
-        korpus_def = [str(x) for x in data[data.columns[0]]]
+        korpus_def = [str(int(x)) for x in data[data.columns[0]]]
     elif isinstance(data, pd.Series):
-        korpus_def = [str(x) for x in data]
+        korpus_def = [str(int(x)) for x in data]
     return korpus_def
 
 ####  N-Grams from fulltext updated
