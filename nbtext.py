@@ -174,8 +174,15 @@ def word_lemma(word):
 
 
 def word_freq(urn, words):
+    """ Find frequency of words within urn """
     params = {'urn':urn, 'words':words}
     r = requests.post("https://api.nb.no/ngram/freq", json=params)
+    return dict(r.json())
+
+def tot_freq(words):
+    """ Find total frequency of words """
+    params = {'words':words}
+    r = requests.post("https://api.nb.no/ngram/word_frequencies", json=params)
     return dict(r.json())
 
 def book_count(urns):
