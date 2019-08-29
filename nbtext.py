@@ -239,9 +239,11 @@ def pure_urn(data):
     elif isinstance(data, (int, np.integer)):
         korpus_def = [str(data)]    
     elif isinstance(data, pd.DataFrame):
-        korpus_def = [str(int(x)) for x in data[data.columns[0]]]
+        col = data.columns[0]
+        urns = pd.to_numeric(data[col])
+        korpus_def = [str(int(x)) for x in urns.dropna()]
     elif isinstance(data, pd.Series):
-        korpus_def = [str(int(x)) for x in data]
+        korpus_def = [str(int(x)) for x in data.dropna()]
     return korpus_def
 
 ####  N-Grams from fulltext updated
