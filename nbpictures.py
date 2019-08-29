@@ -11,6 +11,26 @@ def mods(urn):
     r = requests.get("https://api.nb.no:443/catalog/v1/metadata/{id}/mods".format(urn=urn))
     return r.json()
 
+def pages(urn, scale=800):
+    a = iiif_manifest(urn)
+    return [page['images'][0]['resource']['@id'].replace("full/full/", "full/0,{s}/".format(s=scale)) for page in a['sequences'][0]['canvases']]
+
+def load_picture(url):
+    r = requests.get(url, stream=True)
+    r.raw.decode_content=True
+    return r.raw
+
+def get_url(urn, page=1, part=200):
+    # urn as digit
+    urn = "URN:NBN:no-nb_digibok_" + urn + '_{0:04d}'.format(page)
+    print(urn)
+    url = "https://www.nb.no/services/image/resolver/{urn}/full/0,{part}/native.jpg".format(urn = urn, part=part)
+    return url
+
+
+def page_urn(urn, page=1):
+    # urn as digit
+    return "URN:NBN:no-nb_digibok_" + urn + '_{0:04d}'.format(page)
 
 def super_search(term, number=50, page=0, mediatype='bilder'):
     """Søk etter term og få ut json"""
