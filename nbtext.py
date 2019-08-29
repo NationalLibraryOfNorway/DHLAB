@@ -217,6 +217,7 @@ def pure_urn(data):
     Args:
         data: May be a list of URNs, a list of lists with URNs as their
             initial element, or a string of raw texts containing URNs
+            Any pandas dataframe or series. Urns must be in the first column of dataframe.
     Returns:
         List[str]: A list of URNs. Empty list if input is on the wrong
             format or contains no URNs
@@ -228,19 +229,19 @@ def pure_urn(data):
             korpus_def = []
         if isinstance(data[0], list):  # List of lists
             try:
-                korpus_def = [x[0] for x in data]
+                korpus_def = [str(x[0]) for x in data]
             except IndexError:
                 korpus_def = []
         else:  # Assume data is already a list of URNs
-            korpus_def = data
+            korpus_def = [str(x) for x in data]
     elif isinstance(data, str):
-        korpus_def = urn_from_text(data)
+        korpus_def = [str(x) for x in urn_from_text(data)]
     elif isinstance(data, (int, np.integer)):
         korpus_def = [str(data)]    
     elif isinstance(data, pd.DataFrame):
-        korpus_def = list(data[data.columns[0]])
+        korpus_def = [str(x) for x in data[data.columns[0]]]
     elif isinstance(data, pd.Series):
-        korpus_def = list(data)
+        korpus_def = [str(x) for x in data]
     return korpus_def
 
 ####  N-Grams from fulltext updated
