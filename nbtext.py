@@ -1654,6 +1654,9 @@ def restore_metadata_from_excel(data):
     df = pd.DataFrame()
     try:
         df = pd.read_excel(data)
+        # From excel some stray rows with null values for urn may occur. Drop those.
+        indexNames = df[df[df.columns[0]].isnull()].index
+        df.drop(indexNames , inplace=True)
     except:
         if not os.path.exists(data):
             print('filen {data} ble ikke funnet'.format(data=data))
