@@ -1657,6 +1657,13 @@ def restore_metadata_from_excel(data):
         # From excel some stray rows with null values for urn may occur. Drop those.
         indexNames = df[df[df.columns[0]].isnull()].index
         df.drop(indexNames , inplace=True)
+        try:
+            urn = df.columns[0]
+            year = df.columns[2]
+            df = df.astype({urn: 'int64', year:'int'})
+            df = df.astype({urn: 'str'})
+        except:
+            True
     except:
         if not os.path.exists(data):
             print('filen {data} ble ikke funnet'.format(data=data))
