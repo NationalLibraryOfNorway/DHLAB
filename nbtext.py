@@ -1,6 +1,7 @@
 import json
 import os
 import random
+from random import sample
 import numpy as np
 import numpy.random
 import re
@@ -1384,14 +1385,22 @@ def make_graph(words, lang='nob', cutoff=20, leaves=0):
     return G
 
 def urn_concordance(urns = None, word = None, size = 5, before = None, after = None ):
+    """ Find a concordance within a corpus as list of URNs. This is a wrapper for get_urnkonk """
+    
+    # exit if list of urns is empty
     if urns is None or word is None:
         return []
+    
+    # The URNs may be presented in different ways. 
+    urns = pure_urns(urns)
+    
+    # find values and feed everything to get_urnkonk
     frame = inspect.currentframe()
     args, _, _, values = inspect.getargvalues(frame)
     query = {i:values[i] for i in args if values[i] != None and i != 'word'}
     return get_urnkonk(word, query)
 
-from random import sample
+
 def konk(word, urns=None, before=5, after=5):
     if urns == None:
         print('URNer mangler')
