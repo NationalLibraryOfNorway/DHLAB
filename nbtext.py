@@ -1392,7 +1392,7 @@ def urn_concordance(urns = None, word = None, size = 5, before = None, after = N
         return []
     
     # The URNs may be presented in different ways. 
-    urns = pure_urns(urns)
+    urns = pure_urn(urns)
     
     # find values and feed everything to get_urnkonk
     frame = inspect.currentframe()
