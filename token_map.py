@@ -137,3 +137,99 @@ def combine_names(namedict):
         for i in range(4):
             total_names[i] += namedict[urn][i]
     return total_names
+
+def filter_names(tm_names, gazetteers):
+    from collections import Counter
+    """Filter name findings using a gazetteer - the gazetteer should consist of a list of first and last names"""
+    
+    # check single names
+    def member(w, gazetteer):
+        res = False
+        if w in gazetteer:
+            res = True
+        elif w[-1] == 's' and w[:-1] in gazetteer:
+            res = True
+        return res
+    
+    def add_name(name_struct, struct, val):
+        size = len(name_struct)
+        if 0 < size <= 4:
+            #print(size, name_struct)
+            #print(struct)
+            if size == 1:
+                name_struct = name_struct[0]
+            if name_struct in struct[size]:
+                struct[size][name_struct] += val
+            else:
+                struct[size][name_struct] = val
+        return struct
+    
+    name_structure = [Counter(), Counter(), Counter(), Counter()]
+    single_names = Counter()
+    single_remove = Counter()
+    for w in tm_names[0]:
+        if member(w, gazetteers) :
+            single_names[w] = tm_names[0][w]
+        else:
+            single_remove[w] = tm_names[0][w]
+    
+    name_structure[0].update(single_names)
+
+    # check double names (check for genitives)
+    double_names = Counter()
+    double_remove = Counter()
+    doubles = tm_names[1]
+    for w in doubles:
+        new_token = []
+        for token in w:
+            #print(token)
+            if member(token, gazetteers):
+                new_token.append(token)
+        new_token = tuple(new_token)
+        #print(new_token)
+        val = 0
+        if new_token != ():
+            name_structure = add_name(new_token, name_structure, doubles[w])
+        else:
+            double_remove[w] = doubles[w]
+    
+    # check triple names (check for genitives)
+    triple_names = Counter()
+    triple_remove = Counter()
+    triples = tm_names[2]
+    for w in triples:
+        new_token = []
+        for token in w:
+            #print(token)
+            if member(token, gazetteers):
+                new_token.append(token)
+        new_token = tuple(new_token)
+        #print(new_token)
+        val = 0
+        if new_token != ():
+            name_structure = add_name(new_token, name_structure, triples[w])
+        else:
+            triple_remove[w] = triples[w]
+            
+    # check quadruple names (check for genitives)
+    quad_names = Counter()
+    quad_remove = Counter()
+    quads = tm_names[3]
+    for w in quads:
+        new_token = []
+        for token in w:
+            #print(token)
+            if member(token, gazetteers):
+                new_token.append(token)
+        new_token = tuple(new_token)
+        #print(new_token)
+        val = 0
+        if new_token != ():
+            name_structure = add_name(new_token, name_structure, quads[w])
+        else:
+            quad_remove[w] = quads[w]
+
+
+    return {'filtered': tuple(name_structure),
+            'removed': (single_remove, double_remove, triple_names, quad_names)}
+        
