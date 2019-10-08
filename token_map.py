@@ -154,9 +154,11 @@ def filter_names(tm_names, gazetteers):
     def add_name(name_struct, struct, val):
         size = len(name_struct)
         if 0 < size <= 4:
+            size -= 1
             #print(size, name_struct)
             #print(struct)
-            if size == 1:
+            if size == 0:
+                #print(name_struct[0])
                 name_struct = name_struct[0]
             if name_struct in struct[size]:
                 struct[size][name_struct] += val
@@ -190,6 +192,8 @@ def filter_names(tm_names, gazetteers):
         val = 0
         if new_token != ():
             name_structure = add_name(new_token, name_structure, doubles[w])
+            if new_token != w:
+                double_remove[w] = doubles[w]
         else:
             double_remove[w] = doubles[w]
     
@@ -208,6 +212,8 @@ def filter_names(tm_names, gazetteers):
         val = 0
         if new_token != ():
             name_structure = add_name(new_token, name_structure, triples[w])
+            if new_token != w:
+                triple_remove[w] = triples[w]
         else:
             triple_remove[w] = triples[w]
             
@@ -226,6 +232,8 @@ def filter_names(tm_names, gazetteers):
         val = 0
         if new_token != ():
             name_structure = add_name(new_token, name_structure, quads[w])
+            if new_token != w:
+                quad_remove[w] = quads[w]
         else:
             quad_remove[w] = quads[w]
 
