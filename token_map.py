@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from nbtext import make_network_name_graph, token_map, urn_concordance, pure_urn
+from nbtext import make_network_name_graph, token_map, urn_concordance, pure_urn, metadata
 import requests
 
 
@@ -12,7 +12,7 @@ def names_from_corpus(korpus):
     
     #urner = list(korpus['urn'])
     urner = pure_urn(korpus)
-    alle_navn = tm.combine_names(tm.corpus_names(urner))
+    alle_navn = combine_names(corpus_names(urner))
     return alle_navn
 
 def count_names_corpus(korpus, token_map):
@@ -22,10 +22,10 @@ def count_names_corpus(korpus, token_map):
     urner = pure_urn(korpus)
     for urn in urner:
         try:
-            res[urn] = tm.count_name_strings(str(urn), token_map).to_dict()[0]
+            res[urn] = count_name_strings(str(urn), token_map).to_dict()[0]
         except:
             try:
-                print('feil med:', ', '.join([str(x) for x in nb.metadata(str(urn))[0]]), sys.exc_info()[0])
+                print('feil med:', ', '.join([str(x) for x in metadata(str(urn))[0]]), sys.exc_info()[0])
             except:
                 print('Kunne ikke hente data for:', urn)
     return pd.DataFrame(pd.DataFrame(res).sum(axis=1).sort_values(ascending=False))
