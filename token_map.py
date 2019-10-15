@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from nbtext import make_network_name_graph, token_map, urn_concordance
+from nbtext import make_network_name_graph, token_map, urn_concordance, pure_urn
 import requests
 
 
@@ -11,7 +11,7 @@ def names_from_corpus(korpus):
     """Find names in a larger corpus korpus is a frame with a column urn, or a list of urns """
     
     #urner = list(korpus['urn'])
-    urner = nb.pure_urn(korpus)
+    urner = pure_urn(korpus)
     alle_navn = tm.combine_names(tm.corpus_names(urner))
     return alle_navn
 
@@ -19,7 +19,7 @@ def count_names_corpus(korpus, token_map):
     """Count names in a corpus using a token map, which groups different name tokens into one token"""
     
     res = dict()
-    urner = nb.pure_urn(korpus)
+    urner = pure_urn(korpus)
     for urn in urner:
         try:
             res[urn] = tm.count_name_strings(str(urn), token_map).to_dict()[0]
