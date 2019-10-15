@@ -3,6 +3,50 @@ import os
 from nbtext import make_network_name_graph, token_map, urn_concordance
 import requests
 
+
+import pandas as pd
+import ast
+
+def names_from_corpus(korpus):
+    """Find names in a larger corpus korpus is a frame with a column urn, or a list of urns """
+    
+    #urner = list(korpus['urn'])
+    urner = nb.pure_urn(korpus)
+    alle_navn = tm.combine_names(tm.corpus_names(urner))
+    return alle_navn
+
+def count_names_corpus(korpus, token_map):
+    """Count names in a corpus using a token map, which groups different name tokens into one token"""
+    
+    res = dict()
+    urner = nb.pure_urn(korpus)
+    for urn in urner:
+        try:
+            res[urn] = tm.count_name_strings(str(urn), token_map).to_dict()[0]
+        except:
+            try:
+                print('feil med:', ', '.join([str(x) for x in nb.metadata(str(urn))[0]]), sys.exc_info()[0])
+            except:
+                print('Kunne ikke hente data for:', urn)
+    return pd.DataFrame(pd.DataFrame(res).sum(axis=1).sort_values(ascending=False))
+
+
+def names_from_excel(excelfil):
+    """Get an edited Excel file, with names in Excel column A and values in column B"""
+        
+    navn = pd.read_excel(excelfil, index_col = 0)
+    navn.index = navn.index.dropna()
+    navn = navn.to_dict()[0]
+    navnedata = (dict(), dict(), dict(), dict())
+    
+    for x in navn:
+        try:
+            xval = ast.literal_eval(x)
+            navnedata[len(xval) - 1][xval] = navn[x]
+        except:
+            navnedata[0][x] = navn[x]
+    return navnedata
+
 def token_map_names(tmap): 
     return [
     [z[0][0] for z in (tmap) if len(z[0]) == 1]
