@@ -1,6 +1,24 @@
 import requests
 import pandas as pd
-from dhlab.nbext import frame, frame_sort
+
+def frame(something, name = None):
+    """Try to make a frame out of something and name columns according to name, which should be a string or a list of strings,
+    one for each column. Mismatch in numbers is taken care of."""
+    
+    if isinstance(something, dict):
+        res = pd.DataFrame.from_dict(something, orient='index')
+    else:
+        res =  pd.DataFrame(something)
+    number_of_columns = len(res.columns)
+    if name != None:
+        if isinstance(name, list):
+            if len(name) >= number_of_columns:
+                res.columns = name[:number_of_columns]
+            else:
+                res.columns = name + list(range(len(name), number_of_columns))
+        else:
+            res.columns = [name] + list(range(1, number_of_columns))
+    return res
 
 def collocation(
     word, 
