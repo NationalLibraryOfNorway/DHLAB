@@ -58,7 +58,7 @@ def urn_coll(word, urns=[], after=5, before=5, limit=1000):
         
     r = requests.post("https://api.nb.no/ngram/urncolldist", json={'word':word, 'urns':urns, 
                                                                 'after':after, 'before':before, 'limit':limit})
-    df = frame(r.json())
+    df = frame(r.json()).transpose()
     df.columns = ['freq','dist']
     
     return df
