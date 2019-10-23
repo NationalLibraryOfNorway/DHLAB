@@ -81,10 +81,13 @@ else:
 # Checking whether the pages in a document is Nynorsk or Bokmål,
 # and chaching if we can assume that it is.
 def check_text(text):
-        doc = dict(ngramify(text, n = 3, c = 300))
-        df = pd.DataFrame.from_dict({'nno':nno, 'nob':nob, 'doc':doc}, 
+    """Check if text is nno or nob. Returns the cosine measure of the text against a reference.
+    Returns a dictionary of scores, whre the language with highest score is most likely."""
+    
+    doc = dict(ngramify(text, n = 3, c = 300))
+    df = pd.DataFrame.from_dict({'nno':nno, 'nob':nob, 'doc':doc}, 
                                     orient='index').transpose().fillna(0)
-        return {'nno': 1 - distance.cosine(df['nno'], df['doc']), 'nob': 1 - distance.cosine(df['nob'], df['doc'])}
+    return {'nno': 1 - distance.cosine(df['nno'], df['doc']), 'nob': 1 - distance.cosine(df['nob'], df['doc'])}
             
 
 
