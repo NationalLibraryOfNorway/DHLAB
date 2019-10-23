@@ -19,6 +19,8 @@ from scipy.spatial import distance
 
 
 generating = False
+nob_json = "https://raw.githubusercontent.com/Yoonsen/Modules/master/trigram_lang_model/nob_trilangmodel.json"
+nno_json = "https://raw.githubusercontent.com/Yoonsen/Modules/master/trigram_lang_model/nno_trilangmodel.json"
 
 def char_ngram_freqs(n=3, lang='nob', epochs=4):
     ngram = lambda x: [x[i:i+n] for i in range(len(x))] 
@@ -58,8 +60,8 @@ if generating == True:
     json.dump(nob, open('trigram_lang_model/nob_trilangmodel.json','w', encoding='utf-8'))
     json.dump(nno, open('trigram_lang_model/nno_trilangmodel.json','w', encoding='utf-8'))
 else:
-    nob = json.load(open('trigram_lang_model/nob_trilangmodel.json'))
-    nno = json.load(open('trigram_lang_model/nno_trilangmodel.json'))
+    nob = json.load(open(nob_json))
+    nno = json.load(open(nno_json))
 
 
 # In[ ]:
