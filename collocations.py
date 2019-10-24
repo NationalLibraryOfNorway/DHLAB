@@ -64,3 +64,66 @@ def urn_coll(word, urns=[], after=5, before=5, limit=1000):
     
     return df
 
+
+def dist_coll_urn(word, urns=None, after=5, before=0, limit=1000):
+    coll = urn_coll(word, urns=urns, after=after, before=before, limit=limit)
+    coll['dist'] = round(coll['dist'], 2)
+    coll['score'] = round(dist(coll['dist'], calculate_midpoint(before, after), coll['freq']), 2)
+    return coll
+   
+def check(word, frames):
+    return {c:inspect(frames[c]['score'], word) for c in frames if word in frames[c].index}
+
+def dist(obs_mean, expected, freq):
+    factor = ((freq-1)/(freq))*obs_mean
+    ratio = obs_mean/(obs_mean - factor)
+    return obs_mean + (expected - obs_mean)/ratio
+
+
+def create_frame(coll, expected):
+    df = nb.frame(nb.frame(coll).transpose(), 'freq doc dist'.split())
+    df['score'] = dist(df['dist'], expected, df['freq'])
+    return df
+
+def colls2df(colls, expected):
+    colls_df = dict()
+    for c in colls:
+        colls_df[c] = create_frame(colls[c], expected)
+    return colls_df
+
+def calculate_midpoint(before, after):
+    if before == 0:
+        corr = 1
+    elif after == 0:
+        corr = -1
+    else:
+        corr = 0
+    return (after - before + corr)/2
+    
+def make_collocations(word, period=(1945, 1990), step = 3, before = 0, after = 10):
+    colls = dict()
+    for year in range(period[0], period[1], step):
+        print('behandler: ', year, year + step)
+        try:
+            colls[(year, year + step)] = collocation(word, yearfrom = year, yearto = year + step, corpus='avis', before= before, after = after)
+        except:
+            # try again - things may have loaded on the server...
+            print('prøver en gang til for: ', (year, year + step))
+            try:
+                colls[(year, year + step)] = collocation(word, yearfrom = year, yearto = year + step, corpus='avis', before= before, after = after)
+            except:
+                print('klarte ikke: ', (year, year + step))
+    colls_df = colls2df(colls, calculate_midpoint(before, after))
+    return  colls_df, score_df(colls_df)
+
+
+score_df = lambda df: nb.frame({x:df[x]['score'] for x in df }).transpose()
+display_vals = lambda kr_df, word, clip = 0: kr_df[kr_df >= clip].loc[word]
+
+def show_frame(df, colnum = 0,  clip = 0, fillval= 10, cmap = 'Blues', up = True, axis=0, first_row=0, number_of_rows = 20): 
+    if up == True:
+        cmap = cmap + '_r'
+        dfc = df[df >= clip]
+    else:
+        dfc = df[df <= clip]
+    return dfc.sort_values(by = df.columns[colnum], ascending=up)[first_row:first_row + number_of_rows].fillna(fillval).style.background_gradient(cmap=cmap,axis=axis)
