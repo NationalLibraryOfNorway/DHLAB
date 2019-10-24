@@ -81,7 +81,7 @@ def dist(obs_mean, expected, freq):
 
 
 def create_frame(coll, expected):
-    df = nb.frame(nb.frame(coll).transpose(), 'freq doc dist'.split())
+    df = nb.frame(frame(coll).transpose(), 'freq doc dist'.split())
     df['score'] = dist(df['dist'], expected, df['freq'])
     return df
 
