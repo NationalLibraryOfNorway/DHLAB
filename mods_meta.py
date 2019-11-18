@@ -14,13 +14,6 @@ def marc_meta(urn):
     r = requests.get("https://api.nb.no:443/catalog/v1/metadata/{id}/marcxml".format(id = urn))
     return r.text
 
-def soup_path(nodes, path):
-    for node in nodes:
-        children = node.descendants(find_all(e)
-    return node
-
-
-
 def book_info(urn):
     
     def fetch(soup, tag, props={}):
