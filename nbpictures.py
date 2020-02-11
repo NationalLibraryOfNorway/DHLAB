@@ -21,10 +21,17 @@ def load_picture(url):
     return r.raw
 
 def get_url(urn, page=1, part=200):
-    # urn as digit
-    urn = "URN:NBN:no-nb_digibok_" + urn + '_{0:04d}'.format(page)
+    """From a representaion of URN (serial number or any string with serial number) - mapped to digibok"""
+    import re
+    
+    urnserial = re.findall('[0-9]+', str(urn))
+    if urnserial != []:
+        urnserial = urnserial[0]
+    else:
+        return ""
+    urn = "URN:NBN:no-nb_digibok_" + urnserial + '_{0:04d}'.format(page)
     print(urn)
-    url = "https://www.nb.no/services/image/resolver/{urn}/full/0,{part}/native.jpg".format(urn = urn, part=part)
+    url = "https://www.nb.no/services/image/resolver/{urn}/full/0,{part}/0/native.jpg".format(urn = urn, part=part)
     return url
 
 
