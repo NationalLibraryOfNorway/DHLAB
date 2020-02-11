@@ -127,3 +127,44 @@ def show_frame(df, colnum = 0,  clip = 0, fillval= 10, cmap = 'Blues', up = True
     else:
         dfc = df[df <= clip]
     return dfc.sort_values(by = df.columns[colnum], ascending=up)[first_row:first_row + number_of_rows].fillna(fillval).style.background_gradient(cmap=cmap,axis=axis)
+
+def coll_newspaper(word, 
+            title = '%', 
+            before = 5, 
+            after = 5, 
+            datefrom = "1800-01-01", 
+            dateto = "2000-01-01", 
+            limit= 1000):
+    data =  requests.get(
+        "https://api.nb.no/ngram/newspaper_coll", 
+        params={
+            'word':word,
+            'datefrom':datefrom, 
+            'before':before,
+            'after':after,
+            'limit':limit,
+            'dateto':dateto,
+            'title':title}
+        ).json()   
+    return data['freq'],data['doc'], data['dist'] 
+
+
+def conc_newspaper(word, 
+            title = '%', 
+            before = 5, 
+            after = 5, 
+            datefrom = "1800-01-01", 
+            dateto = "2000-01-01", 
+            size = 10):
+    data =  requests.get(
+        "https://api.nb.no/ngram/konknewspaper", 
+        params={
+            'word':word,
+            'yearfrom':datefrom, 
+            'before':before,
+            'after':after,
+            'size':size,
+            'yearto':dateto,
+            'title':title}
+        )
+    return data.json()
