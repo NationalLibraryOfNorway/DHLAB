@@ -218,7 +218,7 @@ def conc_avis(word,
             datefrom = datefrom, 
             dateto = dateto, 
             size = size)
-))
+    ))
 
 def coll_avis(word, 
             title = '%', 
@@ -227,14 +227,11 @@ def coll_avis(word,
             datefrom = "1800-01-01", 
             dateto = "2000-01-01", 
             limit= 1000):
-    return nb.frame(nb.frame(
-
-    coll_newspaper(word, 
+    
+    return nb.frame(nb.frame(coll_newspaper(word, 
             title = title, 
             before = before, 
             after = after, 
             datefrom = datefrom, 
             dateto = dateo, 
-            limit= limit
-
-).loc[0].transpose())
+            limit= limit)).loc[0].transpose())
