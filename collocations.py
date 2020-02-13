@@ -234,5 +234,5 @@ def coll_avis(word,
             before = before, 
             after = after, 
             datefrom = datefrom, 
-            dateto = dateo, 
+            dateto = dateto, 
             limit= limit)).loc[0].transpose())
