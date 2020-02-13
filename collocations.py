@@ -21,6 +21,23 @@ def frame(something, name = None):
             res.columns = [name] + list(range(1, number_of_columns))
     return res
 
+
+def sample_coll(word, urns=[], after=5, before=5, limit=1000):
+    """Find collocations for word in a set of book URNs. Only books at the moment"""
+    from random import sample
+    
+    if isinstance(urns[0], list):  # urns assumed to be list of list with urn-serial as first element
+        urns = [u[0] for u in urns]
+    newurns = [x[0] for x in nb.refine_book_urn(words=[word], urns = urns)]
+    #print(newurns)
+    sampleurns = sample(newurns, min(len(newurns), 300)) 
+    r = requests.post("https://api.nb.no/ngram/urncoll", json={'word':word, 'urns':sampleurns, 
+                                                                   'after':after, 'before':before, 'limit':limit})
+    res = pd.DataFrame.from_dict(r.json(), orient='index')
+    if not res.empty:
+        res = res.sort_values(by=res.columns[0], ascending = False)
+    return res
+
 def collocation(
     word, 
     yearfrom=2010, 
