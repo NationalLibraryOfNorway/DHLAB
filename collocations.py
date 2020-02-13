@@ -202,3 +202,39 @@ def unigram(word, period=(1950, 2020), media = 'bok', ddk=None, topic=None, gend
         'name':name
     })
     return nb.frame(dict(r.json()))
+
+def conc_avis(word, 
+            title = '%', 
+            before = 5, 
+            after = 5, 
+            datefrom = "1800-01-01", 
+            dateto = "2000-01-01", 
+            size = 20):
+    HTML(nb.konk_to_html(
+        conc_newspaper(word, 
+            title = title, 
+            before = after, 
+            after = after, 
+            datefrom = datefrom, 
+            dateto = dateto, 
+            size = size)
+))
+
+def coll_avis(word, 
+            title = '%', 
+            before = 5, 
+            after = 5, 
+            datefrom = "1800-01-01", 
+            dateto = "2000-01-01", 
+            limit= 1000):
+    return nb.frame(nb.frame(
+
+    coll_newspaper(word, 
+            title = title, 
+            before = before, 
+            after = after, 
+            datefrom = datefrom, 
+            dateto = dateo, 
+            limit= limit
+
+).loc[0].transpose())
