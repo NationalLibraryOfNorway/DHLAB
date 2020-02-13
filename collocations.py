@@ -185,3 +185,20 @@ def conc_newspaper(word,
             'title':title}
         )
     return data.json()
+
+
+def unigram(word, period=(1950, 2020), media = 'bok', ddk=None, topic=None, gender=None, publisher=None, lang=None, trans=None, name=None):
+    r = requests.get("https://api.nb.no/ngram/unigrams", params={
+        'word':word,
+        'ddk':ddk,
+        'topic':topic,
+        'gender':gender,
+        'publisher':publisher,
+        'lang':lang,
+        'trans':trans,
+        'period0':period[0],
+        'period1':period[1],
+        'media':media,
+        'name':name
+    })
+    return nb.frame(dict(r.json()))
