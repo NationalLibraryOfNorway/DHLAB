@@ -2,7 +2,7 @@ import dhlab.nbtext as nb
 import requests
 import pandas as pd
 from IPython.display import HTML
-
+# HMMM
 def frame(something, name = None):
     """Try to make a frame out of something and name columns according to name, which should be a string or a list of strings,
     one for each column. Mismatch in numbers is taken care of."""
