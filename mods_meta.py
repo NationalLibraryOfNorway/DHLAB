@@ -1,6 +1,29 @@
 import requests
 from bs4 import BeautifulSoup
 
+
+def konk(urns=None, word=None, before=5, after=5, only_urn=True):
+    """ Simple urnkonk, only urn + concordance """
+    params = locals()
+    #print(params)
+    r = requests.post("https://api.nb.no/ngram/urnkonk", json = params)
+    return r.json()
+
+def meta_natbib(children = False, yearfrom = "", yearto = "", lang = None, author = None, title = None, subtitle = None, publisher = None, subject = None, topic = None, marctuples = None, limit=20):
+    """ New metadata - search the national bibliography using marc21 tuples """
+    params = locals()
+    #print(params)
+    r = requests.post("https://api.nb.no/ngram/get_urns", json = params)
+    return r.json()
+
+def metadata(urns=None, marctuples = [(100,1,' ', 'a'),(260, ' ',' ', 'c'), (245,1,3,'a'),(245,1,0,'a'),(245,1,3,'b'),(245,1,0,'b'), (650,7,' ','a'), (653,' ',' ','a')]):
+    """ Fetch metadata from national bibliography """
+    params = locals()
+    #print(params)
+    r = requests.post("https://api.nb.no/ngram/metadata", json=params)
+    return r.json()
+
+
 def mods_meta(urn):
     if not str(urn).startswith('URN'):
         urn = "URN:NBN:no-nb_digibok_" + str(urn)
