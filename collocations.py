@@ -211,7 +211,7 @@ def conc_avis(word,
             datefrom = "1800-01-01", 
             dateto = "2000-01-01", 
             size = 20):
-    HTML(nb.konk_to_html(
+    return HTML(nb.konk_to_html(
         conc_newspaper(word, 
             title = title, 
             before = after, 
