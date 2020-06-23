@@ -2,13 +2,11 @@ import dhlab.nbtext as nb
 import dhlab.graph_networkx_louvain as gnl
 import dhlab.nbtokenizer as tok
 from dhlab.module_update import css, update, code_toggle
-
+from collections import Counter
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 import networkx as nx
-import seaborn as sns
-%matplotlib inline
 
 def get_df(frases, title='aftenposten'):
     import requests
@@ -146,3 +144,13 @@ def get_all_konks(term, urns):
     for u in urns:
         konks += get_konks(u, term)
     return konks
+
+def collocations_from_nb(word, corpus):
+    """Get a concordance, and count the words in it. Assume konks reside a dataframe with columns 'after' and 'before'"""
+    concordance = nb.frame(get_all_konks(word, corpus))
+    return nb.frame_sort(nb.frame(Counter(tokenize(' '.join(concordance['after'].values + concordance['before'].values))), word))
+
+def count_from_conc(concordance):
+    """From a concordance, count the words in it. Assume konks reside a dataframe with columns 'after' and 'before'"""
+    word = concordance['word'][0]
+    return nb.frame_sort(nb.frame(Counter(tokenize(' '.join(concordance['after'].values + concordance['before'].values))), word))
