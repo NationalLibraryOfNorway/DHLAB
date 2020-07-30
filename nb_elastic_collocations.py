@@ -44,7 +44,6 @@ def get_data(frase, media='aviser', title='jazznytt'):
         'size':1,
         'aggs':'year',
         'filter':['mediatype:{mt}'.format(mt=media),'title:{title}'.format(title=title)]
-        
     }
     r = requests.get("https://api.nb.no/catalog/v1/items", params = query)
     return r.json()
