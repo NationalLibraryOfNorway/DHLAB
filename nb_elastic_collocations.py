@@ -11,9 +11,16 @@ import seaborn as sns
 
 
 
-def get_json(frases, mediatype='aviser', title='*'):
+def get_json(frases, mediatype='aviser', title='*', metadata = FALSE):
     import requests
+    
     querystring = " + ".join(['"'+frase+'"' for frase in frases])
+    
+    if metadata == FALSE:
+        search_type = 'FIELD_RESTRICTED_SEARCH'
+    else:
+        search_type = 'FULL_TEXT_SEARCH'
+        
     query = {
         'q':querystring,
         'size':1,
@@ -21,11 +28,13 @@ def get_json(frases, mediatype='aviser', title='*'):
         'aggs':'year',
         
        'filter':['mediatype:{mt}'.format(mt=mediatype),'title:{title}'.format(title=title)],
-        'searchType':'FULL_TEXT_SEARCH'
+        'searchType': search_type
         #'filter':
     }
     r = requests.get("https://api.nb.no/catalog/v1/items", params = query)
+    
     aggs = r.json()
+    
     return aggs
 
 def get_data(frase, media='aviser', title='jazznytt'):
