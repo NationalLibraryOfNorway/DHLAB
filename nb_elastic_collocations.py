@@ -11,12 +11,12 @@ import seaborn as sns
 
 
 
-def get_json(frases, mediatype='aviser', title='*', metadata = FALSE):
+def get_json(frases, mediatype='aviser', title='*', metadata = False):
     import requests
     
     querystring = " + ".join(['"'+frase+'"' for frase in frases])
     
-    if metadata == FALSE:
+    if metadata == False:
         search_type = 'FIELD_RESTRICTED_SEARCH'
     else:
         search_type = 'FULL_TEXT_SEARCH'
