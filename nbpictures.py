@@ -1,6 +1,7 @@
 from PIL import Image
 import requests
 import json
+import os
 from IPython.display import HTML
 
 def iiif_manifest(urn):
@@ -201,7 +202,7 @@ def find_urns_sesam(term = '', creator = '', number=50, page=0, mediatype='bilde
         sesamid = []
     return sesamid
 
-def save_pictures(pages, urn):
+def save_pictures(pages, urn, root = '.'):
     """Save picture references in pages on the form: 
     pages = {
         urn1 : [page1, page2, ..., pageN], 
@@ -215,9 +216,9 @@ def save_pictures(pages, urn):
     # In case urn is an actual URN, works also if urn is passed as sesamid
 
     folder_name = urn.split(':')[-1]
-
+    folder_ref = os.path.join(root, folder_name)
     try:
-        os.mkdir(folder_name)
+        os.mkdir(folder_ref)
 
     except FileExistsError:
         True
@@ -227,12 +228,12 @@ def save_pictures(pages, urn):
 
         filename = p.split('/')[6].split(':')[-1] + '.jpg'
         
-        path = os.path.join(folder_name, filename)
+        path = os.path.join(folder_ref, filename)
         pic.get_picture_from_url(p).save(path)
     
     return True
 
-def save_all_pages(pages):
+def save_all_pages(pages, root='.'):
     """Save picture references in pages on the form: 
     pages = {
         urn1 : [page1, page2, ..., pageN], 
@@ -246,9 +247,9 @@ def save_all_pages(pages):
     # In case urn is an actual URN, works also if urn is passed as sesamid
     for urn in pages:
         folder_name = urn.split(':')[-1]
-
+        folder_ref = os.path.join(root, folder_name)
         try:
-            os.mkdir(folder_name)
+            os.mkdir(folder_ref)
 
         except FileExistsError:
             True
@@ -258,7 +259,7 @@ def save_all_pages(pages):
 
             filename = p.split('/')[6].split(':')[-1] + '.jpg'
 
-            path = os.path.join(folder_name, filename)
+            path = os.path.join(folder_ref, filename)
             pic.get_picture_from_url(p).save(path)
 
     return True
