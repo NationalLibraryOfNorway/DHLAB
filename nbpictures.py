@@ -160,6 +160,46 @@ def total_urls(number=50, page=0):
         urls = []
     return urls
 
+def nb_search(term = '', creator = '', number = 50, page = 0, mediatype = 'bilder'):
+    """Søk etter term og få ut json"""
+    
+    number = min(number, 50)
+    
+    filters = []
+    
+    params = {
+        'page':page, 
+        'size':number
+    }
+    
+    if creator != '':
+        filters.append('creator:{c}'.format(c=creator))
+    
+    if mediatype != '':
+        filters.append('mediatype:{mediatype}'.format(mediatype=mediatype))
+    
+    if filters != []:
+        params['filter'] = filters
+    
+    if term != '':
+        params['q'] = term
+    
+    r = requests.get("https://api.nb.no:443/catalog/v1/items", params = params)
+    return r.json()
+
+def find_urns_sesam(term = '', creator = '', number=50, page=0, mediatype='bilder'):
+    """generates urls from super_search for pictures"""
+    x = super_search(term = term, creator = creator, number = number, page = page, mediatype=mediatype)
+    try:
+        sesamid =[
+            f['id']
+            for f in x['_embedded']['items'] 
+            if f['accessInfo']['accessAllowedFrom'] == 'EVERYWHERE'
+            and 'thumbnail_custom' in f['_links']
+        ]
+    except:
+        sesamid = []
+    return sesamid
 
 def load_picture(url):
     r = requests.get(url, stream=True)
