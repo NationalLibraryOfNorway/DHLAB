@@ -229,7 +229,7 @@ def save_pictures(pages, urn, root = '.'):
         filename = p.split('/')[6].split(':')[-1] + '.jpg'
         
         path = os.path.join(folder_ref, filename)
-        pic.get_picture_from_url(p).save(path)
+        get_picture_from_url(p).save(path)
     
     return True
 
@@ -260,7 +260,7 @@ def save_all_pages(pages, root='.'):
             filename = p.split('/')[6].split(':')[-1] + '.jpg'
 
             path = os.path.join(folder_ref, filename)
-            pic.get_picture_from_url(p).save(path)
+            get_picture_from_url(p).save(path)
 
     return True
 
