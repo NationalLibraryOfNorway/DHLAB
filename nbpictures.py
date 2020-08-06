@@ -189,7 +189,7 @@ def nb_search(term = '', creator = '', number = 50, page = 0, mediatype = 'bilde
 
 def find_urns_sesam(term = '', creator = '', number=50, page=0, mediatype='bilder'):
     """generates urls from super_search for pictures"""
-    x = super_search(term = term, creator = creator, number = number, page = page, mediatype=mediatype)
+    x = nb_search(term = term, creator = creator, number = number, page = page, mediatype=mediatype)
     try:
         sesamid =[
             f['id']
