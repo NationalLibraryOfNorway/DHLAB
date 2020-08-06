@@ -201,6 +201,68 @@ def find_urns_sesam(term = '', creator = '', number=50, page=0, mediatype='bilde
         sesamid = []
     return sesamid
 
+def save_pictures(pages, urn):
+    """Save picture references in pages on the form: 
+    pages = {
+        urn1 : [page1, page2, ..., pageN], 
+        urn2: [page1, ..., pageM]},
+        ...
+        urnK: [page1, ..., pageL]
+    }
+    Parameter urn is one of the keys in pages, where each page reference is a URL.
+    """
+    
+    # In case urn is an actual URN, works also if urn is passed as sesamid
+
+    folder_name = urn.split(':')[-1]
+
+    try:
+        os.mkdir(folder_name)
+
+    except FileExistsError:
+        True
+
+    for p in pages[urn]:
+        # pell ut entydig referanse til bildet fra URL-en i bildelisten som filnavn
+
+        filename = p.split('/')[6].split(':')[-1] + '.jpg'
+        
+        path = os.path.join(folder_name, filename)
+        pic.get_picture_from_url(p).save(path)
+    
+    return True
+
+def save_all_pages(pages):
+    """Save picture references in pages on the form: 
+    pages = {
+        urn1 : [page1, page2, ..., pageN], 
+        urn2: [page1, ..., pageM]},
+        ...
+        urnK: [page1, ..., pageL]
+    }
+    Each page reference is a URL.
+    """
+    
+    # In case urn is an actual URN, works also if urn is passed as sesamid
+    for urn in pages:
+        folder_name = urn.split(':')[-1]
+
+        try:
+            os.mkdir(folder_name)
+
+        except FileExistsError:
+            True
+
+        for p in pages[urn]:
+            # pell ut entydig referanse til bildet fra URL-en i bildelisten som filnavn
+
+            filename = p.split('/')[6].split(':')[-1] + '.jpg'
+
+            path = os.path.join(folder_name, filename)
+            pic.get_picture_from_url(p).save(path)
+
+    return True
+
 def load_picture(url):
     r = requests.get(url, stream=True)
     r.raw.decode_content=True
