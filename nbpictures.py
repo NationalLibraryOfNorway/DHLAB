@@ -1,6 +1,7 @@
 from PIL import Image
 import requests
 import json
+import os
 from IPython.display import HTML
 
 def iiif_manifest(urn):
@@ -160,6 +161,108 @@ def total_urls(number=50, page=0):
         urls = []
     return urls
 
+def nb_search(term = '', creator = '', number = 50, page = 0, mediatype = 'bilder'):
+    """Søk etter term og få ut json"""
+    
+    number = min(number, 50)
+    
+    filters = []
+    
+    params = {
+        'page':page, 
+        'size':number
+    }
+    
+    if creator != '':
+        filters.append('creator:{c}'.format(c=creator))
+    
+    if mediatype != '':
+        filters.append('mediatype:{mediatype}'.format(mediatype=mediatype))
+    
+    if filters != []:
+        params['filter'] = filters
+    
+    if term != '':
+        params['q'] = term
+    
+    r = requests.get("https://api.nb.no:443/catalog/v1/items", params = params)
+    return r.json()
+
+def find_urns_sesam(term = '', creator = '', number=50, page=0, mediatype='bilder'):
+    """generates urls from super_search for pictures"""
+    x = nb_search(term = term, creator = creator, number = number, page = page, mediatype=mediatype)
+    try:
+        sesamid =[
+            f['id']
+            for f in x['_embedded']['items'] 
+            if f['accessInfo']['accessAllowedFrom'] == 'EVERYWHERE'
+            and 'thumbnail_custom' in f['_links']
+        ]
+    except:
+        sesamid = []
+    return sesamid
+
+def save_pictures(pages, urn, root = '.'):
+    """Save picture references in pages on the form: 
+    pages = {
+        urn1 : [page1, page2, ..., pageN], 
+        urn2: [page1, ..., pageM]},
+        ...
+        urnK: [page1, ..., pageL]
+    }
+    Parameter urn is one of the keys in pages, where each page reference is a URL.
+    """
+    
+    # In case urn is an actual URN, works also if urn is passed as sesamid
+
+    folder_name = urn.split(':')[-1]
+    folder_ref = os.path.join(root, folder_name)
+    try:
+        os.mkdir(folder_ref)
+
+    except FileExistsError:
+        True
+
+    for p in pages[urn]:
+        # pell ut entydig referanse til bildet fra URL-en i bildelisten som filnavn
+
+        filename = p.split('/')[6].split(':')[-1] + '.jpg'
+        
+        path = os.path.join(folder_ref, filename)
+        get_picture_from_url(p).save(path)
+    
+    return True
+
+def save_all_pages(pages, root='.'):
+    """Save picture references in pages on the form: 
+    pages = {
+        urn1 : [page1, page2, ..., pageN], 
+        urn2: [page1, ..., pageM]},
+        ...
+        urnK: [page1, ..., pageL]
+    }
+    Each page reference is a URL.
+    """
+    
+    # In case urn is an actual URN, works also if urn is passed as sesamid
+    for urn in pages:
+        folder_name = urn.split(':')[-1]
+        folder_ref = os.path.join(root, folder_name)
+        try:
+            os.mkdir(folder_ref)
+
+        except FileExistsError:
+            True
+
+        for p in pages[urn]:
+            # pell ut entydig referanse til bildet fra URL-en i bildelisten som filnavn
+
+            filename = p.split('/')[6].split(':')[-1] + '.jpg'
+
+            path = os.path.join(folder_ref, filename)
+            get_picture_from_url(p).save(path)
+
+    return True
 
 def load_picture(url):
     r = requests.get(url, stream=True)
