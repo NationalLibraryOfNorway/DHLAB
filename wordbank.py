@@ -13,7 +13,7 @@ def word_paradigm(word):
 
 def word_paradigm_many(wordlist):
     """ Find alternative form for a list words """
-    r = requests.post("https://api.nb.no/ngram/paradigms", params = {'words': wordlist})
+    r = requests.post("https://api.nb.no/ngram/paradigms", json = {'words': wordlist})
     return r.json()
 
 
@@ -24,7 +24,7 @@ def word_form(word):
 
 def word_form_many(wordlist):
     """ Find alternative forms for a list of words """
-    r = requests.post("https://api.nb.no/ngram/word_forms", params = {'words': wordlist})
+    r = requests.post("https://api.nb.no/ngram/word_forms", json = {'words': wordlist})
     return r.json()
 
 def word_lemma(word):
@@ -34,5 +34,5 @@ def word_lemma(word):
 
 def word_lemma_many(wordlist):
     """ Find lemma form for a given word form """
-    r = requests.post("https://api.nb.no/ngram/word_lemmas", params = {'words': wordlist})
+    r = requests.post("https://api.nb.no/ngram/word_lemmas", json = {'words': wordlist})
     return r.json()
