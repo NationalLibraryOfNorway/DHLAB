@@ -3,6 +3,17 @@ import requests
 import pandas as pd
 from IPython.display import HTML
 # HMMM
+
+# extra function for word frequencies
+
+def word_frequencies(word_list):
+    """ Find frequency of words global for digibok """
+    params = {'words':word_list}
+    r = requests.post("https://api.nb.no/ngram/word_frequencies", json = params)
+    return dict(r.json())
+
+# get a frame 
+
 def frame(something, name = None):
     """Try to make a frame out of something and name columns according to name, which should be a string or a list of strings,
     one for each column. Mismatch in numbers is taken care of."""
@@ -23,34 +34,52 @@ def frame(something, name = None):
     return res
 
 
-def sample_coll(word, urns=[], after=5, before=5, limit=1000):
-    """Find collocations for word in a set of book URNs. Only books at the moment"""
+def sample_coll(word, urns=[], after=5, before=5, sample_size = 300, limit=1000):
+    """Find collocations for word in a sample of set of book URNs"""
     from random import sample
     
-    if isinstance(urns[0], list):  # urns assumed to be list of list with urn-serial as first element
+    # check if urns is a list of lists, [[s1, ...],[s2, ...]...] then urn serial  first element
+    # else the list is assumed to be on the form [s1, s2, ....]
+    if isinstance(urns[0], list):  
         urns = [u[0] for u in urns]
+        
     newurns = [x[0] for x in nb.refine_book_urn(words=[word], urns = urns)]
-    #print(newurns)
-    sampleurns = sample(newurns, min(len(newurns), 300)) 
-    r = requests.post("https://api.nb.no/ngram/urncoll", json={'word':word, 'urns':sampleurns, 
-                                                                   'after':after, 'before':before, 'limit':limit})
+    
+    # Take a sample 
+    sampleurns = sample(newurns, min(len(newurns), sample_size))
+    
+    # run collocation as normal
+    r = requests.post("https://api.nb.no/ngram/urncoll", 
+                      json = {
+                          'word':word, 
+                          'urns':sampleurns,
+                          'after':after, 
+                          'before':before, 
+                          'limit':limit
+                      }
+                     )
+    
     res = pd.DataFrame.from_dict(r.json(), orient='index')
+    
+    # sort values of resultant set
     if not res.empty:
         res = res.sort_values(by=res.columns[0], ascending = False)
+    
     return res
 
 def collocation(
     word, 
-    yearfrom=2010, 
-    yearto=2018, 
-    before=3, 
-    after=3, 
-    limit=1000, 
-    corpus='avis',
-    lang='nob',
-    title='%',
-    ddk='%', 
-    subtitle='%'):
+    yearfrom = 2010, 
+    yearto = 2018, 
+    before = 3, 
+    after = 3, 
+    limit = 1000, 
+    corpus = 'avis',
+    lang = 'nob',
+    title = '%',
+    ddk = '%', 
+    subtitle = '%'):
+    
     """Defined collects frequencies for a given word"""
     
     data =  requests.get(
@@ -69,7 +98,8 @@ def collocation(
     return data['freq'],data['doc'], data['dist'] 
 
 
-def urn_coll(word, urns=[], after=5, before=5, limit=1000):
+def urn_coll(word, urns = [], after = 5, before = 5, limit = 1000):
+    
     """Find collocations for word in a set of book URNs. Only books at the moment"""
     
     if isinstance(urns[0], list):  # urns assumed to be list of list with urn-serial as first element
