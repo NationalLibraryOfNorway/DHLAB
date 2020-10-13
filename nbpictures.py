@@ -2,7 +2,7 @@ from PIL import Image
 import requests
 import json
 import os
-from IPython.display import HTML
+from IPython.display import HTML, Markdown
 import json
 import re
 
