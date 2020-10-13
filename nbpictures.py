@@ -3,10 +3,146 @@ import requests
 import json
 import os
 from IPython.display import HTML
+import json
+import re
+
+small_scale = 0.59
+large_scale = 1.58
+
+
+def nb_search(
+    term = '', creator = '', 
+    number = 50, 
+    page = 0, 
+    mediatype = 'bøker', 
+    lang = "nob",
+    period = (18000101, 20401231)
+):
+    """Søk etter term og få ut json"""
+    
+    number = min(number, 50)
+    
+    filters = []
+    aq = []
+    
+
+    params = {
+        'page':page, 
+        'size':number
+    }
+    
+    if lang != '':
+        aq.append('languages:{lang}'.format(lang = lang ))
+    
+    if creator != '':
+        filters.append('creator:{c}'.format(c=creator))
+    
+    if mediatype != '':
+        filters.append('mediatype:{mediatype}'.format(mediatype=mediatype))
+    
+    if period != ():
+        filters.append('date:[{date_from} TO {date_to}]'.format(date_from = period[0], date_to = period[1]))
+    
+    if filters != []:
+        params['filter'] = filters
+    
+    if aq != []:
+        params['aq'] = aq
+        
+    if term != '':
+        params['q'] = term
+    
+    r = requests.get("https://api.nb.no:443/catalog/v1/items", params = params)
+    return r.json()
+
+
+# In[32]:
+
+
+
 
 def iiif_manifest(urn):
+    if not 'URN' in str(urn) and not 'digibok' in str(urn):
+        urn = "URN:NBN:no-nb_digibok_" + str(urn)
+    elif not 'URN' in str(urn):
+        urn = "URN:NBN:no-nb_" + str(urn)
     r = requests.get("https://api.nb.no/catalog/v1/iiif/{urn}/manifest".format(urn=urn))
     return r.json()
+
+def urns_from_super(
+    term = '', 
+    creator = '', 
+    number = 50, 
+    page = 0, 
+    mediatype = 'bøker', 
+    lang = "nob",
+    period = (18000101, 20401231)
+):
+    
+    res = nb_search(term, mediatype = mediatype, creator = creator, number=number, page = page, lang = lang, period = period)
+    ids = [x['metadata']['identifiers']  for x in res['_embedded']['items'] ]
+    return [x['urn'] for x in ids if 'urn' in x]
+
+def get_illustration_data_from_book(urn):
+
+    if 'digibok' in str(urn):
+        urn = re.findall("[0-9]{13}", str(urn))[0] 
+    r = requests.get('https://api.nb.no/ngram/illustrations', json={'urn': urn})
+    return r.json() 
+
+def get_urls_from_illustration_data(illus, part = True, scale = None, cuts = True):
+    """part sets size of output of page, if part is True it returns the cut out of image
+    illus is a dictionary of with entries and values like this: 
+    {'height': 270, 'hpos': 251, 'page': 'digibok_2017081626006_0018', 'resolution': 400, 'vpos': 791, 'width': 373} 
+    the variable cuts, if true allows cropping of image - restricted images must not go over 1024 x 1024 pixels"""
+    
+    if scale == None:
+        if illus['resolution'] >= 300 or illus['resolution'] < 100:
+            scale = large_scale
+        else:
+            scale = small_scale
+            
+    height = illus['height']
+    width = illus['width']
+
+    if cuts != False:
+        if width * scale > 1024:
+            width = int(1024/scale)
+        if height * scale > 1024:
+            height = int(1024/scale)
+            
+    urn = "URN:NBN:no-nb_" + illus['page']
+    if part == True:
+        # return cut out
+        url = "https://www.nb.no/services/image/resolver/{urn}/{hpos},{vpos},{width},{height}/full/0/native.jpg".format(
+            urn = urn, 
+            width = int(width * scale), 
+            height = int(height * scale), 
+            vpos = int(int(illus['vpos']) * scale), 
+            hpos = int(int(illus['hpos']) * scale)
+        )
+    else:
+        # return whole page
+        url = "https://www.nb.no/services/image/resolver/{urn}/full/0,{part}/0/native.jpg".format( part=part,
+                urn = urn, width=illus['width'], height= illus['height'], vpos=illus['vpos'], hpos=illus['hpos'])
+    
+    return url
+
+def display_finds(r):
+    """A list of urls in r is displayed as HTML"""
+    rows = ["<tr><td><img src='{row}'</td><td><a href = {meta} target='_'>{meta}</a></td></tr>".format(row=row, meta=row) for row in r]
+    return HTML("""<html><head></head>
+     <body>
+     <table>
+     {rows}
+     </table>
+     </body>
+     </html>
+     """.format(rows=' '.join(rows)))
+
+def url2urn(url):
+    return re.findall("URN:.*[0-
+
 
 def mods(urn):
     r = requests.get("https://api.nb.no:443/catalog/v1/metadata/{id}/mods".format(urn=urn))
@@ -161,32 +297,7 @@ def total_urls(number=50, page=0):
         urls = []
     return urls
 
-def nb_search(term = '', creator = '', number = 50, page = 0, mediatype = 'bilder'):
-    """Søk etter term og få ut json"""
-    
-    number = min(number, 50)
-    
-    filters = []
-    
-    params = {
-        'page':page, 
-        'size':number
-    }
-    
-    if creator != '':
-        filters.append('creator:{c}'.format(c=creator))
-    
-    if mediatype != '':
-        filters.append('mediatype:{mediatype}'.format(mediatype=mediatype))
-    
-    if filters != []:
-        params['filter'] = filters
-    
-    if term != '':
-        params['q'] = term
-    
-    r = requests.get("https://api.nb.no:443/catalog/v1/items", params = params)
-    return r.json()
+
 
 def find_urns_sesam(term = '', creator = '', number=50, page=0, mediatype='bilder'):
     """generates urls from super_search for pictures"""
@@ -276,14 +387,3 @@ def json2html(meta):
     return result
         
 
-def display_finds(r):
-    """A list of urls in r is displayed as HTML"""
-    rows = ["<tr><td><img src='{row}'</td><td>{meta}</td></tr>".format(row=row, meta=json2html(get_metadata_from_url(row))).format(width=0, height=200) for row in r]
-    return HTML("""<html><head></head>
-     <body>
-     <table>
-     {rows}
-     </table>
-     </body>
-     </html>
-     """.format(rows=' '.join(rows)))
