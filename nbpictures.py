@@ -140,8 +140,9 @@ def display_finds(r):
      </html>
      """.format(rows=' '.join(rows)))
 
+
 def url2urn(url):
-    return re.findall("URN:.*[0-
+    return re.findall("URN:.*[0-9]{13}", url)[0]
 
 
 def mods(urn):
