@@ -128,9 +128,37 @@ def get_urls_from_illustration_data(illus, part = True, scale = None, cuts = Tru
     
     return url
 
-def display_finds(r):
+def show_illustrations_urn(urn, tilgjengelig = 'fritt'):
+   
+    display(Markdown('\n'.join(['**' + x['label'] + '**: ' + x['value'] for x in iiif_manifest(urn)['metadata']])))
+    
+    if tilgjengelig.lower().startswith('fri'):
+        c = False
+    else:
+        c = True
+    return display_finds(
+    [
+        get_urls_from_illustration_data(u, cuts = c) for u in 
+        get_illustration_data_from_book(urn)
+    ]
+)
+
+
+def display_finds_meta(r):
     """A list of urls in r is displayed as HTML"""
     rows = ["<tr><td><img src='{row}'</td><td><a href = {meta} target='_'>{meta}</a></td></tr>".format(row=row, meta=row) for row in r]
+    return HTML("""<html><head></head>
+     <body>
+     <table>
+     {rows}
+     </table>
+     </body>
+     </html>
+     """.format(rows=' '.join(rows)))
+
+def display_finds(r):
+    """A list of urls in r is displayed as HTML"""
+    rows = ["<tr><td><img src='{row}'</td></tr>".format(row=row) for row in r]
     return HTML("""<html><head></head>
      <body>
      <table>
