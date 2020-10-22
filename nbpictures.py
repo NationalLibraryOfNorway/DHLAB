@@ -64,7 +64,30 @@ def nb_search(
 
 # In[32]:
 
+def display_books(books, max_width = 100):
+    """A dictionary of urns - urls is displayed """
+    
+    html_wrapper = lambda x: """<style>
+    div {{
+        margin-top:1px; 
+        margin-bottom:2px}};
+        
+    img {{
+        float:right; 
+        width:10%; 
+        max-width:{mxw}px}}
+    </style>
+    <body>{body}</body>""".format(body = x, mxw = max_width)
 
+    div_wrapper = lambda x: """<div>{div_content}</div>""".format(div_content = x)
+    book_divs = ""
+    for u in books:
+        mf = iiif_manifest(u)
+        thumbnail = "<img src = '{thumbnail}'></img>".format(thumbnail = mf['thumbnail']['@id'])
+        metainfo =  '\n'.join(["<b>{label}</b>{val}".format(label = x['label'], val = x['value']) for x in mf['metadata']])        
+        imgs = '\n'.join(["<img src='{img_http}'></img>".format(img_http = pic_url) for pic_url in books[u]])
+        book_divs += div_wrapper(thumbnail + metainfo + imgs)
+    return html_wrapper(book_divs)
 
 
 def iiif_manifest(urn):
