@@ -16,7 +16,9 @@ def nb_search(
     page = 0, 
     mediatype = 'bøker', 
     lang = "nob",
-    period = (18000101, 20401231)
+    period = (18000101, 20401231),
+    extra_filters = None,
+    extra_conditions = None
 ):
     """Søk etter term og få ut json"""
     
@@ -25,12 +27,16 @@ def nb_search(
     filters = []
     aq = []
     
-
+    if extra_filters != None:
+        filters += extra_filters
     params = {
         'page':page, 
         'size':number
     }
-    
+    if extra_conditions != None:
+        for x in extra_conditions:
+            params[x] = extra_conditions[x]
+            
     if lang != '':
         aq.append('languages:{lang}'.format(lang = lang ))
     
@@ -76,10 +82,12 @@ def urns_from_super(
     page = 0, 
     mediatype = 'bøker', 
     lang = "nob",
-    period = (18000101, 20401231)
+    period = (18000101, 20401231),
+    filters = None,
+    conditions = None
 ):
     
-    res = nb_search(term, mediatype = mediatype, creator = creator, number=number, page = page, lang = lang, period = period)
+    res = nb_search(term, mediatype = mediatype, creator = creator, number=number, page = page, lang = lang, period = period, extra_filters = filters, extra_conditions = conditions)
     ids = [x['metadata']['identifiers']  for x in res['_embedded']['items'] ]
     return [x['urn'] for x in ids if 'urn' in x]
 
@@ -90,7 +98,7 @@ def get_illustration_data_from_book(urn):
     r = requests.get('https://api.nb.no/ngram/illustrations', json={'urn': urn})
     return r.json() 
 
-def get_urls_from_illustration_data(illus, part = True, scale = None, cuts = True):
+def get_urls_from_illustration_data(illus, part = True, scale = None, cuts = True, delta = 0):
     """part sets size of output of page, if part is True it returns the cut out of image
     illus is a dictionary of with entries and values like this: 
     {'height': 270, 'hpos': 251, 'page': 'digibok_2017081626006_0018', 'resolution': 400, 'vpos': 791, 'width': 373} 
@@ -102,9 +110,11 @@ def get_urls_from_illustration_data(illus, part = True, scale = None, cuts = Tru
         else:
             scale = small_scale
             
-    height = illus['height']
-    width = illus['width']
-
+    height = int(illus['height']) + 2*delta
+    width = int(illus['width']) + 2*delta
+    vpos = int(illus['vpos']) - delta
+    hpos = int(illus['hpos']) - delta
+    
     if cuts != False:
         if width * scale > 1024:
             width = int(1024/scale)
@@ -118,8 +128,8 @@ def get_urls_from_illustration_data(illus, part = True, scale = None, cuts = Tru
             urn = urn, 
             width = int(width * scale), 
             height = int(height * scale), 
-            vpos = int(int(illus['vpos']) * scale), 
-            hpos = int(int(illus['hpos']) * scale)
+            vpos = int(vpos * scale), 
+            hpos = int(hpos * scale)
         )
     else:
         # return whole page
