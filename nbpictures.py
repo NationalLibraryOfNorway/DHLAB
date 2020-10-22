@@ -95,8 +95,8 @@ def markdown_books(books, width = 100):
     book_divs = ""
     for u in books:
         mf = iiif_manifest(u)
-        thumbnail = "<img src='{thumbnail}'></img>\n\n".format(thumbnail = mf['thumbnail']['@id'])
-        metainfo =  '\n'.join(["**{label}** _{val}_".format(label = x['label'], val = x['value']) for x in mf['metadata']])        
+        thumbnail = "<h3>Forside</h3> <img src='{thumbnail}'></img>\n\n".format(thumbnail = mf['thumbnail']['@id'])
+        metainfo =  '\n'.join(["<h3>Metadata</h3> <b>{label}</b> {val}".format(label = x['label'], val = x['value']) for x in mf['metadata']])        
         imgs = '\n'.join(["<img style='float:right' src='{img_http}' width = {width}></img>".format(img_http = pic_url, width = width) for pic_url in books[u]])
         book_divs += div_wrapper(thumbnail + metainfo + imgs)
     return book_divs
