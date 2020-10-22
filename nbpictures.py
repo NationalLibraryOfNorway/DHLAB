@@ -85,6 +85,22 @@ def display_books(books, width = 100):
         book_divs += div_wrapper(thumbnail + metainfo + imgs)
     return html_wrapper(book_divs)
 
+def markdown_books(books, width = 100):
+    """A dictionary of urns - urls is displayed """
+    
+    markdown_wrapper = lambda x: """
+    <body>{body}</body>""".format(body = x)
+
+    div_wrapper = lambda x: """<div>{div_content}</div>""".format(div_content = x)
+    book_divs = ""
+    for u in books:
+        mf = iiif_manifest(u)
+        thumbnail = "<img src='{thumbnail}'></img>\n".format(thumbnail = mf['thumbnail']['@id'])
+        metainfo =  '\n'.join(["**{label}** _{val}_".format(label = x['label'], val = x['value']) for x in mf['metadata']])        
+        imgs = '\n'.join(["<img style='float:right' src='{img_http}' width = {width}></img>".format(img_http = pic_url, width = width) for pic_url in books[u]])
+        book_divs += div_wrapper(thumbnail + metainfo + imgs)
+    return book_divs
+
 def iiif_manifest(urn):
     if not 'URN' in str(urn) and not 'digibok' in str(urn):
         urn = "URN:NBN:no-nb_digibok_" + str(urn)
