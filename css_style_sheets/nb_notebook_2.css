@@ -1,11 +1,12 @@
 @import url(
-http://fonts.googleapis.com/css?family=Lato|Source+Serif+Pro|Crimson+Text|Montserrat|Source+Code+Pro|Roboto:400,700);
+http://fonts.googleapis.com/css?family=Lato|Source+Serif+Pro|Crimson+Text|Montserrat|Merriweather|Source+Code+Pro|Roboto:400,700|Roboto+Slab);
 
 /*
 #notebook-container {
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather" />
 */
 
 h1, h2, h3, h4, h5, h6 {
@@ -16,17 +17,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 { font-size: 4.5em; }
-h2 { font-size: 4em; color: black }
-h3 { font-size: 3.5em; color:black }
-h4 { font-size: 3em; color:black}
-h5 { font-size: 2.5em; color:black}
+h2 { font-size: 4em;  }
+h3 { font-size: 3.5em;  }
+h4 { font-size: 3em; }
+h5 { font-size: 2.5em;}
 h6 { font-size: 2em; }
 
-p {
-	font-family: 'Lato', sans-serif;
-	font-size: 1.2em;
-	line-height: 1.3em;
-	font-weight: 400;
+p { font-family: "Merriweather"; !important
+    font-size: 14px; 
+    font-style: normal; 
+    font-variant: normal; 
+    font-weight: 400; 
+    line-height: 20px; }
 	color:DarkSlateGray;
 }
 
