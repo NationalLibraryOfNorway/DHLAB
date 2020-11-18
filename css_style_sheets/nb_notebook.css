@@ -1,5 +1,5 @@
 @import url(
-http://fonts.googleapis.com/css?family=Lato|Philosopher|Montserrat|Source+Code+Pro|Istok+Web|Philosopher|Assistant:200,400,700);
+http://fonts.googleapis.com/css?family=Lato|Philosopher|Montserrat|Source+Code+Pro|Merriweather|Istok+Web|Philosopher|Assistant:200,400,700);
 
 /*
 #notebook-container {
@@ -23,7 +23,7 @@ h5 { font-size: 2.5em; color:DarkSlateGray; }
 h6 { font-size: 2em; }
 
 p {
-	font-family: 'Assistant', sans-serif; 
+	font-family: 'Merriweather'; 
 	font-size: 1.2em;
 	line-height: 1.4em;
 	color: black;
