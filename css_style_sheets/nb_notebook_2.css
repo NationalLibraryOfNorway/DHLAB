@@ -32,14 +32,24 @@ p { font-family: "Merriweather";
 	color:DarkSlateGray;
 }
 
-.input_area {
-	border:none;
-	color: whitesmoke;
+
+
+p code {
+	font-size:0.9em;
+}
+div.input_area {
+	border:none !important;
+	border-left:1px solid #ff851b !important
 }
 
-.CodeMirror {
-	font-family: 'Source Code Pro', monospace;
-	font-size: 0.9em;
+span.cm-keyword {
+	color:#339966 !important;
+}
+span.nn {  /*span.cm-variable, span.cm-property*/
+	color: #3399ff !important;
+}
+div.CodeMirror {
+	font-family: 'Inconsolata', monospace;
+	font-size: 1.1em;
 	
 }
-
