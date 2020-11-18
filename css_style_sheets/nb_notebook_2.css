@@ -29,14 +29,9 @@ p { font-family: "Merriweather";
     font-variant: normal; 
     font-weight: 400; 
     line-height: 20px; 
-	color:DarkSlateGray;
+    color:DarkSlateGray;
 }
 
-
-
-p code {
-	font-size:0.9em;
-}
 div.input_area {
 	border:none !important;
 	border-left:1px solid #ff851b !important
@@ -48,8 +43,4 @@ span.cm-keyword {
 span.nn {  /*span.cm-variable, span.cm-property*/
 	color: #3399ff !important;
 }
-div.CodeMirror {
-	font-family: 'Inconsolata', monospace;
-	font-size: 1.1em;
-	
-}
+
