@@ -24,13 +24,9 @@ h6 { font-size: 2em; }
 
 p {
 	font-family: 'Merriweather'; 
-	font-size: 1.1em;
-	line-height: 1.4em;
 	color: DarkSlateGray;
 }
-p code {
-	font-size:0.9em;
-}
+
 div.input_area {
 	border:none !important;
 	border-left:1px solid #ff851b !important
