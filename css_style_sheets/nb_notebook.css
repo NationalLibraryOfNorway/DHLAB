@@ -38,6 +38,10 @@ span.cm-keyword {
 span.nn {  /*span.cm-variable, span.cm-property*/
 	color: #3399ff !important;
 }
+.prompt{
+     display: None;
+}
+
 div.CodeMirror {
 	font-family: 'Inconsolata', monospace;
 	font-size: 1.1em;
