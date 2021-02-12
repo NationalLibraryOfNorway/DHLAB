@@ -178,7 +178,7 @@ def term_urn_search(term, number=50, page=0, mediatype='aviser', period=(1800010
         urns = []
     return tot, urns
 
-def term_docs(term, number=50, page=0, mediatype='aviser', period=(18000101, 20401231)):
+def term_docs(term, number=50, title='', page=0, mediatype='aviser', period=(18000101, 20401231)):
     """Søk etter term og få ut json"""
     number = min(number, 50)
     #print(period)
@@ -189,6 +189,7 @@ def term_docs(term, number=50, page=0, mediatype='aviser', period=(18000101, 204
              'sort':'date,desc',
             
              'filter':[
+                 'title:{title}'.format(title=title),
                  'mediatype:{mediatype}'.format(mediatype=mediatype),
                  'date:[{date_from} TO {date_to}]'.format(date_from = period[0], date_to = period[1] )
              ],
