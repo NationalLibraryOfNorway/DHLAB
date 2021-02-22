@@ -1,5 +1,5 @@
 @import url(
-http://fonts.googleapis.com/css?family=Lato|Philosopher|Montserrat|Source+Code+Pro|Merriweather|Istok+Web|Philosopher|Assistant:200,400,700);
+http://fonts.googleapis.com/css?family=Lato|Philosopher|Montserrat|Source+Code+Pro|Merriweather|Shippori+Mincho|Istok+Web|Philosopher|Assistant:200,400,700);
 
 /*
 #notebook-container {
@@ -9,7 +9,7 @@ http://fonts.googleapis.com/css?family=Lato|Philosopher|Montserrat|Source+Code+P
 */
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Shippori+Mincho', sans-serif;
 	line-height: 2em;
     color: #004f99;
     font-weight: 600;
