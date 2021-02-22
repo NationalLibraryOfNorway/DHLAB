@@ -9,7 +9,7 @@ http://fonts.googleapis.com/css?family=Lato|Philosopher|Montserrat|Source+Code+P
 */
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Shippori+Mincho', sans-serif;
+	font-family: 'Montserrat', sans-serif;
 	line-height: 2em;
     color: #004f99;
     font-weight: 600;
@@ -23,7 +23,7 @@ h5 { font-size: 2.5em; color:DarkSlateGray; }
 h6 { font-size: 2em; }
 
 p {
-	font-family: 'Merriweather'; 
+	font-family: 'Shippori+Mincho'; 
 	color: DarkSlateGray;
 }
 
