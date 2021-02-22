@@ -39,9 +39,6 @@ span.nn {  /*span.cm-variable, span.cm-property*/
 	color: #3399ff !important;
 }
 
-.jp-InputArea-prompt {
-   display: none;
-}
 
 div.CodeMirror {
 	font-family: 'Inconsolata', monospace;
