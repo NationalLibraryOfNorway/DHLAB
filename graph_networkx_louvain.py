@@ -3,6 +3,7 @@ import numpy as np
 import requests
 import json
 import community
+from community import community_louvain
 import networkx as nx
 from networkx.algorithms.community import k_clique_communities
 import seaborn as sns
@@ -184,7 +185,7 @@ def mcommunity(Graph):
 
     G = Graph.to_undirected()
 
-    m_partition = community.best_partition(G)
+    m_partition = community_louvain.best_partition(G)
     #print(m_partition)
     list_nodes = []
     for com in set(m_partition.values()) :
