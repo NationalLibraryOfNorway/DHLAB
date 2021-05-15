@@ -185,7 +185,7 @@ def mcommunity(Graph, random = 10):
 
     G = Graph.to_undirected()
 
-    m_partition = community_louvain.best_partition(G, random = random)
+    m_partition = community_louvain.best_partition(G, random_state = random)
     #print(m_partition)
     list_nodes = []
     for com in set(m_partition.values()) :
