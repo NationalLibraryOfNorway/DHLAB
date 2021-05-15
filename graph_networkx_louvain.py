@@ -181,11 +181,11 @@ def sentrale(Graph, top = 20):
 
 
 
-def mcommunity(Graph):
+def mcommunity(Graph, random = 10):
 
     G = Graph.to_undirected()
 
-    m_partition = community_louvain.best_partition(G)
+    m_partition = community_louvain.best_partition(G, random = random)
     #print(m_partition)
     list_nodes = []
     for com in set(m_partition.values()) :
