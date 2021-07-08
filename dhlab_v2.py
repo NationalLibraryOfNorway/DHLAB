@@ -12,8 +12,8 @@ def document_corpus(doctype = None, author = None,  from_year = None, to_year = 
     parms = locals()
     params = {x:parms[x] for x in parms if not parms[x] is None }
     
-    if "ddk" in params and not '"' in params['ddk'] and not 'OR' in params['ddk']:
-        params["ddk"]  = """  "{d}"   """.format(d = params['ddk'])
+    if "ddk" in params:
+        params["ddk"]  = params['ddk'].replace('.', '"."')
         
     r=requests.post(BASE_URL + "/build_corpus", json=params)
     
