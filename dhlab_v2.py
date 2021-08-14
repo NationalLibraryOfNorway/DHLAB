@@ -47,7 +47,15 @@ def konkordans(urns = None, query = None, window = 25, limit = 100):
         r = requests.post(BASE_URL + "/conc", json = params)
     return pd.DataFrame(r.json())
 
-
+def collocation(corpusquery = 'norge', word = 'arbeid', before = 5, after = 0):
+    params = {
+        'corpusquery': corpusquery,
+        'word': word,
+        'before': before,
+        'after': after
+    }
+    r = requests.post(BASE_URL + "/urncolldist", json = parsms)
+    return pd.read_json(r)
 
 def konk_loop(urns=None, query = None, window = 25, limit = 100):
     if query is None:
