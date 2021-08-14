@@ -54,7 +54,7 @@ def collocation(corpusquery = 'norge', word = 'arbeid', before = 5, after = 0):
         'before': before,
         'after': after
     }
-    r = requests.post(BASE_URL + "/urncolldist", json = parsms)
+    r = requests.post(BASE_URL + "/urncolldist", json = params)
     return pd.read_json(r)
 
 def konk_loop(urns=None, query = None, window = 25, limit = 100):
