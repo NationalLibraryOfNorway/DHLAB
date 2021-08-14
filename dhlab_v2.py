@@ -3,7 +3,7 @@ import pandas as pd
 
 
 BASE_URL = "https://api.nb.no/ngram/db2"
-
+BASE_URL1 = "https://api.nb.no/ngram/db1"
 pd.options.display.max_rows = 100
 
 def document_corpus(doctype = None, author = None,  from_year = None, to_year = None, title = None, ddk = None, subject = None, lang = None, limit = None):
@@ -49,13 +49,13 @@ def konkordans(urns = None, query = None, window = 25, limit = 100):
 
 def collocation(corpusquery = 'norge', word = 'arbeid', before = 5, after = 0):
     params = {
-        'corpusquery': corpusquery,
+        'metadata_query': corpusquery,
         'word': word,
         'before': before,
         'after': after
     }
-    r = requests.post(BASE_URL + "/urncolldist", json = params)
-    return pd.read_json(r)
+    r = requests.post(BASE_URL1 + "/urncolldist", json = params)
+    return pd.read_json(r.text)
 
 def konk_loop(urns=None, query = None, window = 25, limit = 100):
     if query is None:
