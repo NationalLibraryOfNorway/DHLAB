@@ -4,6 +4,7 @@ import pandas as pd
 
 BASE_URL = "https://api.nb.no/ngram/db2"
 BASE_URL1 = "https://api.nb.no/ngram/db1"
+
 pd.options.display.max_rows = 100
 
 def document_corpus(doctype = None, author = None,  from_year = None, to_year = None, title = None, ddk = None, subject = None, lang = None, limit = None):
