@@ -18,12 +18,13 @@ def ngram_book(word = ['.'], title = None, period = None, publisher = None, lang
     params['word'] = tuple(word)
     params = {x:params[x] for x in params if not params[x] is None}
     r = requests.post(BASE_URL1 + "/ngram_book", json = params)
+    #print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient = 'index')
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis = 1)
     df.columns = columns 
-    df.index = df.index.map(Timestamp)
+    df.index = df.index.map(pd.Timestamp)
     return df
 
 def ngram_news(word = ['.'], title = None, period = None):
@@ -36,6 +37,7 @@ def ngram_news(word = ['.'], title = None, period = None):
     params['word'] = tuple(word)
     params = {x:params[x] for x in params if not params[x] is None}
     r = requests.post(BASE_URL1 + "/ngram_newspapers", json = params)
+    #print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient = 'index')
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
