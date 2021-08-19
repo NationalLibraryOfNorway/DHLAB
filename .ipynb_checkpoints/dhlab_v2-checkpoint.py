@@ -24,7 +24,7 @@ def ngram_book(word = ['.'], title = None, period = None, publisher = None, lang
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis = 1)
     df.columns = columns 
-    df.index = df.index.map(pd.Timestamp)
+    #df.index = df.index.map(pd.Timestamp)
     return df
 
 def ngram_news(word = ['.'], title = None, period = None):
@@ -43,7 +43,7 @@ def ngram_news(word = ['.'], title = None, period = None):
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis = 1)
     df.columns = columns
-    df.index = df.index.map(pd.Timestamp)
+    #df.index = df.index.map(pd.Timestamp)
     return df
 
 
