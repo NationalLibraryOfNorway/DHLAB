@@ -60,9 +60,26 @@ def document_corpus(doctype = None, author = None,  from_year = None, to_year = 
     
     return pd.DataFrame(r.json(), columns = ['urn', 'author', 'title','year'])
     
+def urn_collocation(urns = None, word = 'arbeid', before = 5, after = 0, samplesize = 200000):
+    """ Create a collocation from a list of URNs - returns distance (sum of distances and bayesian distance) and frequency"""
+    params = {
+        'urn': urns,
+        'word': word,
+        'before': before,
+        'after': after,
+        'samplesize': samplesize
+    }
+    r = requests.post(BASE_URL1 + "/urncolldist_urn", json = params)
+    return pd.read_json(r.text)
 
+def totals(n = 50000):
+    """ Get total frequencies of words in database"""
+    
+    r = requests.get(BASE_URL + "/totals/{n}".format(n = n))
+    return pd.DataFrame.from_dict(dict(r.json()),orient = 'index', columns = ['freq'])
     
 def concordance(urns = None, words = None, window = 25, limit = 100):
+    """ Get a list of concordances from database, words is an fts5 string search expression"""
     if words is None:
         return {}
     else:
@@ -98,15 +115,4 @@ def collocation(corpusquery = 'norge', word = 'arbeid', before = 5, after = 0):
     r = requests.post(BASE_URL1 + "/urncolldist", json = params)
     return pd.read_json(r.text)
 
-def konk_loop(urns=None, query = None, window = 25, limit = 100):
-    if query is None:
-        return {}
-    else:
-        params = {
-            'urns': urns,
-            'query': query,
-            'window': window,
-            'limit': limit
-        }
-        r = requests.post(BASE_URL + "/conc_loop", json = params)
-    return r.json()
+
