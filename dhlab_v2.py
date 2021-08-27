@@ -27,6 +27,26 @@ def ngram_book(word = ['.'], title = None, period = None, publisher = None, lang
     #df.index = df.index.map(pd.Timestamp)
     return df
 
+def ngram_periodicals(word = ['.'], title = None, period = None, publisher = None, lang=None, city = None, ddk = None, topic = None):
+    """Get a time series for a word as string, title is name of periodical period is (year, year), lang is three letter iso code.
+    Use % as wildcard where appropriate - no wildcards in word and lang"""
+    params = locals()
+    if isinstance(word, str):
+        # assume a comma separated string
+        word = [w.strip() for w in word.split(',')]
+    params['word'] = tuple(word)
+    params = {x:params[x] for x in params if not params[x] is None}
+    r = requests.post(BASE_URL1 + "/ngram_periodicals", json = params)
+    #print(r.status_code)
+    df = pd.DataFrame.from_dict(r.json(), orient = 'index')
+    df.index = df.index.map(lambda x: tuple(x.split()))
+    columns = df.index.levels[0]
+    df = pd.concat([df.loc[x] for x in columns], axis = 1)
+    df.columns = columns 
+    #df.index = df.index.map(pd.Timestamp)
+    return df
+
+
 def ngram_news(word = ['.'], title = None, period = None):
     """ get a time series period is a tuple of (year, year), (yearmonthday, yearmonthday) 
     word is string and title is the title of newspaper, use % as wildcard"""
