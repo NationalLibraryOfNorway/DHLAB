@@ -111,7 +111,21 @@ def concordance(urns = None, words = None, window = 25, limit = 100):
         }
         r = requests.post(BASE_URL + "/conc", json = params)
     return pd.DataFrame(r.json())
-    
+
+def concordance_counts(urns = None, words = None, window = 25, limit = 100):
+    """ Get a list of concordances from database, words is an fts5 string search expression"""
+    if words is None:
+        return {}
+    else:
+        params = {
+            'urns': urns,
+            'query': words,
+            'window': window,
+            'limit': limit
+        }
+        r = requests.post(BASE_URL + "/conccount", json = params)
+    return pd.DataFrame(r.json())
+
 def konkordans(urns = None, query = None, window = 25, limit = 100):
     if query is None:
         return {}
