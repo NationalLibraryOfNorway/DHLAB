@@ -66,6 +66,11 @@ def ngram_news(word = ['.'], title = None, period = None):
     #df.index = df.index.map(pd.Timestamp)
     return df
 
+def frequencies(urns = None, cutoff = 0):
+    params = locals()
+    #print(params)
+    r = requests.post(BASE_URL1 + "/frequencies", json = params)
+    return r.json()
 
 def document_corpus(doctype = None, author = None,  from_year = None, to_year = None, from_timestamp=None, to_timestamp=None, title = None, ddk = None, subject = None, lang = None, limit = None):
     """ Fetch a corpus based on metadata - doctypes are digibok, digavis, digitidsskrift"""
