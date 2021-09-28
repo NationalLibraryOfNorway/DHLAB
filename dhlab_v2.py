@@ -67,12 +67,11 @@ def ngram_news(word = ['.'], title = None, period = None):
     return df
 
 
-def document_corpus(doctype = None, author = None,  from_year = None, to_year = None, title = None, ddk = None, subject = None, lang = None, limit = None):
+def document_corpus(doctype = None, author = None,  from_year = None, to_year = None, from_timestamp=None, to_timestamp=None, title = None, ddk = None, subject = None, lang = None, limit = None):
     """ Fetch a corpus based on metadata - doctypes are digibok, digavis, digitidsskrift"""
     
     parms = locals()
     params = {x:parms[x] for x in parms if not parms[x] is None }
-    
     if "ddk" in params:
         params["ddk"]  = params['ddk'].replace('.', '"."')
         
