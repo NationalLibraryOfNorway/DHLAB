@@ -78,7 +78,7 @@ def document_corpus(doctype = None, author = None,  from_year = None, to_year = 
         
     r=requests.post(BASE_URL + "/build_corpus", json=params)
     
-    return pd.DataFrame(r.json(), columns = ['urn', 'author', 'title','year'])
+    return pd.DataFrame(r.json())
     
 def urn_collocation(urns = None, word = 'arbeid', before = 5, after = 0, samplesize = 200000):
     """ Create a collocation from a list of URNs - returns distance (sum of distances and bayesian distance) and frequency"""
