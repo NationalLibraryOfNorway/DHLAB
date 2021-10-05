@@ -7,11 +7,15 @@ BASE_URL1 = "https://api.nb.no/ngram/db1"
 
 pd.options.display.max_rows = 100
 
-def find_urns(docids = None):
-    """ Return a list of URNs from a list of docids as a dictionary {docid: URN}"""
+def find_urns(docids = None, mode = 'json'):
+    """ Return a list of URNs from a list of docids as a dictionary {docid: URN} or as a pandas dataframe"""
     params = locals()
     r = requests.post(BASE_URL1 + "/find_urn", json = params)
-    return r.json()
+    if r.status_code == 200:
+        res = pd.DataFrame.from_dict(r.json(), orient = 'index', columns = ['urn'])
+    else:
+        res = pd.DataFrame()
+    return res
 
 def ngram_book(word = ['.'], title = None, period = None, publisher = None, lang=None, city = None, ddk = None, topic = None):
     """Get a time series for a word as string, title is name of book period is (year, year), lang is three letter iso code.
