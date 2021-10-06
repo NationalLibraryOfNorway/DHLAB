@@ -92,8 +92,8 @@ def get_document_frequencies(urns = None, cutoff = 0):
     return pd.DataFrame(structure)
 
 
-def get_document_corpus(kwarg**):
-    return document_corpus(kwarg**)
+def get_document_corpus(**kwargs):
+    return document_corpus(**kwargs)
 
 def document_corpus(doctype = None, author = None,  from_year = None, to_year = None, from_timestamp = None, to_timestamp = None, title = None, ddk = None, subject = None, lang = None, limit = None):
     """ Fetch a corpus based on metadata - doctypes are digibok, digavis, digitidsskrift"""
