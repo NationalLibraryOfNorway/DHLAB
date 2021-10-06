@@ -6,6 +6,15 @@ BASE_URL1 = "https://api.nb.no/ngram/db1"
 
 pd.options.display.max_rows = 100
 
+def get_reference(corpus = 'digavis', from_year = 1950, to_year = 1955, lang = 'nob', limit = 100000):
+    params = locals()
+    r = requests.get(BASE_URL + "/reference_corpus", params = params)
+    if r.status_code == 200:
+        result = r.json()
+    else:
+        result = []
+    return pd.DataFrame(result, columns = ['word', 'freq']).set_index('word')
+
 def find_urns(docids = None, mode = 'json'):
     """ Return a list of URNs from a list of docids as a dictionary {docid: URN} or as a pandas dataframe"""
     
