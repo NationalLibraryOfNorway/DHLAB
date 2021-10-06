@@ -89,8 +89,8 @@ def get_document_frequencies(urns = None, cutoff = 0):
     r = requests.post(BASE_URL1 + "/frequencies", json = params)
     result = r.json()
     structure = {u[0][0] : dict([tuple(x[1:]) for x in u]) for u in result if u != []}
-    return pd.DataFrame(structure)
-
+    df = pd.DataFrame(structure)
+    return df.sort_values(by = df.columns[0], ascending = False)
 
 def get_document_corpus(**kwargs):
     return document_corpus(**kwargs)
