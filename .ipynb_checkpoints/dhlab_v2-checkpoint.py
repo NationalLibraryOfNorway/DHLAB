@@ -84,12 +84,12 @@ def ngram_news(word = ['.'], title = None, period = None):
     #df.index = df.index.map(pd.Timestamp)
     return df
 
-def frequencies(urns = None, cutoff = 0):
+def get_document_frequencies(urns = None, cutoff = 0):
     params = locals()
     r = requests.post(BASE_URL1 + "/frequencies", json = params)
     result = r.json()
     structure = {u[0][0] : dict([tuple(x[1:]) for x in u]) for u in result if u != []}
-    return structure
+    return pd.DataFrame(structure)
 
 
 def document_corpus(doctype = None, author = None,  from_year = None, to_year = None, from_timestamp = None, to_timestamp = None, title = None, ddk = None, subject = None, lang = None, limit = None):
