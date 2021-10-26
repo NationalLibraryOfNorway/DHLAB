@@ -5,13 +5,16 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="dhlab",
-    version="0.7.5",
-    author="Lars G.B. Johnsen",
-    author_email="yoonsen@gmail.com",
-    description="API for National Library of Norway",
+    version="1.0.0",
+    author="The National Library of Norway",
+    author_email="dh-lab@nb.no",
+    description="API for text and image analysis by the Digital Humanities lab (DH-lab)",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Yoonsen/Modules",
+    url="https://github.com/NationalLibraryOfNorway/DHLAB",
+        project_urls={
+        "Bug Tracker": "https://github.com/NationalLibraryOfNorway/DHLAB/issues",
+    },
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
