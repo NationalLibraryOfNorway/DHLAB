@@ -20,7 +20,7 @@ find_hits = lambda x: ' '.join(re.findall("<b>(.+?)</b", x))
 # class for displaying concordances
 class Concordance:
     def __init__(self, corpus, query):
-        self.concordance = d2.concordance(urns = list(corpus.urn), words = query)
+        self.concordance = concordance(urns = list(corpus.urn), words = query)
         self.concordance['link'] = self.concordance.urn.apply(make_link)
         self.concordance = self.concordance[['link', 'conc']]
         self.concordance.columns = ['link', 'concordance']
