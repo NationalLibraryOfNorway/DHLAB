@@ -6,6 +6,30 @@ BASE_URL1 = "https://api.nb.no/ngram/db1"
 
 pd.options.display.max_rows = 100
 
+
+import re
+
+# convert cell to a link
+def make_link(row):
+        r = "<a target='_blank' href = 'https://urn.nb.no/{x}'>{x}</a>".format(x = str(row))
+        return r
+
+# find hits a cell
+find_hits = lambda x: ' '.join(re.findall("<b>(.+?)</b", x))
+
+# class for displaying concordances
+class Concordance:
+    def __init__(self, corpus, query):
+        self.concordance = d2.concordance(urns = list(corpus.urn), words = query)
+        self.concordance['link'] = self.concordance.urn.apply(make_link)
+        self.concordance = self.concordance[['link', 'conc']]
+        self.concordance.columns = ['link', 'concordance']
+        self.corpus = corpus
+        self.size = len(self.concordance)
+    
+    def show(self, n = 10):
+        return self.concordance.sample(min(n, self.size)).style
+
 def get_reference(corpus = 'digavis', from_year = 1950, to_year = 1955, lang = 'nob', limit = 100000):
     params = locals()
     r = requests.get(BASE_URL + "/reference_corpus", params = params)
