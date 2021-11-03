@@ -37,7 +37,7 @@ class Cooccurence():
                 words = [words]
             coll = pd.concat([urn_collocation(urns = list(corpus.urn), word = w, before = before, after = after) for w in words])[['counts']]
             self.coll = coll.groupby(coll.index).sum()
-            self.reference = refererence
+            self.reference = reference
             self.before = before
             self.after = after
             
