@@ -35,7 +35,7 @@ class Cooccurence():
         def __init__(self, corpus = None, words = None, before = 10, after = 10, reference = None):
             if isinstance(words, str):
                 words = [words]
-            coll = pd.concat([d2.urn_collocation(urns = list(corpus.urn), word = w, before = before, after = after) for w in words])[['counts']]
+            coll = pd.concat([urn_collocation(urns = list(corpus.urn), word = w, before = before, after = after) for w in words])[['counts']]
             self.coll = coll.groupby(coll.index).sum()
             self.reference = refererence
             self.before = before
