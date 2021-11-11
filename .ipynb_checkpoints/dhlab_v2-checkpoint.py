@@ -25,16 +25,16 @@ class Concordance:
         self.concordance = concordance(urns = list(corpus.urn), words = query)
         self.concordance['link'] = self.concordance.urn.apply(make_link)
         self.concordance = self.concordance[['link', 'conc']]
-        self.concordance.columns = ['link', 'concordance']
+        self.concordance.columns = ['link', 'urn', 'concordance']
         self.corpus = corpus
         self.size = len(self.concordance)
     
     def show(self, n = 10, style = True):
         if style:
-            return self.concordance.sample(min(n, self.size)).style
+            result =  self.concordance.sample(min(n, self.size))[['link', 'concordance']].style
         else:
-            return self.concordance.sample(min(n, self.size))
-
+            result =  self.concordance.sample(min(n, self.size))
+        return result
     
 class Cooccurence():
         def __init__(self, corpus = None, words = None, before = 10, after = 10, reference = None):
