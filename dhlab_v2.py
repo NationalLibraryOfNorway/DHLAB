@@ -25,7 +25,8 @@ class Concordance:
     def __init__(self, corpus, query):
         self.concordance = concordance(urns = list(corpus.urn), words = query)
         self.concordance['link'] = self.concordance.urn.apply(make_link)
-        self.concordance = self.concordance[['link', 'urn', 'concordance']]
+        self.concordance = self.concordance[['link', 'urn', 'conc']]
+        self.concordance.columns = ['link', 'urn', 'concordance']
         self.corpus = corpus
         self.size = len(self.concordance)
     
