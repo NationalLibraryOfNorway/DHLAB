@@ -21,6 +21,7 @@ find_hits = lambda x: ' '.join(re.findall("<b>(.+?)</b", x))
 
 # class for displaying concordances
 class Concordance:
+    """Wrapper for concordance function with added functionality"""
     def __init__(self, corpus, query):
         self.concordance = concordance(urns = list(corpus.urn), words = query)
         self.concordance['link'] = self.concordance.urn.apply(make_link)
@@ -37,6 +38,7 @@ class Concordance:
         return result
     
 class Cooccurence():
+    """Collocations """
         def __init__(self, corpus = None, words = None, before = 10, after = 10, reference = None):
             if isinstance(words, str):
                 words = [words]
