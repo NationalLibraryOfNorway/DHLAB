@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import json
 
 BASE_URL = "https://api.nb.no/ngram/db2"
 BASE_URL1 = "https://api.nb.no/ngram/db1"
@@ -27,8 +28,11 @@ class Concordance:
         self.corpus = corpus
         self.size = len(self.concordance)
     
-    def show(self, n = 10):
-        return self.concordance.sample(min(n, self.size)).style
+    def show(self, n = 10, style = True):
+        if style:
+            return self.concordance.sample(min(n, self.size)).style
+        else:
+            return self.concordance.sample(min(n, self.size))
 
     
 class Cooccurence():
@@ -225,3 +229,36 @@ def collocation(corpusquery = 'norge', word = 'arbeid', before = 5, after = 0):
     return pd.read_json(r.text)
 
 
+
+### -------------------------- NB ngram ------------------ ###
+
+def nb_ngram(terms, corpus='bok', smooth=3, years=(1810, 2010), mode='relative'):
+    df = ngram_conv(get_ngram(terms, corpus=corpus), smooth=smooth, years=years, mode=mode)
+    df.index = df.index.astype(int)
+    return df
+
+def get_ngram(terms, corpus='avis'):
+    req = requests.get(
+        "https://beta.nb.no/dhlab/ngram_1/ngram/query?", 
+        params = { 
+            'terms':terms,
+            'corpus':corpus
+        }
+    )
+    if req.status_code == 200:
+        res = req.text
+    else:
+        res = "[]"
+    return json.loads(res)
+
+def ngram_conv(ngrams, smooth=1, years=(1810,2013), mode='relative'):
+    ngc = {}
+    # check if relative frequency or absolute frequency is in question
+    if mode.startswith('rel') or mode=='y':
+        arg = 'y'
+    else:
+        arg = 'f'
+    for x in ngrams:
+        if x != []:
+            ngc[x['key']] = {z['x']:z[arg] for z in x['values'] if int(z['x']) <= years[1] and int(z['x']) >= years[0]}
+    return pd.DataFrame(ngc).rolling(window=smooth, win_type='triang').mean()
