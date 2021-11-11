@@ -39,26 +39,26 @@ class Concordance:
     
 class Cooccurence():
     """Collocations """
-        def __init__(self, corpus = None, words = None, before = 10, after = 10, reference = None):
-            if isinstance(words, str):
-                words = [words]
-            coll = pd.concat([urn_collocation(urns = list(corpus.urn), word = w, before = before, after = after) for w in words])[['counts']]
-            self.coll = coll.groupby(coll.index).sum()
-            self.reference = reference
-            self.before = before
-            self.after = after
-            
-            if reference is not None:
-                self.coll['relevance'] = (self.coll.counts/self.coll.counts.sum())/(self.reference.freq/self.reference.freq.sum())
+    def __init__(self, corpus = None, words = None, before = 10, after = 10, reference = None):
+        if isinstance(words, str):
+            words = [words]
+        coll = pd.concat([urn_collocation(urns = list(corpus.urn), word = w, before = before, after = after) for w in words])[['counts']]
+        self.coll = coll.groupby(coll.index).sum()
+        self.reference = reference
+        self.before = before
+        self.after = after
         
-        def show(self, sortby = 'counts', n = 20):
-            return self.coll.sort_values(by = sortby, ascending = False)
-        
-        def keywordlist(self, top = 200, counts = 5, relevance = 10):
-            mask = self.coll[self.coll.counts > counts]
-            mask = mask[mask.relevance > relevance]
-            return list(mask.sort_values(by = 'counts', ascending = False).head(200).index)
-        
+        if reference is not None:
+            self.coll['relevance'] = (self.coll.counts/self.coll.counts.sum())/(self.reference.freq/self.reference.freq.sum())
+    
+    def show(self, sortby = 'counts', n = 20):
+        return self.coll.sort_values(by = sortby, ascending = False)
+    
+    def keywordlist(self, top = 200, counts = 5, relevance = 10):
+        mask = self.coll[self.coll.counts > counts]
+        mask = mask[mask.relevance > relevance]
+        return list(mask.sort_values(by = 'counts', ascending = False).head(200).index)
+    
         
     
 def get_reference(corpus = 'digavis', from_year = 1950, to_year = 1955, lang = 'nob', limit = 100000):
