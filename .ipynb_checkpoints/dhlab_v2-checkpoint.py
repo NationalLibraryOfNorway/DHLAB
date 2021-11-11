@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import json
+import networkx as nx
 
 BASE_URL = "https://api.nb.no/ngram/db2"
 BASE_URL1 = "https://api.nb.no/ngram/db1"
