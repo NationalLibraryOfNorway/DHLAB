@@ -262,3 +262,32 @@ def ngram_conv(ngrams, smooth=1, years=(1810,2013), mode='relative'):
         if x != []:
             ngc[x['key']] = {z['x']:z[arg] for z in x['values'] if int(z['x']) <= years[1] and int(z['x']) >= years[0]}
     return pd.DataFrame(ngc).rolling(window=smooth, win_type='triang').mean()
+
+
+def make_word_graph(words, corpus = 'all', cutoff = 16, leaves = 0):
+    """Get galaxy from ngram-database. 
+    corpus is bok, avis or both
+    words is a commaseparated string
+    English and German provided by Google N-gram. 
+    Set leaves=1 to get the leaves. Parameter cutoff only works for lang='nob'. 
+    Specify English by setting lang='eng' and German by lang='ger'"""
+    
+    params = dict()
+    params['terms'] = words
+    params['corpus'] = corpus
+    params['limit'] = cutoff
+    params['leaves'] = leaves
+    result = requests.get("https://beta.nb.no/dhlab/galaxies/query", params=params)
+    G = nx.DiGraph()
+    edgelist = []
+    if result.status_code == 200:
+        graph = json.loads(result.text)
+        #print(graph)
+        nodes = graph['nodes']
+        edges = graph['links']
+        for edge in edges:
+            edgelist += [(nodes[edge['source']]['name'], nodes[edge['target']]['name'], abs(edge['value']))]
+    #print(edgelist)
+    G.add_weighted_edges_from(edgelist)
+
+    return G
