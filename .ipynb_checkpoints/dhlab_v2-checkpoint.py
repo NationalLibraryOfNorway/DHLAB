@@ -3,8 +3,8 @@ import pandas as pd
 import json
 import networkx as nx
 
-BASE_URL = "https://api.nb.no/ngram/db2"
-BASE_URL1 = "https://api.nb.no/ngram/db1"
+BASE_URL = "https://api.nb.no/dhlab"
+BASE_URL1 = "https://api.nb.no/dhlab"
 
 pd.options.display.max_rows = 100
 
