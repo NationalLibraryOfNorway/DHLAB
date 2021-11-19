@@ -19,6 +19,15 @@ def make_link(row):
 # find hits a cell
 find_hits = lambda x: ' '.join(re.findall("<b>(.+?)</b", x))
 
+# fetch metadata
+
+def get_metadata(urns = None):
+    """ Fetch metadata from a list of urns """
+    params = locals()
+    r = requests.post(f"{BASE_URL}/get_metadata", json = params)
+    return r.json()
+
+
 # class for displaying concordances
 class Concordance:
     """Wrapper for concordance function with added functionality"""
