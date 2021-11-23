@@ -68,7 +68,44 @@ class Cooccurence():
         mask = mask[mask.relevance > relevance]
         return list(mask.sort_values(by = 'counts', ascending = False).head(200).index)
     
-class Ngram_book():
+class Ngram():
+    def __init__(self, words = None, from_year = None, to_year = None, doctype = None, lang = 'nob'):
+        from datetime import datetime
+        
+        self.date = datetime.now()
+        if to_year is None:
+            to_year = self.date.year
+        if from_year is None:
+            from_year = 1950
+            
+        self.from_year = from_year
+        self.to_year = to_year
+        self.words = words
+        self.lang = lang
+        if not doctype is None:
+            doctype = 'bok'
+            if 'bok' in doctype:
+                doctype = 'bok'
+            elif 'avis' in doctype:
+                doctype = 'avis'
+        else:
+            doctype = 'bok'
+        ngrm = d2.nb_ngram(terms = ', '.join(words), corpus = doctype, years = (from_year, to_year))
+        ngrm.index = ngrm.index.astype(str)
+        self.ngram = ngrm
+        return None
+
+    def plot(self, **kwargs):
+        self.ngram.plot( **kwargs)
+    
+    def compare(self, another_ngram):
+        from datetime import datetime
+        start_year = max(datetime(self.from_year,1,1), datetime(another_ngram.from_year,1,1)).year
+        end_year = min(datetime(self.to_year,1,1), datetime(another_ngram.to_year,1,1)).year
+        compare =  (self.ngram.loc[str(start_year):str(end_year)].transpose()/another_ngram.ngram[str(start_year):str(end_year)].transpose().sum()).transpose()
+        return compare
+
+class Ngram_book(Ngram):
 
     
     def __init__(self, words = None, title = None, publisher = None, city = None, lang = 'nob', from_year = None, to_year = None, ddk = None, subject = None):
@@ -93,16 +130,9 @@ class Ngram_book():
         #self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
         return None
     
-    def plot(self, **kwargs):
-        self.ngram.plot( **kwargs)
+
     
-    def compare(self, another_ngram):
-        start_year = max(self.from_year, another_ngram.from_year)
-        end_year = min(self.to_year, another_ngram.to_year)
-        compare =  (self.ngram.loc[str(start_year):str(end_year)].transpose()/another_ngram.ngram[str(start_year):str(end_year)].transpose().sum()).transpose()
-        return compare
-    
-class Ngram_news(Ngram_book):
+class Ngram_news(Ngram):
         def __init__(self, words = None, title = None, city = None, from_year = None, to_year = None):
             from datetime import datetime
 
@@ -119,7 +149,7 @@ class Ngram_news(Ngram_book):
             self.ngram = d2.ngram_news(word = words, title = title, period = (from_year, to_year))
             #self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
             return None
-    
+
 def get_reference(corpus = 'digavis', from_year = 1950, to_year = 1955, lang = 'nob', limit = 100000):
     params = locals()
     r = requests.get(BASE_URL + "/reference_corpus", params = params)
