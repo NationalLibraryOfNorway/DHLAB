@@ -106,6 +106,7 @@ class Ngram():
         return compare
 
 class Ngram_book(Ngram):
+    """"""
 
     def __init__(self, words = None, title = None, publisher = None, city = None, lang = 'nob', from_year = None, to_year = None, ddk = None, subject = None):
         from datetime import datetime
