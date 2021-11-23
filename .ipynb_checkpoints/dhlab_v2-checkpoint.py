@@ -68,7 +68,57 @@ class Cooccurence():
         mask = mask[mask.relevance > relevance]
         return list(mask.sort_values(by = 'counts', ascending = False).head(200).index)
     
+class Ngram_book():
+
+    
+    def __init__(self, words = None, title = None, publisher = None, city = None, lang = 'nob', from_year = None, to_year = None, ddk = None, subject = None):
+        from datetime import datetime
+
         
+        self.date = datetime.now()
+        if to_year is None:
+            to_year = self.date.year
+        if from_year is None:
+            from_year = 1950
+        self.from_year = from_year
+        self.to_year = to_year
+        self.words = words
+        self.title = title
+        self.publisher = publisher
+        self.city = city
+        self.lang = lang
+        self.ddk = ddk
+        self.subject = subject
+        self.ngram = d2.ngram_book(word = words, title = title, publisher = publisher, lang = lang,city = city, period = (from_year, to_year), ddk = ddk, topic = subject)
+        #self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
+        return None
+    
+    def plot(self, **kwargs):
+        self.ngram.plot( **kwargs)
+    
+    def compare(self, another_ngram):
+        start_year = max(self.from_year, another_ngram.from_year)
+        end_year = min(self.to_year, another_ngram.to_year)
+        compare =  (self.ngram.loc[str(start_year):str(end_year)].transpose()/another_ngram.ngram[str(start_year):str(end_year)].transpose().sum()).transpose()
+        return compare
+    
+class Ngram_news(Ngram_book):
+        def __init__(self, words = None, title = None, city = None, from_year = None, to_year = None):
+            from datetime import datetime
+
+
+            self.date = datetime.now()
+            if to_year is None:
+                to_year = self.date.year
+            if from_year is None:
+                from_year = 1950
+            self.from_year = from_year
+            self.to_year = to_year
+            self.words = words
+            self.title = title
+            self.ngram = d2.ngram_news(word = words, title = title, period = (from_year, to_year))
+            #self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
+            return None
     
 def get_reference(corpus = 'digavis', from_year = 1950, to_year = 1955, lang = 'nob', limit = 100000):
     params = locals()
