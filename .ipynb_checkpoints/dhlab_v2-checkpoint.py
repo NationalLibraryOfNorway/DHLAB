@@ -96,7 +96,7 @@ class Ngram():
         return None
 
     def plot(self, **kwargs):
-        self.ngram.plot( **kwargs)
+        self.ngram.plot(**kwargs)
     
     def compare(self, another_ngram):
         from datetime import datetime
