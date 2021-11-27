@@ -90,7 +90,7 @@ class Ngram():
                 doctype = 'avis'
         else:
             doctype = 'bok'
-        ngrm = d2.nb_ngram(terms = ', '.join(words), corpus = doctype, years = (from_year, to_year))
+        ngrm = nb_ngram(terms = ', '.join(words), corpus = doctype, years = (from_year, to_year))
         ngrm.index = ngrm.index.astype(str)
         self.ngram = ngrm
         return None
