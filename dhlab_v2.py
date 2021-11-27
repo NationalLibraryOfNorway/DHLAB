@@ -126,7 +126,7 @@ class Ngram_book(Ngram):
         self.lang = lang
         self.ddk = ddk
         self.subject = subject
-        self.ngram = d2.ngram_book(word = words, title = title, publisher = publisher, lang = lang,city = city, period = (from_year, to_year), ddk = ddk, topic = subject)
+        self.ngram = ngram_book(word = words, title = title, publisher = publisher, lang = lang,city = city, period = (from_year, to_year), ddk = ddk, topic = subject)
         #self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
         return None
     
@@ -146,7 +146,7 @@ class Ngram_news(Ngram):
             self.to_year = to_year
             self.words = words
             self.title = title
-            self.ngram = d2.ngram_news(word = words, title = title, period = (from_year, to_year))
+            self.ngram = ngram_news(word = words, title = title, period = (from_year, to_year))
             #self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
             return None
 
