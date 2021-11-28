@@ -228,7 +228,7 @@ def ngram_news(word = ['.'], title = None, period = None):
     #df.index = df.index.map(pd.Timestamp)
     return df
 
-def get_document_frequencies(urns = None, cutoff = 0):
+def get_document_frequencies(urns = None, cutoff = 0, words = None):
     params = locals()
     r = requests.post(BASE_URL1 + "/frequencies", json = params)
     result = r.json()
