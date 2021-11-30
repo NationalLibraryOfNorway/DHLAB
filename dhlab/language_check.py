@@ -62,8 +62,8 @@ if generating == True:
     nob = char_ngram_freqs(epochs = 10)
     nno = char_ngram_freqs(lang='nno', epochs = 10)
 
-    json.dump(nob, open('trigram_lang_model/nob_trilangmodel.json','w', encoding='utf-8'))
-    json.dump(nno, open('trigram_lang_model/nno_trilangmodel.json','w', encoding='utf-8'))
+    json.dump(nob, open('../trigram_lang_model/nob_trilangmodel.json', 'w', encoding='utf-8'))
+    json.dump(nno, open('../trigram_lang_model/nno_trilangmodel.json', 'w', encoding='utf-8'))
 else:
     nob = get_github_file(nob_json)
     nno = get_github_file(nno_json)

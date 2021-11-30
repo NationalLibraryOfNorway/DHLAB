@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from nbtext import make_network_name_graph, token_map, urn_concordance, pure_urn, metadata
+from dhlab.nbtext import make_network_name_graph, token_map, urn_concordance, pure_urn, metadata
 import requests
 
 
@@ -144,7 +144,7 @@ def character_network(urn, token_map, names = None):
         names = token_map_names(token_map)
     return make_network_name_graph(urn, names, tokenmap = token_map)
 
-from nbtext import names
+from dhlab.nbtext import names
 from collections import Counter
 
 def count_name_strings(urn, token_map, names=None):
