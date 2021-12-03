@@ -1,0 +1,48 @@
+@import url(
+http://fonts.googleapis.com/css?family=Lato|Philosopher|Montserrat|Source+Code+Pro|Merriweather|Shippori+Mincho|Istok+Web|Philosopher|Assistant:200,400,700);
+
+/*
+#notebook-container {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+*/
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Montserrat', sans-serif;
+	line-height: 2em;
+    color: #004f99;
+    font-weight: 600;
+}
+
+h1 { font-size: 4.5em; }
+h2 { font-size: 4em; }
+h3 { font-size: 3.5em; }
+h4 { font-size: 3em; }
+h5 { font-size: 2.5em; color:DarkSlateGray; }
+h6 { font-size: 2em; }
+
+p {
+	font-family: 'Shippori+Mincho'; 
+	font-size:1.1em;
+	color: DarkSlateGray;
+}
+
+div.input_area {
+	border:none !important;
+	border-left:1px solid #ff851b !important
+}
+
+span.cm-keyword {
+	color:#339966 !important;
+}
+span.nn {  /*span.cm-variable, span.cm-property*/
+	color: #3399ff !important;
+}
+
+
+div.CodeMirror {
+	font-family: 'Inconsolata', monospace;
+	font-size: 1.1em;
+	
+}
