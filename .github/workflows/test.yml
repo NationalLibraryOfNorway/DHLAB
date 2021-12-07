@@ -19,7 +19,11 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Test with pytest
         run: |
-          pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=dhlab --cov-report=xml --cov-report=html
+          python -m pytest tests \
+          --doctest-modules \
+          --cov=dhlab \
+          --cov-report=xml \
+          --cov-report=html
       - name: Run Tox
         # Run tox using the version of Python in `PATH`
         run: tox -e py
