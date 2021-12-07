@@ -1,0 +1,15 @@
+name: Check Code Quality and Performance
+on:
+  push:
+    branches:
+      - main
+      - setup-github-actions
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  linting:
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/lint.yml@e3a90656d547641be1092f66ab49c7dbabd17a20
+  testing:
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/test.yml@e3a90656d547641be1092f66ab49c7dbabd17a20

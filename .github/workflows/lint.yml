@@ -1,6 +1,7 @@
 name: Lint Python Code
 
-on: [push]
+on:
+  workflow_call:
 
 jobs:
   build:
