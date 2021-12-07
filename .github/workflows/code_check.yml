@@ -10,6 +10,6 @@ on:
 
 jobs:
   linting:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/lint.yml@e3a90656d547641be1092f66ab49c7dbabd17a20
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/lint.yml
   testing:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/test.yml@e3a90656d547641be1092f66ab49c7dbabd17a20
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/test.yml
