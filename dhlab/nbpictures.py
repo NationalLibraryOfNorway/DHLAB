@@ -1,10 +1,9 @@
-from PIL import Image
-import requests
-import json
 import os
-from IPython.display import HTML, Markdown
-import json
 import re
+
+import requests
+from IPython.display import HTML, Markdown
+from PIL import Image
 
 small_scale = 0.59
 large_scale = 1.58
