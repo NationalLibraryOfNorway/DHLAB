@@ -27,15 +27,3 @@ jobs:
       - name: Run Tox
         # Run tox using the version of Python in `PATH`
         run: tox -e py
-      - name: Run static type check
-        run: |
-          mypy --ignore-missing-imports dhlab
-      - name: Clean up cache files
-        run: |
-          find . -name '*.pyc' -exec rm -f {} +
-          find . -name '*.pyo' -exec rm -f {} +
-          find . -name '*~' -exec rm -f {} +
-          find . -name '__pycache__' -exec rm -fr {} +
-          rm -f .coverage
-          rm -f .coverage.*
-        if: ${{ always() }}
