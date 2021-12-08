@@ -1,25 +1,18 @@
-import pandas as pd
-import numpy as np
-import requests
 import json
-import community
-from community import community_louvain
-import networkx as nx
-from networkx.algorithms.community import k_clique_communities
-import seaborn as sns
-
 from collections import Counter
-from nbtext import urn_coll, urn_coll_words, frame, get_freq
-from matplotlib import colors as mcolors
 
+import networkx as nx
+import requests
+import seaborn as sns
+from community import community_louvain
+from matplotlib import colors as mcolors
+from matplotlib.pylab import rcParams
+from networkx.algorithms.community import k_clique_communities
+
+from nbtext import urn_coll, urn_coll_words, frame, get_freq
 
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
 
-from IPython.display import HTML
-import sqlite3
-
-
-from pylab import rcParams
 
 rcParams['figure.figsize'] = 15, 10
 

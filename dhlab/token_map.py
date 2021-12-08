@@ -1,11 +1,10 @@
-import pandas as pd
 import os
-from dhlab.nbtext import make_network_name_graph, token_map, urn_concordance, pure_urn, metadata
+
+import pandas as pd
 import requests
 
+from dhlab.nbtext import make_network_name_graph, token_map, pure_urn, metadata
 
-import pandas as pd
-import ast
 
 def names_from_corpus(korpus):
     """Find names in a larger corpus korpus is a frame with a column urn, or a list of urns """

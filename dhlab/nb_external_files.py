@@ -1,8 +1,10 @@
-from nbtokenizer import tokenize
 from collections import Counter
-from bs4 import BeautifulSoup
-import os
+
 import pandas as pd
+from bs4 import BeautifulSoup
+
+from nbtokenizer import tokenize
+
 
 def text_from_html_file(filename):
     """Get a flat list of tokens from a file"""

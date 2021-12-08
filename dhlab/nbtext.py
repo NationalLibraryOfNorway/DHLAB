@@ -1,20 +1,20 @@
+import inspect
 import json
-import os
 import random
-from random import sample
-import numpy as np
-import numpy.random
 import re
 from collections import Counter
-import inspect
+from random import sample
 
-import pandas as pd
 import matplotlib.pyplot as plt
-import requests
-from IPython.display import HTML
-import seaborn as sns
 import networkx as nx
-from pylab import rcParams
+import numpy as np
+import numpy.random
+import pandas as pd
+import requests
+import seaborn as sns
+from IPython.display import HTML
+from matplotlib.pylab import rcParams
+
 try:
     from wordcloud import WordCloud
 except ImportError:
@@ -607,8 +607,7 @@ def collocation_data(words, yearfrom = 2000, yearto = 2005, limit = 1000, before
     return pd.DataFrame(result.sum(axis=1)).sort_values(by=0, ascending=False)
 
 class CollocationCorpus:
-    from random import sample
-    
+
     def __init__(self, corpus = None, name='', maximum_texts = 500):
         urns = pure_urn(corpus)
         
@@ -1571,7 +1570,6 @@ def frame_sort(frame, by = 0, ascending = False):
 
 def get_urns_from_docx(document):
     """Find all URNs specified in a Word document - typically .docx"""
-    import sys
     import zipfile
     import re
     from bs4 import BeautifulSoup
