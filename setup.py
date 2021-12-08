@@ -36,5 +36,5 @@ setuptools.setup(
         'seaborn',
         'setuptools',
         'wordcloud'
-        ]
+    ]
 )
