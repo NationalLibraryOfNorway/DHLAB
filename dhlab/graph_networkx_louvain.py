@@ -1,7 +1,9 @@
 import json
 from collections import Counter
 
+import matplotlib.pyplot as plt
 import networkx as nx
+import numpy as np
 import requests
 import seaborn as sns
 from community import community_louvain
@@ -12,17 +14,9 @@ from networkx.algorithms.community import k_clique_communities
 from nbtext import urn_coll, urn_coll_words, frame, get_freq
 
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
-
-
 rcParams['figure.figsize'] = 15, 10
-
-
-
-
-import matplotlib.pyplot as plt
-
-
 cutdown = lambda x: x.subgraph([n[0] for n in x.degree() if n[1]>1])
+
 
 def make_graph_corp(word, corpus='eng'):
     result = requests.get("http://www.nb.no/sp_tjenester/beta/ngram_1/galaxies/query?terms={word}&lang=all&corpus={corpus}".
@@ -56,12 +50,9 @@ def make_graph(word):
     return G
 
 
-
 def draw_graph(G, nodelist=[], h=15, v=10, fontsize=12, layout=nx.spring_layout,
                arrows=False, node_color='orange', node_size=100, font_color='black'): 
-    from pylab import rcParams
-    import matplotlib.pyplot as plt
-    
+
     if nodelist != []:
         G = G.subgraph(nodelist)
     x, y = rcParams['figure.figsize']
@@ -78,9 +69,6 @@ def draw_graph(G, nodelist=[], h=15, v=10, fontsize=12, layout=nx.spring_layout,
 
 
 def draw_graph_centrality(G,  h=15, v=10, deltax=0, deltay=0, fontsize=18, k=0.2, arrows=False, node_alpha=0.3, l_alpha=1, node_color='blue', centrality=nx.degree_centrality, font_color='black', threshold=0.01, multi=3000): 
-    from pylab import rcParams
-    import matplotlib.pyplot as plt
-    
     node_dict = centrality(G)
     subnodes = dict({x:node_dict[x] for x in node_dict if node_dict[x] >= threshold})
     x, y = rcParams['figure.figsize']
@@ -100,7 +88,6 @@ def draw_graph_centrality(G,  h=15, v=10, deltax=0, deltay=0, fontsize=18, k=0.2
     nx.draw_networkx_edges(G, pos, alpha=0.4, arrows=arrows, edge_color='lightblue')
 
     rcParams['figure.figsize'] = x, y
-    
 
 
 def draw_graph_centrality2(G, Subsets=[],  h=15, v=10, deltax=0, deltay=0, fontsize=18, k=0.2, arrows=False, 
@@ -112,11 +99,6 @@ def draw_graph_centrality2(G, Subsets=[],  h=15, v=10, deltax=0, deltay=0, fonts
                            edge_alpha = 0.1,
                           colstart=0.2,
                           coldark=0.5):
-    
-    from pylab import rcParams
-    import matplotlib.pyplot as plt
-    from matplotlib import colors as mcolors
-
 
     colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
     node_dict = centrality(G)
@@ -172,8 +154,6 @@ def sentrale(Graph, top = 20):
     return mc 
 
 
-
-
 def mcommunity(Graph, random = 10):
 
     G = Graph.to_undirected()
@@ -185,7 +165,6 @@ def mcommunity(Graph, random = 10):
         list_nodes += [set([nodes for nodes in m_partition.keys()
                                     if m_partition[nodes] == com])]
     return list_nodes
-
 
 
 def kcliques(agraph):
@@ -230,7 +209,6 @@ def subsetgraph(comms, centrals, labels=2):
     return subgraph
 
 
-
 def make_cliques(words, lable_num = 2):
     ggg = make_graph(words).to_undirected()
     centrals = nx.closeness_centrality(ggg)
@@ -241,7 +219,7 @@ def make_cliques(words, lable_num = 2):
 
 def make_w_graph(weight_matrix):
     """weight_matrix a list on the form [((x,y,weight), ...]"""
-    
+
     G = nx.Graph()
     G.add_weighted_edges_from(weight_matrix)
     return G
@@ -262,6 +240,7 @@ def my_layout(G):
         pos[i] = (int(x[0]), int(x[1]))
     return pos
 
+
 def tree_layout(G):
     """For grafer fra make_cliques der koden ligger i de to første tallene"""
     pos = dict()
@@ -270,6 +249,7 @@ def tree_layout(G):
         x = i.split()[0]
         pos[i] = (int(x[0]), int(x[1]))
     return pos
+
 
 def root_nodes(G):
     res = []
@@ -283,14 +263,14 @@ def root_nodes(G):
             res += [x]
     return res
 
+
 def tree_positions(Tree, spacing, increment=1):
     root = root_nodes(Tree)[0]
     return tree_pos(root, Tree, 1, spacing, 3, 3, level_increment=increment)[0]
 
+
 def tree_pos(x, G, level, spacing, num, left_edge, level_increment = 1):
     """Draw from left to right for left_edge"""
-    import numpy as np
-    
     positions = dict()
     daughters = [y for (y,z) in G.edges() if x==z]
     if daughters == []:
@@ -312,6 +292,7 @@ def tree_pos(x, G, level, spacing, num, left_edge, level_increment = 1):
         positions[x] = (averagex, level)
     return positions, d_left
 
+
 def forest(G):
     roots = root_nodes(G)
     g_forest = []
@@ -319,6 +300,7 @@ def forest(G):
         nr = node_set(r, G)
         g_forest += [G.subgraph(nr)]
     return g_forest
+
 
 def node_set(root, G):
     span = [root]
@@ -328,8 +310,7 @@ def node_set(root, G):
             span += node_set(d, G)
     return span
 
-        
-    
+
 def draw_tree(G, node_size=1, node_color='slategrey', n=2, m = 1, h=10, v=10):
     #plt.subplot()
     draw_graph(G, h = h, v = v, layout= lambda g: tree_positions(g, n, increment=m), node_color=node_color, node_size=node_size, fontsize=18,arrows=False)
@@ -339,9 +320,8 @@ def draw_tree(G, node_size=1, node_color='slategrey', n=2, m = 1, h=10, v=10):
     #ax.set_yticks([])
     #plt.savefig('krig.svg')
 
+
 def draw_forest(F, spacing, h=15, v=10, save_name=False):
-    import matplotlib.pyplot as plt
-    
     #rows = len(F)
     #row = 1
     #plt.figsize=(15,10)
@@ -354,29 +334,30 @@ def draw_forest(F, spacing, h=15, v=10, save_name=False):
         if save_name:
             plt.savefig('{name}-{row}.png'.format(name=save_name, row=row, dpi=300))
 
+
 def print_list_of_sets(los):
     for x in los:
         print(', '.join(x),'\n')
+
 
 def print_sets(graph):
     for x in graph[1]:
         print(x, ', '.join(graph[1][x]),'\n')
     return True
 
+
 def make_collocation_graph(target, top = 15, urns=[], cutoff=0, cut_val=2, before=4, after=4, limit=1000):
     """Make a cascaded network from collocations"""
-
-    
     antall = Counter()
     for urn in urns:
         antall += get_freq(urn[0], top=0, cutoff=0)
-    
+
     korpus_totalen = frame(antall, 'total')
     Total = korpus_totalen[korpus_totalen > cut_val]
-    
+
     if isinstance(target, str):
         target = target.split()
-       
+
     I = urn_coll_words(target, urns = urns, before=before, after=after, limit=limit)
     toppis = frame(I[0]**1.2/Total['total'], target[0]).sort_values(by=target[0], ascending=False)
 
@@ -412,8 +393,10 @@ def make_collocation_graph(target, top = 15, urns=[], cutoff=0, cut_val=2, befor
     
     return Ice
 
+
 def show_graph(G, spread=0.2, fontsize=10, deltax=0, deltay=0):
     return draw_graph_centrality2(G, mcommunity(G),k = spread, fontsize=fontsize, deltax=deltax, deltay=deltay)
+
 
 def show_cliques(G):
     C = make_cliques_from_graph(G.to_undirected())
@@ -421,12 +404,14 @@ def show_cliques(G):
         print(t, ', '.join(C[1][t]))
         print()
 
+
 def show_community(G):
     MC = mcommunity(G)
     for i in range(len(MC)):
         print(i + 1, ', '.join(MC[i]))
         print()
     return True
+
 
 def community_dict(G):
     sorter = Counter(dict(nx.degree(G)))
@@ -439,12 +424,14 @@ def community_dict(G):
         cd['-'.join([x[0] for x in l[:2]])] = [x[0] for x in l]
     return cd
 
+
 def show_communities(G):
     Gc = community_dict(G)
     for c in Gc:
         print(c,': ', ', '.join(Gc[c]))
         print()
-        
+
+
 def reduce_MxM_graph(G, words, factor=0.01):
     Gm = nx.Graph()
     edges = []
@@ -457,4 +444,3 @@ def reduce_MxM_graph(G, words, factor=0.01):
             edges.append((w1, w2, new_weight))
     Gm.add_weighted_edges_from(edges)
     return Gm
-       
