@@ -26,34 +26,32 @@ def nb_search(
     filters = []
     aq = []
 
-    if extra_filters != None:
+    if extra_filters is not None:
         filters += extra_filters
     params = {
         'page': page,
         'size': number
     }
-    if extra_conditions != None:
+    if extra_conditions is not None:
         for x in extra_conditions:
             params[x] = extra_conditions[x]
 
     if lang != '':
-        aq.append('languages:{lang}'.format(lang=lang))
+        aq.append(f'languages:{lang}')
 
     if creator != '':
-        filters.append('creator:{c}'.format(c=creator))
+        filters.append(f'creator:{creator}')
 
     if mediatype != '':
-        filters.append('mediatype:{mediatype}'.format(mediatype=mediatype))
+        filters.append(f'mediatype:{mediatype}')
 
     if period != ():
-        filters.append(
-            'date:[{date_from} TO {date_to}]'.format(date_from=period[0],
-                                                     date_to=period[1]))
+        filters.append(f'date:[{period[0]} TO {period[1]}]')
 
-    if filters != []:
+    if filters:
         params['filter'] = filters
-    
-    if aq != []:
+
+    if aq:
         params['aq'] = aq
 
     if term != '':
@@ -63,28 +61,30 @@ def nb_search(
     return r.json()
 
 
+def div_wrapper(div_content):
+    return f"""<div>{div_content}</div>"""
+
+
 def display_books(books, width=100):
     """A dictionary of urns - urls is displayed """
-    html_wrapper = lambda x: """<style>
+
+    def html_wrapper(body):
+        return f"""<style>
     img {{
-        width:{mxw}px;
+        width:{width}px;
         height:auto;
         max-width:100%}}
     </style>
-    <body>{body}</body>""".format(body=x, mxw=width)
+    <body>{body}</body>"""
 
-    div_wrapper = lambda x: """<div>{div_content}</div>""".format(div_content=x)
     book_divs = ""
     for u in books:
         mf = iiif_manifest(u)
-        thumbnail = "<img src = '{thumbnail}'></img>".format(
-            thumbnail=mf['thumbnail']['@id'])
+        thumbnail = f"<img src = '{mf['thumbnail']['@id']}'></img>"
         metainfo = '\n'.join(
-            ["<b>{label}</b>{val}".format(label=x['label'], val=x['value']) for
-             x in mf['metadata']])
+            [f"<b>{x['label']}</b>{x['value']}" for x in mf['metadata']])
         imgs = '\n'.join(
-            ["<img src='{img_http}'></img>".format(img_http=pic_url) for pic_url
-             in books[u]])
+            [f"<img src='{pic_url}'></img>" for pic_url in books[u]])
         book_divs += div_wrapper(thumbnail + metainfo + imgs)
     return html_wrapper(book_divs)
 
@@ -92,32 +92,28 @@ def display_books(books, width=100):
 def markdown_books(books, width=100):
     """A dictionary of urns - urls is displayed """
 
-    markdown_wrapper = lambda x: """
-    <body>{body}</body>""".format(body=x)
-
-    div_wrapper = lambda x: """<div>{div_content}</div>""".format(div_content=x)
     book_divs = ""
     for u in books:
         mf = iiif_manifest(u)
-        thumbnail = "<h3>Forside</h3> <img src='{thumbnail}'></img>\n\n".format(
-            thumbnail=mf['thumbnail']['@id'])
-        metainfo = '\n'.join(["<h3>Metadata</h3> <b>{label}</b> {val}".format(
-            label=x['label'], val=x['value']) for x in mf['metadata']])
+        thumbnail = f"<h3>Forside</h3> <img src='{mf['thumbnail']['@id']}'></img>\n\n"
+        metainfo = '\n'.join([
+            f"<h3>Metadata</h3> <b>{x['label']}</b> {x['value']}"
+            for x in mf['metadata']
+        ])
         imgs = '\n'.join([
-            "<img style='float:right' src='{img_http}' width = {width}></img>".format(
-                img_http=pic_url, width=width) for pic_url in
-            books[u]])
+            f"<img style='float:right' src='{pic_url}' width = {width}></img>"
+            for pic_url in books[u]
+        ])
         book_divs += div_wrapper(thumbnail + metainfo + imgs)
     return book_divs
 
 
 def iiif_manifest(urn):
-    if not 'URN' in str(urn) and not 'digibok' in str(urn):
+    if 'URN' not in str(urn) and 'digibok' not in str(urn):
         urn = "URN:NBN:no-nb_digibok_" + str(urn)
-    elif not 'URN' in str(urn):
+    elif 'URN' not in str(urn):
         urn = "URN:NBN:no-nb_" + str(urn)
-    r = requests.get(
-        "https://api.nb.no/catalog/v1/iiif/{urn}/manifest".format(urn=urn))
+    r = requests.get(f"https://api.nb.no/catalog/v1/iiif/{urn}/manifest")
     return r.json()
 
 
@@ -149,12 +145,12 @@ def get_illustration_data_from_book(urn):
 def get_urls_from_illustration_data(
         illus, part=True, scale=None, cuts=True, delta=0):
     """
-    part sets size of output of page, 
+    part sets size of output of page,
     if part is True it returns the cut out of image
-    illus is a dictionary of with entries and values like this: 
-        {'height': 270, 'hpos': 251, 'page': 'digibok_2017081626006_0018', 
-        'resolution': 400, 'vpos': 791, 'width': 373} 
-    the variable cuts, if true allows cropping of image. 
+    illus is a dictionary of with entries and values like this:
+        {'height': 270, 'hpos': 251, 'page': 'digibok_2017081626006_0018',
+        'resolution': 400, 'vpos': 791, 'width': 373}
+    the variable cuts, if true allows cropping of image.
     Restricted images must not go over 1024 x 1024 pixels.
     """
     if scale is None:
@@ -167,29 +163,35 @@ def get_urls_from_illustration_data(
     width = int(illus['width']) + 2 * delta
     vpos = int(illus['vpos']) - delta
     hpos = int(illus['hpos']) - delta
-    
-    if cuts != False:
+
+    if cuts:
         if width * scale > 1024:
             width = int(1024 / scale)
         if height * scale > 1024:
             height = int(1024 / scale)
 
     urn = "URN:NBN:no-nb_" + illus['page']
+    url_prefix = "https://www.nb.no/services/image/resolver"
     if part:
         # return cut out
-        url = "https://www.nb.no/services/image/resolver/{urn}/{hpos},{vpos},{width},{height}/full/0/native.jpg".format(
-            urn=urn,
-            width=int(width * scale),
-            height=int(height * scale),
-            vpos=int(vpos * scale),
-            hpos=int(hpos * scale)
+        url = (
+            f"{url_prefix}/"
+            f"{urn}/"
+            f"{int(hpos * scale)},"
+            f"{int(vpos * scale)},"
+            f"{int(width * scale)},"
+            f"{int(height * scale)}"
+            f"/full/0/native.jpg"
         )
     else:
         # return whole page
-        url = "https://www.nb.no/services/image/resolver/{urn}/full/0,{part}/0/native.jpg".format(
-            part=part,
-            urn=urn, width=illus['width'], height=illus['height'],
-            vpos=illus['vpos'], hpos=illus['hpos'])
+        url = (
+            f"{url_prefix}/"
+            f"{urn}/"
+            f"full/"
+            f"0,{part}/"
+            f"0/native.jpg"
+        )
 
     return url
 
@@ -218,31 +220,29 @@ def show_illustrations_urn(urn, tilgjengelig='fritt'):
 
 def display_finds_meta(r):
     """A list of urls in r is displayed as HTML"""
-    rows = [
-        ("<tr><td><img src='{row}'</td><td><a href = {meta} target='_'>{"
-         "meta}</a></td></tr>").format(
-            row=row, meta=row) for row in r]
-    return HTML("""<html><head></head>
+    rows = [(f"<tr><td><img src='{row}'</td><td><a href = {row} target='_'>"
+             f"{row}</a></td></tr>") for row in r]
+    return HTML(f"""<html><head></head>
      <body>
      <table>
-     {rows}
+     {' '.join(rows)}
      </table>
      </body>
      </html>
-     """.format(rows=' '.join(rows)))
+     """)
 
 
 def display_finds(r):
     """A list of urls in r is displayed as HTML"""
-    rows = ["<tr><td><img src='{row}'</td></tr>".format(row=row) for row in r]
-    return HTML("""<html><head></head>
+    rows = [f"<tr><td><img src='{row}'</td></tr>" for row in r]
+    return HTML(f"""<html><head></head>
      <body>
      <table>
-     {rows}
+     {' '.join(rows)}
      </table>
      </body>
      </html>
-     """.format(rows=' '.join(rows)))
+     """)
 
 
 def url2urn(url):
@@ -250,15 +250,14 @@ def url2urn(url):
 
 
 def mods(urn):
-    r = requests.get(
-        "https://api.nb.no:443/catalog/v1/metadata/{id}/mods".format(urn=urn))
+    r = requests.get(f"https://api.nb.no:443/catalog/v1/metadata/{urn}/mods")
     return r.json()
 
 
 def pages(urn, scale=800):
     a = iiif_manifest(urn)
     return [page['images'][0]['resource']['@id'].replace(
-        "full/full/", "full/0,{s}/".format(s=scale)
+        "full/full/", f"full/0,{scale}/"
     ) for page in a['sequences'][0]['canvases']]
 
 
@@ -274,20 +273,20 @@ def get_url(urn, page=1, part=200):
      A URN is a serial number or any string with serial number.
      """
     urnserial = re.findall('[0-9]+', str(urn))
-    if urnserial != []:
+    if urnserial:
         urnserial = urnserial[0]
     else:
         return ""
-    urn = "URN:NBN:no-nb_digibok_" + urnserial + '_{0:04d}'.format(page)
+    urn = f"URN:NBN:no-nb_digibok_{urnserial}_{page:04d}"
     print(urn)
-    url = ("https://www.nb.no/services/image/resolver/{urn}/full/0,{part}/"
-           "0/native.jpg").format(urn=urn, part=part)
+    url_prefix = "https://www.nb.no/services/image/resolver"
+    url = f"{url_prefix}/{urn}/full/0,{part}/0/native.jpg"
     return url
 
 
 def page_urn(urn, page=1):
     # urn as digit
-    return "URN:NBN:no-nb_digibok_" + urn + '_{0:04d}'.format(page)
+    return f"URN:NBN:no-nb_digibok_{urn}_{page:04d}"
 
 
 def super_search(term, number=50, page=0, mediatype='bilder'):
@@ -297,7 +296,7 @@ def super_search(term, number=50, page=0, mediatype='bilder'):
         r = requests.get(
             "https://api.nb.no:443/catalog/v1/items",
             params={
-                'filter': 'mediatype:{mediatype}'.format(mediatype=mediatype),
+                'filter': f'mediatype:{mediatype}',
                 'page': page,
                 'size': number
             }
@@ -307,7 +306,7 @@ def super_search(term, number=50, page=0, mediatype='bilder'):
             "https://api.nb.no:443/catalog/v1/items",
             params={
                 'q': term,
-                'filter': 'mediatype:{mediatype}'.format(mediatype=mediatype),
+                'filter': f'mediatype:{mediatype}',
                 'page': page,
                 'size': number
             }
@@ -325,7 +324,7 @@ def find_urls(term, number=50, page=0, mediatype='bilder'):
             if f['accessInfo']['accessAllowedFrom'] == 'EVERYWHERE'
                and 'thumbnail_custom' in f['_links']
         ]
-    except:
+    except:  # PEP8: E722 do not use bare 'except', too broad exception clause
         urls = []
     return urls
 
@@ -342,22 +341,19 @@ def find_urls2(term, number=50, page=0):
             if f['accessInfo']['accessAllowedFrom'] == 'EVERYWHERE'
                and 'thumbnail_custom' in f['_links']
         ]
-    except:
+    except:  # PEP8: E722 do not use bare 'except', too broad exception clause
         urls = [' ... hmm ...']
     return urls
 
 
 def get_picture_from_urn(urn, width=0, height=300):
     meta = iiif_manifest(urn)
+    url_prefix = "https://www.nb.no/services/image/resolver"
     if 'error' not in meta:
         if width == 0 and height == 0:
-            url = ("https://www.nb.no/services/image/resolver/"
-                   "{urn}/full/full/0/native.jpg").format(
-                urn=urn)
+            url = f"{url_prefix}/{urn}/full/full/0/native.jpg"
         else:
-            url = ("https://www.nb.no/services/image/resolver/{urn}/full/"
-                   "{width},{height}/0/native.jpg").format(
-                urn=urn, width=width, height=height)
+            url = f"{url_prefix}/{urn}/full/{width},{height}/0/native.jpg"
         # print(url)
     return Image.open(load_picture(url))
 
@@ -371,12 +367,11 @@ def get_picture_from_url(url, width=0, height=300):
 
 
 def get_metadata_from_url(url):
-    import re
     urn = re.findall("(URN.*?)(?:/)", url)[0]
     triple = iiif_manifest(urn)
     # print(urn, triple)
-    r = dict()
-    if not 'error' in triple:
+    r = {}  # Local variable 'r' value is not used
+    if 'error' not in triple:
         r = {x['label']: x['value'] for x in triple['metadata'] if 'label' in x}
     else:
         r = triple['error']
@@ -420,7 +415,7 @@ def total_urls(number=50, page=0):
             if f['accessInfo']['accessAllowedFrom'] == 'EVERYWHERE'
                and 'thumbnail_custom' in f['_links']
         ]
-    except:
+    except:  # PEP8: E722 do not use bare 'except', too broad exception clause
         urls = []
     return urls
 
@@ -442,9 +437,9 @@ def find_urns_sesam(term='', creator='', number=50, page=0, mediatype='bilder'):
 
 
 def save_pictures(pages, urn, root='.'):
-    """Save picture references in pages on the form: 
+    """Save picture references in pages on the form:
     pages = {
-        urn1 : [page1, page2, ..., pageN], 
+        urn1 : [page1, page2, ..., pageN],
         urn2: [page1, ..., pageM]},
         ...
         urnK: [page1, ..., pageL]
@@ -461,7 +456,7 @@ def save_pictures(pages, urn, root='.'):
         os.mkdir(folder_ref)
 
     except FileExistsError:
-        True
+        pass
 
     for p in pages[urn]:
         # pell ut entydig referanse til bildet fra URL-en i bildelisten som filnavn
@@ -475,9 +470,9 @@ def save_pictures(pages, urn, root='.'):
 
 
 def save_all_pages(pages, root='.'):
-    """Save picture references in pages on the form: 
+    """Save picture references in pages on the form:
     pages = {
-        urn1 : [page1, page2, ..., pageN], 
+        urn1 : [page1, page2, ..., pageN],
         urn2: [page1, ..., pageM]},
         ...
         urnK: [page1, ..., pageL]
@@ -493,7 +488,7 @@ def save_all_pages(pages, root='.'):
             os.mkdir(folder_ref)
 
         except FileExistsError:
-            True
+            pass
 
         for p in pages[urn]:
             # pell ut entydig referanse til bildet fra URL-en i bildelisten som filnavn
@@ -506,15 +501,7 @@ def save_all_pages(pages, root='.'):
     return True
 
 
-def load_picture(url):
-    r = requests.get(url, stream=True)
-    r.raw.decode_content = True
-    # print(r.status_code)
-    return r.raw
-
-
 def json2html(meta):
-    items = ["<dt>{key}</dt><dd>{val}</dd>".format(key=key, val=meta[key]) for
-             key in meta]
-    result = "<dl>{items}</dl>".format(items=' '.join(items))
+    items = [f"<dt>{key}</dt><dd>{value}</dd>" for key, value in meta.items()]
+    result = f"<dl>{' '.join(items)}</dl>"
     return result
