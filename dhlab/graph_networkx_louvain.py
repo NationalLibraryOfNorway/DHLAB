@@ -108,7 +108,7 @@ def draw_graph_centrality(G, h=15, v=10, deltax=0, deltay=0, fontsize=18, k=0.2,
                                 font_color=font_color)
     nx.draw_networkx_nodes(G, pos, alpha=node_alpha,
                            node_color=range(len(subnodes.keys())),
-                           # FIXME: Cannot find reference 'Blues' in 'cm.py'
+                           # Cannot find reference 'Blues' in 'cm.py'
                            cmap=plt.cm.Blues, nodelist=subnodes.keys(),
                            node_size=[v * multi for v in subnodes.values()])
     nx.draw_networkx_edges(G, pos, alpha=0.4, arrows=arrows,
@@ -208,7 +208,7 @@ def mcommunity(Graph, random=10):
 def kcliques(agraph):
     i = 3
     x = list(k_clique_communities(agraph, i))
-    comms = dict()
+    comms = {}
     while x != list():
         # print(x)
         j = 1
@@ -287,9 +287,9 @@ def my_layout(G):
 def tree_layout(G):
     """For grafer fra make_cliques der koden ligger i de to første tallene"""
     pos = dict()
-    roots = root_nodes(G)
-    for r in G.nodes():
-        x = i.split()[0]  # FIXME: Unresolved reference 'i'
+    roots = root_nodes(G)  # W0612: Unused variable 'roots' (unused-variable)
+    for r in G.nodes():  # W0612: Unused variable 'r' (unused-variable)
+        x = i.split()[0]  # E0602: Undefined variable 'i' (undefined-variable)
         pos[i] = (int(x[0]), int(x[1]))
     return pos
 
@@ -382,10 +382,11 @@ def draw_forest(F, spacing, h=15, v=10, save_name=False):
         # plt.subplot(rows,row,1)
         # plt.figure(row)
         # row += 1
-        # FIXME: Expected type 'int', got 'float' instead for node_size
+
+        # Expected type 'int', got 'float' instead for node_size
         draw_tree(tree, node_size=0.5, h=h, v=v)
         if save_name:
-            # FIXME: Unresolved reference 'row'
+            # E0602: Undefined variable 'row' (undefined-variable)
             plt.savefig(f'{save_name}-{row}.png', dpi=300)
 
 
