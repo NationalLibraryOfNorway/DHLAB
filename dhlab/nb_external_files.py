@@ -3,7 +3,7 @@ from collections import Counter
 import pandas as pd
 from bs4 import BeautifulSoup
 
-from nbtokenizer import tokenize
+from .nbtokenizer import tokenize
 
 
 def text_from_html_file(filename):
@@ -22,13 +22,13 @@ def growth_diagram_from_text(tekst, ordlister, window=5000, pr=100):
 
     ordlister er en dictionary eller en liste av en liste over ord.
     """
-    rammer = dict()
-    c = dict()
+    rammer = {}
+    c = {}
     if isinstance(ordlister, list):
         if isinstance(ordlister[0], list):
-            for l in ordlister:
-                if l != []:
-                    c[l[0]] = l
+            for liste in ordlister:
+                if liste:
+                    c[liste[0]] = liste
         else:
             c[ordlister[0]] = ordlister
     else:
