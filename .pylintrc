@@ -157,7 +157,7 @@ disable=print-statement,
         arguments-differ,
         no-member,
 		missing-function-docstring,
-		anomalous-backslash-in-string,
+		bare-except,
 		invalid-name
 
 
@@ -224,7 +224,7 @@ indent-string='    '
 max-line-length=100
 
 # Maximum number of lines in a module.
-max-module-lines=1000
+max-module-lines=2000
 
 # Allow the body of a class to be on the same line as the declaration if body
 # contains single statement.
