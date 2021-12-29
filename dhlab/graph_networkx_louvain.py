@@ -1,4 +1,3 @@
-import json
 from collections import Counter
 
 import matplotlib.pyplot as plt
@@ -11,7 +10,7 @@ from matplotlib import colors as mcolors
 from matplotlib.pylab import rcParams
 from networkx.algorithms.community import k_clique_communities
 
-from .nbtext import urn_coll, urn_coll_words, frame, get_freq
+from .nbtext import urn_coll, urn_coll_words, frame, get_freq, make_graph_from_result
 
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
 rcParams['figure.figsize'] = 15, 10
@@ -27,42 +26,13 @@ def make_graph_corp(word, corpus='eng'):
         f"?terms={word}&lang=all&corpus={corpus}"
     )
     result = requests.get(query)
-    G = nx.DiGraph()
-    edgelist = []
-    if result.status_code == 200:
-        graph = json.loads(result.text)
-        # print(graph)
-        nodes = graph['nodes']
-        edges = graph['links']
-        for edge in edges:
-            edgelist += [(
-                nodes[edge['source']]['name'],
-                nodes[edge['target']]['name'],
-                abs(edge['value'])
-            )]
-    # print(edgelist)
-    G.add_weighted_edges_from(edgelist)
-    return G
+    return make_graph_from_result(result)
 
 
 def make_graph(word):
     query = f"http://www.nb.no/sp_tjenester/beta/ngram_1/galaxies/query?terms={word}"
     result = requests.get(query)
-    G = nx.DiGraph()
-    edgelist = []
-    if result.status_code == 200:
-        graph = json.loads(result.text)
-        # print(graph)
-        nodes = graph['nodes']
-        edges = graph['links']
-        for edge in edges:
-            edgelist += [(
-                nodes[edge['source']]['name'],
-                nodes[edge['target']]['name'],
-                abs(edge['value']))]
-    # print(edgelist)
-    G.add_weighted_edges_from(edgelist)
-    return G
+    return make_graph_from_result(result)
 
 
 def draw_graph(G, nodelist: list = None, h=15, v=10, fontsize=12, layout=nx.spring_layout,

@@ -3,6 +3,7 @@ from collections import Counter
 import pandas as pd
 from bs4 import BeautifulSoup
 
+from .nbtext import gather_wordlists
 from .nbtokenizer import tokenize
 
 
@@ -23,16 +24,8 @@ def growth_diagram_from_text(tekst, ordlister, window=5000, pr=100):
     ordlister er en dictionary eller en liste av en liste over ord.
     """
     rammer = {}
-    c = {}
-    if isinstance(ordlister, list):
-        if isinstance(ordlister[0], list):
-            for liste in ordlister:
-                if liste:
-                    c[liste[0]] = liste
-        else:
-            c[ordlister[0]] = ordlister
-    else:
-        c = ordlister
+    c = gather_wordlists(ordlister)
+
     for key in c:
         rammer[key] = []
     for i in range(0, len(tekst), pr):

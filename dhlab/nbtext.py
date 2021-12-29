@@ -1424,19 +1424,25 @@ def plot_book_wordbags(urn, wordbags, window=5000, pr=100):
     return plot_sammen_vekst(urn, wordbags, window=window, pr=pr)
 
 
-def plot_sammen_vekst(urn, ordlister, window=5000, pr=100):
-    """Plott alle seriene sammen"""
-    rammer = []
+def gather_wordlists(ordlister):
     c = {}
     if isinstance(ordlister, list):
         if isinstance(ordlister[0], list):
-            for l in ordlister:
-                if not l:
-                    c[l[0]] = l
+            for liste in ordlister:
+                if liste:
+                    c[liste[0]] = liste
         else:
             c[ordlister[0]] = ordlister
     else:
         c = ordlister
+    return c
+
+
+def plot_sammen_vekst(urn, ordlister, window=5000, pr=100):
+    """Plott alle seriene sammen"""
+    rammer = []
+    c = gather_wordlists(ordlister)
+
     for key in c:
         vekst = vekstdiagram(urn, params={'words': c[key], 'window': window,
                                           'pr': pr})
@@ -1515,11 +1521,17 @@ def make_graph(words, lang='nob', cutoff=20, leaves=0):
     Parameter cutoff only works for lang='nob'.
     Specify English by setting lang='eng' and German by lang='ger'
     """
-
     params = {'terms': words, 'corpus': lang, 'limit': cutoff, 'leaves': leaves}
     result = requests.get(
         "https://www.nb.no/sp_tjenester/beta/ngram_1/galaxies/query",
         params=params)
+    return make_graph_from_result(result)
+
+
+def make_graph_from_result(result):
+    """Utility function to create a graph from the result of a request
+    to the ngram service.
+    """
     G = nx.DiGraph()
     edgelist = []
     if result.status_code == 200:
@@ -1529,10 +1541,9 @@ def make_graph(words, lang='nob', cutoff=20, leaves=0):
         edges = graph['links']
         for edge in edges:
             edgelist += [(nodes[edge['source']]['name'],
-                          nodes[edge['target']]['name'], abs(edge['value']))]
-    # print(edgelist)
+                          nodes[edge['target']]['name'],
+                          abs(edge['value']))]
     G.add_weighted_edges_from(edgelist)
-
     return G
 
 
