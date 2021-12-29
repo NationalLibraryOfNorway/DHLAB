@@ -369,7 +369,7 @@ def df_combine(array_df):
     cols = []
     # E0602: Undefined variable 'a' (undefined-variable).
     # Antar at 'a' skulle være array_df
-    for i in range(len(array_df)):
+    for i in enumerate(array_df):
         # print(i)
         if array_df[i].columns[0] in cols:
             array_df[i].columns = [array_df[i].columns[0] + '_' + str(i)]
