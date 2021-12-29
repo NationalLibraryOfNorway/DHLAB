@@ -1,4 +1,6 @@
+import ast
 import os
+import sys
 from collections import Counter
 
 import pandas as pd
@@ -22,14 +24,16 @@ def names_from_corpus(korpus):
     return alle_navn
 
 
-def count_names_corpus(korpus, token_map):
-    """Count names in a corpus using a token map, which groups different name tokens into one token"""
+def count_names_corpus(korpus, token_map_):
+    """Count names in a corpus using a token map,
+    which groups different name tokens into one token.
+    """
 
-    res = dict()
+    res = {}
     urner = pure_urn(korpus)
     for urn in urner:
         try:
-            res[urn] = count_name_strings(str(urn), token_map).to_dict()[0]
+            res[urn] = count_name_strings(str(urn), token_map_).to_dict()[0]
         except:
             try:
                 print('feil med:',
@@ -47,7 +51,7 @@ def names_from_excel(excelfil):
     navn = pd.read_excel(excelfil, index_col=0)
     navn.index = navn.index.dropna()
     navn = navn.to_dict()[0]
-    navnedata = (dict(), dict(), dict(), dict())
+    navnedata = ({},) * 4
 
     for x in navn:
         try:
@@ -73,37 +77,36 @@ def token_map_names(tmap):
 # create a character network with only tokens in tokenmap
 # see nb.make_network_name_graph in nbtext
 
+def check_exit_conditions(filename):
+    if filename == '':
+        raise ValueError('Angi et filnavn')
+    if os.path.exists(filename):
+        raise FileExistsError(f'Filen {filename} eksisterer - prøv et nytt filnavn')
+
 
 def names_to_token_map_file(wp, filename='', orient='column'):
     """Save token map to file for editing, exit if file exists"""
 
     # check  exit conditions
-    if filename != '':
-        if os.path.exists(filename):
-            print('filen {f} eksisterer - prøve et nytt filnavn'.format(
-                f=filename))
-            return
-    else:
-        print('angi et filnavn')
+    try:
+        check_exit_conditions(filename)
+    except (ValueError, FileExistsError) as error:
+        print(error)
         return
 
     # if all ok go ahead
 
-    table_names = dict()
+    table_names = {}
     # print(wp)
     tmap = token_map(wp)
     ##print(tmap)
     for (name, target) in tmap:
         x_str = ' '.join(target)
         y_str = ' '.join(name)
-        if x_str in table_names:
-            table_names[x_str].append(y_str)
-        else:
-            table_names[x_str] = [y_str]
+        table_names.setdefault(x_str, []).append(y_str)
 
-    dfs = []
-    for x in table_names:
-        dfs.append(pd.DataFrame({x: table_names[x]}))
+    dfs = [pd.DataFrame({key: value}) for key, value in table_names.items()]
+
     df = pd.concat(dfs, axis=1)
     if orient == 'row':
         df = df.transpose()
@@ -153,36 +156,36 @@ def show_names(wp):
         print()
 
 
-def character_network(urn, token_map, names=None):
-    if names == None:
-        names = token_map_names(token_map)
-    return make_network_name_graph(urn, names, tokenmap=token_map)
+def character_network(urn, token_map_, names_=None):
+    if names_ is None:
+        names_ = token_map_names(token_map_)
+    return make_network_name_graph(urn, names_, tokenmap=token_map_)
 
 
-def count_name_strings(urn, token_map, names=None):
+def count_name_strings(urn, token_map_, names_=None):
     """ return a count of the names in tokenmap"""
-    if names == None:
-        names = token_map_names(token_map)
+    if names_ is None:
+        names_ = token_map_names(token_map_)
 
     if isinstance(urn, list):
         urn = urn[0]
 
-    # tokens should be a list of list of tokens. If it is list of dicts pull out the keys (= tokens)   
+    # tokens should be a list of list of tokens. If it is list of dicts pull out the keys (= tokens)
     # if isinstance(tokens[0], dict):
     #    tokens = [list(x.keys()) for x in tokens]
 
     res = requests.post("https://api.nb.no/ngram/word_counts",
-                        json={'urn': urn, 'tokens': names,
-                              'tokenmap': token_map})
+                        json={'urn': urn, 'tokens': names_,
+                              'tokenmap': token_map_})
     # print(r.text)
 
     return pd.read_json(res.json()).sort_values(by=0, ascending=False)
 
 
 def corpus_names(corpus, ratio=0.5, cutoff=10):
-    # check status of corpus if it is a frame or a list of list 
+    # check status of corpus if it is a frame or a list of list
     # for now assume it is a list of URNs
-    urn_names = dict()
+    urn_names = {}
     for urn in corpus:
         try:
             urn_names[urn] = names(urn, ratio=ratio, cutoff=cutoff)
@@ -192,7 +195,7 @@ def corpus_names(corpus, ratio=0.5, cutoff=10):
 
 
 def combine_names(namedict):
-    total_names = [Counter(), Counter(), Counter(), Counter()]
+    total_names = [Counter()] * 4
     for urn in namedict:
         for i in range(4):
             total_names[i] += namedict[urn][i]
@@ -200,7 +203,9 @@ def combine_names(namedict):
 
 
 def filter_names(tm_names, gazetteers):
-    """Filter name findings using a gazetteer - the gazetteer should consist of a list of first and last names"""
+    """Filter name findings using a gazetteer
+    - the gazetteer should consist of a list of first and last names.
+    """
 
     # check single names
     def member(w, gazetteer):
@@ -238,7 +243,6 @@ def filter_names(tm_names, gazetteers):
     name_structure[0].update(single_names)
 
     # check double names (check for genitives)
-    double_names = Counter()
     double_remove = Counter()
     doubles = tm_names[1]
     for w in doubles:
@@ -249,7 +253,6 @@ def filter_names(tm_names, gazetteers):
                 new_token.append(token)
         new_token = tuple(new_token)
         # print(new_token)
-        val = 0
         if new_token != ():
             name_structure = add_name(new_token, name_structure, doubles[w])
             if new_token != w:
@@ -269,7 +272,6 @@ def filter_names(tm_names, gazetteers):
                 new_token.append(token)
         new_token = tuple(new_token)
         # print(new_token)
-        val = 0
         if new_token != ():
             name_structure = add_name(new_token, name_structure, triples[w])
             if new_token != w:
@@ -289,7 +291,6 @@ def filter_names(tm_names, gazetteers):
                 new_token.append(token)
         new_token = tuple(new_token)
         # print(new_token)
-        val = 0
         if new_token != ():
             name_structure = add_name(new_token, name_structure, quads[w])
             if new_token != w:
