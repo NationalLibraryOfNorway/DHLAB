@@ -436,7 +436,7 @@ def find_urns_sesam(term='', creator='', number=50, page=0, mediatype='bilder'):
     return sesamid
 
 
-def save_pictures(pages, urn, root='.'):
+def save_pictures(pages_, urn, root='.'):
     """Save picture references in pages on the form:
     pages = {
         urn1 : [page1, page2, ..., pageN],
@@ -458,7 +458,7 @@ def save_pictures(pages, urn, root='.'):
     except FileExistsError:
         pass
 
-    for p in pages[urn]:
+    for p in pages_[urn]:
         # pell ut entydig referanse til bildet fra URL-en i bildelisten som filnavn
 
         filename = p.split('/')[6].split(':')[-1] + '.jpg'
@@ -469,7 +469,7 @@ def save_pictures(pages, urn, root='.'):
     return True
 
 
-def save_all_pages(pages, root='.'):
+def save_all_pages(pages_, root='.'):
     """Save picture references in pages on the form:
     pages = {
         urn1 : [page1, page2, ..., pageN],
@@ -481,7 +481,7 @@ def save_all_pages(pages, root='.'):
     """
 
     # In case urn is an actual URN, works also if urn is passed as sesamid
-    for urn in pages:
+    for urn in pages_:
         folder_name = urn.split(':')[-1]
         folder_ref = os.path.join(root, folder_name)
         try:
@@ -490,7 +490,7 @@ def save_all_pages(pages, root='.'):
         except FileExistsError:
             pass
 
-        for p in pages[urn]:
+        for p in pages_[urn]:
             # pell ut entydig referanse til bildet fra URL-en i bildelisten som filnavn
 
             filename = p.split('/')[6].split(':')[-1] + '.jpg'
