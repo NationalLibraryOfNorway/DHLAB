@@ -104,7 +104,7 @@ def check_navn(name, limit=2,
     remove = ('Ja Nei Nå Dem De Deres Unnskyld Ikke Ah Hmm Javel Akkurat '
               'Jaja Jaha').split() if remove is None else remove
     r = {x: name[x] for x in name if
-         name[x] > limit and x.upper() != x and not x in remove}
+         name[x] > limit and x.upper() != x and x not in remove}
     return r
 
 
@@ -293,7 +293,7 @@ def pure_urn(data):
     return korpus_def
 
 
-####  N-Grams from fulltext updated
+# N-Grams from fulltext updated
 
 def unigram(word, period=(1950, 2020), media='bok', ddk=None, topic=None,
             gender=None, publisher=None, lang=None, trans=None):
@@ -400,7 +400,7 @@ def get_freq(urn, top=50, cutoff=3):
     return Counter(dict(r.json()))
 
 
-####=============== GET URNS ==================##########
+# =============== GET URNS ================== #
 def book_corpus(words=None, author=None,
                 title=None, subtitle=None, ddk=None, subject=None,
                 period=(1100, 2020),
@@ -517,7 +517,7 @@ def get_best_urn(word, meta_data=None):
     meta_data['word'] = word
     if not ('next' in meta_data or 'neste' in meta_data):
         meta_data['next'] = 600
-    if not 'year' in meta_data:
+    if 'year' not in meta_data:
         meta_data['year'] = 1500
     r = requests.get('https://api.nb.no/ngram/best_urn', json=meta_data)
     return r.json()
@@ -526,7 +526,10 @@ def get_best_urn(word, meta_data=None):
 def get_papers(top=5, cutoff=5, name='%', yearfrom=1800, yearto=2020,
                samplesize=100):
     """Get newspapers"""
-    div = lambda x, y: (int(x / y), x % y)
+
+    def div(x, y):
+        return int(x / y), x % y
+
     chunks = 20
 
     # split samplesize into chunks, go through the chunks and then the remainder
@@ -625,10 +628,11 @@ def compare_word_bags(bag_of_words, another_bag_of_words, first_freq=0,
     Typical situation is that bag_of_words is a one column frame and another_bag_of_words is
     another one column frame.
     When the columns are all from one frame, just change column numbers to match the columns"""
-    diff = bag_of_words[bag_of_words > first_freq][
-               bag_of_words.columns[first_col]] / \
-           another_bag_of_words[another_bag_of_words > another_freq][
-               another_bag_of_words.columns[another_col]]
+    diff = (
+            bag_of_words[bag_of_words > first_freq][bag_of_words.columns[first_col]] /
+            another_bag_of_words[another_bag_of_words > another_freq][
+                another_bag_of_words.columns[another_col]]
+    )
 
     return frame(diff, 'diff').sort_values(by='diff', ascending=False)[:top]
 
@@ -974,8 +978,8 @@ def token_convert_back(tokens, sep='_'):
     res = [tokens[0]]
     for y in tokens:
         res.append([tuple(x.split(sep)) for x in y])
-    l = len(res)
-    for _ in range(1, 4 - l):
+    length = len(res)
+    for _ in range(1, 4 - length):
         res.append([])
     return res
 
@@ -1236,7 +1240,7 @@ class Corpus:
             self.reference = aggregate(self.reference)
             self.reference.columns = ['reference_corpus']
 
-            ## dokumentfrekvenser
+            # dokumentfrekvenser
 
             target_docf = pd.DataFrame(
                 pd.DataFrame(target_corpus_txt / target_corpus_txt).sum(axis=1))
@@ -1244,7 +1248,7 @@ class Corpus:
             ref_docf = pd.DataFrame(
                 pd.DataFrame(referanse_txt / referanse_txt).sum(axis=1))
 
-            ### Normaliser dokumentfrekvensene
+            # Normaliser dokumentfrekvensene
             normalize_corpus_dataframe(target_docf)
             normalize_corpus_dataframe(combo_docf)
             normalize_corpus_dataframe(ref_docf)
@@ -1259,8 +1263,11 @@ class Corpus:
 
     def difference(self, freq_exp=1.1, doc_exp=1.1, top=200, aslist=True):
         res = pd.DataFrame(
-            (self.target_corpus_tot ** freq_exp / self.combo_tot) * (
-                    self.target_docf ** doc_exp / self.combo_docf)
+            (
+                    self.target_corpus_tot ** freq_exp / self.combo_tot
+            ) * (
+                    self.target_docf ** doc_exp / self.combo_docf
+            )
         )
         res.columns = ['diff']
         if top > 0:
@@ -1691,9 +1698,9 @@ def get_urnkonk(word, params=None, html=True):
         for x in r.json():
             rows += f"""<tr>
                 <td>
-                    <a 
-                    href='{x['urn']}?searchText={word}' 
-                    target='_blank' 
+                    <a
+                    href='{x['urn']}?searchText={word}'
+                    target='_blank'
                     style='text-decoration:none'>
                     {x['title']}, {x['author']}, {x['year']}
                     </a>

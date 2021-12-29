@@ -73,7 +73,7 @@ def update(module="", overwrite=True, silent=False):
         printmd(
             f"An error occured during download for {module} with error "
             f"{nba.status_code}"
-            )
+        )
 
 
 def css(url=None):

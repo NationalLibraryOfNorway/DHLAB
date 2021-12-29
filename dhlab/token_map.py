@@ -99,7 +99,7 @@ def names_to_token_map_file(wp, filename='', orient='column'):
     table_names = {}
     # print(wp)
     tmap = token_map(wp)
-    ##print(tmap)
+    # print(tmap)
     for (name, target) in tmap:
         x_str = ' '.join(target)
         y_str = ' '.join(name)
