@@ -21,7 +21,7 @@ jobs:
         pip install pylint flake8 mypy
     - name: Analysing the code with pylint
       run: |
-        pylint dhlab -j 4 --reports=y
+        pylint dhlab -j 4 --reports=y --fail-under=8
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
