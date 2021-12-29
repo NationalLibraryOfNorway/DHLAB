@@ -100,7 +100,7 @@ def draw_graph_centrality(G, h=15, v=10, deltax=0, deltay=0, fontsize=18, k=0.2,
     ax.set_yticks([])
     G = G.subgraph(subnodes)
     pos = nx.spring_layout(G, k=k)
-    labelpos = dict({k: (pos[k][0] + deltax, pos[k][1] + deltay) for k in pos})
+    labelpos = {k: (v[0] + deltax, v[1] + deltay) for k, v in pos.items()}
     # print(labelpos)
     # print(pos)
     if l_alpha <= 1:
@@ -130,11 +130,10 @@ def draw_graph_centrality2(G, Subsets=None, h=15, v=10, deltax=0, deltay=0,
                            coldark=0.5):
     if Subsets is None:
         Subsets = []
-    colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
+    # W0621: Redefining name 'colors' from outer scope (line 16) (redefined-outer-name)
+    colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)  # W0612: Unused variable 'colors'
     node_dict = centrality(G)
-    subnodes = dict(
-        {x: node_dict[x] for x in node_dict if node_dict[x] >= threshold})
-    # print(subnodes)
+    subnodes = {x: node_dict[x] for x in node_dict if node_dict[x] >= threshold}
     x, y = rcParams['figure.figsize']
     rcParams['figure.figsize'] = h, v
 
@@ -144,13 +143,13 @@ def draw_graph_centrality2(G, Subsets=None, h=15, v=10, deltax=0, deltay=0,
     # G = G.subgraph(subnodes)
     glob_col = sns.hls_palette(len(G), h=colstart, l=coldark)[0]
     pos = nx.spring_layout(G, k=k)
-    labelpos = dict({k: (pos[k][0] + deltax, pos[k][1] + deltay) for k in pos})
+    labelpos = {k: (v[0] + deltax, v[1] + deltay) for k, v in pos.items()}
     # print(labelpos)
     # print(pos)
     if l_alpha <= 1:
         nx.draw_networkx_labels(G, labelpos, font_size=fontsize, alpha=l_alpha,
                                 font_color=font_color)
-    sub_color = 0
+    sub_color = 0  # W0612: Unused variable 'sub_color' (unused-variable)
     if Subsets != []:
         i = 0
         colpalette = sns.hls_palette(len(Subsets), h=colstart, l=coldark)
@@ -164,7 +163,7 @@ def draw_graph_centrality2(G, Subsets=None, h=15, v=10, deltax=0, deltay=0,
             # print(i, sub_col)
             nx.draw_networkx_nodes(G, pos, alpha=node_alpha,
                                    node_color=[sub_col],
-                                   nodelist=[x for x in sublist.keys()],
+                                   nodelist=list(sublist.keys()),
                                    node_size=[v * multi for v in
                                               sublist.values()])
             i += 1
@@ -177,7 +176,6 @@ def draw_graph_centrality2(G, Subsets=None, h=15, v=10, deltax=0, deltay=0,
                            edge_color=edge_color)
 
     rcParams['figure.figsize'] = x, y
-    return
 
 
 # Set palette using: sns.hls_palette(10, h=.6, l=.1)
@@ -200,8 +198,9 @@ def mcommunity(Graph, random=10):
     # print(m_partition)
     list_nodes = []
     for com in set(m_partition.values()):
-        list_nodes += [set([nodes for nodes in m_partition.keys()
-                            if m_partition[nodes] == com])]
+        list_nodes += [
+            {nodes for nodes in m_partition.keys() if m_partition[nodes] == com}
+        ]
     return list_nodes
 
 
@@ -209,7 +208,7 @@ def kcliques(agraph):
     i = 3
     x = list(k_clique_communities(agraph, i))
     comms = {}
-    while x != list():
+    while x and isinstance(x, list):
         # print(x)
         j = 1
         for el in x:
@@ -224,8 +223,7 @@ def subsetgraph(comms, centrals, labels=2):
     """comms is communities """
     subgraph = nx.DiGraph()
     comkeys = sorted(comms.keys(), key=lambda x: x[0], reverse=True)
-    for i in range(len(comkeys)):
-        top = comkeys[i]
+    for i, top in enumerate(comkeys):
         label_small = str(top[0]) + str(top[1])
         small_ordered = Counter(
             {r: centrals[r] for r in comms[top]}).most_common(labels)
@@ -277,7 +275,7 @@ def make_cliques_from_graph(G, lable_num=2):
 
 def my_layout(G):
     """For grafer fra make_cliques der koden ligger i de to første tallene"""
-    pos = dict()
+    pos = {}
     for i in G.nodes():
         x = i.split()[0]
         pos[i] = (int(x[0]), int(x[1]))
@@ -285,8 +283,12 @@ def my_layout(G):
 
 
 def tree_layout(G):
-    """For grafer fra make_cliques der koden ligger i de to første tallene"""
-    pos = dict()
+    """For grafer fra make_cliques der koden ligger i de to første tallene.
+
+    OBS! Denne funksjonen vil ikke fungere uten refaktorering.
+    Se kommentarer på de aktuelle linjene som må fikses.
+    """
+    pos = {}
     roots = root_nodes(G)  # W0612: Unused variable 'roots' (unused-variable)
     for r in G.nodes():  # W0612: Unused variable 'r' (unused-variable)
         x = i.split()[0]  # E0602: Undefined variable 'i' (undefined-variable)
@@ -314,7 +316,7 @@ def tree_positions(Tree, spacing, increment=1):
 
 def tree_pos(x, G, level, spacing, num, left_edge, level_increment=1):
     """Draw from left to right for left_edge"""
-    positions = dict()
+    positions = {}
     daughters = [y for (y, z) in G.edges() if x == z]
     if daughters == []:
         positions[x] = (left_edge, level)
@@ -374,6 +376,10 @@ def draw_tree(G, node_size=1, node_color='slategrey', n=2, m=1, h=10, v=10):
 
 
 def draw_forest(F, spacing, h=15, v=10, save_name=False):
+    """Denne funksjonen vil ikke fungere uten refaktorering.
+
+    Se kommentarer på/over de aktuelle linjene.
+    """
     # rows = len(F)
     # row = 1
     # plt.figsize=(15,10)
@@ -423,33 +429,33 @@ def make_collocation_graph(target, top=15, urns=None, cutoff=0, cut_val=2,
 
     # toppis[:top].index
 
-    isgraf = dict()
+    isgraf = {}
     for word in toppis[:top].index:
         if word.isalpha():
             isgraf[word] = urn_coll(word, urns=urns, before=before, after=after)
 
-    isframe = dict()
-    for w in isgraf:
-        isframe[w] = frame(isgraf[w], w)
+    isframe = {}
+    for w, value in isgraf.items():
+        isframe[w] = frame(value, w)
 
-    tops = dict()
+    tops = {}
     if len(target) == 1:
         tops[target[0]] = toppis
     else:
         tops['_'.join(target[:2])] = toppis
-    for w in isframe:
-        tops[w] = frame(isframe[w][w] ** 1.2 / Total['total'], w).sort_values(
+    for w, value in isframe.items():
+        tops[w] = frame(value[w] ** 1.2 / Total['total'], w).sort_values(
             by=w, ascending=False)
 
     edges = []
-    for w in tops:
-        edges += [(w, coll) for coll in tops[w][:top].index if coll.isalpha()]
+    for w, value in tops.items():
+        edges += [(w, coll) for coll in value[:top].index if coll.isalpha()]
 
-    Ice = nx.Graph()
+    ice = nx.Graph()
 
-    Ice.add_edges_from(edges)
+    ice.add_edges_from(edges)
 
-    return Ice
+    return ice
 
 
 def show_graph(G, spread=0.2, fontsize=10, deltax=0, deltay=0):
@@ -466,15 +472,15 @@ def show_cliques(G):
 
 def show_community(G):
     MC = mcommunity(G)
-    for i in range(len(MC)):
-        print(i + 1, ', '.join(MC[i]))
+    for i, element in enumerate(MC):
+        print(i + 1, ', '.join(element))
         print()
     return True
 
 
 def community_dict(G):
     sorter = Counter(dict(nx.degree(G)))
-    cd = dict()
+    cd = {}
     for c in mcommunity(G):
         l = [(x, sorter[x]) for x in c if sorter[x] > 0]
         # print(l)
@@ -486,8 +492,8 @@ def community_dict(G):
 
 def show_communities(G):
     Gc = community_dict(G)
-    for c in Gc:
-        print(c, ': ', ', '.join(Gc[c]))
+    for c, value in Gc.items():
+        print(c, ': ', ', '.join(value))
         print()
 
 
