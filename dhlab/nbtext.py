@@ -6,6 +6,7 @@ import sys
 import zipfile
 from collections import Counter
 from random import sample
+from typing import List, Tuple, Union, Iterable, Dict
 
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -74,18 +75,19 @@ def wordbag_eval_para(wordbag, urns):
 
 
 def get_paragraphs(urn, paras):
-    """Return paragraphs for urn"""
+    """Return paragraphs for urn."""
     param = {'paragraphs': paras, 'urn': urn}
     r = requests.get("https://api.nb.no/ngram/paragraphs", json=param)
     return dict2pd(r.json())
 
 
-### ******************* wordbag search end
+# ******************* wordbag search end
 
 def ner(text=None, dist=False):
     """Analyze text for named entities.
 
-    set dist = True will return the four values that go into decision.
+    :param dist:
+        If True, return the four values that go into decision.
     """
     r = []
     if text is not None:
@@ -188,7 +190,9 @@ def word_form(word):
     """Find alternative form for a given word form,
     e.g. word_variant('spiste', 'pres-part').
     """
-    r = requests.get("https://api.nb.no/ngram/word_form", params={'word': word})
+    r = requests.get(
+        "https://api.nb.no/ngram/word_form", params={'word': word}
+    )
     return r.json()
 
 
@@ -207,7 +211,7 @@ def word_freq(urn, words):
 
 
 def tot_freq(words):
-    """ Find total frequency of words."""
+    """Find total frequency of words."""
     params = {'words': words}
     r = requests.post("https://api.nb.no/ngram/word_frequencies", json=params)
     return dict(r.json())
@@ -219,18 +223,31 @@ def book_count(urns):
     return dict(r.json())
 
 
-def sttr(urn, chunk=5000):
+def sttr(urn: Union[str, int], chunk: int = 5000) -> float:
+    """Compute a standardized type/token-ratio for text identified with urn.
+
+    :param urn: The serial number of a URN for a book
+    :param chunk: The number of words from the book to do the calculations with
+    :return: The type/token-ratio as a floating point number
+    """
     r = requests.get("https://api.nb.no/ngram/sttr",
                      json={'urn': urn, 'chunk': chunk})
     return r.json()
 
 
 def totals(top=200):
+    """Returns a dictionary of the top `top` number of words in the
+    digital collection."""
     r = requests.get("https://api.nb.no/ngram/totals", json={'top': top})
     return dict(r.json())
 
 
-def navn(urn):
+def navn(urn: Union[List, str, int]) -> Dict:
+    """Extract possible names in some document(s) and count their frequencies.
+
+    :param urn: Serial number(s) of document(s) in NB Digital
+    :return: Dict of frequencies for possible names in the document(s)
+    """
     if isinstance(urn, list):
         urn = urn[0]
     r = requests.get('https://api.nb.no/ngram/tingnavn', json={'urn': urn})
@@ -246,11 +263,13 @@ def digibokurn_from_text(T):
 
 
 def urn_from_text(T):
-    """Return URNs as 13 digits (any sequence of 13 digits is counted as an URN)"""
+    """Return a list of URNs as 13 digit serial numbers.
+    Any sequence of 13 digits is counted as a URN."""
     return re.findall("[0-9]{13}", T)
 
 
-def metadata(urn=None):
+def metadata(urn: str = None):
+    """Return a list of metadata entries for given URN."""
     urns = pure_urn(urn)
     # print(urns)
     r = requests.post("https://api.nb.no/ngram/meta", json={'urn': urns})
@@ -259,16 +278,18 @@ def metadata(urn=None):
 
 def pure_urn(data):
     """Convert URN-lists with extra data into list of serial numbers.
-    Args:
-        data: May be a list of URNs, a list of lists with URNs as their
-            initial element, or a string of raw texts containing URNs
-            Any pandas dataframe or series.
-            Urns must be in the first column of dataframe.
-    Returns:
-        List[str]: A list of URNs. Empty list if input is on the wrong
-            format or contains no URNs
-    """
 
+    Used to convert different ways of presenting URNs
+    into a list of serial decimal digits.
+    Designed to work with book URNs, and will not work for newspaper URNs.
+
+    :param data:
+        May be a list of URNs, a list of lists with URNs
+        as their initial element, or a string of raw texts containing URNs.
+    :return: List[str]:
+        A list of URNs. Empty list if input is on the wrong format
+        or contains no URNs.
+    """
     korpus_def = []
     if isinstance(data, list):
         if not data:  # Empty list
@@ -343,7 +364,7 @@ def book_counts(period=(1800, 2050)):
 
 def difference(first, second, rf, rs, years=(1980, 2000), smooth=1,
                corpus='bok'):
-    """Compute difference of difference (first/second)/(rf/rs)"""
+    """Compute difference of difference (first/second)/(rf/rs) for n-grams."""
     try:
         a_first = nb_ngram(first, years=years, smooth=smooth, corpus=corpus)
         a_second = nb_ngram(second, years=years, smooth=smooth, corpus=corpus)
@@ -365,7 +386,7 @@ def difference(first, second, rf, rs, years=(1980, 2000), smooth=1,
 
 
 def df_combine(array_df):
-    """Combine one columns dataframes"""
+    """Combine single-column-dataframes into one dataframe."""
     cols = []
     # E0602: Undefined variable 'a' (undefined-variable).
     # Antar at 'a' skulle være array_df
@@ -378,6 +399,7 @@ def df_combine(array_df):
 
 
 def col_agg(df, col='sum'):
+    """Aggregate columns of a pandas dataframe."""
     c = df.sum(axis=0)
     c = pd.DataFrame(c)
     c.columns = [col]
@@ -385,6 +407,7 @@ def col_agg(df, col='sum'):
 
 
 def row_agg(df, col='sum'):
+    """Aggregate rows of a pandas dataframe."""
     c = df.sum(axis=1)
     c = pd.DataFrame(c)
     c.columns = [col]
@@ -392,7 +415,11 @@ def row_agg(df, col='sum'):
 
 
 def get_freq(urn, top=50, cutoff=3):
-    """Get frequency list for urn"""
+    """Get frequency list of words for a given URN.
+
+    :param urn: A serial number for an item in the digital collection.
+    :return: A Counter object of term types and their frequencies.
+    """
     if isinstance(urn, list):
         urn = urn[0]
     r = requests.get("https://api.nb.no/ngram/urnfreq",
@@ -424,7 +451,9 @@ def book_urn(words=None, author=None,
     """Get URNs for books with metadata"""
     dataframe = inspect.currentframe()
     args, _, _, values = inspect.getargvalues(dataframe)
-    query = {i: values[i] for i in args if values[i] is not None and i != 'period'}
+    query = {
+        i: values[i] for i in args if values[i] is not None and i != 'period'
+    }
     query['year'] = period[0]
     query['next'] = period[1] - period[0]
     return get_urn(query)
@@ -432,8 +461,10 @@ def book_urn(words=None, author=None,
 
 def unique_urns(korpus, newest=True):
     author_title = {(c[1], c[2]) for c in korpus}
-    corpus = {(c[0], c[1]): [d for d in korpus if c[0] == d[1] and c[1] == d[2]]
-              for c in author_title}
+    corpus = {
+        (c[0], c[1]): [d for d in korpus if c[0] == d[1] and c[1] == d[2]]
+        for c in author_title
+    }
     for c in corpus:
         corpus[c].sort(key=lambda c: c[3])
 
@@ -454,7 +485,8 @@ def refine_book_urn(urns=None, words=None, author=None,
     if urns is None or urns == []:
         return []
 
-    # check if urns is a metadata list, and pick out first elements if that is the case
+    # check if urns is a metadata list,
+    # and pick out first elements if that is the case
     if isinstance(urns[0], list):
         urns = [x[0] for x in urns]
 
@@ -485,8 +517,25 @@ def best_book_urn(word=None, author=None,
     return get_best_urn(word, query)
 
 
-def get_urn(meta_data=None):
-    """Get urns from metadata"""
+def get_urn(meta_data: dict = None):
+    """Get URNs from metadata.
+
+    :param meta_data: A dictionary of metadata.   Expected keys are:
+
+        * `"corpus"`: "avis" or "bok".
+        * `"author"`: Wildcard match using % as wildcard.
+        * `"title"`:  Wildcard match using %.
+          For newspapers this corresponds to name of paper.
+        * `"year"`:   Integer (e.g. 1900, the default value),
+          or string (e.g. "1900").
+        * `"next"`: The number of years after `year`
+          to include in the URN search. Defaults to 100.
+        * `"ddk"`:    Dewey decimal number as wildcard match e.g. "64%".
+        * `"gender"`: "m" for male or "f" for female.
+        * `"subject"`: Keywords used to annotate text
+          in the national bibliography.
+
+    """
     if meta_data is None:
         meta_data = {}
     if not ('next' in meta_data or 'neste' in meta_data):
@@ -525,14 +574,27 @@ def get_best_urn(word, meta_data=None):
 
 def get_papers(top=5, cutoff=5, name='%', yearfrom=1800, yearto=2020,
                samplesize=100):
-    """Get newspapers"""
+    """Get newspapers as frequency lists.
+
+    :param top: Number of top ranked words.
+    :param cutoff: The lower frequency limit. Defaults to 5 occurrences.
+    :param name:
+        A string, indicating the title of a newspaper.
+        Defaults to the wildcard symbol '%'.
+    :param yearfrom: Start of time range for the query.
+    :param yearto: End of time for the query.
+    :param samplesize: Number of newspapers to return.
+    :return:
+        A list of dictionaries with the term frequencies for the newspapers.
+    """
 
     def div(x, y):
         return int(x / y), x % y
 
     chunks = 20
 
-    # split samplesize into chunks, go through the chunks and then the remainder
+    # split samplesize into chunks,
+    # go through the chunks and then the remainder
 
     (first, second) = div(samplesize, chunks)
     r = []
@@ -556,12 +618,23 @@ def get_papers(top=5, cutoff=5, name='%', yearfrom=1800, yearto=2020,
 
 
 def urn_coll(word, urns=None, after=5, before=5, limit=1000):
-    """Find collocations for word in a set of book URNs. Only books at the moment"""
+    """Find collocations for `word` in a collection of book URNs.
+    Only books at the moment.
+
+    :param word: String with word to find collocations for.
+    :param urns:
+        List of URN serial numbers,
+        or list of lists with a URN as the first element.
+    :param after: Number of words following `word`
+    :param before: Number of words preceding `word`
+    :param limit: Maximum number of occurrences of `word` per URN.
+    :return: Dataframe with collocations
+    """
 
     if urns is None:
         urns = []
-    if isinstance(urns[0],
-                  list):  # urns assumed to be list of list with urn-serial as first element
+    # urns assumed to be list of list with urn-serial as first element
+    if isinstance(urns[0], list):
         urns = [u[0] for u in urns]
 
     r = requests.post("https://api.nb.no/ngram/urncoll",
@@ -580,8 +653,8 @@ def urn_coll_words(words, urns=None, after=5, before=5, limit=1000):
     """
     coll = pd.DataFrame()
     if urns is not None:
-        if isinstance(urns[0],
-                      list):  # urns assumed to be list of list with urn-serial as first element
+        # urns assumed to be list of list with urn-serial as first element
+        if isinstance(urns[0], list):
             urns = [u[0] for u in urns]
         if isinstance(words, str):
             words = words.split()
@@ -609,14 +682,14 @@ def urn_coll_words(words, urns=None, after=5, before=5, limit=1000):
 
 def get_aggregated_corpus(urns, top=0, cutoff=0):
     res = Counter()
-    if isinstance(urns[0],
-                  list):  # urns assumed to be list of list with urn-serial as first element
+    # urns assumed to be list of list with urn-serial as first element
+    if isinstance(urns[0], list):
         urns = [u[0] for u in urns]
     for u in urns:
         # print(u)
         res += get_freq(u, top=top, cutoff=cutoff)
-    return pd.DataFrame.from_dict(res, orient='index').sort_values(by=0,
-                                                                   ascending=False)
+    return pd.DataFrame.from_dict(res, orient='index').sort_values(
+        by=0, ascending=False)
 
 
 def compare_word_bags(bag_of_words, another_bag_of_words, first_freq=0,
@@ -624,10 +697,12 @@ def compare_word_bags(bag_of_words, another_bag_of_words, first_freq=0,
     """Compare two columns taken from two or one frame.
     Parameters x_freq are frequency limits used to cut down candidate words
     from the bag of words.
-    Compare along the columns where first_col and another_col are column numbers.
-    Typical situation is that bag_of_words is a one column frame and another_bag_of_words is
-    another one column frame.
-    When the columns are all from one frame, just change column numbers to match the columns"""
+    Compare along the columns where
+    first_col and another_col are column numbers.
+    Typical situation is that bag_of_words is a one column frame
+    and another_bag_of_words is another one column frame.
+    When the columns are all from one frame,
+    just change column numbers to match the columns."""
     diff = (
             bag_of_words[bag_of_words > first_freq][bag_of_words.columns[first_col]] /
             another_bag_of_words[another_bag_of_words > another_freq][
@@ -649,8 +724,20 @@ def collocation(
         title='%',
         ddk='%',
         subtitle='%'):
-    """Defined collects frequencies for a given word"""
+    """Compute a collocation for a given word within indicated period.
 
+    :param word: str
+    :param yearfrom: int
+    :param yearto: int
+    :param before: The number of preceding words
+    :param after:  The number of words following `word`
+    :param limit: int
+    :param corpus: str, default to 'avis'
+    :param title: str
+    :param ddk: str
+    :param subtitle: str
+    :return: A dataframe with the collocations
+    """
     data = requests.get(
         "https://api.nb.no/ngram/collocation",
         params={
@@ -669,7 +756,8 @@ def collocation(
 
 def collocation_data(words, yearfrom=2000, yearto=2005, limit=1000, before=5,
                      after=5, title='%', corpus='bok'):
-    """Collocation for a set of words sum up all the collocations words is a list of words or a
+    """Collocation for a set of words sum up all the
+    collocations words is a list of words or a
     blank separated string of words.
     """
     a = {}
@@ -736,12 +824,31 @@ def collocation_old(word, yearfrom=2010, yearto=2018, before=3, after=3,
     return pd.DataFrame.from_dict(data['freq'], orient='index')
 
 
-def heatmap(df, color='green'):
+def heatmap(df: pd.DataFrame, color='green'):
+    """A wrapper for heatmap of a dataframe `df`."""
     return df.fillna(0).style.background_gradient(
         cmap=sns.light_palette(color, as_cmap=True))
 
 
 def get_corpus_text(urns, top=0, cutoff=0):
+    """From a list of URNs that constitute a corpus,
+    get the `top` most frequent words with a frequency above `cutoff`,
+    and create a dataframe where each column represents a URN
+    and each row is a frequent term.
+    Uses :func:`get_freq` to get the frequency lists.
+
+    Implementation summary::
+
+        k = dict()
+        for u in urns:
+            k[u] = get_freq(u, top = top, cutoff = cutoff)
+        return pd.DataFrame(k)
+
+    :param urns: List of URN identifiers for the corpus.
+    :param top: The number of most frequent terms to return.
+    :param cutoff: The lower frequency limit.
+    :return: A dataframe with URNs as row headers and words as indices.
+    """
     k = {}
     if isinstance(urns, list):
         # a list of urns, or a korpus with urns as first element
@@ -758,7 +865,9 @@ def get_corpus_text(urns, top=0, cutoff=0):
     return res
 
 
-def normalize_corpus_dataframe(df):
+def normalize_corpus_dataframe(df: pd.DataFrame) -> bool:
+    """Normalize all values in the `df` corpus.
+    Changes `df` in situ, and returns `True`."""
     colsums = df.sum()
     for x in colsums.index:
         # print(x)
@@ -767,10 +876,18 @@ def normalize_corpus_dataframe(df):
 
 
 def show_korpus(korpus, start=0, size=4, vstart=0, vsize=20, sortby=''):
-    """Show corpus as a panda dataframe
-    start = 0 indicates which dokument to show first, dataframe is sorted according to this
-    size = 4 how many documents (or columns) are shown
-    top = 20 how many words (or rows) are shown"""
+    """Show corpus as a pandas dataframe.
+
+    :param korpus:  dataframe containing information about a corpus
+    :param start:   int, column number indicating which document to show first.
+                    Dataframe is sorted according to this.
+    :param size:    int, number of columns (i.e. documents) that are shown
+    :param vstart:  int, index number of row to start on
+    :param vsize:   int, number of rows (i.e. words) to show
+    :param sortby:  str, name of column to sort frequency values by.
+                    Sorts by first column by default.
+    :return:        Sliced view of the `korpus` pandas dataframe
+    """
     if sortby != '':
         val = sortby
     else:
@@ -780,12 +897,15 @@ def show_korpus(korpus, start=0, size=4, vstart=0, vsize=20, sortby=''):
 
 
 def aggregate(korpus):
-    """Make an aggregated sum of all documents across the corpus, here we use average"""
+    """Make an aggregated sum of all documents across the corpus.
+    Here we use the average mean."""
     return pd.DataFrame(korpus.fillna(0).mean(axis=1))
 
 
 def convert_list_of_freqs_to_dataframe(referanse):
-    """The function get_papers() returns a list of frequencies - convert it"""
+    """Convert and normalize `referanse`, a list of term frequencies,
+    e.g. as the one returned by :func:`get_papers`.
+    """
     res = []
     for x in referanse:
         res.append(dict(x))
@@ -796,6 +916,12 @@ def convert_list_of_freqs_to_dataframe(referanse):
 
 def get_corpus(top=0, cutoff=0, name='%', corpus='avis', yearfrom=1800,
                yearto=2020, samplesize=10):
+    """Collect a corpus using :func:`get_papers` (for newspapers)
+    and :func:`get_corpus` (for books).
+
+    :return: Whatever :func:`get_papers` or :func:`get_corpus` returns.
+    """
+
     if corpus == 'avis':
         result = get_papers(top=top, cutoff=cutoff, name=name,
                             yearfrom=yearfrom, yearto=yearto,
@@ -810,6 +936,8 @@ def get_corpus(top=0, cutoff=0, name='%', corpus='avis', yearfrom=1800,
 
 
 class Cluster:
+    """See clustering notebook for example and closer description."""
+
     def __init__(self, word='', filename='', period=(1950, 1960), before=5,
                  after=5, corpus='avis', reference=200,
                  word_samples=1000):
@@ -822,11 +950,17 @@ class Cluster:
             if isinstance(reference, pd.core.frame.DataFrame):
                 pass  # Keep the reference value as is
             elif isinstance(reference, int):
-                reference = get_corpus(yearfrom=period[0], yearto=period[1],
-                                       corpus=corpus, samplesize=reference)
+                reference = get_corpus(
+                    yearfrom=period[0],
+                    yearto=period[1],
+                    corpus=corpus,
+                    samplesize=reference)
             else:
-                reference = get_corpus(yearfrom=period[0], yearto=period[1],
-                                       corpus=corpus, samplesize=int(reference))
+                reference = get_corpus(
+                    yearfrom=period[0],
+                    yearto=period[1],
+                    corpus=corpus,
+                    samplesize=int(reference))
 
             self.reference = aggregate(reference)
             self.reference.columns = ['reference_corpus']
@@ -898,7 +1032,16 @@ class Cluster:
         return res
 
 
-def wildcardsearch(params=None):
+def wildcardsearch(params: Dict = None) -> pd.DataFrame:
+    """See examples in notebook `wildcardsearch`.
+
+    .. todo::
+        Fill in reference to example notebook.
+
+    :param params: A dict with the following default values:
+        ``{'word': '', 'freq_lim': 50, 'limit': 50, 'factor': 2}``
+    :return: A dataframe containing matches for `word`.
+    """
     if params is None:
         params = {'word': '', 'freq_lim': 50, 'limit': 50, 'factor': 2}
     res = requests.get('https://api.nb.no/ngram/wildcards', params=params)
@@ -913,6 +1056,7 @@ def wildcardsearch(params=None):
 
 
 def sorted_wildcardsearch(params):
+    """Use :func:`wildcardsearch` and sort results on frequency."""
     res = wildcardsearch(params)
     if not res.empty:
         res = res.sort_values(by=params['word'], ascending=False)
@@ -921,6 +1065,7 @@ def sorted_wildcardsearch(params):
 
 def make_newspaper_network(key, wordbag, titel='%', yearfrom='1980',
                            yearto='1990', limit=500):
+    """NB! Seems not to work at the moment."""
     if isinstance(wordbag, str):
         wordbag = wordbag.split()
     r = requests.post("https://api.nb.no/ngram/avisgraph", json={
@@ -938,7 +1083,8 @@ def make_newspaper_network(key, wordbag, titel='%', yearfrom='1980',
     return G
 
 
-def make_network(urn, wordbag, cutoff=0):
+def make_network(urn, wordbag, cutoff=0) -> nx.Graph:
+    """Wrapper for :func:`make_network_graph`."""
     if isinstance(urn, list):
         urn = urn[0]
     if isinstance(wordbag, str):
@@ -948,6 +1094,9 @@ def make_network(urn, wordbag, cutoff=0):
 
 
 def make_network_graph(urn, wordbag, cutoff=0):
+    """Make a graph as a `networkx` object from `wordbag` and `urn`.
+    Two words are connected if they occur within same paragraph.
+    """
     r = requests.post("https://api.nb.no/ngram/graph",
                       json={'urn': urn, 'words': wordbag})
     G = nx.Graph()
@@ -960,12 +1109,14 @@ def make_network_name_graph(urn, tokens, tokenmap=None, cutoff=2):
     if isinstance(urn, list):
         urn = urn[0]
 
-    # tokens should be a list of list of tokens. If it is list of dicts pull out the keys (= tokens)
+    # tokens should be a list of list of tokens.
+    # If it is list of dicts pull out the keys (= tokens)
     if isinstance(tokens[0], dict):
         tokens = [list(x.keys()) for x in tokens]
 
-    r = requests.post("https://api.nb.no/ngram/word_graph",
-                      json={'urn': urn, 'tokens': tokens, 'tokenmap': tokenmap})
+    r = requests.post(
+        "https://api.nb.no/ngram/word_graph",
+        json={'urn': urn, 'tokens': tokens, 'tokenmap': tokenmap})
     # print(r.text)
     G = nx.Graph()
     G.add_weighted_edges_from(
@@ -1006,7 +1157,8 @@ def token_map_to_tuples(tokens_as_strings, sep='_', arrow='==>'):
 def token_map(tokens, strings=False, sep='_', arrow='==>'):
     """ tokens as from nb.names()"""
     if isinstance(tokens[0], dict):
-        # get the keys(), otherwise it is already just a list of tokens up to length 4
+        # get the keys(),
+        # otherwise it is already just a list of tokens up to length 4
         tokens = [list(x.keys()) for x in tokens]
 
     # convert tokens to tuples and put them all in one list
@@ -1048,6 +1200,20 @@ def token_map(tokens, strings=False, sep='_', arrow='==>'):
 
 def draw_graph_centrality(G, h=15, v=10, fontsize=20, k=0.2, arrows=False,
                           font_color='black', threshold=0.01):
+    """Draw a graph using force atlas.
+
+    .. todo:: Fill in parameter descriptions.
+
+    :param G:
+    :param h:
+    :param v:
+    :param fontsize:
+    :param k:
+    :param arrows:
+    :param font_color:
+    :param threshold:
+    :return:
+    """
     node_dict = nx.degree_centrality(G)
     subnodes = dict(
         {x: node_dict[x] for x in node_dict if node_dict[x] >= threshold})
@@ -1069,7 +1235,7 @@ def draw_graph_centrality(G, h=15, v=10, fontsize=20, k=0.2, arrows=False,
 
 
 def combine(clusters):
-    """Make new collocation analyses from data in clusters"""
+    """Make new collocation analyses from data in clusters."""
     collocates = clusters[0].collocates
     for c in clusters[1:]:
         collocates = collocates.join(c.collocates,
@@ -1078,6 +1244,13 @@ def combine(clusters):
 
 
 def cluster_join(cluster):
+    """Join together serial clusters in one dataframe.
+
+    See example in `cluster` notebook.
+
+    .. todo:: Fill in example notebook reference.
+
+    """
     clusters = [cluster[i] for i in cluster]
     clst = clusters[0].cluster_set(aslist=False)
     for c in clusters[1:]:
@@ -1088,6 +1261,7 @@ def cluster_join(cluster):
 
 def serie_cluster(word, start_year, end_year, inkrement, before=5, after=5,
                   reference=150, word_samples=500):
+    """Make a series of clusters."""
     tidscluster = {}
     for i in range(start_year, end_year, inkrement):
         tidscluster[i] = Cluster(
@@ -1102,13 +1276,15 @@ def serie_cluster(word, start_year, end_year, inkrement, before=5, after=5,
     return tidscluster
 
 
-def save_serie_cluster(tidscluster):
+def save_serie_cluster(tidscluster) -> str:
+    """Save series to files."""
     for i in tidscluster:
         tidscluster[i].save()
     return 'OK'
 
 
-def les_serie_cluster(word, start_year, slutt_year, inkrement):
+def les_serie_cluster(word, start_year, slutt_year, inkrement) -> Dict:
+    """Read serial clusters."""
     tcluster = {}
     for i in range(start_year, slutt_year, inkrement):
         print(i, i + inkrement - 1)
@@ -1119,6 +1295,7 @@ def les_serie_cluster(word, start_year, slutt_year, inkrement):
 def make_cloud(json_text, top=100, background='white',
                stretch=lambda x: 2 ** (10 * x), width=500, height=500,
                font_path=None):
+    """Create a word cloud from a frequency list."""
     pairs0 = Counter(json_text).most_common(top)
     pairs = {x[0]: stretch(x[1]) for x in pairs0}
     wc = WordCloud(
@@ -1132,6 +1309,7 @@ def make_cloud(json_text, top=100, background='white',
 
 
 def draw_cloud(sky, width=20, height=20, fil=''):
+    """Draw a word cloud produced by :func:`make_cloud`."""
     plt.figure(figsize=(width, height))
     plt.imshow(sky, interpolation='bilinear')
     figplot = plt.gcf()
@@ -1141,6 +1319,8 @@ def draw_cloud(sky, width=20, height=20, fil=''):
 
 def cloud(df, column='', top=200, width=1000, height=1000, background='black',
           file='', stretch=10, font_path=None):
+    """Make and draw a cloud from a pandas dataframe, using :func:`make_cloud` and
+    :func:`draw_cloud`."""
     if column == '':
         column = df.columns[0]
     data = json.loads(df[column].to_json())
@@ -1153,6 +1333,19 @@ def cloud(df, column='', top=200, width=1000, height=1000, background='black',
 
 def make_a_collocation(word, period=(1990, 2000), before=5, after=5,
                        corpus='avis', samplesize=100, limit=2000):
+    """Create a dataframe containing the given word and the contexts it appears in.
+    Filter the result with the parameters.
+
+    :param word: A string, the word of interest.
+    :param period: Tuple or list with time range for the query.
+    :param before: Number of context words preceding the `word`.
+    :param after: Number of context words following `word`.
+    :param corpus: String indicating the document type, defaults to 'avis'.
+    :param samplesize:  TODO: Fill in description
+    :param limit: TODO: Fill in description
+    :return: A dataframe with the collocation.
+    """
+
     collocates = collocation(word, yearfrom=period[0], yearto=period[1],
                              before=before, after=after,
                              corpus=corpus, limit=limit)
@@ -1164,13 +1357,21 @@ def make_a_collocation(word, period=(1990, 2000), before=5, after=5,
     return ref_agg
 
 
-def compute_assoc(coll_frame, column, exponent=1.1,
-                  refcolumn='reference_corpus'):
+def compute_assoc(coll_frame, column, exponent=1.1):
+    """Compute an association using PMI.
+
+    :param coll_frame: A dataframe with the term frequencies.
+    :param column: Column with values to calculate associations with.
+    :param exponent: Floating point number
+    :return: A dataframe with the resulting PMI values.
+    """
     return pd.DataFrame(
         coll_frame[column] ** exponent / coll_frame.mean(axis=1))
 
 
 class Corpus:
+    """See `Corpus` notebook for examples and explanation."""
+
     def __init__(self, filename='', target_urns=None, reference_urns=None,
                  period=(1950, 1960), author='%',
                  title='%', ddk='%', gender='%', subject='%', reference=100,
@@ -1181,7 +1382,8 @@ class Corpus:
             'subject': subject,
             'ddk': ddk,
             'author': author,
-            # 'gender':gender, ser ikke ut til å virke for get_urn - sjekk opp APIet
+            # 'gender':gender, ser ikke ut til å virke for get_urn
+            # - sjekk opp APIet
             'title': title,
             'limit': max_books,
             'reference': reference
@@ -1202,14 +1404,16 @@ class Corpus:
             else:
                 target_corpus_urn = target_corpus_def
             if len(target_corpus_urn) > max_books > 0:
-                target_urn = list(numpy.random.choice(target_corpus_urn, max_books))
+                target_urn = list(numpy.random.choice(
+                    target_corpus_urn, max_books))
             else:
                 target_urn = target_corpus_urn
 
             if reference_urns is not None:
                 referansekorpus_def = reference_urns
             else:
-                # select from period, usually used only of target is by metadata
+                # select from period,
+                # usually used only of target is by metadata
                 referansekorpus_def = get_urn(
                     {'year': period[0], 'next': period[1] - period[0],
                      'limit': reference})
@@ -1224,7 +1428,7 @@ class Corpus:
 
             target_corpus_txt = get_corpus_text(target_urn)
             normalize_corpus_dataframe(target_corpus_txt)
-            if referanse_urn != []:
+            if referanse_urn and isinstance(referanse_urn, list):
                 referanse_txt = get_corpus_text(referanse_urn)
                 normalize_corpus_dataframe(referanse_txt)
                 combo = target_corpus_txt.join(referanse_txt)
@@ -1243,7 +1447,9 @@ class Corpus:
             # dokumentfrekvenser
 
             target_docf = pd.DataFrame(
-                pd.DataFrame(target_corpus_txt / target_corpus_txt).sum(axis=1))
+                pd.DataFrame(
+                    target_corpus_txt / target_corpus_txt).sum(axis=1)
+            )
             combo_docf = pd.DataFrame(pd.DataFrame(combo / combo).sum(axis=1))
             ref_docf = pd.DataFrame(
                 pd.DataFrame(referanse_txt / referanse_txt).sum(axis=1))
@@ -1271,9 +1477,11 @@ class Corpus:
         )
         res.columns = ['diff']
         if top > 0:
-            res = res.sort_values(by=res.columns[0], ascending=False).iloc[:top]
+            res = res.sort_values(
+                by=res.columns[0], ascending=False).iloc[:top]
         else:
-            res = res.sort_values(by=res.columns[0], ascending=False)
+            res = res.sort_values(
+                by=res.columns[0], ascending=False)
         if aslist:
             res = HTML(', '.join(list(res.index)))
         return res
@@ -1309,7 +1517,8 @@ class Corpus:
         return True
 
     def collocations(self, word, after=5, before=5, limit=1000):
-        """Find collocations for word in a set of book URNs. Only books at the moment"""
+        """Find collocations for word in a set of book URNs.
+        Only books at the moment."""
 
         r = requests.post(
             "https://api.nb.no/ngram/urncoll",
@@ -1349,7 +1558,8 @@ class Corpus:
             res = pd.DataFrame(self.coll[word][0] ** exp / comparison)
 
         except KeyError:
-            print(f'Constructing a collocation for {word} with default parameters.')
+            print(f'Constructing a collocation for {word} '
+                  f'with default parameters.')
             self.collocations(word)
             res = pd.DataFrame(self.coll[word][0] ** exp / comparison)
         if above is None:
@@ -1364,12 +1574,13 @@ class Corpus:
         try:
             res = pd.DataFrame(self.coll[word][0] ** exp / comparison)
         except KeyError:
-            print(f'Constructing a collocation for {word} with default parameters.')
+            print(f'Constructing a collocation for {word} '
+                  f'with default parameters.')
             self.collocations(word)
             res = pd.DataFrame(self.coll[word][0] ** exp / comparison)
         search_items = list(set(res.index) & set(words))
-        return res.transpose()[search_items].transpose().sort_values(by=0,
-                                                                     ascending=False)
+        return res.transpose()[search_items].transpose().sort_values(
+            by=0, ascending=False)
 
     def summary(self, head=10):
         info = {
@@ -1400,7 +1611,8 @@ class Corpus:
         for word in coll[:top].index:
             edges.append((target_word, word))
             if word.isalpha():
-                self.collocations(word, before=before, after=after, limit=limit)
+                self.collocations(
+                    word, before=before, after=after, limit=limit)
                 for w in self.sort_collocations(word, exp=exp)[:top].index:
                     if w.isalpha():
                         edges.append((word, w))
@@ -1412,6 +1624,17 @@ class Corpus:
 
 
 def vekstdiagram(urn, params=None):
+    """Make a growth diagram for a given book using a set of words.
+
+    :param urn: str or list where the first element is a URN serial number.
+    :param dict params:
+
+        * 'words': list of words
+        * 'window': chunk size in the book
+        * 'pr': how many words are skipped before next chunk
+
+    :return: pandas.Dataframe
+    """
     if params is None:
         params = {}
 
@@ -1427,7 +1650,12 @@ def vekstdiagram(urn, params=None):
 
 
 def plot_book_wordbags(urn, wordbags, window=5000, pr=100):
-    """Generate a diagram of wordbags in book """
+    """Generate a diagram of wordbags in book.
+    Use when plotting more than one growth diagram.
+    Have a look at example notebook.
+
+    .. todo:: Add reference to notebook.
+    """
     return plot_sammen_vekst(urn, wordbags, window=window, pr=pr)
 
 
@@ -1465,6 +1693,13 @@ def spurious_names(n=300):
 
 
 def relaterte_ord(word, number=20, score=False):
+    """Find related words using eigenvector centrality from networkx.
+    Related words are taken from `NB Ngram
+    <https://www.nb.no/sp_tjenester/beta/ngram_1/galaxies>`_.
+
+    .. note:: Works for english and german - add parameter!!
+
+    """
     G = make_graph(word)
     res = Counter(nx.eigenvector_centrality(G)).most_common(number)
     if not score:
@@ -1472,7 +1707,8 @@ def relaterte_ord(word, number=20, score=False):
     return res
 
 
-def check_words(urn, ordbag):
+def check_words(urn: Union[str, list], ordbag: Iterable) -> bool:
+    """Find frequency of words in `ordbag` within a book given by `urn`."""
     if isinstance(urn, list):
         urn = urn[0]
     ordliste = get_freq(urn, top=50000, cutoff=0)
@@ -1487,17 +1723,32 @@ def check_words(urn, ordbag):
     return True
 
 
-def nb_ngram(terms, corpus='bok', smooth=3, years=(1810, 2010),
-             mode='relative'):
-    df = ngram_conv(get_ngram(terms, corpus=corpus), smooth=smooth, years=years,
-                    mode=mode)
+def nb_ngram(
+        terms: str,
+        corpus: str = 'bok',
+        smooth: int = 3,
+        years: tuple = (1810, 2010),
+        mode: str = 'relative') -> pd.DataFrame:
+    """Collect an n-gram as json object from `NB N-gram
+    <https://www.nb.no/sp_tjenester/beta/ngram_1/trends#ngram/query?terms=norway>`_.
+    Uses :func:`get_ngram` and :func:`ngram_conv`.
+
+    :param terms: Comma separated n-grams (single words up to trigrams).
+    """
+    df = ngram_conv(
+        get_ngram(terms, corpus=corpus),
+        smooth=smooth,
+        years=years,
+        mode=mode
+    )
     df.index = df.index.astype(int)
     return df
 
 
 def get_ngram(terms, corpus='avis'):
     req = requests.get(
-        f"http://www.nb.no/sp_tjenester/beta/ngram_1/ngram/query?terms={terms}&corpus={corpus}"
+        f"http://www.nb.no/sp_tjenester/beta/ngram_1/ngram/"
+        f"query?terms={terms}&corpus={corpus}"
     )
     if req.status_code == 200:
         res = req.text
@@ -1506,7 +1757,13 @@ def get_ngram(terms, corpus='avis'):
     return json.loads(res)
 
 
-def ngram_conv(ngrams, smooth=1, years=(1810, 2013), mode='relative'):
+def ngram_conv(
+        ngrams,
+        smooth=1,
+        years=(1810, 2013),
+        mode='relative'
+) -> pd.DataFrame:
+    """Convert n-grams to a dataframe."""
     ngc = {}
     # check if relative frequency or absolute frequency is in question
     if mode.startswith('rel') or mode == 'y':
@@ -1521,14 +1778,21 @@ def ngram_conv(ngrams, smooth=1, years=(1810, 2013), mode='relative'):
     return pd.DataFrame(ngc).rolling(window=smooth, win_type='triang').mean()
 
 
-def make_graph(words, lang='nob', cutoff=20, leaves=0):
-    """Get galaxy from ngram-database.
-    English and German provided by Google N-gram.
-    Set leaves=1 to get the leaves.
-    Parameter cutoff only works for lang='nob'.
-    Specify English by setting lang='eng' and German by lang='ger'
+def make_graph(words, lang: str = 'nob', cutoff: int = 20, leaves: int = 0):
+    """Get galaxy from ngram-database, as used in `NB Ngram galaxies
+    <https://www.nb.no/sp_tjenester/beta/ngram_1/galaxies>`_.
+
+    :param words: string or list of words to get a galaxy for.
+    :param lang: Defaults to 'nob' (Norwegian Bokmål).
+        Specify English by setting lang='eng' and German by lang='ger'.
+    :param cutoff: Only works for lang="nob".
+    :param leaves: 0 or 1, works as a flag.
+        Set leaves = 1 to get the leaves in the resulting galaxy.
+    :return:
     """
-    params = {'terms': words, 'corpus': lang, 'limit': cutoff, 'leaves': leaves}
+    params = {
+        'terms': words, 'corpus': lang, 'limit': cutoff, 'leaves': leaves
+    }
     result = requests.get(
         "https://www.nb.no/sp_tjenester/beta/ngram_1/galaxies/query",
         params=params)
@@ -1555,7 +1819,8 @@ def make_graph_from_result(result):
 
 
 def urn_concordance(urns=None, word=None, size=5, before=None, after=None):
-    """ Find a concordance within a corpus as list of URNs. This is a wrapper for get_urnkonk """
+    """Find a concordance within a corpus as list of URNs.
+    This is a wrapper for :func:`get_urnkonk`"""
 
     # exit if list of urns is empty
     if urns is None or word is None:
@@ -1567,7 +1832,9 @@ def urn_concordance(urns=None, word=None, size=5, before=None, after=None):
     # find values and feed everything to get_urnkonk
     dataframe = inspect.currentframe()
     args, _, _, values = inspect.getargvalues(dataframe)
-    query = {i: values[i] for i in args if values[i] is not None and i != 'word'}
+    query = {
+        i: values[i] for i in args if values[i] is not None and i != 'word'
+    }
     return get_urnkonk(word, query)
 
 
@@ -1580,8 +1847,8 @@ def konk(word, urns=None, before=5, after=5):
                            before=before, after=after)
 
 
-def concordance(word=None, corpus='bok', author=None, title=None, subtitle=None,
-                lang=None, ddk=None, subject=None,
+def concordance(word=None, corpus='bok', author=None, title=None,
+                subtitle=None, lang=None, ddk=None, subject=None,
                 yearfrom=None, yearto=None, before=None, after=None, size=5,
                 gender=None, offset=None, kind='html'):
     if word is None:
@@ -1594,6 +1861,14 @@ def concordance(word=None, corpus='bok', author=None, title=None, subtitle=None,
 
 
 def get_konk(word, params=None, kind='html'):
+    """Get a concordance for given word.
+
+    :param word: str
+    :param params: Params are the same as for ``meta_data`` in :func:`get_urn`.
+    :param kind: ``'html'``, ``'json'`` or ``''``
+    :return: an HTML-page, a json structure, or a pandas dataframe,
+        depending on the format specified by ``kind``.
+    """
     #  R0912: Too many branches (13/12) (too-many-branches)
     if params is None:
         params = {}
@@ -1611,7 +1886,8 @@ def get_konk(word, params=None, kind='html'):
     if kind == 'html':
         rows = ""
         row_template = ("<tr>"
-                        "<td><a href='{urn}?searchText={kw}' target='_'>{urnredux}</a></td>"
+                        "<td><a href='{urn}?searchText={kw}' "
+                        "target='_'>{urnredux}</a></td>"
                         "<td>{b}</td>"
                         "<td>{w}</td>"
                         "<td style='text-align:left'>{a}</td>"
@@ -1672,17 +1948,23 @@ def konk_to_html(jsonkonk):
     return res
 
 
-def central_characters(graph, n=10):
+def central_characters(graph, n: int = 10) -> List[Tuple]:
+    """Wrapper around `networkx`."""
     res = Counter(nx.degree_centrality(graph)).most_common(n)
     return res
 
 
 def central_betweenness_characters(graph, n=10):
+    """wrapper around `networkx`."""
     res = Counter(nx.betweenness_centrality(graph)).most_common(n)
     return res
 
 
-def get_urnkonk(word, params=None, html=True):
+def get_urnkonk(word, params: dict = None, html: bool = True):
+    """Equivalent to :func:`get_konk`, but from a list of URNs.
+
+    :return: Either an html page or a dataframe, depending on the `html` flag.
+    """
     if params is None:
         params = {}
 
@@ -1718,10 +2000,13 @@ def get_urnkonk(word, params=None, html=True):
     return res
 
 
-def frame(something, name=None):
-    """Try to make a frame out of something and name columns according to name,
-    which should be a string or a list of strings,
-    one for each column. Mismatch in numbers is taken care of.
+def frame(something, name: Union[str, List[str]] = None) -> pd.DataFrame:
+    """Try to make a frame out of ``something``
+    and name columns according to ``name``.
+
+    :param something: A collection that can be turned into a dataframe.
+    :param name: A string or a list of strings, one for each column.
+        Mismatch in numbers (of columns and names) is taken care of.
     """
 
     if isinstance(something, dict):
@@ -1741,20 +2026,24 @@ def frame(something, name=None):
 
 
 def frame_sort(dataframe, by=0, ascending=False):
-    """sort a dataframe, if value of key is a column it will sort by that, otherwise value is
-    interpreted as an index into the columns"""
+    """Sort a dataframe.
+    If value of `by` is a column it will sort by that, otherwise it is
+    interpreted as an index for the columns."""
     if by in dataframe.columns:
         res = dataframe.sort_values(by=by, ascending=ascending)
     elif isinstance(by, int):
         col = max(by, len(dataframe.columns) - 1)
-        res = dataframe.sort_values(by=dataframe.columns[col], ascending=ascending)
+        res = dataframe.sort_values(
+            by=dataframe.columns[col], ascending=ascending)
     else:
-        res = dataframe.sort_values(by=dataframe.columns[0], ascending=ascending)
+        res = dataframe.sort_values(
+            by=dataframe.columns[0], ascending=ascending)
     return res
 
 
-def get_urns_from_docx(document):
-    """Find all URNs specified in a Word document - typically .docx"""
+def get_urns_from_docx(document) -> List:
+    """Find all URNs specified in a Word document,
+    typically a ``.docx`` file."""
     with zipfile.ZipFile(document, 'r') as zfp:
         with zfp.open('word/document.xml') as fp:
             soup = BeautifulSoup(fp.read(), 'xml')
@@ -1763,17 +2052,20 @@ def get_urns_from_docx(document):
 
 
 def get_urns_from_text(document):
-    """Find all URNs in a text-file"""
-
+    """Find all URNs in a plain text file (``.txt``)"""
     with open(document, encoding="utf-8") as fp:
         text = fp.read()
     # print(text)
     return re.findall("[0-9]{13}", text)
 
 
-def get_urns_from_files(mappe, file_type='txt'):
-    """Find URNs in files in a folder - specify folder"""
+def get_urns_from_files(mappe: str, file_type='txt') -> Dict:
+    """Extract URNs from a folder with ``.txt`` and ``.docs`` files.
 
+    :param mappe: Name of the folder to search through.
+    :param file_type: Unused parameter.
+    :return: A dictionary with filenames as keys, each with a list of URNs.
+    """
     froot, _, files = next(os.walk(mappe))
     urns = {}
     for f in files:
@@ -1791,7 +2083,7 @@ def get_urns_from_files(mappe, file_type='txt'):
 def xmlpretty(xmls):
     soup = BeautifulSoup(xmls, features='lxml')
     soup.prettify()
-    # '<html>\n <head>\n </head>\n <body>\n  <a href="http://example.com/">\n...'
+    # '<html>\n <head>\n</head>\n <body>\n <a href="http://example.com/">\n...'
 
     print(soup.prettify())
 
@@ -1829,7 +2121,8 @@ def metadata_xml(URN, kind='marcxml'):
 
 def save_frame_to_excel(df, filename, index=False):
     if os.path.exists(filename):
-        print(f'Det eksisterer allerede en fil {filename} - velg nytt navn og prøv igjen')
+        print(f'Det eksisterer allerede en fil {filename}'
+              f' - velg nytt navn og prøv igjen')
         df.to_excel(filename, index=index)
 
 
@@ -1837,7 +2130,8 @@ def restore_metadata_from_excel(data):
     df = pd.DataFrame()
     try:
         df = pd.read_excel(data)
-        # From excel some stray rows with null values for urn may occur. Drop those.
+        # From excel some stray rows with null values for urn may occur.
+        # Drop those.
         indexNames = df[df[df.columns[0]].isnull()].index
         df.drop(indexNames, inplace=True)
         try:
