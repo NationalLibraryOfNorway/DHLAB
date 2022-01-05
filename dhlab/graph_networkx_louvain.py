@@ -252,6 +252,7 @@ def my_layout(G):
     return pos
 
 
+'''
 def tree_layout(G):
     """For grafer fra make_cliques der koden ligger i de to første tallene.
 
@@ -264,6 +265,7 @@ def tree_layout(G):
         x = i.split()[0]  # E0602: Undefined variable 'i' (undefined-variable)
         pos[i] = (int(x[0]), int(x[1]))
     return pos
+'''
 
 
 def root_nodes(G):
@@ -345,6 +347,7 @@ def draw_tree(G, node_size=1, node_color='slategrey', n=2, m=1, h=10, v=10):
     # plt.savefig('krig.svg')
 
 
+'''
 def draw_forest(F, spacing, h=15, v=10, save_name=False):
     """Denne funksjonen vil ikke fungere uten refaktorering.
 
@@ -364,7 +367,7 @@ def draw_forest(F, spacing, h=15, v=10, save_name=False):
         if save_name:
             # E0602: Undefined variable 'row' (undefined-variable)
             plt.savefig(f'{save_name}-{row}.png', dpi=300)
-
+'''
 
 def print_list_of_sets(los):
     for x in los:

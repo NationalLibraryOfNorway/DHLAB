@@ -159,7 +159,8 @@ disable=print-statement,
 		missing-function-docstring,
 		bare-except,
 		invalid-name,
-		anomalous-backslash-in-string
+		anomalous-backslash-in-string,
+		too-many-lines
 
 
 # Enable the message, report, category or checker with the given id(s). You can
