@@ -61,6 +61,4 @@ without prior programming experience.
 
    CHANGELOG
    GitHub Repository DHLAB <https://github.com/NationalLibraryOfNorway/DHLAB>
-   GitHub Repository digital_tekstanalyse <https://github
-.com/NationalLibraryOfNorway/digital_tekstanalyse>
-
+   GitHub Repository digital_tekstanalyse <https://github.com/NationalLibraryOfNorway/digital_tekstanalyse>
