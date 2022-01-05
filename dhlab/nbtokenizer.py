@@ -1,20 +1,19 @@
 #!/usr/bin/ python3
 # -*- coding: utf-8 -*-
 
-import re
-import time
-import sys
-
-"""==========================================================================================
-
+"""=============================================================================
 
 Tokenisator for ngramleser (evt. parsing).
 -------------------------------------------
 Lars G Johnsen, Nasjonalbiblioteket, juni 2014
 
-Tokenisatorens oppgave er å danne token eller ord fra en sekvens med tegn. I utgangspunktet fungerer skilletegn og mellomrom som ordgrenser, men det er unntak, se listen nedenfor. Skilletegn danner som oftest egne token, men spesielt punktum og komma brukes på flere måter, noe det må tas høyde for.
+Tokenisatorens oppgave er å danne token eller ord fra en sekvens med tegn.
+I utgangspunktet fungerer skilletegn og mellomrom som ordgrenser,
+men det er unntak, se listen nedenfor. Skilletegn danner som oftest egne token,
+men spesielt punktum og komma brukes på flere måter, noe det må tas høyde for.
 
-Noen ord (token) har bestanddeler i form av skilletegn, som forkortelser, tall, i tillegg kan ordene selv være bundet sammen med bindestrek:
+Noen ord (token) har bestanddeler i form av skilletegn, som forkortelser, tall,
+i tillegg kan ordene selv være bundet sammen med bindestrek:
 
 p-pille (bindestrek)
 3.3 (punktum i seksjonsnummerering)
@@ -24,30 +23,41 @@ etc. (forkortelser)
 co2 (bokstaver og tall i kjemiske formler)
 co2-forurensning (bokstaver tall pluss bindestrek)
 17. (ordenstall som i 17. mai)
-P. A. Munch (punktum i initialer) 
+P. A. Munch (punktum i initialer)
 ... tre eller flere  punktum
-Når punktum følger tall vil tokenisatoren la punktum tilhøre tallet med mindre punktumet følges av mellomrom og stor bokstav.
+Når punktum følger tall vil tokenisatoren la punktum tilhøre tallet
+med mindre punktumet følges av mellomrom og stor bokstav.
 
-Punktum tilhører alle forkortelser som tar punktum uavhenging av kontekst. Den kan imidlertid gjøres følsom for påfølgende stor bokstav, men det er altså ikke gjort her. Punktum tillates inne i ord og deler ikke opp ord med punktum i seg.
+Punktum tilhører alle forkortelser som tar punktum uavhenging av kontekst.
+Den kan imidlertid gjøres følsom for påfølgende stor bokstav,
+men det er altså ikke gjort her.
+Punktum tillates inne i ord og deler ikke opp ord med punktum i seg.
 
-Alle skilletegn ellers utgjør egne token, bortsett fra § som kan sekvensieres, så § og §§ vil være egne tokener; de benyttes en hel del i lovtekster for entall og flertall.
+Alle skilletegn ellers utgjør egne token, bortsett fra § som kan sekvensieres,
+så § og §§ vil være egne tokener;
+de benyttes en hel del i lovtekster for entall og flertall.
 
-Tall skrevet med mellomrom blir ett token om de er på formen xx xxx, altså 1 eller 3 siffer etterfulgt av grupper på tre siffer skilt med ett mellomrom. Så 3 1995 vil være to tokener, mens 3 995 blir ett token, 4000 398 blir igjen to token. (Mulig det er endret)
+Tall skrevet med mellomrom blir ett token om de er på formen xx xxx, altså 1
+eller 3 siffer etterfulgt av grupper på tre siffer skilt med ett mellomrom.
+Så 3 1995 vil være to tokener, mens 3 995 blir ett token,
+4000 398 blir igjen to token. (Mulig det er endret)
 
-Tall som følger etter § (adskilt med maks ett mellomrom) vil aldri tiltrekke seg punktum.
+Tall som følger etter § (adskilt med maks ett mellomrom)
+vil aldri tiltrekke seg punktum.
 
 Øvrige tegn som ikke passer inn med mønstrene over behandles som separate token.
 
-
-=========================================================================================="""
-
-
+================================================================================
 """
 
-Her er listen over forkortelser med punktum. Hentet fra Wikipedia og Språkrådet med egendefinerte tillegg
+import re
+import sys
+import time
 
+"""Her er listen over forkortelser med punktum.
+
+Hentet fra Wikipedia og Språkrådet med egendefinerte tillegg.
 """
-
 fork = [
     'L\.',
     'A/S',
@@ -327,122 +337,106 @@ fork = [
     'årh\.'
 ]
 
-
-"""------------------------------------------------------------------------------
+"""-----------------------------------------------------------------------------
 
 numeriske uttrykk er alt som er bygd opp av tall, komma og punktum og blanke.
 
 LGJ: juni 2014
 
----------------------------------------------------------------------------------"""
-
-
+--------------------------------------------------------------------------------
 """
-tall som kan slutte på punktum består av hele tall, som tokeniseres med punktum  bare 
-om neste påfølgende tegn (etter blank) er stor bokstav
-Denne må justers for samisk og andre språk med større utvalg av store bokstaver. Det vil 
-sannsynligvis ikke ha så veldig stor betydning for utfallet.
 
+"""Tall som kan slutte på punktum består av hele tall, som tokeniseres
+ med punktum bare om neste påfølgende tegn (etter blank) er stor bokstav.
+
+Denne må justers for samisk og andre språk med større utvalg av store bokstaver.
+Det vil sannsynligvis ikke ha så veldig stor betydning for utfallet.
 """
-num = '\d+(?:\.(?! [A-ZÆØÅ]))?' 
-
+num = r'\d+(?:\.(?! [A-ZÆØÅ]))?'
 
 """
 f.eks. 10 000, tillater ikke punktum. Tokeniserer tall med mellomrom der de forekommer.
 
 """
 
-num0 = '\d{1,3}(?:\s\d\d\d(?!\d))+' 
+num0 = r'\d{1,3}(?:\s\d\d\d(?!\d))+'
 
+"""seksjon 3.2.1 eller 2.3999, kan ikke ha sluttpunktum."""
+num1 = r'\d+(?:\.\d+)+'
 
-""" 
-seksjon 3.2.1 eller 2.3999, kan ikke ha sluttpunktum 
+"""3,5 kan ikke ha sluttpunktum."""
+num2 = r'\d+,\d+'
 
-"""
-num1 = '\d+(?:\.\d+)+' 
+"""Det var .2 prosent økning."""
+num3 = r'\.\d+'
 
-
-"""
- 3,5 kan ikke ha sluttpunktum
-
-"""
-num2 = '\d+,\d+'
-
-""" 
- Det var .2 prosent økning
-
-"""
-num3 = '\.\d+' 
-
-"""
-tre eller flere punktum blir ett token
-"""
-num4 = '\.\.\.+'
+"""Tre eller flere punktum blir ett token."""
+num4 = r'\.\.\.+'
 
 # kombiner til det regulære uttrykket num eller num0 eller...
+num = '|'.join([num0, num1, num2, num3, num4, num])
 
-num = '|'.join([num0, num1, num2, num3, num4, num ])
+"""Paragraftegn kan komme i en eller to (eller flere?) utgaver."""
+# tolk tall etter § som rene tall uten punktum,
+# men også med bindestrek så i § 2-5  blir 2-5 et token.
+parnum0 = r'(?<=§ )\d+(?:[-–—]\d+)*|(?<=§)\d+(?:[-–—]\d+)*'
 
+parnum = r'(?<=§ )\d+|(?<=§)\d+'  # tolk tall etter § som heltall uten punktum.
+paragrafer = '§+'  # § eller §§ ukes i lovtekster
 
+"""Ord er alt som ikke innholder skillende skilletegn.
 
-"""
-paragraftegn kan komme i en eller to (eller flere?) utgaver
-
-"""
-
-parnum0 = '(?<=§ )\d+(?:[-–—]\d+)*|(?<=§)\d+(?:[-–—]\d+)*'  #tolk tall etter § som rene tall uten punktum, men også med bindestrek så i § 2-5  blir 2-5 et token.
-
-parnum = '(?<=§ )\d+|(?<=§)\d+'  #tolk tall etter § som heltall uten punktum.
-paragrafer = '§+'  #§ eller §§ ukes i lovtekster
-
-
-"""
-Ord er alt som ikke innholder skillende skilletegn, så bindestrek og @ og lignende går inn i
-tokenet, punktum inkludert, tar også med @ for mailadresser. Bindestrek kan også avslutte ord som
-i "ord- og setningsdeling". Andre tegn, som punktum og kolon i slutt, vil ikke tokeniseres sammen med ordet.
+Bindestrek og @ og lignende går inn i tokenet, punktum inkludert,
+tar også med @ for mailadresser.
+Bindestrek kan også avslutte ord som i "ord- og setningsdeling".
+Andre tegn, som punktum og kolon i slutt, vil ikke tokeniseres sammen med ordet.
 """
 
-initialer = '(?<=(?: |\.))[A-ZÆØÅ]\.'
-word = '\w+[-\d.@]*[\w\d]+-?'
+initialer = r'(?<=(?: |\.))[A-ZÆØÅ]\.'
+word = r'\w+[-\d.@]*[\w\d]+-?'
 
 word = '|'.join([initialer, word])
 
-
+"""Alle tegn som ikke er et blankt tegn
+ (tab, mellomrom linjeskift osv.),
+ og som ikke er blitt matchet opp tidligere,
+ blir å regne som egne token.
 """
-Alle tegn som ikke er et blankt tegn (tab, mellomrom linjeskift osv.), og som ikke 
-er blitt matchet opp tidligere blir å regne som egne token.
-"""
 
-catchall = '\S'  #alle tegn som ikke er blanke blir til et eget token
+catchall = r'\S'  # alle tegn som ikke er blanke blir til et eget token
 
-
-
-"""-----------------------------------------------------------------------------------
+"""-----------------------------------------------------------------------------
 
 Kombiner alle uttrykkene i rekkefølge og kompiler dem.
-Sjekk først om det er en forkortelse, ellers sjekk om det er et tall, sjekk paragrafer, prøv å lag et ord. Hvis ikke noe av det her, la tegnet være sitt eget token og gå videre.
+Sjekk først om det er en forkortelse, ellers sjekk om det er et tall,
+sjekk paragrafer, prøv å lag et ord. Hvis ikke noe av det her,
+la tegnet være sitt eget token og gå videre.
 
----------------------------------------------------------------------------------------"""
+--------------------------------------------------------------------------------
+"""
 
-regex =  fork + [parnum0, parnum, num,  paragrafer, word, catchall]
+regex = fork + [parnum0, parnum, num, paragrafer, word, catchall]
 regex = re.compile('|'.join(regex))
+
 
 def tokenize_timer(text):
     t0 = time.process_time()
     tokens = re.findall(regex, text)
     t1 = time.process_time()
     t = t1 - t0
-    print( "tid: %s" % t)
+    print(f"tid: {t}")
     return tokens
+
 
 def tokenize(text):
     tokens = re.findall(regex, text)
     return tokens
 
+
 if __name__ == "__main__":
     try:
-        with open(sys.argv[1], "r", encoding = "utf-8") as charfile:
+        with open(sys.argv[1], "r", encoding="utf-8") as charfile:
             for token in tokenize(charfile.read()):
-                print(token,'\n')
+                print(token, '\n')
     except:
-        print("Får ikke åpnet fila \"%s\"" % (sys.argv[1],)) 
+        print(f"Får ikke åpnet fila '{(sys.argv[1],)}'")
