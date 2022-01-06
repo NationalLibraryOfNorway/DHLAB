@@ -1,9 +1,9 @@
 :hide-toc:
 
 .. digital_tekstanalyse documentation master file, created by
-sphinx-quickstart on Thu Dec 30 16:43:55 2021.
-You can adapt this file completely to your liking, but it should at least
-contain the root `toctree` directive.
+    sphinx-quickstart on Thu Dec 30 16:43:55 2021.
+    You can adapt this file completely to your liking, but it should at least
+    contain the root `toctree` directive.
 
 
 ================================================
