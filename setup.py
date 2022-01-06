@@ -12,9 +12,10 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/NationalLibraryOfNorway/DHLAB",
-        project_urls={
-            "Documentation": "https://dhlab.readthedocs.io",
-            "Bug Tracker": "https://github.com/NationalLibraryOfNorway/DHLAB/issues",
+    project_urls={
+        "Documentation": "https://dhlab.readthedocs.io",
+        "Bug Tracker": "https://github.com/NationalLibraryOfNorway/DHLAB/issues",
+
     },
     packages=setuptools.find_packages(),
     classifiers=[

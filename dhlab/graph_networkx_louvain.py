@@ -10,7 +10,7 @@ from matplotlib import colors as mcolors
 from matplotlib.pylab import rcParams
 from networkx.algorithms.community import k_clique_communities
 
-from .nbtext import urn_coll, urn_coll_words, frame, get_freq, make_graph_from_result
+from dhlab.nbtext import urn_coll, urn_coll_words, frame, get_freq, make_graph_from_result
 
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
 rcParams['figure.figsize'] = 15, 10
