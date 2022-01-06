@@ -17,154 +17,154 @@ Functions
 
 Metadata and URNs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. autofunction:: dhlab.nbtext.totals
+.. autofunction:: nbtext.totals
 
-.. autofunction:: dhlab.nbtext.urn_from_text
+.. autofunction:: nbtext.urn_from_text
 
-.. autofunction:: dhlab.nbtext.metadata
+.. autofunction:: nbtext.metadata
 
-.. autofunction:: dhlab.nbtext.pure_urn
+.. autofunction:: nbtext.pure_urn
 
-.. autofunction:: dhlab.nbtext.col_agg
+.. autofunction:: nbtext.col_agg
 
-.. autofunction:: dhlab.nbtext.row_agg
+.. autofunction:: nbtext.row_agg
 
 
 Access texts as frequency lists
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. autofunction:: dhlab.nbtext.get_freq
+.. autofunction:: nbtext.get_freq
 
-.. autofunction:: dhlab.nbtext.get_urn
+.. autofunction:: nbtext.get_urn
 
-.. autofunction:: dhlab.nbtext.get_corpus_text
+.. autofunction:: nbtext.get_corpus_text
 
-.. autofunction:: dhlab.nbtext.get_papers
+.. autofunction:: nbtext.get_papers
 
 
 
 Collocations and clusters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. autofunction:: dhlab.nbtext.make_a_collocation
+.. autofunction:: nbtext.make_a_collocation
 
-.. autofunction:: dhlab.nbtext.compute_assoc
+.. autofunction:: nbtext.compute_assoc
 
-.. autofunction:: dhlab.nbtext.urn_coll
+.. autofunction:: nbtext.urn_coll
 
-.. autofunction:: dhlab.nbtext.collocation
+.. autofunction:: nbtext.collocation
 
-.. autofunction:: dhlab.nbtext.normalize_corpus_dataframe
+.. autofunction:: nbtext.normalize_corpus_dataframe
 
-.. autofunction:: dhlab.nbtext.show_korpus
+.. autofunction:: nbtext.show_korpus
 
-.. autofunction:: dhlab.nbtext.aggregate
+.. autofunction:: nbtext.aggregate
 
-.. autofunction:: dhlab.nbtext.convert_list_of_freqs_to_dataframe
+.. autofunction:: nbtext.convert_list_of_freqs_to_dataframe
 
-.. autofunction:: dhlab.nbtext.get_corpus
+.. autofunction:: nbtext.get_corpus
 
 
 
 Graphs and network analysis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. autofunction:: dhlab.nbtext.make_newspaper_network
+.. autofunction:: nbtext.make_newspaper_network
 
-.. autofunction:: dhlab.nbtext.make_network
+.. autofunction:: nbtext.make_network
 
-.. autofunction:: dhlab.nbtext.make_network_graph
+.. autofunction:: nbtext.make_network_graph
 
-.. autofunction:: dhlab.nbtext.draw_graph_centrality
+.. autofunction:: nbtext.draw_graph_centrality
 
 
 Wordclouds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. autofunction:: dhlab.nbtext.make_cloud
+.. autofunction:: nbtext.make_cloud
 
-.. autofunction:: dhlab.nbtext.draw_cloud
+.. autofunction:: nbtext.draw_cloud
 
-.. autofunction:: dhlab.nbtext.cloud
+.. autofunction:: nbtext.cloud
 
 
 Growth diagrams (sentiment analysis)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. autofunction:: dhlab.nbtext.vekstdiagram
+.. autofunction:: nbtext.vekstdiagram
 
-.. autofunction:: dhlab.nbtext.plot_sammen_vekst
+.. autofunction:: nbtext.plot_sammen_vekst
 
 
 Word relations and n-grams
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. autofunction:: dhlab.nbtext.difference
+.. autofunction:: nbtext.difference
 
-.. autofunction:: dhlab.nbtext.relaterte_ord
+.. autofunction:: nbtext.relaterte_ord
 
-.. autofunction:: dhlab.nbtext.nb_ngram
+.. autofunction:: nbtext.nb_ngram
 
-.. autofunction:: dhlab.nbtext.ngram_conv
+.. autofunction:: nbtext.ngram_conv
 
-.. autofunction:: dhlab.nbtext.make_graph
+.. autofunction:: nbtext.make_graph
 
 
 Concordances
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. autofunction:: dhlab.nbtext.get_konk
+.. autofunction:: nbtext.get_konk
 
-.. autofunction:: dhlab.nbtext.get_urnkonk
+.. autofunction:: nbtext.get_urnkonk
 
 
 Character Analysis and graphs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. autofunction:: dhlab.nbtext.central_characters
+.. autofunction:: nbtext.central_characters
 
-.. autofunction:: dhlab.nbtext.central_betweenness_characters
+.. autofunction:: nbtext.central_betweenness_characters
 
-.. autofunction:: dhlab.nbtext.check_words
+.. autofunction:: nbtext.check_words
 
 
 Text complexity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. autofunction:: dhlab.nbtext.sttr
+.. autofunction:: nbtext.sttr
 
-.. autofunction:: dhlab.nbtext.navn
+.. autofunction:: nbtext.navn
 
 
 Utilities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. autofunction:: dhlab.nbtext.heatmap
+.. autofunction:: nbtext.heatmap
 
-.. autofunction:: dhlab.nbtext.df_combine
+.. autofunction:: nbtext.df_combine
 
-.. autofunction:: dhlab.nbtext.wildcardsearch
+.. autofunction:: nbtext.wildcardsearch
 
-.. autofunction:: dhlab.nbtext.sorted_wildcardsearch
+.. autofunction:: nbtext.sorted_wildcardsearch
 
-.. autofunction:: dhlab.nbtext.combine
+.. autofunction:: nbtext.combine
 
-.. autofunction:: dhlab.nbtext.cluster_join
+.. autofunction:: nbtext.cluster_join
 
-.. autofunction:: dhlab.nbtext.serie_cluster
+.. autofunction:: nbtext.serie_cluster
 
-.. autofunction:: dhlab.nbtext.save_serie_cluster
+.. autofunction:: nbtext.save_serie_cluster
 
-.. autofunction:: dhlab.nbtext.les_serie_cluster
+.. autofunction:: nbtext.les_serie_cluster
 
-.. autofunction:: dhlab.nbtext.frame
+.. autofunction:: nbtext.frame
 
-.. autofunction:: dhlab.nbtext.get_urns_from_docx
+.. autofunction:: nbtext.get_urns_from_docx
 
-.. autofunction:: dhlab.nbtext.get_urns_from_text
+.. autofunction:: nbtext.get_urns_from_text
 
-.. autofunction:: dhlab.nbtext.get_urns_from_files
+.. autofunction:: nbtext.get_urns_from_files
 
 
 Classes
 --------------
-.. autoclass:: dhlab.nbtext.Cluster
+.. autoclass:: nbtext.Cluster
     :members:
     :noindex:
 
-.. autoclass:: dhlab.nbtext.Corpus
+.. autoclass:: nbtext.Corpus
     :members:
     :noindex:
 

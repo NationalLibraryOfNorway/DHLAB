@@ -13,8 +13,7 @@
 import pathlib
 import sys
 
-sys.path.insert(0, pathlib.Path(__file__).parents[1].resolve().as_posix())
-# sys.path.insert(0, pathlib.Path.cwd().resolve().as_posix())
+sys.path.insert(0, pathlib.Path(__file__).parents[1].joinpath("dhlab").resolve().as_posix())
 
 # -- Project information -----------------------------------------------------
 
