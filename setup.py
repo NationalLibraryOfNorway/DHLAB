@@ -8,12 +8,13 @@ setuptools.setup(
     version="1.0.0",
     author="The National Library of Norway",
     author_email="dh-lab@nb.no",
-    description="API for text and image analysis by the Digital Humanities lab (DH-lab)",
+    description="Library for text and image analysis by the Digital Humanities lab (DH-lab)",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/NationalLibraryOfNorway/DHLAB",
         project_urls={
-        "Bug Tracker": "https://github.com/NationalLibraryOfNorway/DHLAB/issues",
+            "Documentation": "https://dhlab.readthedocs.io",
+            "Bug Tracker": "https://github.com/NationalLibraryOfNorway/DHLAB/issues",
     },
     packages=setuptools.find_packages(),
     classifiers=[

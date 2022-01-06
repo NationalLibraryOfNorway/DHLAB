@@ -2,14 +2,14 @@
 
 
 NB Text analysis
-=================
+==================
 The nbtext module contains functions and classes that are wrappers around the
 API for querying NB Digital, in addition to some extended functionality to present
 the data back to the user.
 
 .. code-block:: python
 
-    from dhlab import nbtext
+   from dhlab import nbtext
 
 
 Functions
@@ -161,11 +161,11 @@ Utilities
 Classes
 --------------
 .. autoclass:: nbtext.Cluster
-    :members:
-    :noindex:
+   :members:
+   :noindex:
 
 .. autoclass:: nbtext.Corpus
-    :members:
-    :noindex:
+   :members:
+   :noindex:
 
 
