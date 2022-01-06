@@ -1,0 +1,5 @@
+
+Sphinx==4.3.2
+sphinx_inline_tabs
+furo==2022.1.2
+
