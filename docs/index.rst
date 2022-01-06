@@ -46,11 +46,13 @@ without prior programming experience.
 
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Docs
+    :maxdepth: 2
+    :caption: Docs
 
-   getting_started.rst
-   nbtext_docs.rst
+    getting_started.rst
+    nbtext_docs.rst
+    utilities_docs.rst
+
 
 * :ref:`modindex`
 
