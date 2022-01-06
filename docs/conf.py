@@ -12,8 +12,9 @@
 #
 import pathlib
 import sys
-
-sys.path.insert(0, pathlib.Path(__file__).parents[1].joinpath("dhlab").resolve().as_posix())
+sys.path.insert(0, pathlib.Path(__file__).parent.resolve().as_posix())
+sys.path.insert(0, pathlib.Path(__file__).parent.joinpath("../dhlab").resolve().as_posix())
+print(sys.path)
 
 # -- Project information -----------------------------------------------------
 
@@ -53,7 +54,7 @@ extensions = [
     'sphinx.ext.viewcode',
 
     'myst_parser',  # Markdownparser
-    "sphinx_inline_tabs",  # Tab switches
+    'sphinx_inline_tabs',  # Tab switches
 ]
 
 #
@@ -94,17 +95,20 @@ todo_include_todos = True
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
-# add_module_names = True
+add_module_names = False
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.
 # show_authors = False
 
+autosummary_generate = True  # Turn on sphinx.ext.autosummary
+autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
+
+
 # The suffix of source filenames.
 source_suffix = {
     '.rst': 'restructuredtext',
     '.md': 'markdown',
-    '.txt': 'markdown',
 }
 
 # There are two options for replacing |today|: either, you set today to some
@@ -116,6 +120,7 @@ today_fmt = '%d %B %Y'
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 pygments_dark_style = "monokai"
+
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -160,7 +165,7 @@ html_title = 'DHLAB'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-# html_logo = None
+html_logo = "_images/NB-symbol-farge.png"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -174,7 +179,7 @@ html_last_updated_fmt = '%Y-%m-%d'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
-# html_use_smartypants = True
+html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
 # html_sidebars = {}
@@ -219,7 +224,11 @@ htmlhelp_basename = 'dhlab_docs'
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
     ('index', 'dhlab.tex', u'DHLAB Documentation',
-     u'Lars Johnsen, Magnus Breder Birkenes, Andre Kåsen, Yngvil Beyer, Ingerid Løyning Dale',
+     u'Lars Johnsen, '
+     u'Magnus Breder Birkenes, '
+     u'Andre Kåsen, '
+     u'Yngvil Beyer, '
+     u'Ingerid Løyning Dale',
      'manual'),
 ]
 

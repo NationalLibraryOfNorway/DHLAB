@@ -11,30 +11,30 @@ that can be used locally, or in the browser.
 
 .. tab:: **browser**
 
-	Play around with the `notebooks hosted on Binder`__
-	without installing anything on your machine.
-
+   You can play around with the `notebooks hosted on Binder`__
+   without installing anything on your machine.
 
 .. tab:: **locally**
 
-	1. Clone the `digital_tekstanalyse`_ Github repo:
+   1. Clone the `digital_tekstanalyse`_ Github repo:
 
-	.. code-block:: shell
+      .. code-block:: shell
 
-		git clone git@github.com:NationalLibraryOfNorway/digital_tekstanalyse.git
+         git clone git@github.com:NationalLibraryOfNorway/digital_tekstanalyse.git
 
-	2. Install the `dhlab pypi package`_ with pip
+   2. Install the `dhlab pypi package`_ with pip
 
-	.. code-block:: shell
+      .. code-block:: shell
 
-		pip install dhlab
+         pip install dhlab
 
-	3. Navigate into the cloned repo and start `jupyter <https://jupyter.org/>`_ from the terminal
+   3. Navigate into the cloned repo and
+      start `jupyter <https://jupyter.org/>`_ from the terminal
 
-	.. code-block:: shell
+      .. code-block:: shell
 
-		cd digital_tekstanalyse
-		jupyter lab
+         cd digital_tekstanalyse
+         jupyter lab
 
 
 __ https://mybinder.org/v2/gh/DH-LAB-NB/DHLAB/master
