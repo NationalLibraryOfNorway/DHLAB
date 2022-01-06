@@ -145,13 +145,18 @@ def get_illustration_data_from_book(urn):
 def get_urls_from_illustration_data(
         illus, part=True, scale=None, cuts=True, delta=0):
     """
-    part sets size of output of page,
-    if part is True it returns the cut out of image
-    illus is a dictionary of with entries and values like this:
-        {'height': 270, 'hpos': 251, 'page': 'digibok_2017081626006_0018',
-        'resolution': 400, 'vpos': 791, 'width': 373}
-    the variable cuts, if true allows cropping of image.
     Restricted images must not go over 1024 x 1024 pixels.
+
+    :param illus: dictionary of this format:
+
+        ``{'height': 270, 'hpos': 251, 'page': 'digibok_2017081626006_0018',
+        'resolution': 400, 'vpos': 791, 'width': 373}``
+
+    :param part: If True, return a cut out of the image
+    :param scale: To be filled in
+    :param cuts: If true, allow cropping of image
+    :param delta: To be filled in
+    :return: URL of the image
     """
     if scale is None:
         if illus['resolution'] >= 300 or illus['resolution'] < 100:
@@ -437,13 +442,14 @@ def find_urns_sesam(term='', creator='', number=50, page=0, mediatype='bilder'):
 
 
 def save_pictures(pages_, urn, root='.'):
-    """Save picture references in pages on the form:
-    pages = {
-        urn1 : [page1, page2, ..., pageN],
-        urn2: [page1, ..., pageM]},
-        ...
-        urnK: [page1, ..., pageL]
-    }
+    """Save picture references in pages on the form::
+
+        pages = {
+            urn1: [page1, page2, ..., pageN],
+            urn2: [page1, ..., pageM],
+            ...
+            urnK: [page1, ..., pageL]}
+
     Parameter urn is one of the keys in pages,
     where each page reference is a URL.
     """
@@ -470,13 +476,15 @@ def save_pictures(pages_, urn, root='.'):
 
 
 def save_all_pages(pages_, root='.'):
-    """Save picture references in pages on the form:
-    pages = {
-        urn1 : [page1, page2, ..., pageN],
-        urn2: [page1, ..., pageM]},
-        ...
-        urnK: [page1, ..., pageL]
-    }
+    """Save picture references in pages on the form::
+
+        pages = {
+            urn1 : [page1, page2, ..., pageN],
+            urn2: [page1, ..., pageM],
+            ...
+            urnK: [page1, ..., pageL]
+        }
+
     Each page reference is a URL.
     """
 

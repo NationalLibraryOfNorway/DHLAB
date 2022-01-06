@@ -1,8 +1,7 @@
 #!/usr/bin/ python3
 # -*- coding: utf-8 -*-
 
-"""=============================================================================
-
+"""
 Tokenisator for ngramleser (evt. parsing).
 -------------------------------------------
 Lars G Johnsen, Nasjonalbiblioteket, juni 2014
