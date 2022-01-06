@@ -1,5 +1,5 @@
-
 Sphinx==4.3.2
-sphinx_inline_tabs
 furo==2022.1.2
 myst-parser==0.16.1
+sphinx_rtd_theme==1.0.0
+readthedocs-sphinx-search==0.1.1
