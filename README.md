@@ -10,7 +10,7 @@ to query the texts in the library's digital archive of books and newspapers,
 [NB Digital](https://www.nb.no/search).
 
 [The Digital Humanities lab group](https://www.nb.no/dh-lab/) at the NLN
-has developed the dhlab_ library on top of the API, which offers
+has developed the [`dhlab`](https://pypi.org/project/dhlab/) library on top of the API, which offers
 functionalities for scientists to access the literary archive with python.
 
 The API allows for deeper analysis of the digital texts by generating e.g.
@@ -31,3 +31,16 @@ how to use the library, and can be used
 without prior programming experience.
 
 <!-- end example-use -->
+
+
+## Installation
+
+<!-- start installation -->
+
+Install dhlab with pip: 
+
+```
+pip install dhlab
+```
+
+<!-- end installation -->
