@@ -11,9 +11,9 @@ setuptools.setup(
     description="Library for text and image analysis by the Digital Humanities lab (DH-lab)",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/NationalLibraryOfNorway/DHLAB",
+    url="https://dhlab.readthedocs.io",
     project_urls={
-        "Documentation": "https://dhlab.readthedocs.io",
+        "GitHub": "https://github.com/NationalLibraryOfNorway/DHLAB",
         "Bug Tracker": "https://github.com/NationalLibraryOfNorway/DHLAB/issues",
     },
     packages=setuptools.find_packages(),
