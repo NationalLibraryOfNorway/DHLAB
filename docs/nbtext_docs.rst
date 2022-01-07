@@ -1,8 +1,10 @@
 .. _nbtext_docs:
 
+.. currentmodule:: dhlab.nbtext
 
-NB Text analysis
-==================
+
+:mod:`nbtext` - Text analysis
+==================================
 The nbtext module contains functions and classes that are wrappers around the
 API for querying NB Digital, in addition to some extended functionality to present
 the data back to the user.
