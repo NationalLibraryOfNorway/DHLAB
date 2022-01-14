@@ -4,11 +4,7 @@ import json
 import networkx as nx
 
 BASE_URL = "https://api.nb.no/dhlab"
-BASE_URL1 = "https://api.nb.no/dhlab"
 
-
-NGRAM_API = "https://api.nb.no/dhlab/nb_ngram/ngram/query"
-GALAXY_API = "https://api.nb.no/dhlab/nb_ngram_galaxies/galaxies/query"
 
 pd.options.display.max_rows = 100
 
@@ -44,7 +40,7 @@ def find_urns(docids = None, mode = 'json'):
     """ Return a list of URNs from a list of docids as a dictionary {docid: URN} or as a pandas dataframe"""
     
     params = locals()
-    r = requests.post(BASE_URL1 + "/find_urn", json = params)
+    r = requests.post(BASE_URL + "/find_urn", json = params)
     if r.status_code == 200:
         res = pd.DataFrame.from_dict(r.json(), orient = 'index', columns = ['urn'])
     else:
@@ -60,7 +56,7 @@ def ngram_book(word = ['.'], title = None, period = None, publisher = None, lang
         word = [w.strip() for w in word.split(',')]
     params['word'] = tuple(word)
     params = {x:params[x] for x in params if not params[x] is None}
-    r = requests.post(BASE_URL1 + "/ngram_book", json = params)
+    r = requests.post(BASE_URL + "/ngram_book", json = params)
     #print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient = 'index')
     df.index = df.index.map(lambda x: tuple(x.split()))
@@ -79,7 +75,7 @@ def ngram_periodicals(word = ['.'], title = None, period = None, publisher = Non
         word = [w.strip() for w in word.split(',')]
     params['word'] = tuple(word)
     params = {x:params[x] for x in params if not params[x] is None}
-    r = requests.post(BASE_URL1 + "/ngram_periodicals", json = params)
+    r = requests.post(BASE_URL + "/ngram_periodicals", json = params)
     #print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient = 'index')
     df.index = df.index.map(lambda x: tuple(x.split()))
@@ -99,7 +95,7 @@ def ngram_news(word = ['.'], title = None, period = None):
         word = [w.strip() for w in word.split(',')]
     params['word'] = tuple(word)
     params = {x:params[x] for x in params if not params[x] is None}
-    r = requests.post(BASE_URL1 + "/ngram_newspapers", json = params)
+    r = requests.post(BASE_URL + "/ngram_newspapers", json = params)
     #print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient = 'index')
     df.index = df.index.map(lambda x: tuple(x.split()))
@@ -111,7 +107,7 @@ def ngram_news(word = ['.'], title = None, period = None):
 
 def get_document_frequencies(urns = None, cutoff = 0, words = None):
     params = locals()
-    r = requests.post(BASE_URL1 + "/frequencies", json = params)
+    r = requests.post(BASE_URL + "/frequencies", json = params)
     result = r.json()
     structure = {u[0][0] : dict([tuple(x[1:3]) for x in u]) for u in result if u != []}
     df = pd.DataFrame(structure)
@@ -119,7 +115,7 @@ def get_document_frequencies(urns = None, cutoff = 0, words = None):
 
 def get_word_frequencies(urns = None, cutoff = 0, words = None):
     params = locals()
-    r = requests.post(BASE_URL1 + "/frequencies", json = params)
+    r = requests.post(BASE_URL + "/frequencies", json = params)
     result = r.json()
     structure = {u[0][0] : dict([(x[1],x[2]/x[3]) for x in u]) for u in result if u != []}
     df = pd.DataFrame(structure)
@@ -150,7 +146,7 @@ def urn_collocation(urns = None, word = 'arbeid', before = 5, after = 0, samples
         'after': after,
         'samplesize': samplesize
     }
-    r = requests.post(BASE_URL1 + "/urncolldist_urn", json = params)
+    r = requests.post(BASE_URL + "/urncolldist_urn", json = params)
     return pd.read_json(r.text)
 
 def totals(n = 50000):
@@ -207,5 +203,5 @@ def collocation(corpusquery = 'norge', word = 'arbeid', before = 5, after = 0):
         'before': before,
         'after': after
     }
-    r = requests.post(BASE_URL1 + "/urncolldist", json = params)
+    r = requests.post(BASE_URL + "/urncolldist", json = params)
     return pd.read_json(r.text)

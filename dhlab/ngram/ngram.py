@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from ..dhlab_api import ngram_book, ngram_news
-from ..nb_ngram import nb_ngram
+from ..api.dhlab_api import ngram_book, ngram_news, 
+from nb_ngram import nb_ngram
 
 class Ngram():
     """Top level class for ngrams"""
