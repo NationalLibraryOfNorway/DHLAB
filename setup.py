@@ -5,13 +5,17 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="dhlab",
-    version="0.7.5",
-    author="Lars G.B. Johnsen",
-    author_email="yoonsen@gmail.com",
-    description="API for National Library of Norway",
+    version="1.0.0",
+    author="The National Library of Norway",
+    author_email="dh-lab@nb.no",
+    description="Library for text and image analysis by the Digital Humanities lab (DH-lab)",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Yoonsen/Modules",
+    url="https://dhlab.readthedocs.io",
+    project_urls={
+        "GitHub": "https://github.com/NationalLibraryOfNorway/DHLAB",
+        "Bug Tracker": "https://github.com/NationalLibraryOfNorway/DHLAB/issues",
+    },
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -20,9 +24,18 @@ setuptools.setup(
     ],
     python_requires='>=3.2',
     install_requires=[
-        'msgpack',
-        'wordcloud',
+        'beautifulsoup4',
+        'ipython',
+        'ipywidgets',
+        'matplotlib',
+        'networkx',
+        'numpy',
+        'pandas',
+        'Pillow',
         'python_louvain',
-        'beautifulsoup4'
+        'requests',
+        'seaborn',
+        'setuptools',
+        'wordcloud'
     ]
 )
