@@ -1,6 +1,59 @@
 import json
+
 import requests
 import pandas as pd
+
+def load_picture(url):
+    r = requests.get(url, stream=True)
+    r.raw.decode_content=True
+    #print(r.status_code)
+    return r.raw
+
+def iiif_manifest(urn):
+    r = requests.get("https://api.nb.no/catalog/v1/iiif/{urn}/manifest".format(urn=urn))
+    return r.json()
+
+def mods(urn):
+    r = requests.get("https://api.nb.no:443/catalog/v1/metadata/{id}/mods".format(urn=urn))
+    return r.json()
+
+def super_search(term, number=50, page=0, mediatype='bilder'):
+    """Søk etter term og få ut json"""
+    number = min(number, 50)
+    if term == '':
+        r = requests.get(
+            "https://api.nb.no:443/catalog/v1/items", 
+             params = { 
+                 'filter':'mediatype:{mediatype}'.format(mediatype=mediatype), 
+                 'page':page, 
+                 'size':number
+             }
+        )
+    else:        
+        r = requests.get(
+            "https://api.nb.no:443/catalog/v1/items", 
+             params = {
+                 'q':term, 
+                 'filter':'mediatype:{mediatype}'.format(mediatype=mediatype), 
+                 'page':page, 
+                 'size':number
+             }
+        )
+    return r.json()
+
+def total_search(size=50, page=0):
+    """Finn de første antallet = 'size' fra side 'page' og få ut json"""
+    size = min(size, 50)
+    r = requests.get(
+        "https://api.nb.no:443/catalog/v1/items", 
+         params = {
+             'filter':'mediatype:bilder', 
+             'page':page, 
+             'size':size
+         }
+    )
+    return r.json()
+
 
 def get_df(frases, title='aftenposten'):
     import requests

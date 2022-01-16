@@ -7,17 +7,6 @@ BASE_URL = "https://api.nb.no/dhlab"
 
 pd.options.display.max_rows = 100
 
-
-
-
-# convert cell to a link
-def make_link(row):
-    r = "<a target='_blank' href = 'https://urn.nb.no/{x}'>{x}</a>".format(x = str(row))
-    return r
-
-# find hits a cell
-find_hits = lambda x: ' '.join(re.findall("<b>(.+?)</b", x))
-
 # fetch metadata
 
 def get_metadata(urns = None):
