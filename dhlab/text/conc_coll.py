@@ -1,4 +1,7 @@
 
+import re
+from collections import Counter
+
 import pandas as pd
 
 from ..api.dhlab_api import concordance, urn_collocation

@@ -41,15 +41,11 @@ def code_toggle(button_text = "Klikk for å vise/skjule kodeceller"):
             </form>
         </div>'''
         ))
-    
-def printmd(S):
-    display(Markdown(S))
-    return
-
 
 
 def css(url = "https://raw.githubusercontent.com/Yoonsen/Modules/master/css_style_sheets/nb_notebook.css"):
-    """Associate a css stylesheet with the notebook, just specify a file or web reference, default is a custom css"""
+    """Associate a css stylesheet with the notebook, 
+    just specify a file or web reference, default is a custom css"""
     
     uri = urlparse(url)
     css_file = ""
@@ -72,7 +68,3 @@ def css(url = "https://raw.githubusercontent.com/Yoonsen/Modules/master/css_styl
             css_file = file.read()
     
     return HTML("<style>{css_code}</style>".format(css_code = css_file))
-
-update("nbtext", overwrite=False, silent=True)
-update("graph_networkx_louvain", overwrite=False, silent=True)
-update('token_map', overwrite=False, silent=True)

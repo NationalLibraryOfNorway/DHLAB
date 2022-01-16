@@ -1,7 +1,11 @@
+from collections import Counter
+import re
+
 import pandas as pd
 import networkx as nx
 
 from ..api.nb_search_api import get_df, get_konks
+from ..text.nbtokenizer import tokenize
 from ..nbtext import frame, frame_sort
 
 def phrase_plots(

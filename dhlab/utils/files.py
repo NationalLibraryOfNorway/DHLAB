@@ -1,3 +1,11 @@
+import requests
+import os
+from IPython.display import HTML, Markdown, display
+
+def printmd(S):
+    display(Markdown(S))
+    return
+
 def download(module="", user = "Yoonsen", overwrite=True, silent=False):
     """Fetch modules from Github using username and default path and write them to folder"""
     nba = requests.get(
@@ -5,11 +13,11 @@ def download(module="", user = "Yoonsen", overwrite=True, silent=False):
         headers={'Cache-Control': 'no-cache'}
         )
     if nba.status_code == 200:
-        filename = '{m}.py'.format(m=module)
+        filename = f'{module}.py'
         file_exists = os.path.exists(filename)
         if file_exists and not(overwrite):
             if not silent:
-                printmd("File {f} exists - call `download('{m}', overwrite = True)` in order to download module `{m}` anyway".format(f = os.path.abspath(filename), m = module))
+                printmd(f"File {os.path.abspath(filename)} exists - call `download('{module}', overwrite = True)` in order to download module `{m}` anyway"
         else:
             nba = nba.text
             with open(filename,'w', encoding='UTF-8') as pyfile:
@@ -17,7 +25,7 @@ def download(module="", user = "Yoonsen", overwrite=True, silent=False):
                 pyfile.flush()
                 pyfile.close()
             if not silent:
-                printmd("Updated file `{module}.py`".format(module= os.path.abspath(module)))
+                printmd(f"Updated file `{os.path.abspath(module)}.py`")
     else:
         printmd( 
             """{intro} for {module} with error {code}""".format(
