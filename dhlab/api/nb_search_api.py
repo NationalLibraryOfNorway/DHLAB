@@ -17,7 +17,7 @@ def get_df(frases, title='aftenposten'):
     return {x['key']:x['count'] for x in aggs}
 
 def get_json(frases, mediatype='aviser'):
-    import requests
+
     querystring = " + ".join(['"'+frase+'"' for frase in frases])
     query = {
         'q':querystring,
@@ -62,7 +62,15 @@ def get_data_and(frases, title='aftenposten', media='avis'):
 def get_df_pd(frase, media='bøker'):
     return pd.DataFrame.from_dict(get_df(frase, media=media ), orient='index').sort_index()
 
-def phrase_plots(phrase_sets, title='aftenposten', fra = 1960, til = 2020, step=5, rot=0, colours = ['r', 'b','g','y','m','c']):
+def phrase_plots(
+    phrase_sets,
+    title='aftenposten',
+    fra = 1960,
+    til = 2020,
+    step=5,
+    rot=0,
+    colours = ['r', 'b','g','y','m','c']
+):
     df_all = []
     for f in phrase_sets:
         df_all.append(nb.frame(get_df(f, title= title), ', '.join(f)))
@@ -73,15 +81,22 @@ def phrase_plots(phrase_sets, title='aftenposten', fra = 1960, til = 2020, step=
     df.groupby('bins').sum().plot(kind='bar', color=colours, figsize=(15,5), rot=rot)
     return
 
-def phrase_plots_anno(phrase_sets, title='aftenposten', fra = 1960, til = 2020, rot=0, colours = ['r', 'b','g']):
+def phrase_plots_anno(
+    phrase_sets,
+    title = 'aftenposten',
+    fra = 1960,
+    til = 2020,
+    rot=0,
+    colours = ['r', 'b','g']
+):
     df_all = []
     for f in phrase_sets:
-        df_all.append(nb.frame(get_df(f, title= title), ', '.join(f)))
-    df = pd.concat(df_all, sort=False)
+        df_all.append(nb.frame(get_df(f, title = title), ', '.join(f)))
+    df = pd.concat(df_all, sort = False)
     df.index = df.index.astype(int)
     df = df.sort_index()
     #df['bins'] = pd.cut(df.index, range(fra, til, step), precision=0)
-    df.plot(kind='bar', figsize=(15,5), rot=rot, color=colours)
+    df.plot(kind = 'bar', figsize = (15,5), rot = rot, color = colours)
     return
 
 def graph_from_df(df, threshold = 100):
@@ -139,11 +154,20 @@ def get_all_konks(term, urns):
     return konks
 
 def collocations_from_nb(word, corpus):
-    """Get a concordance, and count the words in it. Assume konks reside a dataframe with columns 'after' and 'before'"""
+    """Get a concordance, and count the words in it. 
+    Assume konks reside a dataframe with columns 'after' and 'before'"""
     concordance = nb.frame(get_all_konks(word, corpus))
     return nb.frame_sort(nb.frame(Counter(tokenize(' '.join(concordance['after'].values + concordance['before'].values))), word))
 
 def count_from_conc(concordance):
-    """From a concordance, count the words in it. Assume konks reside a dataframe with columns 'after' and 'before'"""
+    """From a concordance, count the words in it. 
+    Assume konks reside a dataframe with columns 'after' and 'before'"""
     word = concordance['word'][0]
-    return nb.frame_sort(nb.frame(Counter(tokenize(' '.join(concordance['after'].values + concordance['before'].values))), word))
+    return nb.frame_sort(
+        nb.frame(
+            Counter(
+                tokenize(' '.join(concordance['after'].values + concordance['before'].values))
+            ), 
+            word
+        )
+    )

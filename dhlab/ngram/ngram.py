@@ -41,6 +41,7 @@ class Ngram():
         compare =  (self.ngram.loc[str(start_year):str(end_year)].transpose()/another_ngram.ngram[str(start_year):str(end_year)].transpose().sum()).transpose()
         return compare
 
+    
 class Ngram_book(Ngram):
     """Extract ngrams using metadata with functions to be inherited"""
 

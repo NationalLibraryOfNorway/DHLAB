@@ -1,5 +1,6 @@
-import requests
 import json
+
+import requests
 import networkx as nx
 
 NGRAM_API = "https://api.nb.no/dhlab/nb_ngram/ngram/query"
@@ -7,8 +8,8 @@ GALAXY_API = "https://api.nb.no/dhlab/nb_ngram_galaxies/galaxies/query"
 
 def get_ngram(terms, corpus='avis'):
     req = requests.get(
-        NGRAM_API, 
-        params = { 
+        NGRAM_API,
+        params = {
             'terms':terms,
             'corpus':corpus
         }
@@ -42,7 +43,9 @@ def make_word_graph(words, corpus = 'all', cutoff = 16, leaves = 0):
         nodes = graph['nodes']
         edges = graph['links']
         for edge in edges:
-            edgelist += [(nodes[edge['source']]['name'], nodes[edge['target']]['name'], abs(edge['value']))]
+            edgelist += [(nodes[edge['source']]['name'], 
+                          nodes[edge['target']]['name'], 
+                          abs(edge['value']))]
     #print(edgelist)
     G.add_weighted_edges_from(edgelist)
 
