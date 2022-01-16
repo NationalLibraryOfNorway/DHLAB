@@ -1,3 +1,5 @@
+beautifulsoup4==4.10.0
+bs4==0.0.1
 certifi==2020.6.20
 charset-normalizer==2.0.10
 cycler==0.11.0
@@ -17,5 +19,6 @@ requests==2.27.1
 scipy==1.7.3
 seaborn==0.11.2
 six==1.16.0
+soupsieve==2.3.1
 urllib3==1.26.8
 wordcloud==1.8.1
