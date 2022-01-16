@@ -445,4 +445,5 @@ if __name__ == "__main__":
             for token in tokenize(charfile.read()):
                 print(token,'\n')
     except:
-        print("Får ikke åpnet fila \"%s\"" % (sys.argv[1],)) 
+        print("Får ikke åpnet fila \"%s\"" % (sys.argv[1],))
+
