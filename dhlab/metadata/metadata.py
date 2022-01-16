@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 import json
-import networkx as nx
+
 
 BASE_URL = "https://api.nb.no/dhlab"
 

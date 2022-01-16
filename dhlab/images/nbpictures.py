@@ -1,30 +1,18 @@
 from PIL import Image
 import requests
-import json
 from IPython.display import HTML
 
-def iiif_manifest(urn):
-    r = requests.get("https://api.nb.no/catalog/v1/iiif/{urn}/manifest".format(urn=urn))
-    return r.json()
-
-def mods(urn):
-    r = requests.get("https://api.nb.no:443/catalog/v1/metadata/{id}/mods".format(urn=urn))
-    return r.json()
+from ..api.nb_search_api import iiif_manifest, super_search, total_search, load_picture
 
 def pages(urn, scale=800):
     a = iiif_manifest(urn)
-    return [page['images'][0]['resource']['@id'].replace("full/full/", "full/0,{s}/".format(s=scale)) for page in a['sequences'][0]['canvases']]
-
-def load_picture(url):
-    r = requests.get(url, stream=True)
-    r.raw.decode_content=True
-    return r.raw
+    return [page['images'][0]['resource']['@id'].replace(f"full/full/", "full/0,{s}/") for page in a['sequences'][0]['canvases']]
 
 def get_url(urn, page=1, part=200):
     # urn as digit
     urn = "URN:NBN:no-nb_digibok_" + urn + '_{0:04d}'.format(page)
     print(urn)
-    url = "https://www.nb.no/services/image/resolver/{urn}/full/0,{part}/native.jpg".format(urn = urn, part=part)
+    url = f"https://www.nb.no/services/image/resolver/{urn}/full/0,{part}/native.jpg"
     return url
 
 
@@ -32,29 +20,6 @@ def page_urn(urn, page=1):
     # urn as digit
     return "URN:NBN:no-nb_digibok_" + urn + '_{0:04d}'.format(page)
 
-def super_search(term, number=50, page=0, mediatype='bilder'):
-    """Søk etter term og få ut json"""
-    number = min(number, 50)
-    if term == '':
-        r = requests.get(
-            "https://api.nb.no:443/catalog/v1/items", 
-             params = { 
-                 'filter':'mediatype:{mediatype}'.format(mediatype=mediatype), 
-                 'page':page, 
-                 'size':number
-             }
-        )
-    else:        
-        r = requests.get(
-            "https://api.nb.no:443/catalog/v1/items", 
-             params = {
-                 'q':term, 
-                 'filter':'mediatype:{mediatype}'.format(mediatype=mediatype), 
-                 'page':page, 
-                 'size':number
-             }
-        )
-    return r.json()
 
 def find_urls(term, number=50, page=0, mediatype='bilder'):
     """generates urls from super_search for pictures"""
@@ -90,9 +55,9 @@ def get_picture_from_urn(urn, width=0, height=300):
     meta = iiif_manifest(urn)
     if 'error' not in meta:
         if width == 0 and height == 0:
-            url = "https://www.nb.no/services/image/resolver/{urn}/full/full/0/native.jpg".format(urn=urn)
+            url = f"https://www.nb.no/services/image/resolver/{urn}/full/full/0/native.jpg"
         else:
-            url = "https://www.nb.no/services/image/resolver/{urn}/full/{width},{height}/0/native.jpg".format(urn=urn, width=width, height=height)
+            url = f"https://www.nb.no/services/image/resolver/{urn}/full/{width},{height}/0/native.jpg"
         #print(url)
     return Image.open(load_picture(url))
 
@@ -126,18 +91,6 @@ def find_urns(term):
     ]
     return urns
 
-def total_search(size=50, page=0):
-    """Finn de første antallet = 'size' fra side 'page' og få ut json"""
-    size = min(size, 50)
-    r = requests.get(
-        "https://api.nb.no:443/catalog/v1/items", 
-         params = {
-             'filter':'mediatype:bilder', 
-             'page':page, 
-             'size':size
-         }
-    )
-    return r.json()
 
 def total_urls(number=50, page=0):
     """find urls sequentially """
@@ -153,12 +106,6 @@ def total_urls(number=50, page=0):
         urls = []
     return urls
 
-
-def load_picture(url):
-    r = requests.get(url, stream=True)
-    r.raw.decode_content=True
-    #print(r.status_code)
-    return r.raw
 
 def json2html(meta):
     items = ["<dt>{key}</dt><dd>{val}</dd>".format(key=key, val= meta[key]) for key in meta]

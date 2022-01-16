@@ -1,23 +1,11 @@
 import requests
 import pandas as pd
 import json
-import networkx as nx
+import re
 
 BASE_URL = "https://api.nb.no/dhlab"
 
-
 pd.options.display.max_rows = 100
-
-
-import re
-
-# convert cell to a link
-def make_link(row):
-        r = "<a target='_blank' href = 'https://urn.nb.no/{x}'>{x}</a>".format(x = str(row))
-        return r
-
-# find hits a cell
-find_hits = lambda x: ' '.join(re.findall("<b>(.+?)</b", x))
 
 # fetch metadata
 
@@ -27,7 +15,13 @@ def get_metadata(urns = None):
     r = requests.post(f"{BASE_URL}/get_metadata", json = params)
     return pd.DataFrame(r.json())
 
-def get_reference(corpus = 'digavis', from_year = 1950, to_year = 1955, lang = 'nob', limit = 100000):
+def get_reference(
+    corpus = 'digavis',
+    from_year = 1950,
+    to_year = 1955,
+    lang = 'nob',
+    limit = 100000
+):
     params = locals()
     r = requests.get(BASE_URL + "/reference_corpus", params = params)
     if r.status_code == 200:
@@ -37,8 +31,9 @@ def get_reference(corpus = 'digavis', from_year = 1950, to_year = 1955, lang = '
     return pd.DataFrame(result, columns = ['word', 'freq']).set_index('word')
 
 def find_urns(docids = None, mode = 'json'):
-    """ Return a list of URNs from a list of docids as a dictionary {docid: URN} or as a pandas dataframe"""
-    
+    """ Return a list of URNs from a list of docids as
+    a dictionary {docid: URN} or as a pandas dataframe"""
+
     params = locals()
     r = requests.post(BASE_URL + "/find_urn", json = params)
     if r.status_code == 200:
@@ -47,8 +42,19 @@ def find_urns(docids = None, mode = 'json'):
         res = pd.DataFrame()
     return res
 
-def ngram_book(word = ['.'], title = None, period = None, publisher = None, lang=None, city = None, ddk = None, topic = None):
-    """Get a time series for a word as string, title is name of book period is (year, year), lang is three letter iso code.
+def ngram_book(
+    word = ['.'], 
+    title = None, 
+    period = None, 
+    publisher = None, 
+    lang=None, 
+    city = None, 
+    ddk = None, 
+    topic = None
+):
+    """Get a time series for a word as string, 
+    title is name of book period is (year, year),
+    lang is three letter iso code.
     Use % as wildcard where appropriate - no wildcards in word and lang"""
     params = locals()
     if isinstance(word, str):
@@ -66,9 +72,21 @@ def ngram_book(word = ['.'], title = None, period = None, publisher = None, lang
     #df.index = df.index.map(pd.Timestamp)
     return df
 
-def ngram_periodicals(word = ['.'], title = None, period = None, publisher = None, lang=None, city = None, ddk = None, topic = None):
-    """Get a time series for a word as string, title is name of periodical period is (year, year), lang is three letter iso code.
+def ngram_periodicals(
+    word = ['.'], 
+    title = None,
+    period = None,
+    publisher = None,
+    lang=None,
+    city = None,
+    ddk = None,
+    topic = None
+):
+    """Get a time series for a word as string,
+    title is name of periodical period is (year, year),
+    lang is three letter iso code.
     Use % as wildcard where appropriate - no wildcards in word and lang"""
+    
     params = locals()
     if isinstance(word, str):
         # assume a comma separated string
@@ -125,7 +143,20 @@ def get_word_frequencies(urns = None, cutoff = 0, words = None):
 def get_document_corpus(**kwargs):
     return document_corpus(**kwargs)
 
-def document_corpus(doctype = None, author = None, freetext = None, from_year = None, to_year = None, from_timestamp = None, to_timestamp = None, title = None, ddk = None, subject = None, lang = None, limit = None):
+def document_corpus(
+    doctype = None,
+    author = None,
+    freetext = None,
+    from_year = None,
+    to_year = None,
+    from_timestamp = None,
+    to_timestamp = None,
+    title = None,
+    ddk = None,
+    subject = None,
+    lang = None,
+    limit = None
+):
     """ Fetch a corpus based on metadata - doctypes are digibok, digavis, digitidsskrift"""
     
     parms = locals()
@@ -133,12 +164,20 @@ def document_corpus(doctype = None, author = None, freetext = None, from_year = 
     if "ddk" in params:
         params["ddk"]  = "^" + params['ddk'].replace('.', '"."')
         
-    r=requests.post(BASE_URL + "/build_corpus", json=params)
+    r = requests.post(BASE_URL + "/build_corpus", json=params)
     
     return pd.DataFrame(r.json())
     
-def urn_collocation(urns = None, word = 'arbeid', before = 5, after = 0, samplesize = 200000):
-    """ Create a collocation from a list of URNs - returns distance (sum of distances and bayesian distance) and frequency"""
+def urn_collocation(
+    urns = None,
+    word = 'arbeid',
+    before = 5,
+    after = 0,
+    samplesize = 200000
+):
+    """ Create a collocation from a list of URNs - 
+    returns distance (sum of distances and bayesian distance) and frequency"""
+    
     params = {
         'urn': urns,
         'word': word,
@@ -158,7 +197,7 @@ def totals(n = 50000):
 def concordance(urns = None, words = None, window = 25, limit = 100):
     """ Get a list of concordances from database, words is an fts5 string search expression"""
     if words is None:
-        return {}
+        return {} # exit condition
     else:
         params = {
             'urns': urns,
@@ -172,7 +211,7 @@ def concordance(urns = None, words = None, window = 25, limit = 100):
 def concordance_counts(urns = None, words = None, window = 25, limit = 100):
     """ Get a list of concordances from database, words is an fts5 string search expression"""
     if words is None:
-        return {}
+        return {} #exit condition
     else:
         params = {
             'urns': urns,
@@ -185,7 +224,7 @@ def concordance_counts(urns = None, words = None, window = 25, limit = 100):
 
 def konkordans(urns = None, query = None, window = 25, limit = 100):
     if query is None:
-        return {}
+        return {} # exit condition
     else:
         params = {
             'urns': urns,

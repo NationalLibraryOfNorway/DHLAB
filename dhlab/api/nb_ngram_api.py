@@ -1,5 +1,6 @@
-import requests
 import json
+
+import requests
 import networkx as nx
 
 NGRAM_API = "https://api.nb.no/dhlab/nb_ngram/ngram/query"
@@ -7,8 +8,8 @@ GALAXY_API = "https://api.nb.no/dhlab/nb_ngram_galaxies/galaxies/query"
 
 def get_ngram(terms, corpus='avis'):
     req = requests.get(
-        NGRAM_API, 
-        params = { 
+        NGRAM_API,
+        params = {
             'terms':terms,
             'corpus':corpus
         }
@@ -21,11 +22,11 @@ def get_ngram(terms, corpus='avis'):
 
 
 def make_word_graph(words, corpus = 'all', cutoff = 16, leaves = 0):
-    """Get galaxy from ngram-database. 
+    """Get galaxy from ngram-database.
     corpus is bok, avis or both
     words is a commaseparated string
-    English and German provided by Google N-gram. 
-    Set leaves=1 to get the leaves. Parameter cutoff only works for lang='nob'. 
+    English and German provided by Google N-gram.
+    Set leaves=1 to get the leaves. Parameter cutoff only works for lang='nob'.
     Specify English by setting lang='eng' and German by lang='ger'"""
     
     params = dict()
@@ -42,8 +43,11 @@ def make_word_graph(words, corpus = 'all', cutoff = 16, leaves = 0):
         nodes = graph['nodes']
         edges = graph['links']
         for edge in edges:
-            edgelist += [(nodes[edge['source']]['name'], nodes[edge['target']]['name'], abs(edge['value']))]
+            edgelist += [
+                (nodes[edge['source']]['name'],
+                 nodes[edge['target']]['name'],
+                 abs(edge['value']))
+            ]
     #print(edgelist)
     G.add_weighted_edges_from(edgelist)
-
     return G
