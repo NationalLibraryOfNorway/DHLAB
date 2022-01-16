@@ -10,11 +10,11 @@ def load_picture(url):
     return r.raw
 
 def iiif_manifest(urn):
-    r = requests.get("https://api.nb.no/catalog/v1/iiif/{urn}/manifest".format(urn=urn))
+    r = requests.get(f"https://api.nb.no/catalog/v1/iiif/{urn}/manifest")
     return r.json()
 
 def mods(urn):
-    r = requests.get("https://api.nb.no:443/catalog/v1/metadata/{id}/mods".format(urn=urn))
+    r = requests.get(f"https://api.nb.no:443/catalog/v1/metadata/{urn}/mods")
     return r.json()
 
 def super_search(term, number=50, page=0, mediatype='bilder'):
@@ -24,7 +24,7 @@ def super_search(term, number=50, page=0, mediatype='bilder'):
         r = requests.get(
             "https://api.nb.no:443/catalog/v1/items", 
              params = { 
-                 'filter':'mediatype:{mediatype}'.format(mediatype=mediatype), 
+                 'filter':f'mediatype:{mediatype}', 
                  'page':page, 
                  'size':number
              }
@@ -34,7 +34,7 @@ def super_search(term, number=50, page=0, mediatype='bilder'):
             "https://api.nb.no:443/catalog/v1/items", 
              params = {
                  'q':term, 
-                 'filter':'mediatype:{mediatype}'.format(mediatype=mediatype), 
+                 'filter':f'mediatype:{mediatype}', 
                  'page':page, 
                  'size':number
              }
@@ -56,14 +56,14 @@ def total_search(size=50, page=0):
 
 
 def get_df(frases, title='aftenposten'):
-    import requests
+    """get document phrases"""
     querystring = " + ".join(['"'+frase+'"' for frase in frases])
     query = {
         'q':querystring,
         'size':1,
         'aggs':'year',
         #'filter':'mediatype:{mt}'.format(mt=media),
-        'filter':'title:{title}'.format(title=title)
+        'filter':f'title:{title}'
     }
     r = requests.get("https://api.nb.no/catalog/v1/items", params = query)
     aggs = r.json()['_embedded']['aggregations'][0]['buckets']
@@ -87,7 +87,7 @@ def get_json(frases, mediatype='aviser'):
     return aggs
 
 def get_data(frase, media='avis', title='jazznytt'):
-    import requests
+
     query = {
         'q':'"'+frase+'""',
         'size':1,
@@ -99,7 +99,7 @@ def get_data(frase, media='avis', title='jazznytt'):
     return r.json()
 
 def get_data_and(frases, title='aftenposten', media='avis'):
-    import requests
+
     querystring = " + ".join(['"'+frase+'"' for frase in frases])
     print(querystring)
     query = {
@@ -117,7 +117,7 @@ def get_df_pd(frase, media='bøker'):
 
 
 def get_konks(urn, phrase, window=1000, n = 1000):
-    import requests
+
     querystring = '"'+ phrase +'"' 
     query = {
         'q':querystring,
@@ -143,37 +143,12 @@ def get_konks(urn, phrase, window=1000, n = 1000):
     return results
 
 def get_phrase_info(urn, phrase, window=1000, n = 1000):
-    import requests
+
     querystring = '"'+ phrase +'"' 
     query = {
         'q':querystring,
        
     }
-    r = requests.get("https://api.nb.no/catalog/v1/items/{urn}/contentfragments".format(urn=urn), params = query)
+    r = requests.get(f"https://api.nb.no/catalog/v1/items/{urn}/contentfragments", params = query)
     res = r.json()
     return res
-
-def get_all_konks(term, urns):
-    konks = []
-    for u in urns:
-        konks += get_konks(u, term)
-    return konks
-
-def collocations_from_nb(word, corpus):
-    """Get a concordance, and count the words in it. 
-    Assume konks reside a dataframe with columns 'after' and 'before'"""
-    concordance = nb.frame(get_all_konks(word, corpus))
-    return nb.frame_sort(nb.frame(Counter(tokenize(' '.join(concordance['after'].values + concordance['before'].values))), word))
-
-def count_from_conc(concordance):
-    """From a concordance, count the words in it. 
-    Assume konks reside a dataframe with columns 'after' and 'before'"""
-    word = concordance['word'][0]
-    return nb.frame_sort(
-        nb.frame(
-            Counter(
-                tokenize(' '.join(concordance['after'].values + concordance['before'].values))
-            ), 
-            word
-        )
-    )

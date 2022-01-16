@@ -1,7 +1,8 @@
 import pandas as pd
 import networkx as nx
 
-from ..api.nb_search_api import get_df
+from ..api.nb_search_api import get_df, get_konks
+from ..nbtext import frame, frame_sort
 
 def phrase_plots(
     phrase_sets,
@@ -14,7 +15,7 @@ def phrase_plots(
 ):
     df_all = []
     for f in phrase_sets:
-        df_all.append(nb.frame(get_df(f, title= title), ', '.join(f)))
+        df_all.append(frame(get_df(f, title= title), ', '.join(f)))
     df = pd.concat(df_all, sort=False)
     df.index = df.index.astype(int)
     df = df.sort_index()
@@ -32,7 +33,7 @@ def phrase_plots_anno(
 ):
     df_all = []
     for f in phrase_sets:
-        df_all.append(nb.frame(get_df(f, title = title), ', '.join(f)))
+        df_all.append(frame(get_df(f, title = title), ', '.join(f)))
     df = pd.concat(df_all, sort = False)
     df.index = df.index.astype(int)
     df = df.sort_index()
@@ -50,3 +51,29 @@ def graph_from_df(df, threshold = 100):
     G = nx.Graph()
     G.add_weighted_edges_from(edges)
     return G
+
+
+def get_all_konks(term, urns):
+    konks = []
+    for u in urns:
+        konks += get_konks(u, term)
+    return konks
+
+def collocations_from_nb(word, corpus):
+    """Get a concordance, and count the words in it. 
+    Assume konks reside a dataframe with columns 'after' and 'before'"""
+    concordance = frame(get_all_konks(word, corpus))
+    return frame_sort(frame(Counter(tokenize(' '.join(concordance['after'].values + concordance['before'].values))), word))
+
+def count_from_conc(concordance):
+    """From a concordance, count the words in it. 
+    Assume konks reside a dataframe with columns 'after' and 'before'"""
+    word = concordance['word'][0]
+    return frame_sort(
+        frame(
+            Counter(
+                tokenize(' '.join(concordance['after'].values + concordance['before'].values))
+            ), 
+            word
+        )
+    )

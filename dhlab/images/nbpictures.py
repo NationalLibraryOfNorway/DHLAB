@@ -1,24 +1,18 @@
 from PIL import Image
 import requests
-import json
 from IPython.display import HTML
 
-from ..api.nb_search_api import iiif_manifest, mods, super_search, total_search, load_picture
+from ..api.nb_search_api import iiif_manifest, super_search, total_search, load_picture
 
 def pages(urn, scale=800):
     a = iiif_manifest(urn)
-    return [page['images'][0]['resource']['@id'].replace("full/full/", "full/0,{s}/".format(s=scale)) for page in a['sequences'][0]['canvases']]
-
-def load_picture(url):
-    r = requests.get(url, stream=True)
-    r.raw.decode_content=True
-    return r.raw
+    return [page['images'][0]['resource']['@id'].replace(f"full/full/", "full/0,{s}/") for page in a['sequences'][0]['canvases']]
 
 def get_url(urn, page=1, part=200):
     # urn as digit
     urn = "URN:NBN:no-nb_digibok_" + urn + '_{0:04d}'.format(page)
     print(urn)
-    url = "https://www.nb.no/services/image/resolver/{urn}/full/0,{part}/native.jpg".format(urn = urn, part=part)
+    url = f"https://www.nb.no/services/image/resolver/{urn}/full/0,{part}/native.jpg"
     return url
 
 
@@ -61,9 +55,9 @@ def get_picture_from_urn(urn, width=0, height=300):
     meta = iiif_manifest(urn)
     if 'error' not in meta:
         if width == 0 and height == 0:
-            url = "https://www.nb.no/services/image/resolver/{urn}/full/full/0/native.jpg".format(urn=urn)
+            url = f"https://www.nb.no/services/image/resolver/{urn}/full/full/0/native.jpg"
         else:
-            url = "https://www.nb.no/services/image/resolver/{urn}/full/{width},{height}/0/native.jpg".format(urn=urn, width=width, height=height)
+            url = f"https://www.nb.no/services/image/resolver/{urn}/full/{width},{height}/0/native.jpg"
         #print(url)
     return Image.open(load_picture(url))
 

@@ -58,8 +58,9 @@ class Collocations():
         self.after = after
         
         if reference is not None:
-            self.coll['relevance'] = 
-            (self.coll.counts/self.coll.counts.sum())/(self.reference.freq/self.reference.freq.sum())
+            teller = self.coll.counts/self.coll.counts.sum()
+            divisor = self.reference.freq/self.reference.freq.sum()
+            self.coll['relevance'] = teller/divisor
     
     def show(self, sortby = 'counts', n = 20):
         return self.coll.sort_values(by = sortby, ascending = False)
