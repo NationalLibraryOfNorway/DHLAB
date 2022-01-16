@@ -1,0 +1,13 @@
+name: Check Code Quality and Performance
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+
+jobs:
+  linting:
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/lint.yml@fcd00f307c9d7377100340527bb63447ef7bd58a
+  testing:
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/test.yml@4816fe8ac924eb1542a0fd92942de87985becfaf
