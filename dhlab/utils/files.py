@@ -17,7 +17,7 @@ def download(module="", user = "Yoonsen", overwrite=True, silent=False):
         file_exists = os.path.exists(filename)
         if file_exists and not(overwrite):
             if not silent:
-                printmd(f"File {os.path.abspath(filename)} exists - call `download('{module}', overwrite = True)` in order to download module `{m}` anyway"
+                printmd(f"File {os.path.abspath(filename)} exists - call `download('{module}', overwrite = True)` in order to download module `{module}` anyway")
         else:
             nba = nba.text
             with open(filename,'w', encoding='UTF-8') as pyfile:
