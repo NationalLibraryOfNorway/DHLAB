@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from ..api.dhlab_api import ngram_book, ngram_news, 
-from nb_ngram import nb_ngram
+from ..api.dhlab_api import ngram_book, ngram_news
+from .nb_ngram import nb_ngram
 
 class Ngram():
     """Top level class for ngrams"""
@@ -31,6 +31,16 @@ class Ngram():
         self.ngram = ngrm
         return None
 
+    def plot(self, **kwargs):
+        self.ngram.plot(**kwargs)
+    
+    def compare(self, another_ngram):
+        from datetime import datetime
+        start_year = max(datetime(self.from_year,1,1), datetime(another_ngram.from_year,1,1)).year
+        end_year = min(datetime(self.to_year,1,1), datetime(another_ngram.to_year,1,1)).year
+        compare =  (self.ngram.loc[str(start_year):str(end_year)].transpose()/another_ngram.ngram[str(start_year):str(end_year)].transpose().sum()).transpose()
+        return compare
+
 class Ngram_book(Ngram):
     """Extract ngrams using metadata with functions to be inherited"""
 
@@ -56,15 +66,6 @@ class Ngram_book(Ngram):
         return None
     
 
-    def plot(self, **kwargs):
-        self.ngram.plot(**kwargs)
-    
-    def compare(self, another_ngram):
-        from datetime import datetime
-        start_year = max(datetime(self.from_year,1,1), datetime(another_ngram.from_year,1,1)).year
-        end_year = min(datetime(self.to_year,1,1), datetime(another_ngram.to_year,1,1)).year
-        compare =  (self.ngram.loc[str(start_year):str(end_year)].transpose()/another_ngram.ngram[str(start_year):str(end_year)].transpose().sum()).transpose()
-        return compare
     
 class Ngram_news(Ngram):
         def __init__(self, words = None, title = None, city = None, from_year = None, to_year = None):
