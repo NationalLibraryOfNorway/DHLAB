@@ -1,7 +1,7 @@
 
 import re
 from collections import Counter
-from corpus import Corpus
+from ..text.corpus import Corpus
 from pandas import DataFrame
 
 import pandas as pd
