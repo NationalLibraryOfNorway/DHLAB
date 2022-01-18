@@ -21,8 +21,8 @@ from matplotlib.pylab import rcParams
 
 try:
     from wordcloud import WordCloud
-except ImportError(WordCloud) as e:
-    print(f"{e} \nwordcloud er ikke installert, kan ikke lage ordskyer")
+except:
+    print(f"wordcloud er ikke installert, kan ikke lage ordskyer")
 
 
 # ************** For defining wordbag search
