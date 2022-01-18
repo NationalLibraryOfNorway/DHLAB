@@ -19,9 +19,9 @@ find_hits = lambda x: ' '.join(re.findall("<b>(.+?)</b", x))
 def urnlist(corpus):
     """Try to pull out a list of URNs from corpus"""
     
-    if isinstance(corpus, "Corpus"):
+    if isinstance(corpus, Corpus):
         urnlist = list(corpus.corpus.urn)
-    elif isinstance(corpus, "DataFrame"):
+    elif isinstance(corpus, DataFrame):
         urnlist = list(corpus.urn)
     else:
         urnlist = []
