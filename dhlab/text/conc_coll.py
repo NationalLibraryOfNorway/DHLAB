@@ -14,10 +14,26 @@ def make_link(row):
 # find hits a cell
 find_hits = lambda x: ' '.join(re.findall("<b>(.+?)</b", x))
 
+
+
+def urnlist(corpus):
+    """Try to pull out a list of URNs from corpus"""
+    
+    if isinstance(corpus, "Corpus"):
+        urnlist = list(corpus.corpus.urn)
+    elif isinstance(corpus, "DataFrame"):
+        urnlist = list(corpus.urn)
+    else:
+        urnlist = []
+    return urnlist
+
+
 class Concordance:
     """Wrapper for concordance function with added functionality"""
     def __init__(self, corpus, query):
-        self.concordance = concordance(urns = list(corpus.urn), words = query)
+
+            
+        self.concordance = concordance(urns = urnlist(corpus), words = query)
         self.concordance['link'] = self.concordance.urn.apply(make_link)
         self.concordance = self.concordance[['link', 'urn', 'conc']]
         self.concordance.columns = ['link', 'urn', 'concordance']
@@ -46,7 +62,7 @@ class Collocations():
         coll = pd.concat(
             [
                 urn_collocation(
-                    urns = list(corpus.urn),
+                    urns = urnlist(corpus),
                     word = w,
                     before = before,
                     after = after
