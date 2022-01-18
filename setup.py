@@ -35,7 +35,7 @@ setuptools.setup(
         'python_louvain',
         'requests',
         'seaborn',
-        'setuptools',
+        'setuptools'
        
     ]
 )
