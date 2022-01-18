@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="dhlab",
-    version="2.0.1-alpha6",
+    version="2.0.0",
     author="The National Library of Norway",
     author_email="dh-lab@nb.no",
     description="Library for text and image analysis by the Digital Humanities lab (DH-lab)",
@@ -35,7 +35,8 @@ setuptools.setup(
         'python_louvain',
         'requests',
         'seaborn',
-        'setuptools'
+        'setuptools',
+	'wordcloud'
        
     ]
 )
