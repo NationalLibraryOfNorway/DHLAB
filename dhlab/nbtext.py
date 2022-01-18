@@ -21,7 +21,7 @@ from matplotlib.pylab import rcParams
 
 try:
     from wordcloud import WordCloud
-except ImportError(WordCloud) as e:
+except:
     print(f"{e} \nwordcloud er ikke installert, kan ikke lage ordskyer")
 
 
