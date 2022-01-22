@@ -19,8 +19,6 @@ find_hits = lambda x: ' '.join(re.findall("<b>(.+?)</b", x))
 
 
 
-
-
 class Concordance:
     """Wrapper for concordance function with added functionality"""
     def __init__(self, corpus, query):
