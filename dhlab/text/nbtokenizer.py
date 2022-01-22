@@ -392,7 +392,7 @@ Andre tegn, som punktum og kolon i slutt, vil ikke tokeniseres sammen med ordet.
 """
 
 initialer = r'(?<=(?: |\.))[A-ZÆØÅ]\.'
-word = r'\w+[-\d.@]*[\w\d]+-?'
+word = r'\w+[-\d.@\w]*[\w\d]+-?'
 
 word = '|'.join([initialer, word])
 
@@ -432,6 +432,15 @@ def tokenize(text):
     return tokens
 
 
+class Tokens():
+    """Create a list of tokens from a text
+    class calls tokenize(text)"""
+    
+    def __init__(self, text):
+        self.tokens = tokenize(text)
+        self.size = len(self.tokens)
+
+        
 if __name__ == "__main__":
     try:
         with open(sys.argv[1], "r", encoding="utf-8") as charfile:
