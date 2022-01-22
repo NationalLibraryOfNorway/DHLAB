@@ -2,7 +2,7 @@ import pandas as pd
 from pandas import DataFrame
 
 from ..api.dhlab_api import document_corpus, get_metadata
-from ..text.conc_coll import urnlist
+
 
 class Corpus():
     def __init__(
