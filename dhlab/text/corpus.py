@@ -1,6 +1,7 @@
 import pandas as pd
 
-from ..api.dhlab_api import document_corpus
+from ..api.dhlab_api import document_corpus, get_metadata
+from ..text.conc_coll import urnlist
 
 class Corpus():
     def __init__(
@@ -36,3 +37,9 @@ class Corpus():
         self.size = len(self.corpus)
         
         return
+    
+class Corpus_from_identifiers(Corpus):
+    def __init__(self, identifiers = None):
+        self.corpus = get_metadata(urnlist(identifiers))
+        
+        

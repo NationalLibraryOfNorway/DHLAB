@@ -1,8 +1,10 @@
 
 import re
 from collections import Counter
-from ..text.corpus import Corpus
 from pandas import DataFrame
+
+from ..text.corpus import Corpus
+from ..api.dhlab_api import get_document_frequencies
 
 import pandas as pd
 
@@ -90,3 +92,14 @@ class Collocations():
         mask = self.coll[self.coll.counts > counts]
         mask = mask[mask.relevance > relevance]
         return list(mask.sort_values(by = 'counts', ascending = False).head(200).index)
+
+    
+class Counts():
+    """Provide counts for a corpus - shouldn't be too large"""
+    def __init__(self, corpus = None, words = None):
+        if corpus is None and words is None:
+            self.counts = None
+        elif not corpus is None:
+            # count - if words is none result will be as if counting all words in the corpus
+            self.counts = get_document_frequencies(urns = urnlist(corpus), cutoff = 0, words = words):
+    
