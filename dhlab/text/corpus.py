@@ -1,4 +1,5 @@
 import pandas as pd
+from pandas import DataFrame
 
 from ..api.dhlab_api import document_corpus, get_metadata
 from ..text.conc_coll import urnlist
@@ -42,4 +43,14 @@ class Corpus_from_identifiers(Corpus):
     def __init__(self, identifiers = None):
         self.corpus = get_metadata(urnlist(identifiers))
         
-        
+
+def urnlist(corpus):
+    """Try to pull out a list of URNs from corpus"""
+    
+    if isinstance(corpus, Corpus):
+        urnlist = list(corpus.corpus.urn)
+    elif isinstance(corpus, DataFrame):
+        urnlist = list(corpus.urn)
+    else:
+        urnlist = []
+    return urnlist

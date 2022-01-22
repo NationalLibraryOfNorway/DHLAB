@@ -1,14 +1,13 @@
 
 import re
 from collections import Counter
-from pandas import DataFrame
-
-from ..text.corpus import Corpus
-from ..api.dhlab_api import get_document_frequencies
-
 import pandas as pd
 
-from ..api.dhlab_api import concordance, urn_collocation
+
+from ..text.corpus import Corpus, urnlist
+from ..api.dhlab_api import get_document_frequencies,concordance, urn_collocation
+
+
 
 # convert cell to a link
 def make_link(row):
@@ -20,16 +19,6 @@ find_hits = lambda x: ' '.join(re.findall("<b>(.+?)</b", x))
 
 
 
-def urnlist(corpus):
-    """Try to pull out a list of URNs from corpus"""
-    
-    if isinstance(corpus, Corpus):
-        urnlist = list(corpus.corpus.urn)
-    elif isinstance(corpus, DataFrame):
-        urnlist = list(corpus.urn)
-    else:
-        urnlist = []
-    return urnlist
 
 
 class Concordance:
