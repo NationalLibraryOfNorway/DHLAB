@@ -101,5 +101,5 @@ class Counts():
             self.counts = None
         elif not corpus is None:
             # count - if words is none result will be as if counting all words in the corpus
-            self.counts = get_document_frequencies(urns = urnlist(corpus), cutoff = 0, words = words):
+            self.counts = get_document_frequencies(urns = urnlist(corpus), cutoff = 0, words = words)
     
