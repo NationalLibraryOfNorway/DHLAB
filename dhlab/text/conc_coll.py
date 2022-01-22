@@ -1,12 +1,13 @@
 
 import re
 from collections import Counter
-from ..text.corpus import Corpus
-from pandas import DataFrame
-
 import pandas as pd
 
-from ..api.dhlab_api import concordance, urn_collocation
+
+from ..text.corpus import Corpus, urnlist
+from ..api.dhlab_api import get_document_frequencies,concordance, urn_collocation
+
+
 
 # convert cell to a link
 def make_link(row):
@@ -16,18 +17,6 @@ def make_link(row):
 # find hits a cell
 find_hits = lambda x: ' '.join(re.findall("<b>(.+?)</b", x))
 
-
-
-def urnlist(corpus):
-    """Try to pull out a list of URNs from corpus"""
-    
-    if isinstance(corpus, Corpus):
-        urnlist = list(corpus.corpus.urn)
-    elif isinstance(corpus, DataFrame):
-        urnlist = list(corpus.urn)
-    else:
-        urnlist = []
-    return urnlist
 
 
 class Concordance:
@@ -90,3 +79,14 @@ class Collocations():
         mask = self.coll[self.coll.counts > counts]
         mask = mask[mask.relevance > relevance]
         return list(mask.sort_values(by = 'counts', ascending = False).head(200).index)
+
+    
+class Counts():
+    """Provide counts for a corpus - shouldn't be too large"""
+    def __init__(self, corpus = None, words = None):
+        if corpus is None and words is None:
+            self.counts = None
+        elif not corpus is None:
+            # count - if words is none result will be as if counting all words in the corpus
+            self.counts = get_document_frequencies(urns = urnlist(corpus), cutoff = 0, words = words)
+    

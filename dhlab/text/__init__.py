@@ -1,3 +1,3 @@
-from .conc_coll import Concordance, Collocations
-from .corpus import Corpus
+from .conc_coll import Concordance, Collocations, Counts
+from .corpus import Corpus, Corpus_from_identifiers
 from .nbtokenizer import Tokens, tokenize

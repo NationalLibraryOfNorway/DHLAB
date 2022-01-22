@@ -1,6 +1,8 @@
 import pandas as pd
+from pandas import DataFrame
 
-from ..api.dhlab_api import document_corpus
+from ..api.dhlab_api import document_corpus, get_metadata
+
 
 class Corpus():
     def __init__(
@@ -36,3 +38,19 @@ class Corpus():
         self.size = len(self.corpus)
         
         return
+    
+class Corpus_from_identifiers(Corpus):
+    def __init__(self, identifiers = None):
+        self.corpus = get_metadata(urnlist(identifiers))
+        
+
+def urnlist(corpus):
+    """Try to pull out a list of URNs from corpus"""
+    
+    if isinstance(corpus, Corpus):
+        urnlist = list(corpus.corpus.urn)
+    elif isinstance(corpus, DataFrame):
+        urnlist = list(corpus.urn)
+    else:
+        urnlist = []
+    return urnlist
