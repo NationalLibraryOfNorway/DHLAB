@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="dhlab",
-    version="oo7",
+    version="2.0.7.oo7",
     author="The National Library of Norway",
     author_email="dh-lab@nb.no",
     description="Library for text and image analysis by the Digital Humanities lab (DH-lab)",
