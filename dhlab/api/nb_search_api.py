@@ -1,4 +1,4 @@
-import json
+#import json
 
 import requests
 import pandas as pd
@@ -139,7 +139,7 @@ def get_konks(urn, phrase, window=1000, n = 1000):
             after = s2[1]
             results.append({'urn': urn, 'before': before, 'word':word, 'after':after})
     except:
-        True
+        results = []
     return results
 
 def get_phrase_info(urn, phrase, window=1000, n = 1000):
