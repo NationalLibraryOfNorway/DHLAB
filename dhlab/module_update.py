@@ -92,7 +92,8 @@ def css(url=None):
             css_file = query.text
 
     elif uri.scheme == "file":
-        # assume on form "file:/// on windows there is drive letter on unix not"
+        # assume on form "file:/// on windows there is drive letter on unix
+        # not"
         file_path = url[7:]
         if file_path[2] == ':':  # then windows drive reference
             file_path = file_path[1:]

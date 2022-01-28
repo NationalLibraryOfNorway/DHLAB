@@ -100,10 +100,13 @@ def draw_graph_centrality2(G, Subsets=None, h=15, v=10, deltax=0, deltay=0,
                            coldark=0.5):
     if Subsets is None:
         Subsets = []
-    # W0621: Redefining name 'colors' from outer scope (line 16) (redefined-outer-name)
-    colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)  # W0612: Unused variable 'colors'
+    # W0621: Redefining name 'colors' from outer scope (line 16)
+    # (redefined-outer-name)
+    # W0612: Unused variable 'colors'
+    colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
     node_dict = centrality(G)
-    subnodes = {x: node_dict[x] for x in node_dict if node_dict[x] >= threshold}
+    subnodes = {x: node_dict[x]
+                for x in node_dict if node_dict[x] >= threshold}
     x, y = rcParams['figure.figsize']
     rcParams['figure.figsize'] = h, v
 
@@ -169,7 +172,8 @@ def mcommunity(Graph, random=10):
     list_nodes = []
     for com in set(m_partition.values()):
         list_nodes += [
-            {nodes for nodes in m_partition.keys() if m_partition[nodes] == com}
+            {nodes for nodes in m_partition.keys(
+            ) if m_partition[nodes] == com}
         ]
     return list_nodes
 
@@ -369,6 +373,7 @@ def draw_forest(F, spacing, h=15, v=10, save_name=False):
             plt.savefig(f'{save_name}-{row}.png', dpi=300)
 '''
 
+
 def print_list_of_sets(los):
     for x in los:
         print(', '.join(x), '\n')
@@ -405,7 +410,8 @@ def make_collocation_graph(target, top=15, urns=None, cutoff=0, cut_val=2,
     isgraf = {}
     for word in toppis[:top].index:
         if word.isalpha():
-            isgraf[word] = urn_coll(word, urns=urns, before=before, after=after)
+            isgraf[word] = urn_coll(
+                word, urns=urns, before=before, after=after)
 
     isframe = {}
     for w, value in isgraf.items():
