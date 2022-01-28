@@ -138,7 +138,10 @@ def urns_from_super(
 def get_illustration_data_from_book(urn):
     if 'digibok' in str(urn):
         urn = re.findall("[0-9]{13}", str(urn))[0]
-    r = requests.get('https://api.nb.no/ngram/illustrations', json={'urn': urn})
+    r = requests.get(
+        'https://api.nb.no/ngram/illustrations',
+        json={
+            'urn': urn})
     return r.json()
 
 
@@ -327,9 +330,9 @@ def find_urls(term, number=50, page=0, mediatype='bilder'):
             f['_links']['thumbnail_custom']['href']
             for f in x['_embedded']['items']
             if f['accessInfo']['accessAllowedFrom'] == 'EVERYWHERE'
-               and 'thumbnail_custom' in f['_links']
+            and 'thumbnail_custom' in f['_links']
         ]
-    except:  # PEP8: E722 do not use bare 'except', too broad exception clause
+    except BaseException:  # PEP8: E722 do not use bare 'except', too broad exception clause
         urls = []
     return urls
 
@@ -344,9 +347,9 @@ def find_urls2(term, number=50, page=0):
             x['_embedded']['mediaTypeResults'][0]['result']['_embedded'][
                 'items']
             if f['accessInfo']['accessAllowedFrom'] == 'EVERYWHERE'
-               and 'thumbnail_custom' in f['_links']
+            and 'thumbnail_custom' in f['_links']
         ]
-    except:  # PEP8: E722 do not use bare 'except', too broad exception clause
+    except BaseException:  # PEP8: E722 do not use bare 'except', too broad exception clause
         urls = [' ... hmm ...']
     return urls
 
@@ -377,7 +380,8 @@ def get_metadata_from_url(url):
     # print(urn, triple)
     r = {}  # Local variable 'r' value is not used
     if 'error' not in triple:
-        r = {x['label']: x['value'] for x in triple['metadata'] if 'label' in x}
+        r = {x['label']: x['value']
+             for x in triple['metadata'] if 'label' in x}
     else:
         r = triple['error']
     return r
@@ -418,14 +422,15 @@ def total_urls(number=50, page=0):
             f['_links']['thumbnail_custom']['href']
             for f in x['_embedded']['items']
             if f['accessInfo']['accessAllowedFrom'] == 'EVERYWHERE'
-               and 'thumbnail_custom' in f['_links']
+            and 'thumbnail_custom' in f['_links']
         ]
-    except:  # PEP8: E722 do not use bare 'except', too broad exception clause
+    except BaseException:  # PEP8: E722 do not use bare 'except', too broad exception clause
         urls = []
     return urls
 
 
-def find_urns_sesam(term='', creator='', number=50, page=0, mediatype='bilder'):
+def find_urns_sesam(term='', creator='', number=50,
+                    page=0, mediatype='bilder'):
     """generates urls from super_search for pictures"""
     x = nb_search(term=term, creator=creator, number=number, page=page,
                   mediatype=mediatype)
@@ -434,9 +439,9 @@ def find_urns_sesam(term='', creator='', number=50, page=0, mediatype='bilder'):
             f['id']
             for f in x['_embedded']['items']
             if f['accessInfo']['accessAllowedFrom'] == 'EVERYWHERE'
-               and 'thumbnail_custom' in f['_links']
+            and 'thumbnail_custom' in f['_links']
         ]
-    except:
+    except BaseException:
         sesamid = []
     return sesamid
 
@@ -465,7 +470,8 @@ def save_pictures(pages_, urn, root='.'):
         pass
 
     for p in pages_[urn]:
-        # pell ut entydig referanse til bildet fra URL-en i bildelisten som filnavn
+        # pell ut entydig referanse til bildet fra URL-en i bildelisten som
+        # filnavn
 
         filename = p.split('/')[6].split(':')[-1] + '.jpg'
 
@@ -499,7 +505,8 @@ def save_all_pages(pages_, root='.'):
             pass
 
         for p in pages_[urn]:
-            # pell ut entydig referanse til bildet fra URL-en i bildelisten som filnavn
+            # pell ut entydig referanse til bildet fra URL-en i bildelisten som
+            # filnavn
 
             filename = p.split('/')[6].split(':')[-1] + '.jpg'
 

@@ -34,12 +34,12 @@ def count_names_corpus(korpus, token_map_):
     for urn in urner:
         try:
             res[urn] = count_name_strings(str(urn), token_map_).to_dict()[0]
-        except:
+        except BaseException:
             try:
                 print('feil med:',
                       ', '.join([str(x) for x in metadata(str(urn))[0]]),
                       sys.exc_info()[0])
-            except:
+            except BaseException:
                 print('Kunne ikke hente data for:', urn)
     return pd.DataFrame(
         pd.DataFrame(res).sum(axis=1).sort_values(ascending=False))
@@ -57,21 +57,21 @@ def names_from_excel(excelfil):
         try:
             xval = ast.literal_eval(x)
             navnedata[len(xval) - 1][xval] = navn[x]
-        except:
+        except BaseException:
             navnedata[0][x] = navn[x]
     return navnedata
 
 
 def token_map_names(tmap):
     return [
-               [z[0][0] for z in (tmap) if len(z[0]) == 1]
-           ] + [
-               [z[0] for z in (tmap) if len(z[0]) == 2]
-           ] + [
-               [z[0] for z in (tmap) if len(z[0]) == 3]
-           ] + [
-               [z[0] for z in (tmap) if len(z[0]) == 4]
-           ]
+        [z[0][0] for z in (tmap) if len(z[0]) == 1]
+    ] + [
+        [z[0] for z in (tmap) if len(z[0]) == 2]
+    ] + [
+        [z[0] for z in (tmap) if len(z[0]) == 3]
+    ] + [
+        [z[0] for z in (tmap) if len(z[0]) == 4]
+    ]
 
 
 # create a character network with only tokens in tokenmap
@@ -81,7 +81,8 @@ def check_exit_conditions(filename):
     if filename == '':
         raise ValueError('Angi et filnavn')
     if os.path.exists(filename):
-        raise FileExistsError(f'Filen {filename} eksisterer - prøv et nytt filnavn')
+        raise FileExistsError(
+            f'Filen {filename} eksisterer - prøv et nytt filnavn')
 
 
 def names_to_token_map_file(wp, filename='', orient='column'):
@@ -189,7 +190,7 @@ def corpus_names(corpus, ratio=0.5, cutoff=10):
     for urn in corpus:
         try:
             urn_names[urn] = names(urn, ratio=ratio, cutoff=cutoff)
-        except:
+        except BaseException:
             print("Fikk ikke laget navn for:", urn)
     return urn_names
 

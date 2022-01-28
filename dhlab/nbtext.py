@@ -21,7 +21,7 @@ from matplotlib.pylab import rcParams
 
 try:
     from wordcloud import WordCloud
-except:
+except BaseException:
     print(f"wordcloud er ikke installert, kan ikke lage ordskyer")
 
 
@@ -379,7 +379,8 @@ def difference(first, second, rf, rs, years=(1980, 2000), smooth=1,
         f1 = s_a[a.columns[0]] / s_a[a.columns[1]]
         f2 = s_b[b.columns[0]] / s_b[b.columns[1]]
         res = f1 / f2
-    except:  # W0702: No exception type(s) specified (bare-except)
+    # W0702: No exception type(s) specified (bare-except)
+    except BaseException:
         res = 'Mangler noen data - har bare for: ' + ', '.join(
             list(a.columns.append(b.columns)))
     return res
@@ -672,7 +673,8 @@ def urn_coll_words(words, urns=None, after=5, before=5, limit=1000):
                             'limit': limit}
                     ).json()
                 )
-            except:  # W0702: No exception type(s) specified (bare-except)
+            # W0702: No exception type(s) specified (bare-except)
+            except BaseException:
                 pass
         coll = pd.DataFrame.from_dict(res, orient='index')
         if not coll.empty:
@@ -704,9 +706,9 @@ def compare_word_bags(bag_of_words, another_bag_of_words, first_freq=0,
     When the columns are all from one frame,
     just change column numbers to match the columns."""
     diff = (
-            bag_of_words[bag_of_words > first_freq][bag_of_words.columns[first_col]] /
-            another_bag_of_words[another_bag_of_words > another_freq][
-                another_bag_of_words.columns[another_col]]
+        bag_of_words[bag_of_words > first_freq][bag_of_words.columns[first_col]] /
+        another_bag_of_words[another_bag_of_words > another_freq][
+            another_bag_of_words.columns[another_col]]
     )
 
     return frame(diff, 'diff').sort_values(by='diff', ascending=False)[:top]
@@ -779,7 +781,8 @@ def collocation_data(words, yearfrom=2000, yearto=2005, limit=1000, before=5,
 
             a[word].columns = [word]
 
-        except:  # W0702: No exception type(s) specified (bare-except)
+        # W0702: No exception type(s) specified (bare-except)
+        except BaseException:
             print(word, ' feilsituasjon', sys.exc_info())
     result = pd.DataFrame()
     for w in a.values():
@@ -1018,7 +1021,8 @@ class Cluster:
                 self.corpus = model['corpus']
                 self.reference = pd.DataFrame(model['reference'])
                 self.collocates = pd.DataFrame(model['collocates'])
-            except:  # W0702: No exception type(s) specified (bare-except)
+            # W0702: No exception type(s) specified (bare-except)
+            except BaseException:
                 print('noe gikk galt')
         return True
 
@@ -1470,9 +1474,9 @@ class Corpus:
     def difference(self, freq_exp=1.1, doc_exp=1.1, top=200, aslist=True):
         res = pd.DataFrame(
             (
-                    self.target_corpus_tot ** freq_exp / self.combo_tot
+                self.target_corpus_tot ** freq_exp / self.combo_tot
             ) * (
-                    self.target_docf ** doc_exp / self.combo_docf
+                self.target_docf ** doc_exp / self.combo_docf
             )
         )
         res.columns = ['diff']
@@ -1512,7 +1516,8 @@ class Corpus:
                 self.combo_tot = pd.read_json(model['combo'])
                 self.target_docf = pd.read_json(model['target_df'])
                 self.combo_docf = pd.read_json(model['combo_df'])
-            except:  # W0702: No exception type(s) specified (bare-except)
+            # W0702: No exception type(s) specified (bare-except)
+            except BaseException:
                 print('noe gikk galt')
         return True
 
@@ -1926,7 +1931,8 @@ def get_konk(word, params=None, kind='html'):
                 res = pd.DataFrame(r.json())
                 res = res[['urn', 'before', 'word', 'after']]
 
-        except:  # W0702: No exception type(s) specified (bare-except)
+        # W0702: No exception type(s) specified (bare-except)
+        except BaseException:
             res = pd.DataFrame()
         # r = r.style.set_properties(subset=['after'],**{'text-align':'left'})
     return res
@@ -1972,7 +1978,8 @@ def get_urnkonk(word, params: dict = None, html: bool = True):
     para['word'] = word
     try:
         para['urns'] = pure_urn(para['urns'])
-    except:  # W0702: No exception type(s) specified (bare-except)
+    # W0702: No exception type(s) specified (bare-except)
+    except BaseException:
         print('Parameter urns missing')
     r = requests.post('https://api.nb.no/ngram/urnkonk', json=para)
     if html:
@@ -2098,7 +2105,8 @@ def dewey(dewey_):
         if 'deweyPathList' in ddk:
             for item in ddk['deweyPathList']:
                 ddc[str(item['level'])] = [item['classValue'], item['heading']]
-    except:  # W0702: No exception type(s) specified (bare-except)
+    # W0702: No exception type(s) specified (bare-except)
+    except BaseException:
         ddc = []
     return ddc
 
@@ -2114,7 +2122,8 @@ def metadata_xml(URN, kind='marcxml'):
         f"https://api.nb.no:443/catalog/v1/metadata/{URN}/{kind}")
     try:
         res = r.text
-    except:  # W0702: No exception type(s) specified (bare-except)
+    # W0702: No exception type(s) specified (bare-except)
+    except BaseException:
         res = ""
     return res
 
@@ -2139,9 +2148,11 @@ def restore_metadata_from_excel(data):
             year = df.columns[2]
             df = df.astype({urn: 'int64', year: 'int'})
             df = df.astype({urn: 'str'})
-        except:  # W0702: No exception type(s) specified (bare-except)
+        # W0702: No exception type(s) specified (bare-except)
+        except BaseException:
             pass
-    except:  # W0702: No exception type(s) specified (bare-except)
+    # W0702: No exception type(s) specified (bare-except)
+    except BaseException:
         if not os.path.exists(data):
             print(f'filen {data} ble ikke funnet')
         else:
