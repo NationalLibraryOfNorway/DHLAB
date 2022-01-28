@@ -22,9 +22,9 @@ def get_chunks(urn = None, chunk_size = 300):
         return {}
     r = requests.get( f"{BASE_URL}/chunks", params = locals())
     if r.status_code == 200:
-        result = pd.DataFrame(r.json())
+        result = r.json()
     else:
-        result = pd.DataFrame()
+        result = {}
     return result
 
 def get_chunks_para(urn = None):
@@ -34,9 +34,9 @@ def get_chunks_para(urn = None):
         return {}
     r = requests.get( f"{BASE_URL}/chunks_para", params = locals())
     if r.status_code == 200:
-        result = pd.DataFrame(r.json())
+        result = r.json()
     else:
-        result = pd.DataFrame()
+        result = {}
     return result
 
                      
