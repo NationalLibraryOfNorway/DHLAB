@@ -15,6 +15,31 @@ def get_metadata(urns = None):
     r = requests.post(f"{BASE_URL}/get_metadata", json = params)
     return pd.DataFrame(r.json())
 
+def get_chunks(urn = None, chunk_size = 300):
+    """Fetch chunks as wordbags from document urn"""
+    
+    if urn is None:
+        return {}
+    r = requests.get( f"{BASE_URL}/chunks", params = locals())
+    if r.status_code == 200:
+        result = pd.DataFrame(r.json())
+    else:
+        result = pd.DataFrame()
+    return result
+
+def get_chunks_para(urn = None):
+    """Fetch chunks from document, one for each paragraph"""
+    
+    if urn is None:
+        return {}
+    r = requests.get( f"{BASE_URL}/chunks_para", params = locals())
+    if r.status_code == 200:
+        result = pd.DataFrame(r.json())
+    else:
+        result = pd.DataFrame()
+    return result
+
+                     
 def get_reference(
     corpus = 'digavis',
     from_year = 1950,
