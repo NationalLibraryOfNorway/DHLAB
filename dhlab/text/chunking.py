@@ -18,7 +18,7 @@ class Chunks():
             else:
                 self.chunks = {}
         else:
-            get_chunks(urn=urn, chunk_size=chunks)
+            self.chunks = get_chunks(urn=urn, chunk_size=chunks)
 
     def to_pandas(self):
         """Vectorize into a pandas dataframe with words a index"""
