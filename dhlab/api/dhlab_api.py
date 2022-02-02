@@ -183,6 +183,7 @@ def document_corpus(
     doctype=None,
     author=None,
     freetext=None,
+    fulltext=None,
     from_year=None,
     to_year=None,
     from_timestamp=None,
