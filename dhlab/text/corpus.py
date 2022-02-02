@@ -11,6 +11,7 @@ class Corpus():
             author=None,
             freetext=None,
             from_year=None,
+            fulltext=None,
             to_year=None,
             from_timestamp=None,
             to_timestamp=None,
@@ -24,6 +25,7 @@ class Corpus():
             doctype,
             author,
             freetext,
+            fulltext,
             from_year,
             to_year,
             from_timestamp,
@@ -52,6 +54,8 @@ def urnlist(corpus):
         urnlist = list(corpus.corpus.urn)
     elif isinstance(corpus, DataFrame):
         urnlist = list(corpus.urn)
+    elif isinstance(corpus, list):
+        urnlist = urnlist
     else:
         urnlist = []
     return urnlist
