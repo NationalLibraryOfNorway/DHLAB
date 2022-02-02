@@ -55,7 +55,7 @@ def urnlist(corpus):
     elif isinstance(corpus, DataFrame):
         urnlist = list(corpus.urn)
     elif isinstance(corpus, list):
-        urnlist = urnlist
+        urnlist = corpus
     else:
         urnlist = []
     return urnlist
