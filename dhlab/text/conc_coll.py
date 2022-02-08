@@ -22,9 +22,9 @@ def find_hits(x): return ' '.join(re.findall("<b>(.+?)</b", x))
 class Concordance:
     """Wrapper for concordance function with added functionality"""
 
-    def __init__(self, corpus, query):
+    def __init__(self, corpus=None, query=None, window=20, limit=500):
 
-        self.concordance = concordance(urns=urnlist(corpus), words=query)
+        self.concordance = concordance(urns=urnlist(corpus), words=query, window=window, limit=limit)
         self.concordance['link'] = self.concordance.urn.apply(make_link)
         self.concordance = self.concordance[['link', 'urn', 'conc']]
         self.concordance.columns = ['link', 'urn', 'concordance']
@@ -49,7 +49,8 @@ class Collocations():
         words=None,
         before=10,
         after=10,
-        reference=None
+        reference=None,
+        samplesize=20000
     ):
         if isinstance(words, str):
             words = [words]
@@ -59,7 +60,8 @@ class Collocations():
                     urns=urnlist(corpus),
                     word=w,
                     before=before,
-                    after=after
+                    after=after,
+                    samplesize=samplesize
                 )
                 for w in words
             ]
