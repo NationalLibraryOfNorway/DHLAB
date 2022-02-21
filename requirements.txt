@@ -71,4 +71,4 @@ seaborn == 0.10.0
 setuptools == 45.2.0
 
 # DHLAB/dhlab/nbtext.py: 23
-#wordcloud == 1.6.0
+# wordcloud == 1.6.0
