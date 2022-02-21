@@ -14,4 +14,4 @@ class Dispersion():
         self.dispersion = pd.DataFrame(dispersion)
         
     def plot(self, **kwargs):
-        self.dispersion.plot()
+        self.dispersion.plot(**kwargs)
