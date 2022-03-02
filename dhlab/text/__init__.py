@@ -3,3 +3,4 @@ from .corpus import Corpus, Corpus_from_identifiers, Corpus_from_identifiers as 
 from .dispersion import Dispersion
 from .nbtokenizer import Tokens, tokenize
 from .chunking import Chunks
+from .geo_data import GeoData
