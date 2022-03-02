@@ -13,7 +13,7 @@ def get_places(urn=None):
     params = locals()
     r = requests.post(f"{BASE_URL}/places", json=params)
     print(r.status_code)
-    return pd.Series(r.json())
+    return pd.DataFrame(r.json())
 
 def get_dispersion(urn=None, words=None, window=None, pr=None):
     params = locals()
