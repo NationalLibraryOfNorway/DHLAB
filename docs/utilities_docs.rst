@@ -6,7 +6,10 @@ Module summaries
 .. autosummary::
     :toctree: generated
 
-    nbtext
+    api
+    text
+    metadata
+    ngram
     nbtokenizer
     nbpictures
     graph_networkx_louvain
