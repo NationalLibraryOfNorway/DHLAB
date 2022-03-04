@@ -41,7 +41,7 @@ Contents
 
    getting_started.rst
    usage_examples.rst
-   Jupyter Notebook Examples <https://www.nb.no/dh-lab/digital-tekstanalyse/>
+   Jupyter Notebook Examples <https://mybinder.org/v2/gh/DH-LAB-NB/DHLAB/master>
    User friendly webapps <https://www.nb.no/dh-lab/apper/>
 
 
@@ -54,8 +54,8 @@ Contents
    GitHub Repository DHLAB <https://github.com/NationalLibraryOfNorway/DHLAB>
    GitHub Repository digital_tekstanalyse <https://github.com/NationalLibraryOfNorway/digital_tekstanalyse>
 
+
 .. toctree::
-   :maxdepth: 2
    :caption: About
    The National Library of Norway DH-lab <https://www.nb.no/dh-lab/>
 
@@ -63,6 +63,7 @@ Contents
 
 Alphabetical index
 -----------------------
+
 
 ..
     # Link to page with alphabetical module index
