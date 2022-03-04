@@ -170,7 +170,7 @@ html_logo = "_images/NB-symbol-farge.png"
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-# html_favicon = None
+html_favicon = "_images/nb_symbol_farge_z5B_icon.ico"
 
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
@@ -199,7 +199,7 @@ html_use_smartypants = True
 # html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-# html_show_sourcelink = True
+html_show_sourcelink = True
 
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
