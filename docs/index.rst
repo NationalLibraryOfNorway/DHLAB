@@ -23,7 +23,7 @@ Welcome to DHLAB's documentation!
 ..
     # TODO: Add a demo view?
 
-
+For more examples of use, see :doc:`usage_examples`.
 
 *******
 
@@ -41,24 +41,29 @@ Contents
 
    getting_started.rst
    usage_examples.rst
-   Jupyter Notebook Examples <https://mybinder.org/v2/gh/DH-LAB-NB/DHLAB/master>
-   User friendly webapps <https://www.nb.no/dh-lab/apper/>
 
 
 .. toctree::
    :maxdepth: 2
    :caption: Code references
 
+   api_docs.rst
+   images_docs.rst
+   metadata_docs.rst
+   ngram_docs.rst
    nbtext_docs.rst
    utilities_docs.rst
-   GitHub Repository DHLAB <https://github.com/NationalLibraryOfNorway/DHLAB>
-   GitHub Repository digital_tekstanalyse <https://github.com/NationalLibraryOfNorway/digital_tekstanalyse>
+   CHANGELOG.md
 
 
 .. toctree::
-   :caption: About
+   :caption: External links
 
-   The National Library of Norway DH-lab <https://www.nb.no/dh-lab/>
+   The DH-lab at the National Library of Norway <https://www.nb.no/dh-lab/>
+   Web applications using the DHLAB API <https://www.nb.no/dh-lab/apper/>
+   Jupyter Notebook Examples <https://mybinder.org/v2/gh/DH-LAB-NB/DHLAB/master>
+   DHLAB source code, GitHub <https://github.com/NationalLibraryOfNorway/DHLAB>
+   digital_tekstanalyse, GitHub <https://github.com/NationalLibraryOfNorway/digital_tekstanalyse>
 
 
 
