@@ -56,7 +56,6 @@ Contents
 
 
 .. toctree::
-   :maxdepth: 2
    :caption: About
 
    The National Library of Norway DH-lab <https://www.nb.no/dh-lab/>
