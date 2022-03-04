@@ -21,9 +21,9 @@ print(sys.path)
 project = 'digital_tekstanalyse'
 copyright = '2022, DH-lab, National Library of Norway'
 author = 'DH-lab, National Library of Norway'
-version = '1.0'
+version = '2.0'
 # The full version, including alpha/beta/rc tags
-release = 'v1.0.0'
+release = 'v2.0.20'
 
 # -- General configuration ---------------------------------------------------
 
