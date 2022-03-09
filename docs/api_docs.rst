@@ -1,29 +1,26 @@
 .. _api_docs:
 
-=========
-API
-=========
 
-The DHLAB Application Programming Interface provides access to various
-representations of the digital collection at the National Library of Norway.
+NB API
+=========================================
+The `NB Application Programming Interface`_ provides access to various
+representations of `NB Digital`_, the digital collection at the National Library of Norway.
 
-The subpackage ``api`` and its modules contain python wrapper functions.
-Most of the call requests are made to the following ``BASE_URL``:
+The ``dhlab.api`` subpackage contains wrapper functions that post requests to
+the National Library's internal databases with full texts, tokens, and metadata from the text
+collection.
 
->>> from dhlab.api import dhlab_api
->>> dhlab_api.BASE_URL
-'https://api.nb.no/dhlab'
+Most of the call requests are made to ``BASE_URL='https://api.nb.no/dhlab'``,
+as defined in :mod:`constants`.
 
 Most functions return a json (python) object.
 
-Modules in ``dhlab.api``
---------------------------------
+.. _NB Digital: https://www.nb.no/search
+.. _NB Application Programming Interface: https://api.nb.no/
 
-.. currentmodule:: api
 
-.. autosummary::
-   :toctree: generated
-
-   dhlab_api
-   nb_ngram_api
-   nb_search_api
+Modules
+~~~~~~~~~
+* :doc:`api.dhlab_api`
+* :doc:`api.nb_search_api`
+* :doc:`api.nb_ngram_api`
