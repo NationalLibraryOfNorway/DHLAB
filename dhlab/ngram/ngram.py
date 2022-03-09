@@ -61,6 +61,7 @@ class NgramBook(Ngram):
             subject=None
     ):
 
+        super().__init__(words, from_year, to_year, lang)
         self.date = datetime.now()
         if to_year is None:
             to_year = self.date.year
