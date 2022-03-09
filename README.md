@@ -6,8 +6,8 @@ the National Library of Norway.
 
 The National Library of Norway (NLN), *Nasjonalbiblioteket* (*NB*) in Norwegian,
 has developed an [API](https://api.nb.no/) (Application Programming Interface)
-to query the texts in the library's digital archive of books and newspapers,
-[NB Digital](https://www.nb.no/search).
+to query the texts in [NB Digital](https://www.nb.no/search), the library's digital archive of 
+books and newspapers.
 
 [The Digital Humanities lab group](https://www.nb.no/dh-lab/) at the NLN
 has developed the [`dhlab`](https://pypi.org/project/dhlab/) library on top of the API, which offers
@@ -37,7 +37,7 @@ without prior programming experience.
 
 <!-- start installation -->
 
-Install dhlab with pip: 
+Install `dhlab` with pip: 
 
 ```
 pip install dhlab
