@@ -1,6 +1,6 @@
 import pandas as pd
 
-from ..api.dhlab_api import get_chunks, get_chunks_para
+from dhlab.api.dhlab_api import get_chunks, get_chunks_para
 
 
 class Chunks():

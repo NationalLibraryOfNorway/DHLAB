@@ -41,7 +41,7 @@ class Corpus:
         return
 
 
-class Corpus_from_identifiers(Corpus):
+class CorpusFromIdentifiers(Corpus):
     def __init__(self, identifiers=None):
         self.corpus = get_metadata(urnlist(identifiers))
 

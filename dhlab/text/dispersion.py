@@ -1,5 +1,6 @@
 import pandas as pd
-from ..api.dhlab_api import get_dispersion
+
+from dhlab.api.dhlab_api import get_dispersion
 
 
 class Dispersion:

@@ -1,5 +1,7 @@
 import pandas as pd
-from ..api.nb_ngram_api import get_ngram
+
+from dhlab.api.nb_ngram_api import get_ngram
+
 
 def nb_ngram(terms, corpus='bok', smooth=3, years=(1810, 2010), mode='relative'):
     df = ngram_conv(get_ngram(terms, corpus=corpus), smooth=smooth, years=years, mode=mode)
