@@ -44,9 +44,9 @@ class Ngram:
         compare = (transposed_ngram / sum_other_ngram).transpose()
         return compare
 
-    
-class Ngram_book(Ngram):
-    """Extract ngrams using metadata with functions to be inherited"""
+
+class NgramBook(Ngram):
+    """Extract ngrams using metadata with functions to be inherited."""
 
     def __init__(
             self,
@@ -79,8 +79,9 @@ class Ngram_book(Ngram):
                                 period=(from_year, to_year), ddk=ddk, topic=subject)
         # self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
         return None
-    
-class Ngram_news(Ngram):
+
+
+class NgramNews(Ngram):
     def __init__(
             self,
             words=None,
