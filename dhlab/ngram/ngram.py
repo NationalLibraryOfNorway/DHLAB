@@ -36,10 +36,12 @@ class Ngram:
         self.ngram.plot(**kwargs)
 
     def compare(self, another_ngram):
-        from datetime import datetime
-        start_year = max(datetime(self.from_year,1,1), datetime(another_ngram.from_year,1,1)).year
-        end_year = min(datetime(self.to_year,1,1), datetime(another_ngram.to_year,1,1)).year
-        compare =  (self.ngram.loc[str(start_year):str(end_year)].transpose()/another_ngram.ngram[str(start_year):str(end_year)].transpose().sum()).transpose()
+        start_year = max(datetime(self.from_year, 1, 1),
+                         datetime(another_ngram.from_year, 1, 1)).year
+        end_year = min(datetime(self.to_year, 1, 1), datetime(another_ngram.to_year, 1, 1)).year
+        transposed_ngram = self.ngram.loc[str(start_year):str(end_year)].transpose()
+        sum_other_ngram = another_ngram.ngram[str(start_year):str(end_year)].transpose().sum()
+        compare = (transposed_ngram / sum_other_ngram).transpose()
         return compare
 
     

@@ -17,10 +17,10 @@ def ngram_conv(ngrams, smooth=1, years=(1810, 2013), mode='relative'):
     else:
         arg = 'f'
     for x in ngrams:
-        if x != []:
+        if x and isinstance(x, list):
             ngc[x['key']] = {
-                z['x']:z[arg]
-                for z in x['values'] 
-                if int(z['x']) <= years[1] and int(z['x']) >= years[0]
+                z['x']: z[arg]
+                for z in x['values']
+                if years[1] >= int(z['x']) >= years[0]
             }
     return pd.DataFrame(ngc).rolling(window=smooth, win_type='triang').mean()
