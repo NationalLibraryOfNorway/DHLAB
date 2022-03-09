@@ -1,7 +1,5 @@
-#import json
-
-import requests
 import pandas as pd
+import requests
 
 
 def load_picture(url):

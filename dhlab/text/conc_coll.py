@@ -1,11 +1,10 @@
 
 import re
-from collections import Counter
+
 import pandas as pd
 
-
-from ..text.corpus import Corpus, urnlist
-from ..api.dhlab_api import get_document_frequencies, concordance, urn_collocation
+from dhlab.api.dhlab_api import get_document_frequencies, concordance, urn_collocation
+from dhlab.text.corpus import urnlist
 
 
 # convert cell to a link

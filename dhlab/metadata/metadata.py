@@ -1,9 +1,7 @@
-import requests
 import pandas as pd
-import json
+import requests
 
-
-BASE_URL = "https://api.nb.no/dhlab"
+from dhlab.constants import BASE_URL
 
 
 def get_metadata(urns=None):

@@ -6,10 +6,11 @@ def nb_ngram(terms, corpus='bok', smooth=3, years=(1810, 2010), mode='relative')
     df.index = df.index.astype(int)
     return df.sort_index()
 
-def ngram_conv(ngrams, smooth=1, years=(1810,2013), mode='relative'):
+
+def ngram_conv(ngrams, smooth=1, years=(1810, 2013), mode='relative'):
     ngc = {}
     # check if relative frequency or absolute frequency is in question
-    if mode.startswith('rel') or mode=='y':
+    if mode.startswith('rel') or mode == 'y':
         arg = 'y'
     else:
         arg = 'f'
@@ -21,5 +22,3 @@ def ngram_conv(ngrams, smooth=1, years=(1810,2013), mode='relative'):
                 if int(z['x']) <= years[1] and int(z['x']) >= years[0]
             }
     return pd.DataFrame(ngc).rolling(window=smooth, win_type='triang').mean()
-
-
