@@ -3,11 +3,14 @@ import pandas as pd
 from dhlab.api.dhlab_api import get_chunks, get_chunks_para
 
 
-class Chunks():
-    """Create chunks from a text parameters are urn and chunks
-    where chunks is either a number or the string starts with para or avsn"""
+class Chunks:
+    """Create chunks from a text."""
 
     def __init__(self, urn=None, chunks=1000):
+        """
+        :param urn: str or list
+        :param chunks: {'para', 'avsn'} or int
+        """
         # switch function based on value of chunks - a number or a string
         # indicating whether each paragraph is a chunk, else chop up the text
         # in pieces according to chunks
