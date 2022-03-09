@@ -23,7 +23,8 @@ Welcome to DHLAB's documentation!
 ..
     # TODO: Add a demo view?
 
-For more examples of use, see :doc:`usage_examples`.
+..
+    For more examples of use, see :doc:`usage_examples`.
 
 *******
 
@@ -40,13 +41,15 @@ Contents
    :caption: Usage
 
    getting_started.rst
-   usage_examples.rst
+   notebooks.rst
+
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: Code references
+   :caption: Code documentation
 
+   code_ref.rst
    api_docs.rst
    images_docs.rst
    metadata_docs.rst
@@ -67,12 +70,8 @@ Contents
 
 
 
-Alphabetical index
------------------------
+Indices and tables
+==================
 
-
-..
-    # Link to page with alphabetical module index
-
-
+* :ref:`genindex`
 * :ref:`modindex`
