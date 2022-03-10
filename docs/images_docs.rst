@@ -1,15 +1,16 @@
 .. _images_docs:
 
-==========
-Images
-==========
-The ``dhlab.images`` subpackage contains functionality for processing images.
+
+NB Pictures
+=================
+The ``dhlab.images`` subpackage contains functionality for processing pictures
+in `NB Digital`_.
 
 
-``dhlab.images.nbpictures``
-----------------------------------
-.. currentmodule:: images
+``images`` modules
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+* :doc:`images.nbpictures`
 
-.. automodule:: nbpictures
-   :members:
 
+
+.. _NB Digital: https://www.nb.no/search
