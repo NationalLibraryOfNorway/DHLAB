@@ -8,8 +8,11 @@ The ``dhlab.metadata`` subpackage contains functionality for fetching metadata f
 
 .. _NB Digital: https://www.nb.no/search
 
+----------------------------
 
-``metadata`` modules
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. toctree::
+   :caption: Code documentation
+   :name: metatoc
+   :titlesonly:
 
-* :doc:`metadata <metadata.metadata>`
+   metadata <metadata.metadata>

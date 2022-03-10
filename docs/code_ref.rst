@@ -14,6 +14,4 @@
    ngram
    images
    metadata
-   utils
-   constants
 

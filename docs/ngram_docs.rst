@@ -23,8 +23,11 @@ aggregations.
 .. _nb-ngrams: https://www.nb.no/sprakbanken/ngram/?%7B%22graphViewmode%22:%22trendlinjer%22,%22freq%22:%22rel%22,%22corpus%22:%5B%22bok%22%5D,%22searchTerms%22:%5B%5D,%22lang%22:%22nor%22,%22case_sens%22:0,%22smoothing%22:3,%22yearSpan%22:%5B1810,2021%5D,%22leaves%22:0,%22isCumulative%22:false,%22isGrayscale%22:false,%22limit%22:12,%22isEmbedded%22:false%7D
 .. _NB Digital: https://www.nb.no/search
 
+-------------------------------
 
-``ngram`` modules
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. toctree::
+   :caption: Code documentation
+   :name: ngramtoc
+   :titlesonly:
 
-* :doc:`ngram <ngram.ngram>`
+   ngram <ngram.ngram>

@@ -18,10 +18,13 @@ Most functions return a json (python) object.
 .. _NB Digital: https://www.nb.no/search
 .. _NB Application Programming Interface: https://api.nb.no/
 
+------------------------
 
-``api`` modules
-~~~~~~~~~~~~~~~~
-* :doc:`api.dhlab\_api`
-* :doc:`api.nb\_search\_api`
-* :doc:`api.nb\_ngram\_api`
+.. toctree::
+   :caption: Code documentation
+   :name: apitoc
+   :titlesonly:
 
+   api.dhlab_api
+   api.nb_search_api
+   api.nb_ngram_api

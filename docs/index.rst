@@ -54,7 +54,7 @@ Contents
    images_docs.rst
    metadata_docs.rst
    ngram_docs.rst
-   nbtext_docs.rst
+   text_docs.rst
    utilities_docs.rst
    CHANGELOG.md
 
