@@ -55,14 +55,13 @@ Contents
    :name: extlinks-toc
    :caption: External links
 
-   The DH-lab at the National Library of Norway <https://www.nb.no/dh-lab/>
-   Web applications using the DHLAB API <https://www.nb.no/dh-lab/apper/>
-   Search through the digital archive <https://www.nb.no/search>
-   Jupyter Notebook Examples on Binder <https://mybinder.org/v2/gh/DH-LAB-NB/DHLAB/master>
-   dhlab pypi package <https://pypi.org/project/dhlab/>
-   DHLAB source code, GitHub <https://github.com/NationalLibraryOfNorway/DHLAB>
-   digital_tekstanalyse, GitHub <https://github.com/NationalLibraryOfNorway/digital_tekstanalyse>
-
+   Pypi package <https://pypi.org/project/dhlab/>
+   Source code, GitHub <https://github.com/NationalLibraryOfNorway/DHLAB>
+   Source Jupyter Notebooks, GitHub <https://github.com/NationalLibraryOfNorway/digital_tekstanalyse>
+   Hosted Jupyter notebooks <https://mybinder.org/v2/gh/DH-LAB-NB/DHLAB/master>
+   DH-lab Homepage <https://www.nb.no/dh-lab/>
+   DH-lab Web applications <https://www.nb.no/dh-lab/apper/>
+   Search the National Library online <https://www.nb.no/search>
 
 
 Indices and tables
