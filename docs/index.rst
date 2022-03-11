@@ -36,25 +36,17 @@ Contents
     # The following toctree blocks are shown in the left side panel
 
 .. toctree::
-   :caption: Introduction
-   :name: top-toc
+   :maxdepth: 2
 
    docs_getting_started.rst
    docs_notebooks.rst
-
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Code documentation
-   :name: code-toc
-
-   package_summary.rst
    usage_api.rst
    usage_images.rst
    usage_metadata.rst
    usage_ngrams.rst
    usage_text.rst
    usage_utilities.rst
+   package_summary.rst
    CHANGELOG.md
 
 

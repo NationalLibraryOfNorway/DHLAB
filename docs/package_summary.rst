@@ -1,9 +1,9 @@
 .. _package-summary:
 
-``dhlab`` package overview
+Reference
 -----------------------------
 
-.. rubric:: Subpackages
+.. rubric:: ``dhlab`` subpackages
 
 .. autosummary::
    :recursive:
