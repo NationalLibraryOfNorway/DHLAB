@@ -7,7 +7,7 @@
 
 
 ================================================
-Welcome to DHLAB's documentation!
+dhlab documentation
 ================================================
 
 
@@ -16,15 +16,14 @@ Welcome to DHLAB's documentation!
 
 .. include:: ../README.md
    :parser: myst_parser.sphinx_
-
+   :start-after: <!-- start dhlab-intro -->
+   :end-before: <!-- end dhlab-intro -->
 ..
     # TODO: Maybe add a changelog/news section?
 
 ..
     # TODO: Add a demo view?
 
-..
-    For more examples of use, see :doc:`usage_examples`.
 
 *******
 
