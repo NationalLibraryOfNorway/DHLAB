@@ -37,34 +37,38 @@ Contents
     # The following toctree blocks are shown in the left side panel
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Usage
+   :caption: Introduction
+   :name: top-toc
 
-   getting_started.rst
-   notebooks.rst
-
+   docs_getting_started.rst
+   docs_notebooks.rst
 
 
 .. toctree::
    :maxdepth: 2
    :caption: Code documentation
+   :name: code-toc
 
-   code_ref.rst
-   api_docs.rst
-   images_docs.rst
-   metadata_docs.rst
-   ngram_docs.rst
-   text_docs.rst
-   utilities_docs.rst
+   package_summary.rst
+   usage_api.rst
+   usage_images.rst
+   usage_metadata.rst
+   usage_ngrams.rst
+   usage_text.rst
+   usage_utilities.rst
    CHANGELOG.md
 
 
 .. toctree::
+   :hidden:
+   :name: extlinks-toc
    :caption: External links
 
    The DH-lab at the National Library of Norway <https://www.nb.no/dh-lab/>
    Web applications using the DHLAB API <https://www.nb.no/dh-lab/apper/>
-   Jupyter Notebook Examples <https://mybinder.org/v2/gh/DH-LAB-NB/DHLAB/master>
+   Search through the digital archive <https://www.nb.no/search>
+   Jupyter Notebook Examples on Binder <https://mybinder.org/v2/gh/DH-LAB-NB/DHLAB/master>
+   dhlab pypi package <https://pypi.org/project/dhlab/>
    DHLAB source code, GitHub <https://github.com/NationalLibraryOfNorway/DHLAB>
    digital_tekstanalyse, GitHub <https://github.com/NationalLibraryOfNorway/digital_tekstanalyse>
 

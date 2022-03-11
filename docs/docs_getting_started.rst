@@ -15,7 +15,7 @@ Getting started
 
 Ways to use dhlab
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-* :doc:`Jupyter Notebooks <notebooks>`
-* :doc:`API wrappers <api_docs>`
+* With the :doc:`Jupyter Notebooks <docs_notebooks>` visual interface
+* Directly from a python console with the :doc:`API wrappers <usage_api>`
 
 

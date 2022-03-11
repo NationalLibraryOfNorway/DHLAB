@@ -1,6 +1,6 @@
-.. _code-reference:
+.. _package-summary:
 
-``dhlab``
+``dhlab`` package overview
 -----------------------------
 
 .. rubric:: Subpackages
@@ -11,7 +11,7 @@
 
    api
    text
+   metadata
    ngram
    images
-   metadata
-
+   utils
