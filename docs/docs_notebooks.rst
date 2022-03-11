@@ -4,9 +4,9 @@ Notebooks
 We have developed `jupyter notebooks`_ to demonstrate example use cases, with executable
 code cells that you can play around with.
 
-.. epigraph::
+.. hint::
 
-   There are multiple ways to view or use these notebooks:
+   **There are multiple ways to view or use these notebooks:**
 
    * `view notebooks`_
    * `execute notebook code locally`_
