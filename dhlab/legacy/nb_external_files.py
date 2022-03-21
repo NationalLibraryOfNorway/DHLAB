@@ -3,8 +3,8 @@ from collections import Counter
 import pandas as pd
 from bs4 import BeautifulSoup
 
-from dhlab.nbtext import gather_wordlists
-from dhlab.nbtokenizer import tokenize
+from dhlab.legacy.nbtext import gather_wordlists
+from dhlab.text.nbtokenizer import tokenize
 
 
 def text_from_html_file(filename):
