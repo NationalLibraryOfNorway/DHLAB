@@ -56,7 +56,7 @@ copyright = '2022, DH-lab, National Library of Norway'
 author = 'DH-lab, National Library of Norway'
 version = '2.0'
 # The full version, including alpha/beta/rc tags
-release = 'v2.0.20'
+release = 'v2.0.21'
 email = 'dh-lab@nb.no'
 
 # -- General configuration ---------------------------------------------------
