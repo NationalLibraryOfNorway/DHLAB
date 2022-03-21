@@ -1,7 +1,7 @@
 Notebooks
 ==============
 
-We have developed `jupyter notebooks`_ to demonstrate example use cases, with executable
+We have developed jupyter [#]_ notebooks  to demonstrate example use cases, with executable
 code cells that you can play around with.
 
 .. hint::
@@ -96,7 +96,7 @@ Execute notebook code locally
 .. _digital_tekstanalyse: https://github.com/NationalLibraryOfNorway/digital_tekstanalyse
 .. _jupyter: https://jupyter.org/
 .. _jupyter lab: jupyter_
-.. _jupyter notebooks: jupyter_
+.. [#] https://jupyter.org/
 .. _homepage: https://www.nb.no/dh-lab/digital-tekstanalyse/
 
 

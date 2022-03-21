@@ -92,6 +92,7 @@ extensions = [
     'nbsphinx',  # Integrate jupyter notebooks
     #"'sphinx_gallery.load_style',
     'sphinx_togglebutton',
+    'sphinx_copybutton',
 ]
 
 #

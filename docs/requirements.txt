@@ -5,3 +5,4 @@ sphinx-inline-tabs==2022.1.2b11
 readthedocs-sphinx-search==0.1.1
 nbsphinx==0.8.8
 sphinx_togglebutton==0.3.0
+sphinx-copybutton==0.5.0
