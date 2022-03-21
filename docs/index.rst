@@ -7,34 +7,65 @@
 
 
 ================================================
-Welcome to DHLAB's documentation!
+dhlab documentation
 ================================================
 
 
+..
+    # Include the text from the README.md file
+
 .. include:: ../README.md
    :parser: myst_parser.sphinx_
+   :start-after: <!-- start dhlab-intro -->
+   :end-before: <!-- end dhlab-intro -->
+..
+    # TODO: Maybe add a changelog/news section?
 
+..
+    # TODO: Add a demo view?
 
 
 *******
 
 
+Contents
+--------------
+
+
+..
+    # The following toctree blocks are shown in the left side panel
+
 .. toctree::
    :maxdepth: 2
-   :caption: Docs
 
-   getting_started.rst
-   nbtext_docs.rst
-   utilities_docs.rst
-
-
-* :ref:`modindex`
+   docs_getting_started.rst
+   docs_notebooks.rst
+   usage_api.rst
+   usage_images.rst
+   usage_metadata.rst
+   usage_ngrams.rst
+   usage_text.rst
+   usage_utilities.rst
+   package_summary.rst
+   CHANGELOG.md
 
 
 .. toctree::
    :hidden:
-   :caption: Development
+   :name: extlinks-toc
+   :caption: External links
 
-   CHANGELOG
-   GitHub Repository DHLAB <https://github.com/NationalLibraryOfNorway/DHLAB>
-   GitHub Repository digital_tekstanalyse <https://github.com/NationalLibraryOfNorway/digital_tekstanalyse>
+   Pypi package <https://pypi.org/project/dhlab/>
+   Source code, GitHub <https://github.com/NationalLibraryOfNorway/DHLAB>
+   Source Jupyter Notebooks, GitHub <https://github.com/NationalLibraryOfNorway/digital_tekstanalyse>
+   Hosted Jupyter notebooks <https://mybinder.org/v2/gh/DH-LAB-NB/DHLAB/master>
+   DH-lab Homepage <https://www.nb.no/dh-lab/>
+   DH-lab Web applications <https://www.nb.no/dh-lab/apper/>
+   Search the National Library online <https://www.nb.no/search>
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`

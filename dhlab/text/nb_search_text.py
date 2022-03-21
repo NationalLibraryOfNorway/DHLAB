@@ -1,12 +1,11 @@
 from collections import Counter
-import re
 
-import pandas as pd
 import networkx as nx
+import pandas as pd
 
-from ..api.nb_search_api import get_df, get_konks
-from ..text.nbtokenizer import tokenize
-from ..nbtext import frame, frame_sort
+from dhlab.api.nb_search_api import get_df, get_konks
+from dhlab.nbtext import frame, frame_sort
+from dhlab.text.nbtokenizer import tokenize
 
 
 def phrase_plots(

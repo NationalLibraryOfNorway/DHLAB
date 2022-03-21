@@ -12,18 +12,52 @@
 #
 import pathlib
 import sys
+
 sys.path.insert(0, pathlib.Path(__file__).parent.resolve().as_posix())
 sys.path.insert(0, pathlib.Path(__file__).parent.joinpath("../dhlab").resolve().as_posix())
 print(sys.path)
+
+# -- download notebooks --------------------------
+
+from dhlab.utils.files import download_from_github, working_directory
+
+
+filenames = [
+    'Oppstart.ipynb',
+    '1_Bygg_korpus.ipynb',
+    '2_Konkordans.ipynb',
+    '3_Kollokasjoner.ipynb',
+    '4_N-gram_og_galakser.ipynb',
+    '5_Navnegrafer.ipynb',
+    '6_Søk_med_trunkering.ipynb',
+    '7_Setningsuttrekk.ipynb',
+    '8_Sammenlign_metadata.ipynb',
+    '9_Ordparadigmer.ipynb',
+    '10_Søk_i_aviser.ipynb',
+    '10_Frekvenslister.ipynb',
+    'Anbefalt_lesning.ipynb',
+]
+
+with working_directory("./notebooks"):
+    for filename in filenames:
+        download_from_github(
+            filename=filename,
+            user="NationalLibraryOfNorway",
+            repository='digital_tekstanalyse',
+            branch='main',
+            overwrite=False,
+            silent=True)
+
 
 # -- Project information -----------------------------------------------------
 
 project = 'digital_tekstanalyse'
 copyright = '2022, DH-lab, National Library of Norway'
 author = 'DH-lab, National Library of Norway'
-version = '1.0'
+version = '2.0'
 # The full version, including alpha/beta/rc tags
-release = 'v1.0.0'
+release = 'v2.0.20'
+email = 'dh-lab@nb.no'
 
 # -- General configuration ---------------------------------------------------
 
@@ -55,6 +89,10 @@ extensions = [
 
     'myst_parser',  # Markdownparser
     'sphinx_inline_tabs',  # Tab switches
+    'nbsphinx',  # Integrate jupyter notebooks
+    #"'sphinx_gallery.load_style',
+    'sphinx_togglebutton',
+    'sphinx_copybutton',
 ]
 
 #
@@ -105,10 +143,25 @@ autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
 
 
+autodoc_default_options = {
+    'members': True,  # 'var1, var2',
+    'member-order': 'groupwise', # or 'alphabetical' or 'bysource'
+    #'special-members': '__init__',
+    'undoc-members': True,
+    'private-members': False,
+    'exclude-members': '__weakref__',
+    'inherited-members': True,
+    'show-inheritance': True,
+    #'ignore-module-all': False,
+    #'imported-members': False,
+    #'class-doc-from': None,
+    #'no-value': False,
+}
+
+
 # The suffix of source filenames.
 source_suffix = {
     '.rst': 'restructuredtext',
-    '.md': 'markdown',
 }
 
 # There are two options for replacing |today|: either, you set today to some
@@ -120,6 +173,15 @@ today_fmt = '%d %B %Y'
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 pygments_dark_style = "monokai"
+
+# Jupyter Notebook options ####################
+
+#nbsphinx_custom_formats = {
+#    ".md": ["jupytext.reads", {"fmt": "mystnb"}],
+#}
+
+togglebutton_hint = "Show"
+togglebutton_hint_hide = "Hide"
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -153,25 +215,32 @@ html_theme_options = {
 
 }
 
+html_css_files = [
+    'dhlab/css_style_sheets/grade3.css',
+    'dhlab/css_style_sheets/monokai.css',
+    'dhlab/css_style_sheets/nb_notebook_2.css',
+    'dhlab/css_style_sheets/nb_notebook_blue.css',
+    'dhlab/css_style_sheets/nb_notebook.css'
+]
+
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = 'DHLAB'
+html_title = 'dhlab'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 # html_short_title = None
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "_images/NB-symbol-farge.png"
+html_logo = "_images/dhlab_logo.png"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-# html_favicon = None
-
+html_favicon = "_images/nb_symbol_farge_z5B_icon.ico"
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -199,7 +268,7 @@ html_use_smartypants = True
 # html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-# html_show_sourcelink = True
+html_show_sourcelink = True
 
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the

@@ -1,10 +1,9 @@
 import json
 
-import requests
 import networkx as nx
+import requests
 
-NGRAM_API = "https://api.nb.no/dhlab/nb_ngram/ngram/query"
-GALAXY_API = "https://api.nb.no/dhlab/nb_ngram_galaxies/galaxies/query"
+from dhlab.constants import NGRAM_API, GALAXY_API
 
 
 def get_ngram(terms, corpus='avis'):

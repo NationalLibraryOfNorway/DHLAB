@@ -1,18 +1,20 @@
 from datetime import datetime
 
-from ..api.dhlab_api import ngram_book, ngram_news
-from .nb_ngram import nb_ngram
+from dhlab.api.dhlab_api import ngram_book, ngram_news
+from dhlab.ngram.nb_ngram import nb_ngram
 
-class Ngram():
+
+class Ngram:
     """Top level class for ngrams"""
-    def __init__(self, words = None, from_year = None, to_year = None, doctype = None, lang = 'nob'):
-       
+
+    def __init__(self, words=None, from_year=None, to_year=None, doctype=None, lang='nob') -> None:
+
         self.date = datetime.now()
         if to_year is None:
             to_year = self.date.year
         if from_year is None:
             from_year = 1950
-            
+
         self.from_year = from_year
         self.to_year = to_year
         self.words = words
@@ -26,38 +28,40 @@ class Ngram():
                 doctype = 'bok'
         else:
             doctype = 'bok'
-        ngrm = nb_ngram(terms = ', '.join(words), corpus = doctype, years = (from_year, to_year))
+        ngrm = nb_ngram(terms=', '.join(words), corpus=doctype, years=(from_year, to_year))
         ngrm.index = ngrm.index.astype(str)
         self.ngram = ngrm
-        return None
 
     def plot(self, **kwargs):
         self.ngram.plot(**kwargs)
-    
+
     def compare(self, another_ngram):
-        from datetime import datetime
-        start_year = max(datetime(self.from_year,1,1), datetime(another_ngram.from_year,1,1)).year
-        end_year = min(datetime(self.to_year,1,1), datetime(another_ngram.to_year,1,1)).year
-        compare =  (self.ngram.loc[str(start_year):str(end_year)].transpose()/another_ngram.ngram[str(start_year):str(end_year)].transpose().sum()).transpose()
+        start_year = max(datetime(self.from_year, 1, 1),
+                         datetime(another_ngram.from_year, 1, 1)).year
+        end_year = min(datetime(self.to_year, 1, 1), datetime(another_ngram.to_year, 1, 1)).year
+        transposed_ngram = self.ngram.loc[str(start_year):str(end_year)].transpose()
+        sum_other_ngram = another_ngram.ngram[str(start_year):str(end_year)].transpose().sum()
+        compare = (transposed_ngram / sum_other_ngram).transpose()
         return compare
 
-    
-class Ngram_book(Ngram):
-    """Extract ngrams using metadata with functions to be inherited"""
+
+class NgramBook(Ngram):
+    """Extract ngrams using metadata with functions to be inherited."""
 
     def __init__(
-        self,
-        words = None,
-        title = None,
-        publisher = None,
-        city = None,
-        lang = 'nob',
-        from_year = None,
-        to_year = None,
-        ddk = None,
-        subject = None
+            self,
+            words=None,
+            title=None,
+            publisher=None,
+            city=None,
+            lang='nob',
+            from_year=None,
+            to_year=None,
+            ddk=None,
+            subject=None
     ):
 
+        super().__init__(words, from_year, to_year, lang)
         self.date = datetime.now()
         if to_year is None:
             to_year = self.date.year
@@ -72,18 +76,20 @@ class Ngram_book(Ngram):
         self.lang = lang
         self.ddk = ddk
         self.subject = subject
-        self.ngram = ngram_book(word = words, title = title, publisher = publisher, lang = lang,city = city, period = (from_year, to_year), ddk = ddk, topic = subject)
-        #self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
+        self.ngram = ngram_book(word=words, title=title, publisher=publisher, lang=lang, city=city,
+                                period=(from_year, to_year), ddk=ddk, topic=subject)
+        # self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
         return None
-    
-class Ngram_news(Ngram):
+
+
+class NgramNews(Ngram):
     def __init__(
-        self, 
-        words = None,
-        title = None,
-        city = None,
-        from_year = None,
-        to_year = None
+            self,
+            words=None,
+            title=None,
+            city=None,
+            from_year=None,
+            to_year=None
     ):
         self.date = datetime.now()
         if to_year is None:
@@ -94,6 +100,5 @@ class Ngram_news(Ngram):
         self.to_year = to_year
         self.words = words
         self.title = title
-        self.ngram = ngram_news(word = words, title = title, period = (from_year, to_year))
-        #self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
-        return None
+        self.ngram = ngram_news(word=words, title=title, period=(from_year, to_year))
+        # self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()

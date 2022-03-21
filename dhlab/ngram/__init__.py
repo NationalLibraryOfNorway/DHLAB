@@ -1,1 +1,2 @@
-from .ngram import Ngram, Ngram_book, Ngram_news
+"""Extraction of n-gram counts and aggregations."""
+from .ngram import Ngram, NgramBook, NgramNews

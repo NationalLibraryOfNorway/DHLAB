@@ -1,34 +1,52 @@
-import requests
 import pandas as pd
-import json
-import re
+import requests
 
-BASE_URL = "https://api.nb.no/dhlab"
+from dhlab.constants import BASE_URL
 
 pd.options.display.max_rows = 100
 
 # fetch metadata
 
-def get_places(urn=None):
+
+def get_places(urn=None) -> pd.DataFrame:
+    """
+    .. todo:: Add description of functionality + parameters
+
+    :param urn: Defaults to None.
+    """
     params = locals()
     r = requests.post(f"{BASE_URL}/places", json=params)
     print(r.status_code)
     return pd.DataFrame(r.json())
 
-def get_dispersion(urn=None, words=None, window=None, pr=None):
+
+def get_dispersion(urn=None, words=None, window=None, pr=None) -> pd.Series:
+    """
+    .. todo:: Add description of functionality + parameters
+
+    :param urn:
+    :param words:
+    :param window:
+    :param pr:
+    :return:
+    """
     params = locals()
     r = requests.post(f"{BASE_URL}/dispersion", json=params)
     return pd.Series(r.json())
 
-def get_metadata(urns=None):
-    """ Fetch metadata from a list of urns """
+
+def get_metadata(urns=None) -> pd.DataFrame:
+    """Fetch metadata from a list of urns."""
     params = locals()
     r = requests.post(f"{BASE_URL}/get_metadata", json=params)
     return pd.DataFrame(r.json())
 
 
-def get_chunks(urn=None, chunk_size=300):
-    """Fetch chunks as wordbags from document urn"""
+def get_chunks(urn=None, chunk_size: int = 300) -> dict:
+    """Fetch chunks as wordbags from a document urn.
+
+    :param chunk_size: TODO: add description of parameter.
+    """
 
     if urn is None:
         return {}
@@ -40,8 +58,11 @@ def get_chunks(urn=None, chunk_size=300):
     return result
 
 
-def get_chunks_para(urn=None):
-    """Fetch chunks from document, one for each paragraph"""
+def get_chunks_para(urn=None) -> dict:
+    """Fetch chunks from document, one for each paragraph.
+
+    :param urn: TODO: add description of parameter.
+    """
 
     if urn is None:
         return {}
@@ -54,12 +75,22 @@ def get_chunks_para(urn=None):
 
 
 def get_reference(
-    corpus='digavis',
-    from_year=1950,
-    to_year=1955,
-    lang='nob',
-    limit=100000
-):
+    corpus: str = 'digavis',
+    from_year: int = 1950,
+    to_year: int = 1955,
+    lang: str = 'nob',
+    limit: int = 100000
+) -> pd.DataFrame:
+    """
+    .. todo:: Add description of functionality + parameters
+
+    :param corpus:
+    :param from_year:
+    :param to_year:
+    :param lang:
+    :param limit:
+    :return: A :py:class:`pd.DataFrame` with the results.
+    """
     params = locals()
     r = requests.get(BASE_URL + "/reference_corpus", params=params)
     if r.status_code == 200:
@@ -69,10 +100,15 @@ def get_reference(
     return pd.DataFrame(result, columns=['word', 'freq']).set_index('word')
 
 
-def find_urns(docids=None, mode='json'):
-    """ Return a list of URNs from a list of docids as
-    a dictionary {docid: URN} or as a pandas dataframe"""
+def find_urns(docids=None, mode: str = 'json') -> pd.DataFrame:
+    """Return a list of URNs.
 
+    .. todo:: Add description of functionality + parameters
+
+    :param docids: list of document IDs as a dictionary {docid: URN} or a pandas dataframe.
+    :param mode: Default 'json'.
+    :return:
+    """
     params = locals()
     r = requests.post(BASE_URL + "/find_urn", json=params)
     if r.status_code == 200:

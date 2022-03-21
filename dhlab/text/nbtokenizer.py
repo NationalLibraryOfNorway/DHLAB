@@ -45,18 +45,13 @@ Tall som følger etter § (adskilt med maks ett mellomrom)
 vil aldri tiltrekke seg punktum.
 
 Øvrige tegn som ikke passer inn med mønstrene over behandles som separate token.
-
-================================================================================
 """
 
 import re
 import sys
 import time
 
-"""Her er listen over forkortelser med punktum.
 
-Hentet fra Wikipedia og Språkrådet med egendefinerte tillegg.
-"""
 fork = [
     'L\\.',
     'A/S',
@@ -335,55 +330,76 @@ fork = [
     'årg\\.',
     'årh\\.'
 ]
+"""Her er listen over forkortelser med punktum.
 
-"""-----------------------------------------------------------------------------
-
-numeriske uttrykk er alt som er bygd opp av tall, komma og punktum og blanke.
-
-LGJ: juni 2014
-
---------------------------------------------------------------------------------
+Hentet fra Wikipedia og Språkrådet med egendefinerte tillegg.
 """
 
+
+"""Numeriske uttrykk
+-----------------------------------------------------------------------------
+
+Numeriske uttrykk er alt som er bygd opp av tall, komma og punktum og blanke.
+
+LGJ: juni 2014
+"""
+
+
+num = r'\d+(?:\.(?! [A-ZÆØÅ]))?'
 """Tall som kan slutte på punktum består av hele tall, som tokeniseres
  med punktum bare om neste påfølgende tegn (etter blank) er stor bokstav.
 
-Denne må justers for samisk og andre språk med større utvalg av store bokstaver.
+Denne må justeres for samisk og andre språk med større utvalg av store bokstaver.
 Det vil sannsynligvis ikke ha så veldig stor betydning for utfallet.
 """
-num = r'\d+(?:\.(?! [A-ZÆØÅ]))?'
 
-"""
-f.eks. 10 000, tillater ikke punktum. Tokeniserer tall med mellomrom der de forekommer.
-
-"""
 
 num0 = r'\d{1,3}(?:\s\d\d\d(?!\d))+'
+"""F.eks. 10 000, tillater ikke punktum. 
 
-"""seksjon 3.2.1 eller 2.3999, kan ikke ha sluttpunktum."""
+Tokeniserer tall med mellomrom der de forekommer.
+"""
+
+
 num1 = r'\d+(?:\.\d+)+'
+"""Seksjon 3.2.1 eller 2.3999, kan ikke ha sluttpunktum."""
 
-"""3,5 kan ikke ha sluttpunktum."""
+
 num2 = r'\d+,\d+'
+"""3,5 kan ikke ha sluttpunktum."""
 
-"""Det var .2 prosent økning."""
+
 num3 = r'\.\d+'
+"""Det var .2 prosent økning."""
 
-"""Tre eller flere punktum blir ett token."""
+
 num4 = r'\.\.\.+'
+"""Tre eller flere punktum blir ett token."""
 
-# kombiner til det regulære uttrykket num eller num0 eller...
+
+# TODO: kombiner til det regulære uttrykket num eller num0 eller...
 num = '|'.join([num0, num1, num2, num3, num4, num])
 
-"""Paragraftegn kan komme i en eller to (eller flere?) utgaver."""
-# tolk tall etter § som rene tall uten punktum,
-# men også med bindestrek så i § 2-5  blir 2-5 et token.
+
 parnum0 = r'(?<=§ )\d+(?:[-–—]\d+)*|(?<=§)\d+(?:[-–—]\d+)*'
+"""Paragraftegn kan komme i en eller to (eller flere?) utgaver.
 
-parnum = r'(?<=§ )\d+|(?<=§)\d+'  # tolk tall etter § som heltall uten punktum.
-paragrafer = '§+'  # § eller §§ ukes i lovtekster
+Tolk tall etter § som rene tall uten punktum,
+men også med bindestrek så i § 2-5  blir 2-5 et token.
+"""
 
-"""Ord er alt som ikke innholder skillende skilletegn.
+
+parnum = r'(?<=§ )\d+|(?<=§)\d+'
+"""Tolk tall etter § som heltall uten punktum."""
+
+paragrafer = '§+'
+"""§ eller §§ brukes i lovtekster."""
+
+
+initialer = r'(?<=(?: |\.))[A-ZÆØÅ]\.'
+word = r'\w+[-\d.@\w]*[\w\d]+-?'
+word = '|'.join([initialer, word])
+"""Ord er alt som ikke inneholder skillende skilletegn.
 
 Bindestrek og @ og lignende går inn i tokenet, punktum inkludert,
 tar også med @ for mailadresser.
@@ -391,36 +407,28 @@ Bindestrek kan også avslutte ord som i "ord- og setningsdeling".
 Andre tegn, som punktum og kolon i slutt, vil ikke tokeniseres sammen med ordet.
 """
 
-initialer = r'(?<=(?: |\.))[A-ZÆØÅ]\.'
-word = r'\w+[-\d.@\w]*[\w\d]+-?'
-
-word = '|'.join([initialer, word])
-
+catchall = r'\S'  # alle tegn som ikke er blanke blir til et eget token
 """Alle tegn som ikke er et blankt tegn
  (tab, mellomrom linjeskift osv.),
  og som ikke er blitt matchet opp tidligere,
  blir å regne som egne token.
 """
 
-catchall = r'\S'  # alle tegn som ikke er blanke blir til et eget token
-
-"""-----------------------------------------------------------------------------
-
-Kombiner alle uttrykkene i rekkefølge og kompiler dem.
-Sjekk først om det er en forkortelse, ellers sjekk om det er et tall,
-sjekk paragrafer, prøv å lag et ord. Hvis ikke noe av det her,
-la tegnet være sitt eget token og gå videre.
-
---------------------------------------------------------------------------------
-"""
 
 regex = fork + [parnum0, parnum, num, paragrafer, word, catchall]
 regex = re.compile('|'.join(regex))
+"""Kombiner alle uttrykkene i rekkefølge og kompiler dem.
+
+Sjekk først om det er en forkortelse, ellers sjekk om det er et tall,
+sjekk paragrafer, prøv å lag et ord. Hvis ikke noe av det her,
+la tegnet være sitt eget token og gå videre.
+"""
 
 
 def tokenize_timer(text):
+    """Time the :func:`tokenize` function and return the resulting tokens."""
     t0 = time.process_time()
-    tokens = re.findall(regex, text)
+    tokens = tokenize(text)
     t1 = time.process_time()
     t = t1 - t0
     print(f"tid: {t}")
@@ -428,13 +436,13 @@ def tokenize_timer(text):
 
 
 def tokenize(text):
+    """Tokenize the input ``text`` with the ``regex`` pattern."""
     tokens = re.findall(regex, text)
     return tokens
 
 
-class Tokens():
-    """Create a list of tokens from a text
-    class calls tokenize(text)"""
+class Tokens:
+    """Create a list of tokens from a text with :func:`tokenize`."""
 
     def __init__(self, text):
         self.tokens = tokenize(text)

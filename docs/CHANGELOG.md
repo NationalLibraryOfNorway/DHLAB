@@ -1,5 +1,13 @@
-Changelog
-=========
+
+# Changelog
+
+
+
+## Version 2.0
+
+
+* Refactor: New package structure  
+
 
 ## Release v1.0.0
 
