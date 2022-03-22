@@ -19,7 +19,7 @@ class Ngram(DhlabObj):
 
         Build Ngrams from the National Librarys collections.
         Use with book corpus or newspaper corpus.
-        Lang parameter is only supported for book (`bok`) corpus. 
+        Lang parameter is only supported for book (`bok`) corpus.
         Defaults to `None` if doctype is `avis`.
 
         :param words: words to examine, defaults to None
@@ -47,8 +47,7 @@ class Ngram(DhlabObj):
         self.to_year = to_year
         self.words = words
         self.lang = lang
-
-        if not doctype is None:
+        if doctype is not None:
             if 'bok' in doctype:
                 doctype = 'bok'
             elif 'avis' in doctype:
@@ -72,7 +71,7 @@ class Ngram(DhlabObj):
         self.ngram = ngrm
 
         self.kwargs = kwargs
-        
+
         super().__init__(self.ngram)
 
     def plot(self, smooth = 4, **kwargs):
@@ -168,12 +167,8 @@ class NgramNews(Ngram):
     ):
         super().__init__(words, from_year = from_year, to_year = to_year, doctype = 'avis', **kwargs)
         self.date = datetime.now()
-        if to_year is None:
-            to_year = self.date.year
-        if from_year is None:
-            from_year = 1950
-        self.from_year = from_year
-        self.to_year = to_year
+        self.from_year = 1950 if from_year is None else from_year
+        self.to_year = self.date.year if to_year is None else to_year
         self.words = words
         self.title = title
         self.ngram = ngram_news(word=words, title=title, period=(from_year, to_year))
