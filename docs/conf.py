@@ -52,12 +52,13 @@ with working_directory("./notebooks"):
 # -- Project information -----------------------------------------------------
 
 project = 'digital_tekstanalyse'
-copyright = '2022, DH-lab, National Library of Norway'
 author = 'DH-lab, National Library of Norway'
+email = 'dh-lab@nb.no'
+copyright = f'2022, {author}'
 version = '2.0'
 # The full version, including alpha/beta/rc tags
-release = 'v2.0.21'
-email = 'dh-lab@nb.no'
+release = 'v2.0.22'
+
 
 # -- General configuration ---------------------------------------------------
 

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="dhlab",
-    version="2.0.21",
+    version="2.0.22",
     author="The National Library of Norway",
     author_email="dh-lab@nb.no",
     description="Library for text and image analysis by the Digital Humanities lab (DH-lab)",
@@ -22,7 +22,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.2',
+    python_requires='>=3.6',
     install_requires=[
         'beautifulsoup4',
         'ipython',
@@ -36,6 +36,5 @@ setuptools.setup(
         'requests',
         'seaborn',
         'setuptools',
-	'wordcloud'
     ]
 )
