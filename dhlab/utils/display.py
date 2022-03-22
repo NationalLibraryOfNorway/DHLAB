@@ -1,12 +1,10 @@
 from urllib.parse import urlparse
 
 import requests
-from IPython.display import HTML
+from IPython.display import HTML, display
 
 
 def code_toggle(button_text="Klikk for å vise/skjule kodeceller"):
-    from IPython.display import HTML, display
-
     display(
         HTML(
             '''<div>
@@ -67,4 +65,4 @@ def css(url="https://raw.githubusercontent.com/Yoonsen/Modules/master/css_style_
         with open(url, encoding='utf-8') as file:
             css_file = file.read()
 
-    return HTML("<style>{css_code}</style>".format(css_code=css_file))
+    return HTML(f"<style>{css_file}</style>")
