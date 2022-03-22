@@ -141,3 +141,9 @@ cython_debug/
 
 **/__pycache__/*
 **/.ipynb_checkpoints/*
+docs/graph_networkx_louvain.py
+docs/token_map.py
+docs/nbtext.py
+./graph_networkx_louvain.py
+./token_map.py
+./nbtext.py

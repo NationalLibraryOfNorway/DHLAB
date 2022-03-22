@@ -4,7 +4,7 @@ import networkx as nx
 import pandas as pd
 
 from dhlab.api.nb_search_api import get_df, get_konks
-from dhlab.nbtext import frame, frame_sort
+from dhlab.legacy.nbtext import frame, frame_sort
 from dhlab.text.nbtokenizer import tokenize
 
 

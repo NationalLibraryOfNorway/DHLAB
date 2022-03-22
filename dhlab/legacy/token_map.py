@@ -6,7 +6,7 @@ from collections import Counter
 import pandas as pd
 import requests
 
-from dhlab.nbtext import (
+from dhlab.legacy.nbtext import (
     make_network_name_graph,
     names,
     token_map,
