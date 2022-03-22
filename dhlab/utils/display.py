@@ -23,7 +23,7 @@ def code_toggle(button_text="Klikk for å vise/skjule kodeceller"):
                 }
             </style>
             <script>
-                code_show=true; 
+                code_show=true;
                 function code_toggle() {
                  if (code_show){
                  $('div.input').hide();
@@ -31,7 +31,7 @@ def code_toggle(button_text="Klikk for å vise/skjule kodeceller"):
                  $('div.input').show();
                  }
                  code_show = !code_show
-                } 
+                }
                 $( document ).ready(code_toggle);
             </script>
             <form  action="javascript:code_toggle()">
@@ -42,7 +42,7 @@ def code_toggle(button_text="Klikk for å vise/skjule kodeceller"):
 
 
 def css(url="https://raw.githubusercontent.com/Yoonsen/Modules/master/css_style_sheets/nb_notebook.css"):
-    """Associate a css stylesheet with the notebook, 
+    """Associate a css stylesheet with the notebook,
     just specify a file or web reference, default is a custom css"""
 
     uri = urlparse(url)
