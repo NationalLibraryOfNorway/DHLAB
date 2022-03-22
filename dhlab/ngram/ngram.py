@@ -19,7 +19,7 @@ class Ngram:
         self.to_year = to_year
         self.words = words
         self.lang = lang
-        if not doctype is None:
+        if doctype is not None:
             if 'bok' in doctype:
                 doctype = 'bok'
             elif 'avis' in doctype:
@@ -79,26 +79,16 @@ class NgramBook(Ngram):
         self.ngram = ngram_book(word=words, title=title, publisher=publisher, lang=lang, city=city,
                                 period=(from_year, to_year), ddk=ddk, topic=subject)
         # self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
-        return None
 
 
 class NgramNews(Ngram):
-    def __init__(
-            self,
-            words=None,
-            title=None,
-            city=None,
-            from_year=None,
-            to_year=None
-    ):
+    def __init__(self, words=None, title=None, city=None, from_year=None, to_year=None):
+        super().__init__(words, from_year, to_year)
         self.date = datetime.now()
-        if to_year is None:
-            to_year = self.date.year
-        if from_year is None:
-            from_year = 1950
-        self.from_year = from_year
-        self.to_year = to_year
+        self.from_year = 1950 if from_year is None else from_year
+        self.to_year = self.date.year if to_year is None else to_year
         self.words = words
         self.title = title
         self.ngram = ngram_news(word=words, title=title, period=(from_year, to_year))
+        self.city = city
         # self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
