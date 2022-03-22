@@ -31,7 +31,9 @@
 * fixed corpus transfer in conc_coll
 
 
-## Release v2.0.0-alpha (2022-01-17)
+## Pre-release v2.0.0 (2022-01-18)
+#### Features
+* add get_file_from_github, download_from_github in utils
 
 #### Refactors
 
@@ -40,6 +42,7 @@
 #### Fixes
 
 * remove static path, remove fail on warning
+
 #### Docs
 
 * update link to notebook repo
