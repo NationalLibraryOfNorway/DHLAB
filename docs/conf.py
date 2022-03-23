@@ -51,13 +51,16 @@ with working_directory("./notebooks"):
 
 # -- Project information -----------------------------------------------------
 
+import dhlab
+
+
 project = 'digital_tekstanalyse'
 author = 'DH-lab, National Library of Norway'
 email = 'dh-lab@nb.no'
 copyright = f'2022, {author}'
-version = '2.0'
+version = dhlab.__version__
 # The full version, including alpha/beta/rc tags
-release = 'v2.0.22'
+release = f'v{version}'
 
 
 # -- General configuration ---------------------------------------------------

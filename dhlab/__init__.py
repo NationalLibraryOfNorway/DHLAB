@@ -12,3 +12,9 @@ from dhlab.legacy import (
 # code from further down in the code tree
 from dhlab.text.corpus import Corpus
 from dhlab.text.conc_coll import Collocations, Concordance
+
+MAJOR = 2
+MINOR = 0
+PATCH = 22
+
+__version__ = f'{MAJOR}.{MINOR}.{PATCH}'
