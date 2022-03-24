@@ -1,5 +1,3 @@
-from dhlab._version import __version__
-
 # legacy code
 from dhlab.text import nbtokenizer
 from dhlab.legacy import (
