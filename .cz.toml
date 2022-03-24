@@ -1,0 +1,26 @@
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "2.0.22"
+tag_format = "v$major.$minor.$patch$prerelease"
+version_files = [
+    "dhlab/_version.py:__version__"
+]
+bump_message = "version $current_version → $new_version"
+update_changelog_on_bump = true
+annotated_tag = true
+changelog_file = "CHANGELOG.md"
+changelog_incremental = true
+changelog_start_rev = "v2.0.22"
+style = [
+    ["qmark", "fg:#ff9d00 bold"],
+    ["question", "bold"],
+    ["answer", "fg:#ff9d00 bold"],
+    ["pointer", "fg:#ff9d00 bold"],
+    ["highlighted", "fg:#ff9d00 bold"],
+    ["selected", "fg:#cc5454"],
+    ["separator", "fg:#cc5454"],
+    ["instruction", ""],
+    ["text", ""],
+    ["disabled", "fg:#858585 italic"]
+]
