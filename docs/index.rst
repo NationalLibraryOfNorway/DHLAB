@@ -18,8 +18,7 @@ dhlab documentation
    :parser: myst_parser.sphinx_
    :start-after: <!-- start dhlab-intro -->
    :end-before: <!-- end dhlab-intro -->
-..
-    # TODO: Maybe add a changelog/news section?
+
 
 ..
     # TODO: Add a demo view?
@@ -47,8 +46,7 @@ Contents
    usage_text.rst
    usage_utilities.rst
    package_summary.rst
-   CHANGELOG.md
-
+   docs_changelog.rst
 
 .. toctree::
    :hidden:
