@@ -3,15 +3,11 @@
 name = "cz_conventional_commits"
 version = "2.0.22"
 tag_format = "v$major.$minor.$patch$prerelease"
-version_files = [
-    "dhlab/_version.py:__version__"
-]
-bump_message = "version $current_version → $new_version"
+bump_message = "bump: version $current_version → $new_version [skip-ci]"
 update_changelog_on_bump = true
 annotated_tag = true
 changelog_file = "CHANGELOG.md"
 changelog_incremental = true
-changelog_start_rev = "v2.0.22"
 style = [
     ["qmark", "fg:#ff9d00 bold"],
     ["question", "bold"],
