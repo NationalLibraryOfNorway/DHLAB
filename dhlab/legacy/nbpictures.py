@@ -2,8 +2,7 @@ import os
 import re
 
 import requests
-from IPython.core.display import display
-from IPython.display import HTML, Markdown
+from IPython.display import display, HTML, Markdown
 from PIL import Image
 
 small_scale = 0.59
