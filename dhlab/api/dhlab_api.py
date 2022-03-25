@@ -1,3 +1,5 @@
+from typing import Union, List
+
 import pandas as pd
 import requests
 
@@ -8,11 +10,16 @@ pd.options.display.max_rows = 100
 # fetch metadata
 
 
-def get_places(urn=None) -> pd.DataFrame:
-    """
-    .. todo:: Add description of functionality + parameters
+def get_places(urn: str, **kwargs) -> pd.DataFrame:
+    """Look up placenames in a specific URN.
 
-    :param urn: Defaults to None.
+    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
+    `/places <https://api.nb.no/dhlab/#/default/post_places>`_.
+
+    :param urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
+    :param kwargs:
+        - feature_class: str, a GeoNames feature class. Example: ``P``
+        - feature_code: str, a GeoNames feature code. Example: ``PPL``
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/places", json=params)
@@ -20,32 +27,48 @@ def get_places(urn=None) -> pd.DataFrame:
     return pd.DataFrame(r.json())
 
 
-def get_dispersion(urn=None, words=None, window=None, pr=None) -> pd.Series:
-    """
-    .. todo:: Add description of functionality + parameters
+def get_dispersion(
+        urn: str = None, words: list = None, window: int = None, pr: int = None
+) -> pd.Series:
+    """Count occurrences of words in the given URN object.
 
-    :param urn:
-    :param words:
-    :param window:
-    :param pr:
-    :return:
+    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint ``/dispersion``.
+
+    :param urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
+    :param words: list of words. Defaults to a list of punctuation marks.
+    :param window: The number of tokens to search through per row. Defaults to 300.
+    :param pr: defaults to 100.
+    :return: a ``pandas.Series`` with frequency counts of the words in the URN object.
+
+    .. todo:: Verify parameter descriptions.
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/dispersion", json=params)
     return pd.Series(r.json())
 
 
-def get_metadata(urns=None) -> pd.DataFrame:
-    """Fetch metadata from a list of urns."""
+def get_metadata(urns: List[str] = None) -> pd.DataFrame:
+    """Get metadata for a list of URNs.
+
+    Calls the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
+    `/get_metadata <https://api.nb.no/dhlab/#/default/post_get_metadata>`_.
+    """
     params = locals()
     r = requests.post(f"{BASE_URL}/get_metadata", json=params)
     return pd.DataFrame(r.json())
 
 
-def get_chunks(urn=None, chunk_size: int = 300) -> dict:
-    """Fetch chunks as wordbags from a document urn.
+def get_chunks(urn: str = None, chunk_size: int = 300) -> dict:
+    """Get the text in the document ``urn`` as frequencies of chunks
+     of the given ``chunk_size``.
 
-    :param chunk_size: TODO: add description of parameter.
+    Calls the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
+    ``/chunks``.
+
+    :param urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
+    :param chunk_size: Number of tokens to include in each chunk.
+
+    .. todo:: Verify unit of ``chunk_size``
     """
 
     if urn is None:
@@ -58,10 +81,13 @@ def get_chunks(urn=None, chunk_size: int = 300) -> dict:
     return result
 
 
-def get_chunks_para(urn=None) -> dict:
-    """Fetch chunks from document, one for each paragraph.
+def get_chunks_para(urn: str = None) -> dict:
+    """Fetch paragraphs and their frequencies from a document.
 
-    :param urn: TODO: add description of parameter.
+    Calls the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
+    ``/chunks_para``.
+
+    :param urn: uniform resource name of a document.
     """
 
     if urn is None:
@@ -81,15 +107,16 @@ def get_reference(
     lang: str = 'nob',
     limit: int = 100000
 ) -> pd.DataFrame:
-    """
-    .. todo:: Add description of functionality + parameters
+    """Reference frequency list of the n most frequent words from a given corpus in a given period.
 
-    :param corpus:
-    :param from_year:
-    :param to_year:
-    :param lang:
-    :param limit:
-    :return: A :py:class:`pd.DataFrame` with the results.
+    :param str corpus: Document type to include in the corpus, can be either ``'digibok'`` or
+        ``'digavis'``.
+    :param int from_year: Starting point for time period of the corpus.
+    :param int to_year: Last year of the time period of the corpus.
+    :param str lang: Language of the corpus, can be one of
+        ``'nob,', 'nno,', 'sme,', 'sma,', 'smj', 'fkv'``
+    :param int limit: Maximum number of most frequent words.
+    :return: A ``pandas.DataFrame`` with the results.
     """
     params = locals()
     r = requests.get(BASE_URL + "/reference_corpus", params=params)
@@ -103,11 +130,13 @@ def get_reference(
 def find_urns(docids=None, mode: str = 'json') -> pd.DataFrame:
     """Return a list of URNs.
 
-    .. todo:: Add description of functionality + parameters
-
     :param docids: list of document IDs as a dictionary {docid: URN} or a pandas dataframe.
     :param mode: Default 'json'.
     :return:
+
+    .. warning:: Seemingly non-existent POST request URL.
+        May throw an error.
+
     """
     params = locals()
     r = requests.post(BASE_URL + "/find_urn", json=params)
