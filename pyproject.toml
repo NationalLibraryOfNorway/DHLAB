@@ -9,6 +9,7 @@ write_to = "dhlab/_version.py"
 legacy_tox_ini = """
 [tox]
 envlist = py27,py36
+isolated_build = True
 
 [testenv]
 deps = pytest >= 3.0.0, <4
