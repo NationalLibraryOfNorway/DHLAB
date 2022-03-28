@@ -1,3 +1,4 @@
+from typing import Union
 from IPython.display import HTML
 from PIL import Image
 
@@ -53,7 +54,7 @@ def find_urls2(term, number=50, page=0):
     return urls
 
 
-def get_picture_from_urn(urn: typing.Union[int, str], width: int = 0, height: int = 300):
+def get_picture_from_urn(urn: Union[int, str], width: int = 0, height: int = 300):
     """Fetch the Image object with its URN identifier.
 
     :meta private:
