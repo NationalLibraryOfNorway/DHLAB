@@ -43,7 +43,7 @@ with working_directory("./notebooks"):
             filename=filename,
             user="NationalLibraryOfNorway",
             repository='digital_tekstanalyse',
-            branch='main',
+            branch='develop',
             overwrite=False,
             silent=True)
 
