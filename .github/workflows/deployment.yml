@@ -7,10 +7,10 @@ on:
 
 jobs:
   linting:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/lint.yml
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/lint.yml@hotfix/versions
   testing:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/test.yml
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/test.yml@hotfix/versions
   bump_version:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/bump-version.yml
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/bump-version.yml@hotfix/versions
   upload_package:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/upload-package.yml
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/upload-package.yml@hotfix/versions
