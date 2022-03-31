@@ -14,7 +14,6 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.head_ref }}
-          GIT_DISCOVERY_ACROSS_FILESYSTEM: 1
       - id: cz
         name: Create bump and changelog
         uses: commitizen-tools/commitizen-action@0.12.0
