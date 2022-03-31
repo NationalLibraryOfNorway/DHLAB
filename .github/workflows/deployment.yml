@@ -2,15 +2,15 @@ name: Deploy new version
 on:
   push:
     branches:
-      - main
+      - hotfix/versions
 
 
 jobs:
   linting:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/lint.yml@main
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/lint.yml
   testing:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/test.yml@main
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/test.yml
   bump_version:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/bump-version.yml@main
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/bump-version.yml
   upload_package:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/upload-package.yml@main
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/upload-package.yml
