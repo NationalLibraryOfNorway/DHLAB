@@ -21,7 +21,6 @@ print(sys.path)
 
 from dhlab.utils.files import download_from_github, working_directory
 
-
 filenames = [
     'Oppstart.ipynb',
     '1_Bygg_korpus.ipynb',
@@ -48,17 +47,18 @@ with working_directory("./notebooks"):
             overwrite=False,
             silent=True)
 
-
 # -- Project information -----------------------------------------------------
+
+from importlib.metadata import version
 
 project = 'digital_tekstanalyse'
 author = 'DH-lab, National Library of Norway'
 email = 'dh-lab@nb.no'
 copyright = f'2022, {author}'
-version = '2.0'
 # The full version, including alpha/beta/rc tags
-release = 'v2.0.22'
-
+release = version('dhlab')
+# take only major.minor
+version = '.'.join(release.split('.')[:2])
 
 # -- General configuration ---------------------------------------------------
 
@@ -91,7 +91,7 @@ extensions = [
     'myst_parser',  # Markdownparser
     'sphinx_inline_tabs',  # Tab switches
     'nbsphinx',  # Integrate jupyter notebooks
-    #"'sphinx_gallery.load_style',
+    # "'sphinx_gallery.load_style',
     'sphinx_togglebutton',
     'sphinx_copybutton',
 ]
@@ -143,22 +143,20 @@ add_module_names = False
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
 
-
 autodoc_default_options = {
     'members': True,  # 'var1, var2',
-    'member-order': 'groupwise', # or 'alphabetical' or 'bysource'
-    #'special-members': '__init__',
+    'member-order': 'groupwise',  # or 'alphabetical' or 'bysource'
+    # 'special-members': '__init__',
     'undoc-members': True,
     'private-members': False,
     'exclude-members': '__weakref__',
     'inherited-members': True,
     'show-inheritance': True,
-    #'ignore-module-all': False,
-    #'imported-members': False,
-    #'class-doc-from': None,
-    #'no-value': False,
+    # 'ignore-module-all': False,
+    # 'imported-members': False,
+    # 'class-doc-from': None,
+    # 'no-value': False,
 }
-
 
 # The suffix of source filenames.
 source_suffix = {
@@ -177,13 +175,12 @@ pygments_dark_style = "monokai"
 
 # Jupyter Notebook options ####################
 
-#nbsphinx_custom_formats = {
+# nbsphinx_custom_formats = {
 #    ".md": ["jupytext.reads", {"fmt": "mystnb"}],
-#}
+# }
 
 togglebutton_hint = "Show"
 togglebutton_hint_hide = "Hide"
-
 
 # -- Options for HTML output -------------------------------------------------
 
