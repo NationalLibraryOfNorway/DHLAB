@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.0.23 (2022-03-31)
+
+### Fix
+
+- **github-workflows**: change github access token (#47)
+- **github-workflows**: change github access token (#46)
+
 ## v2.0.22 (2022-03-22)
 
 ### Fix
