@@ -1,13 +1,28 @@
 [build-system]
-requires = [ "setuptools>=42", "wheel >= 0.29.0" ]
+requires = [ "setuptools>=42", "wheel >= 0.29.0", "setuptools_scm>=6.2"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "dhlab/_version.py"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+     "ignore::DeprecationWarning"
+]
+
 
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py27,py36
+minversion = 3.24.0
+isolated_build = True
 
 [testenv]
-deps = pytest >= 3.0.0, <4
-commands = pytest
+deps =
+    dhlab >= 2.0.0
+    pytest >= 7.0.0
+    pytest-cov >= 3.0.0
+commands =
+    python -m pytest tests --doctest-modules --cov=dhlab --cov-report=html
 """
+

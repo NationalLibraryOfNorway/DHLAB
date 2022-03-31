@@ -70,6 +70,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/generated/
 
 # PyBuilder
 .pybuilder/
@@ -147,3 +148,5 @@ docs/nbtext.py
 ./graph_networkx_louvain.py
 ./token_map.py
 ./nbtext.py
+/docs/CHANGELOG_wip.md
+dhlab/_version.py
