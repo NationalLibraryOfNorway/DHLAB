@@ -1,9 +1,7 @@
 name: Bump version
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
 
 jobs:
   bump-version:
@@ -11,19 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     name: "Bump version and create changelog with commitizen"
     steps:
-      - name: Check out
+      - name: Check out repository
         uses: actions/checkout@v3
         with:
-          ref: main
-          repository: ${{ github.repository }}
           token: "${{ secrets.GH_PAT }}"
           fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+          cache: 'pip'
+      - name: Install commitizen
+        run: python -m pip install -U pip commitizen
       - name: Create bump and changelog
-        uses: commitizen-tools/commitizen-action@master
+        uses: commitizen-tools/commitizen-action@0.12.0
         with:
           github_token: ${{ secrets.GH_PAT }}
           changelog_increment_filename: body.md
-      - name: Release
+      - name: Release new version
         uses: softprops/action-gh-release@v1
         with:
           body_path: "body.md"
