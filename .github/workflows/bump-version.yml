@@ -21,6 +21,7 @@ jobs:
           git_name: github-actions[bot]
           git_email: github-actions[bot]@users.noreply.github.com
           changelog_increment_filename: body.md
+          branch: main
       - name: Print Version
         run: echo "Bumped to version ${{ steps.cz.outputs.version }}"
       - name: Release new version
