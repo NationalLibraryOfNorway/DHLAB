@@ -1,5 +1,16 @@
 # Changelog 
 
+## v2.0.23 (2022-04-01)
+
+### Fix
+
+- **github-workflows**: change github access token (#47)
+- **github-workflows**: change github access token (#46)
+
+### Refactor
+
+- expose dhlab v1 modules
+
 ## v2.0.22 (2022-03-22)
 
 ### Fix
