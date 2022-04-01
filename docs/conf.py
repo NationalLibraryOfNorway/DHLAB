@@ -19,7 +19,7 @@ print(sys.path)
 
 # -- download notebooks --------------------------
 
-from dhlab.utils.files import download_from_github, working_directory
+from utils.files import download_from_github, working_directory
 
 filenames = [
     'Oppstart.ipynb',
