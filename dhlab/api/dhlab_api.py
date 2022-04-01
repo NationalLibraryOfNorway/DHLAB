@@ -4,7 +4,7 @@ import pandas as pd
 import requests
 
 from dhlab.constants import BASE_URL
-from dhlab.utils import _docstring_parameters_from
+from dhlab.utils import _docstring_parameters_from, _is_documented_by
 
 pd.options.display.max_rows = 100
 
@@ -451,6 +451,7 @@ def concordance_counts(
     return pd.DataFrame(r.json())
 
 
+@_is_documented_by(concordance)
 def konkordans(urns: list = None, words: str = None, window: int = 25, limit: int = 100):
     """Wrapper for :func:`concordance`."""
     return concordance(**locals())

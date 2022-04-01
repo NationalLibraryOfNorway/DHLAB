@@ -6,7 +6,16 @@ import requests
 from dhlab.constants import NGRAM_API, GALAXY_API
 
 
-def get_ngram(terms, corpus='avis'):
+def get_ngram(terms: str, corpus: str = 'avis') -> dict:
+    """Fetch raw and relative frequencies for the ``terms``.
+
+    The frequencies are aggregated per year between 1800-2021.
+    Calls the API at :py:data:`NGRAM_API` with the parameters:
+
+    :param str terms: comma separated string of words
+    :param str corpus: type of documents to search through
+    :return: table of annual frequency counts per term
+    """
     req = requests.get(
         NGRAM_API,
         params={
@@ -21,13 +30,17 @@ def get_ngram(terms, corpus='avis'):
     return json.loads(res)
 
 
-def make_word_graph(words, corpus='all', cutoff=16, leaves=0):
+def make_word_graph(
+        words: str, corpus: str = 'all', cutoff: int = 16, leaves: int = 0
+) -> nx.DiGraph:
     """Get galaxy from ngram-database.
-    corpus is bok, avis or both
-    words is a commaseparated string
-    English and German provided by Google N-gram.
-    Set leaves=1 to get the leaves. Parameter cutoff only works for lang='nob'.
-    Specify English by setting lang='eng' and German by lang='ger'"""
+
+    :param str words: comma-separated string of words
+    :param str corpus: document type: ``'book'``, ``'avis'``, or ``'all'``,
+    :param int cutoff: Number of nodes to include.
+    :param int leaves: Set leaves=1 to get the leaves.
+    :return: A `networkx.DiGraph` with the results.
+    """
 
     params = dict()
     params['terms'] = words
