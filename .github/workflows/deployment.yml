@@ -2,11 +2,11 @@ name: Deploy new version
 on:
   push:
     branches:
-      - hotfix/versions
+      - main
 
 
 jobs:
   bump_version:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/bump-version.yml@hotfix/versions
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/bump-version.yml@main
   upload_package:
-    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/upload-package.yml@hotfix/versions
+    uses: NationalLibraryOfNorway/DHLAB/.github/workflows/upload-package.yml@main
