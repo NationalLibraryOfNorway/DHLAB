@@ -25,11 +25,11 @@ jobs:
       - name: Print Version
         run: |
           echo "Bumped to version ${{ steps.cz.outputs.version }}"
-          echo "REVISION: ${{ env.REVISION }}"
+          export TAG_NAME=v${{ env.REVISION }}
       - name: Release new version
         uses: softprops/action-gh-release@v1
         with:
           body_path: "body.md"
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ env.TAG_NAME }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
