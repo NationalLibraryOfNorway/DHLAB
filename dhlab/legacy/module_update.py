@@ -107,6 +107,7 @@ def css(url=None):
     return HTML(f"<style>{css_file}</style>")
 
 
-update("nbtext", overwrite=False, silent=True)
-update("graph_networkx_louvain", overwrite=False, silent=True)
-update('token_map', overwrite=False, silent=True)
+if __name__ == '__main__':
+    update("nbtext", overwrite=False, silent=True)
+    update("graph_networkx_louvain", overwrite=False, silent=True)
+    update('token_map', overwrite=False, silent=True)
