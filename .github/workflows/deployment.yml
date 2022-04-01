@@ -9,4 +9,5 @@ jobs:
   bump_version:
     uses: NationalLibraryOfNorway/DHLAB/.github/workflows/bump-version.yml@main
   upload_package:
+    needs: bump_version
     uses: NationalLibraryOfNorway/DHLAB/.github/workflows/upload-package.yml@main
