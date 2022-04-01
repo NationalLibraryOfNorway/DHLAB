@@ -53,7 +53,16 @@ def find_urls2(term, number=50, page=0):
     return urls
 
 
-def get_picture_from_urn(urn, width=0, height=300):
+def get_picture_from_urn(urn: typing.Union[int, str], width: int = 0, height: int = 300):
+    """Fetch the Image object with its URN identifier.
+
+    :meta private:
+
+    :param urn: The uniform resource name number
+    :param width: Resolution width of the image.
+    :param height: Resolution height of the image.
+    :return: An :py:class:`~PIL.Image.Image` object.
+    """
     meta = iiif_manifest(urn)
     if 'error' not in meta:
         if width == 0 and height == 0:
