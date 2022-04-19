@@ -1,5 +1,11 @@
 # Changelog 
 
+## v2.0.24 (2022-04-19)
+
+### Fix
+
+- add missing newline  (#50)
+
 ## v2.0.23 (2022-04-01)
 
 ### Fix
