@@ -1,1 +1,1 @@
-from dhlab.text.nbtokenizer import * 
+from dhlab.text.nbtokenizer import *
