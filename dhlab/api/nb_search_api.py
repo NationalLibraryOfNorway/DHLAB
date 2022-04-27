@@ -2,7 +2,8 @@ import pandas as pd
 import requests
 
 
-def load_picture(url):
+def load_picture(url: str):
+    """Load the raw image object from a URL."""
     r = requests.get(url, stream=True)
     r.raw.decode_content = True
     # print(r.status_code)
