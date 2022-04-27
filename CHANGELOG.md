@@ -1,5 +1,11 @@
 # Changelog 
 
+## v2.0.25 (2022-04-27)
+
+### Fix
+
+- **setup.cfg**: make package dhlab importable
+
 ## v2.0.24 (2022-04-19)
 
 ### Fix
