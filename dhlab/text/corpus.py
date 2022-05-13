@@ -1,4 +1,5 @@
 from pandas import DataFrame
+import pandas as pd
 
 from dhlab.api.dhlab_api import document_corpus, get_metadata
 
@@ -38,8 +39,14 @@ class Corpus:
 
         self.size = len(self.corpus)
 
-        return
 
+
+    def add(self, corpus = None):
+        new_corpus = pd.concat([self.corpus, corpus.corpus]).drop_duplicates()
+        self.corpus = new_corpus
+        self.size = len(self.corpus)
+        
+    
 
 class Corpus_from_identifiers(Corpus):
     def __init__(self, identifiers=None):

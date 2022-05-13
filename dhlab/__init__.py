@@ -12,3 +12,4 @@ from dhlab.legacy import (
 # code from further down in the code tree
 from dhlab.text.corpus import Corpus
 from dhlab.text.conc_coll import Collocations, Concordance
+from dhlab.text.geo_data import GeoData
