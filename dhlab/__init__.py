@@ -13,3 +13,4 @@ from dhlab.legacy import (
 from dhlab.text.corpus import Corpus
 from dhlab.text.conc_coll import Collocations, Concordance
 from dhlab.text.geo_data import GeoData
+from dhlab.ngram.ngram import Ngram, NgramBook, NgramNews
