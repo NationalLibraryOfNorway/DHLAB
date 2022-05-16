@@ -5,7 +5,7 @@
 ### Feat
 
 - ngram, geodata
-- ngram, geodata
+
 
 ## v2.1.0 (2022-05-13)
 
