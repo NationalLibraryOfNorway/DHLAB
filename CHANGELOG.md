@@ -1,5 +1,11 @@
 # Changelog 
 
+## v2.2.1 (2022-05-16)
+
+### Fix
+
+- use custom personal access token in ci action
+
 ## v2.2.0 (2022-05-13)
 
 ### Feat
