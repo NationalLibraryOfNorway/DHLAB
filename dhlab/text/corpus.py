@@ -42,6 +42,7 @@ class Corpus:
 
 
     def add(self, corpus = None):
+        """Add a corpus to existing corpus"""
         new_corpus = pd.concat([self.corpus, corpus.corpus]).drop_duplicates()
         self.corpus = new_corpus
         self.size = len(self.corpus)
