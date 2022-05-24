@@ -1,9 +1,11 @@
 name: Deploy new version
+
 on:
-  push:
-    branches:
-      - main
-      - ci
+  pull_request:
+    types: 
+      - closed
+    branches: [ main ]
+  workflow_dispatch:
 
 
 jobs:
@@ -12,3 +14,4 @@ jobs:
   upload_package:
     needs: bump_version
     uses: NationalLibraryOfNorway/DHLAB/.github/workflows/upload-package.yml@main
+
