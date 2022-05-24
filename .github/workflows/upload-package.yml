@@ -1,10 +1,11 @@
 name: Upload Python Package
 
-on:
-  release:
-    types:
-      - published
+on: 
   workflow_call:
+  release: 
+    types: 
+      - published
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -20,8 +21,9 @@ jobs:
         python -m pip install --upgrade pip setuptools build
     - name: Build package
       run: python -m build
-    - name: Publish package
+    - name: Publish package to PyPi
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
         password: ${{ secrets.PYPI_UPLOAD_TOKEN }}
+
