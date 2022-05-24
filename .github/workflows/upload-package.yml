@@ -5,24 +5,16 @@ on:
     types: 
       - published
   workflow_dispatch:
-    inputs:
-      tag:  
-        required: true
-        type: string
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
     - run: echo "${{ github.ref_name }}"
-    - name: Checkout input tag 
-      if: ${{ github.event_name == "release" }}
+    - name: Checkout triggering tag
       uses: actions/checkout@v2
       with: 
-        ref: ${{ inputs.tag }}
-    - name: Checkout release tag 
-      if:  ${{ github.event_name == "workflow_dispatch" }}
-      uses: actions/checkout@v2
+        ref: ${{ github.ref_name }}
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
