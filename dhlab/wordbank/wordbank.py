@@ -1,11 +1,13 @@
 import pandas as pd
-from dhlab.api.dhlab_api import word_variant, 
-word_paradigm, 
-word_paradigm_many,
-word_form, 
-word_form_many, 
-word_lemma, 
-word_lemma_many
+from dhlab.api.dhlab_api import (
+    word_variant, 
+    word_paradigm, 
+    word_paradigm_many,
+    word_form, 
+    word_form_many, 
+    word_lemma, 
+    word_lemma_many
+)
 
 class WordParadigm():
     """Fetch inflection paradigms for a list of words, or just one word"""
