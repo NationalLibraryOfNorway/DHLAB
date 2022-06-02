@@ -1,5 +1,16 @@
 # Changelog 
 
+## v2.3.0 (2022-06-02)
+
+### Fix
+
+- parenthesis
+- parenthesis
+
+### Feat
+
+- added access to Norsk Ordbank, wordbank
+
 ## v2.2.2 (2022-05-24)
 
 ### Fix
