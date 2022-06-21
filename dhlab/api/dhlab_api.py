@@ -200,15 +200,18 @@ def ngram_news(word=['.'], title=None, period=None):
     #df.index = df.index.map(pd.Timestamp)
     return df
 
-
 def get_document_frequencies(urns=None, cutoff=0, words=None):
+    """Get frequency numbers from documents as a list of URNs
+    :urns: list of urns
+    :cutoff: minimum frequency of a word to be counted
+    :word: a list of words to be counted - if left None, whole document is returned"""
     params = locals()
-    r = requests.post(BASE_URL + "/frequencies", json=params)
+    r = requests.post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
-    structure = {u[0][0]: dict([tuple(x[1:3]) for x in u])
-                 for u in result if u != []}
+    structure = {u[0]:dict([tuple(u[1:3])]) for u in result}
     df = pd.DataFrame(structure)
     return df.sort_values(by=df.columns[0], ascending=False)
+
 
 
 def get_word_frequencies(urns=None, cutoff=0, words=None):
