@@ -200,7 +200,7 @@ def ngram_news(word=['.'], title=None, period=None):
     #df.index = df.index.map(pd.Timestamp)
     return df
 
-def get_document_frequencies(urns=None, cutoff=0, words=None):
+def get_document_frequencies(urns=None, cutoff=0, words = None):
     """Get frequency numbers from documents as a list of URNs
     :urns: list of urns
     :cutoff: minimum frequency of a word to be counted
@@ -208,24 +208,29 @@ def get_document_frequencies(urns=None, cutoff=0, words=None):
     params = locals()
     r = requests.post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
-    structure = {u[0][0]:dict([(x[1], x[2]) for x in u]) for u in result} # added one step down like in get_word_frequencies
-    df = pd.DataFrame(structure)
-    return df.sort_values(by=df.columns[0], ascending=False)
-
-
+    # check if words are passed - return differs a bit
+    # check if words are passed - return differs a bit
+    if words is None:
+        structure = dict()
+        for u in result:
+            try:
+                structure[u[0][0]] = dict([(x[1],x[2]) for x in u ]) 
+            except IndexError:
+                pass
+        df = pd.DataFrame(structure)
+        df = df.sort_values(by=df.columns[0], ascending=False).fillna(0)
+    else:     
+        df = pd.DataFrame(result)
+        df.columns = ["urn", "word", "count", "urncount"]  
+        df = pd.pivot_table(df,  values = 'count', index = 'word', columns = "urn").fillna(0)
+    return df
 
 def get_word_frequencies(urns=None, cutoff=0, words=None):
     """Get frequency numbers from documents as a list of URNs 
     :urns: list of urns
     :cutoff: minimum frequency of a word to be counted
     :word: a list of words to be counted - should not be left None"""
-    params = locals()
-    r = requests.post(f"{BASE_URL}/frequencies", json=params)
-    result = r.json()
-    structure = {u[0][0]: dict([(x[1], x[2] / x[3]) for x in u])
-                 for u in result if u != []}  # this requires words != None
-    df = pd.DataFrame(structure)
-    return df.sort_values(by=df.columns[0], ascending=False)
+    return get_document_frequencies(urns, cutoff, words)
 
 
 def get_document_corpus(**kwargs):
