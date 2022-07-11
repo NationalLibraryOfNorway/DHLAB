@@ -215,6 +215,10 @@ def get_document_frequencies(urns=None, cutoff=0, words=None):
 
 
 def get_word_frequencies(urns=None, cutoff=0, words=None):
+    """Get frequency numbers from documents as a list of URNs 
+    :urns: list of urns
+    :cutoff: minimum frequency of a word to be counted
+    :word: a list of words to be counted - if left None, whole document is returned"""
     params = locals()
     r = requests.post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
