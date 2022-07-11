@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.3.4 (2022-07-11)
+
+### Fix
+
+- counts variable crossing
+- counts variable crossing
+
 ## v2.3.3 (2022-07-11)
 
 ### Fix
