@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.3.2 (2022-07-11)
+
+### Fix
+
+- frequency and counts
+- frequency and counts
+
 ## v2.3.1 (2022-06-21)
 
 ### Fix
