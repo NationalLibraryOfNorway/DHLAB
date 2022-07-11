@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.3.3 (2022-07-11)
+
+### Fix
+
+- counting api
+- counting api
+
 ## v2.3.2 (2022-07-11)
 
 ### Fix
