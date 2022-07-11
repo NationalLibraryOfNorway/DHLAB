@@ -208,7 +208,7 @@ def get_document_frequencies(urns=None, cutoff=0, words=None):
     params = locals()
     r = requests.post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
-    structure = {u[0][0]:dict([tuple(u[0][1:3])]) for u in result} # added one step down like in get_word_frequencies
+    structure = {u[0][0]:dict([(x[1], x[2]) for x in u]) for u in r} # added one step down like in get_word_frequencies
     df = pd.DataFrame(structure)
     return df.sort_values(by=df.columns[0], ascending=False)
 
@@ -218,12 +218,12 @@ def get_word_frequencies(urns=None, cutoff=0, words=None):
     """Get frequency numbers from documents as a list of URNs 
     :urns: list of urns
     :cutoff: minimum frequency of a word to be counted
-    :word: a list of words to be counted - if left None, whole document is returned"""
+    :word: a list of words to be counted - should not be left None"""
     params = locals()
     r = requests.post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
     structure = {u[0][0]: dict([(x[1], x[2] / x[3]) for x in u])
-                 for u in result if u != []}
+                 for u in result if u != []}  # this requires words != None
     df = pd.DataFrame(structure)
     return df.sort_values(by=df.columns[0], ascending=False)
 
