@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.3.5 (2022-07-11)
+
+### Fix
+
+- word counts
+- word counts
+
 ## v2.3.4 (2022-07-11)
 
 ### Fix
