@@ -208,7 +208,7 @@ def get_document_frequencies(urns=None, cutoff=0, words=None):
     params = locals()
     r = requests.post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
-    structure = {u[0][0]:dict([tuple(u[0][1:3])]) for u in result}
+    structure = {u[0][0]:dict([tuple(u[0][1:3])]) for u in result} # added one step down like in get_word_frequencies
     df = pd.DataFrame(structure)
     return df.sort_values(by=df.columns[0], ascending=False)
 

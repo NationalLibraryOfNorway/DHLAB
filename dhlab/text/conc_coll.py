@@ -18,7 +18,7 @@ def make_link(row):
 def find_hits(x): return ' '.join(re.findall("<b>(.+?)</b", x))
 
 
-class Concordance:
+class Concordance():
     """Wrapper for concordance function with added functionality"""
 
     def __init__(self, corpus=None, query=None, window=20, limit=500):
