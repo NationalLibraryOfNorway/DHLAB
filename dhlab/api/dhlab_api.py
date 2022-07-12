@@ -7,6 +7,20 @@ pd.options.display.max_rows = 100
 
 # fetch metadata
 
+def ner_from_urn(urn=None, model=None):
+    """Get a NER object for a text by URN using a spacy model
+    :param urn: a URN
+    :param model: a spacy model (check with show_model what is available)"""
+    
+    params = locals()
+    r = requests.get(f"{BASE_URL}/ner_urn", params=params)
+    df = pd.read_json(r.json())
+    return df
+
+def show_spacy_models():
+    """Show available models for use with spaCy"""
+    r = requests.get(f"{BASE_URL}/ner_models")
+    return r.json()
 
 def get_places(urn=None) -> pd.DataFrame:
     """
@@ -34,6 +48,15 @@ def get_dispersion(urn=None, words=None, window=None, pr=None) -> pd.Series:
     r = requests.post(f"{BASE_URL}/dispersion", json=params)
     return pd.Series(r.json())
 
+def ner_from_urn(urn=None, model=None):
+    """Get a NER object for a text by URN using a spacy model
+    :param urn: a URN
+    :param model: a spacy model (check with show_model what is available)"""
+    
+    params = locals()
+    r = requests.get(f"{BASE_URL/ner_urn}", params=params)
+    return 
+                     
 
 def get_metadata(urns=None) -> pd.DataFrame:
     """Fetch metadata from a list of urns."""
