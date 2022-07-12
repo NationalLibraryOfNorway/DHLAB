@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.4.2 (2022-07-12)
+
+### Fix
+
+- double def of function
+- something weird...
+
 ## v2.4.1 (2022-07-12)
 
 ### Fix
