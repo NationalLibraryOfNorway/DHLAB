@@ -1735,7 +1735,6 @@ def nb_ngram(
         years: tuple = (1810, 2010),
         mode: str = 'relative') -> pd.DataFrame:
     """Collect an n-gram as json object from `NB N-gram
-    <https://www.nb.no/sp_tjenester/beta/ngram_1/trends#ngram/query?terms=norway>`_.
     Uses :func:`get_ngram` and :func:`ngram_conv`.
 
     :param terms: Comma separated n-grams (single words up to trigrams).
@@ -1750,11 +1749,10 @@ def nb_ngram(
     return df
 
 
-def get_ngram(terms, corpus='avis'):
-    req = requests.get(
-        f"http://www.nb.no/sp_tjenester/beta/ngram_1/ngram/"
-        f"query?terms={terms}&corpus={corpus}"
-    )
+def get_ngram(terms="", corpus='avis'):
+    reqs = f"https://api.nb.no/dhlab/nb_ngram/ngram/query?terms={terms}&lang=nor&case_sens=0&freq=rel&corpus={corpus}"
+    #print(reqs)
+    req = requests.get(reqs)
     if req.status_code == 200:
         res = req.text
     else:
