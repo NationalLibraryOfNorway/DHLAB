@@ -14,12 +14,11 @@ def ner_from_urn(urn=None, model=None):
     
     params = locals()
     r = requests.get(f"{BASE_URL}/ner_urn", params=params)
-    # convert to dataframe
     df = pd.read_json(r.json())
     return df
 
 def show_spacy_models():
-    """Show available models for use with spaCy """
+    """Show available models for use with spaCy"""
     r = requests.get(f"{BASE_URL}/ner_models")
     return r.json()
 
@@ -31,7 +30,7 @@ def get_places(urn=None) -> pd.DataFrame:
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/places", json=params)
-    print(r.status_code)
+    #print(r.status_code)
     return pd.DataFrame(r.json())
 
 
@@ -48,15 +47,6 @@ def get_dispersion(urn=None, words=None, window=None, pr=None) -> pd.Series:
     params = locals()
     r = requests.post(f"{BASE_URL}/dispersion", json=params)
     return pd.Series(r.json())
-
-def ner_from_urn(urn=None, model=None):
-    """Get a NER object for a text by URN using a spacy model
-    :param urn: a URN
-    :param model: a spacy model (check with show_model what is available)"""
-    
-    params = locals()
-    r = requests.get(f"{BASE_URL/ner_urn}", params=params)
-    return 
                      
 
 def get_metadata(urns=None) -> pd.DataFrame:
