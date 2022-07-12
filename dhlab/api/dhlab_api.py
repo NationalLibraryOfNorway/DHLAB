@@ -30,7 +30,7 @@ def get_places(urn=None) -> pd.DataFrame:
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/places", json=params)
-    print(r.status_code)
+    #print(r.status_code)
     return pd.DataFrame(r.json())
 
 
