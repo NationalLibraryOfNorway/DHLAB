@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.3.6 (2022-07-12)
+
+### Fix
+
+- nb_ngram to point to new endpoint
+- nb_ngram to point to new endpoint
+
 ## v2.3.5 (2022-07-11)
 
 ### Fix
