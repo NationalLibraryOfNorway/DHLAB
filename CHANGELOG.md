@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.4.0 (2022-07-12)
+
+### Feat
+
+- ner with spaCy
+- ner with spaCy
+
 ## v2.3.6 (2022-07-12)
 
 ### Fix
