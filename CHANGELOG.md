@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.4.1 (2022-07-12)
+
+### Fix
+
+- weirder
+- weirder
+
 ## v2.4.0 (2022-07-12)
 
 ### Feat
