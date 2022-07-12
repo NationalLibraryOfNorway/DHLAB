@@ -14,11 +14,12 @@ def ner_from_urn(urn=None, model=None):
     
     params = locals()
     r = requests.get(f"{BASE_URL}/ner_urn", params=params)
+    # convert to dataframe
     df = pd.read_json(r.json())
     return df
 
 def show_spacy_models():
-    """Show available models for use with spaCy"""
+    """Show available models for use with spaCy """
     r = requests.get(f"{BASE_URL}/ner_models")
     return r.json()
 
