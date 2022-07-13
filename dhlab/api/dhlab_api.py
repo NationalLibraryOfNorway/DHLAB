@@ -47,7 +47,7 @@ def get_dispersion(urn=None, words=None, window=None, pr=None) -> pd.Series:
     params = locals()
     r = requests.post(f"{BASE_URL}/dispersion", json=params)
     return pd.Series(r.json())
-                     
+   
 
 def get_metadata(urns=None) -> pd.DataFrame:
     """Fetch metadata from a list of urns."""

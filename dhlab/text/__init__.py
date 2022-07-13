@@ -6,3 +6,4 @@ from .corpus import Corpus, Corpus_from_identifiers, \
 from .dispersion import Dispersion
 from .geo_data import GeoData
 from .nbtokenizer import Tokens, tokenize
+from .parse import NER, Models

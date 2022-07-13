@@ -46,12 +46,21 @@ class Corpus:
         new_corpus = pd.concat([self.corpus, corpus.corpus]).drop_duplicates()
         self.corpus = new_corpus
         self.size = len(self.corpus)
-        
     
-
+    def extend_from_identifiers(self, identifiers=None):
+        corpus = get_metadata(urnlist(identifiers))
+        self.corpus = pd.concate([self.corpus, corpus]).drop_duplicates()
+        self.size = len(self.corpus)
+    
+class EmptyCorpus(Corpus):
+    def __init__(self):
+        self.corpus = pd.DataFrame()
+        self.size = 0
+        
 class Corpus_from_identifiers(Corpus):
     def __init__(self, identifiers=None):
         self.corpus = get_metadata(urnlist(identifiers))
+        self.size = len(self.corpus)
 
 
 def urnlist(corpus):
