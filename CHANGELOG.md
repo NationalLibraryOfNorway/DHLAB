@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.4.5 (2022-07-13)
+
+### Fix
+
+- name error
+- name error
+
 ## v2.4.4 (2022-07-13)
 
 ### Fix
