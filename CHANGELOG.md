@@ -1,5 +1,11 @@
 # Changelog 
 
+## v2.4.4 (2022-07-13)
+
+### Fix
+
+- added spacy to requirements.txt
+
 ## v2.4.3 (2022-07-13)
 
 ### Fix
