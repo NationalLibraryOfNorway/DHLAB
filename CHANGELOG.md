@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.4.6 (2022-07-13)
+
+### Fix
+
+- removed spacy import in parse.py
+- removed spacy import in parse.py
+
 ## v2.4.5 (2022-07-13)
 
 ### Fix
