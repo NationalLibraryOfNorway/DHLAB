@@ -1,5 +1,11 @@
 # Changelog 
 
+## v2.4.3 (2022-07-13)
+
+### Fix
+
+- added parse.py file
+
 ## v2.4.2 (2022-07-12)
 
 ### Fix
