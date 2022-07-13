@@ -1,5 +1,12 @@
 # Changelog 
 
+## v2.4.7 (2022-07-13)
+
+### Fix
+
+- error in NER
+- error in NER
+
 ## v2.4.6 (2022-07-13)
 
 ### Fix
