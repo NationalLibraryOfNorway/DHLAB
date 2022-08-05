@@ -42,7 +42,7 @@ def geo_lookup(places, feature_class = None, feature_code = None, field = 'alter
     :field: which name field to match - default alternatename
     """
     res = requests.post(f"{BASE_URL}/geo_data", json={'words':places, 'feature_class':feature_class, 'feature_code':feature_code, 'field':field})
-    columns = ["key", "name", "alternatename", "latitude", "longitude", "feature class", "feature code"]
+    columns = ["geonameid", "name", "alternatename", "latitude", "longitude", "feature_class", "feature_code"]
     return pd.DataFrame(res.json(), columns = columns)
 
 def get_dispersion(urn=None, words=None, window=None, pr=None) -> pd.Series:
