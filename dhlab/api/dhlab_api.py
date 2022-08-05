@@ -34,6 +34,17 @@ def get_places(urn=None) -> pd.DataFrame:
     return pd.DataFrame(r.json())
 
 
+def geo_lookup(places, feature_class = None, feature_code = None, field = 'alternatename'):
+    """From a list of places return their geolocations
+    :param places: a list of place names - max 1000
+    :param feature_class: which classe to return
+    :param feature_code: which code to return
+    :field: which name field to match - default alternatename
+    """
+    res = requests.post(f"{BASE_URL}/geo_data", json={'words':places, 'feature_class':feature_class, 'feature_code':feature_code, 'field':field})
+    columns = ["key", "name", "alternatename", "latitude", "longitude", "feature class", "feature code"]
+    return pd.DataFrame(res.json(), columns = columns)
+
 def get_dispersion(urn=None, words=None, window=None, pr=None) -> pd.Series:
     """
     .. todo:: Add description of functionality + parameters
