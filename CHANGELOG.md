@@ -1,5 +1,11 @@
 # Changelog 
 
+## v2.5.0 (2022-08-05)
+
+### Feat
+
+-  geolocation
+
 ## v2.4.7 (2022-07-13)
 
 ### Fix
