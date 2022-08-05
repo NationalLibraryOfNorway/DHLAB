@@ -15,7 +15,7 @@ from dhlab.legacy import (
 from dhlab.text.corpus import Corpus
 from dhlab.text.chunking import Chunks
 from dhlab.text.conc_coll import Collocations, Concordance, Counts
-from dhlab.text.geo_data import GeoData
+from dhlab.text.geo_data import GeoData, GeoNames
 from dhlab.text.parse import NER, Models
 
 # ngram 
