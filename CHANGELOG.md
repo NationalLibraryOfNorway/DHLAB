@@ -1,5 +1,11 @@
 # Changelog 
 
+## v2.6.0 (2022-08-08)
+
+### Feat
+
+- code for word evaluations
+
 ## v2.5.0 (2022-08-05)
 
 ### Feat
