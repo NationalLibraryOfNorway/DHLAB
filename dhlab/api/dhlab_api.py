@@ -99,6 +99,16 @@ def get_chunks_para(urn=None) -> dict:
     return result
 
 
+def evaluate_documents(wordbags=None, urns=None):
+    """From a list of urns and wordbag as dictionary, return an evaluation
+    :param wordbags: a dictionary of wordlists
+    :param urns: a list of URNs"""
+    
+    res = requests.post(f"{BASE_URL}/evaluate", json={'wordbags':wordbags, 'urns':urns})
+    df = pd.DataFrame(res.json()).transpose()
+    return df
+
+
 def get_reference(
     corpus: str = 'digavis',
     from_year: int = 1950,
@@ -130,7 +140,7 @@ def find_urns(docids=None, mode: str = 'json') -> pd.DataFrame:
 
     .. todo:: Add description of functionality + parameters
 
-    :param docids: list of document IDs as a dictionary {docid: URN} or a pandas dataframe.
+    :param docids: list of document IDs as a dictionary {docid: dhlab identifiers} or a pandas dataframe.
     :param mode: Default 'json'.
     :return:
     """
