@@ -1,7 +1,7 @@
 from pandas import DataFrame
 import pandas as pd
 
-from dhlab.api.dhlab_api import document_corpus, get_metadata
+from dhlab.api.dhlab_api import document_corpus, get_metadata, evaluate_documents
 
 
 class Corpus:
@@ -51,6 +51,14 @@ class Corpus:
         corpus = get_metadata(urnlist(identifiers))
         self.corpus = pd.concate([self.corpus, corpus]).drop_duplicates()
         self.size = len(self.corpus)
+        
+    def evaluate_words(self, wordbags = None):
+        df = evaluate_documents(wordbags = wordbags, urns = list(self.corpus.urn))
+        df.index = df.index.astype(int)
+        cols = df.columns
+        df = pd.concat([df, self.corpus[['dhlabid','urn']].set_index('dhlabid')], axis = 1)
+        df = df.set_index('urn')
+        return df[cols].fillna(0)
     
 class EmptyCorpus(Corpus):
     def __init__(self):
