@@ -12,58 +12,10 @@
 
 -  geolocation
 
-## v2.4.7 (2022-07-13)
-
-### Fix
-
-- error in NER
-- error in NER
-
-## v2.4.6 (2022-07-13)
-
-### Fix
-
-- removed spacy import in parse.py
-- removed spacy import in parse.py
-
-## v2.4.5 (2022-07-13)
-
-### Fix
-
-- name error
-- name error
-
-## v2.4.4 (2022-07-13)
-
-### Fix
-
-- added spacy to requirements.txt
-
-## v2.4.3 (2022-07-13)
-
-### Fix
-
-- added parse.py file
-
-## v2.4.2 (2022-07-12)
-
-### Fix
-
-- double def of function
-- something weird...
-
-## v2.4.1 (2022-07-12)
-
-### Fix
-
-- weirder
-- weirder
-
 ## v2.4.0 (2022-07-12)
 
 ### Feat
 
-- ner with spaCy
 - ner with spaCy
 
 ## v2.3.6 (2022-07-12)
@@ -71,64 +23,13 @@
 ### Fix
 
 - nb_ngram to point to new endpoint
-- nb_ngram to point to new endpoint
 
-## v2.3.5 (2022-07-11)
-
-### Fix
-
-- word counts
-- word counts
-
-## v2.3.4 (2022-07-11)
-
-### Fix
-
-- counts variable crossing
-- counts variable crossing
-
-## v2.3.3 (2022-07-11)
-
-### Fix
-
-- counting api
-- counting api
-
-## v2.3.2 (2022-07-11)
-
-### Fix
-
-- frequency and counts
-- frequency and counts
-
-## v2.3.1 (2022-06-21)
-
-### Fix
-
-- frequency
 
 ## v2.3.0 (2022-06-02)
-
-### Fix
-
-- parenthesis
-- parenthesis
 
 ### Feat
 
 - added access to Norsk Ordbank, wordbank
-
-## v2.2.2 (2022-05-24)
-
-### Fix
-
-- use custom personal access token in ci action
-
-## v2.2.1 (2022-05-16)
-
-### Fix
-
-- use custom personal access token in ci action
 
 ## v2.2.0 (2022-05-13)
 
@@ -150,17 +51,6 @@
 - **setup.cfg**: make package dhlab importable
 
 ## v2.0.24 (2022-04-19)
-
-### Fix
-
-- add missing newline  (#50)
-
-## v2.0.23 (2022-04-01)
-
-### Fix
-
-- **github-workflows**: change github access token (#47)
-- **github-workflows**: change github access token (#46)
 
 ### Refactor
 
@@ -226,10 +116,6 @@
 ## v2.0.12.chunk (2022-01-29)
 ### Refactor 
 - **text.chunking**: add attribute self.chunks
-
-### Fix 
-- imports
-
 
 ## v2.0.10chunks (2022-01-29)
 
