@@ -49,7 +49,7 @@ class Corpus:
     
     def extend_from_identifiers(self, identifiers=None):
         corpus = get_metadata(urnlist(identifiers))
-        self.corpus = pd.concate([self.corpus, corpus]).drop_duplicates()
+        self.corpus = pd.concat([self.corpus, corpus]).drop_duplicates()
         self.size = len(self.corpus)
         
     def evaluate_words(self, wordbags = None):
