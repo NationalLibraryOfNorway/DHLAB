@@ -19,7 +19,7 @@ class Corpus:
             ddk=None,
             subject=None,
             lang=None,
-            limit=10):
+            limit=None):
 
         self.corpus = document_corpus(
             doctype,
