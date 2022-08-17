@@ -49,10 +49,34 @@ class Collocations():
         before=10,
         after=10,
         reference=None,
-        samplesize=20000
+        samplesize=20000,
+        alpha=False,
+        ignore_caps=False
     ):
+        """Create collocations object
+
+        :param corpus: target corpus, defaults to None
+        :type corpus: dh.Corpus, optional
+        :param words: target words(s), defaults to None
+        :type words: str or list, optional
+        :param before: words to include before, defaults to 10
+        :type before: int, optional
+        :param after: words to include after, defaults to 10
+        :type after: int, optional
+        :param reference: reference frequency list, defaults to None
+        :type reference: pd.DataFrame, optional
+        :param samplesize: _description_, defaults to 20000
+        :type samplesize: int, optional
+        :param alpha: Only include alphabetical tokens, defaults to False
+        :type alpha: bool, optional
+        :param ignore_caps: Ignore capitalized letters, defaults to False
+        :type ignore_caps: bool, optional
+        """
         if isinstance(words, str):
             words = [words]
+        
+        
+                
         coll = pd.concat(
             [
                 urn_collocation(
@@ -65,16 +89,29 @@ class Collocations():
                 for w in words
             ]
         )[['counts']]
+        
+        if alpha:
+            coll = coll.loc[[x for x in coll.index if x.isalpha()]]
+            if reference is not None:
+                reference = reference.loc[[x for x in reference.index if x.isalpha()]]
+            
+            
+        if ignore_caps:
+            coll.index = [x.lower() for x in coll.index]
+            if reference is not None:
+                reference.index = [x.lower() for x in reference.index]
 
         self.coll = coll.groupby(coll.index).sum()
         self.reference = reference
         self.before = before
         self.after = after
+       
 
         if reference is not None:
             teller = self.coll.counts / self.coll.counts.sum()
-            divisor = self.reference.freq / self.reference.freq.sum()
+            divisor = self.reference.iloc[:, 0] / self.reference.iloc[:, 0].sum()
             self.coll['relevance'] = teller / divisor
+            
 
     def show(self, sortby='counts', n=20):
         return self.coll.sort_values(by=sortby, ascending=False)
