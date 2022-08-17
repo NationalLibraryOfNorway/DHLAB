@@ -22,6 +22,17 @@ class Concordance():
     """Wrapper for concordance function with added functionality"""
 
     def __init__(self, corpus=None, query=None, window=20, limit=500):
+        """_summary_
+
+        :param corpus: corpus, defaults to None
+        :type corpus: dh.Corpus, optional
+        :param query: query string, defaults to None
+        :type query: str, optional
+        :param window: _description_, defaults to 20
+        :type window: int, optional
+        :param limit: _description_, defaults to 500
+        :type limit: int, optional
+        """
 
         self.concordance = concordance(urns=urnlist(corpus), words=query, window=window, limit=limit)
         self.concordance['link'] = self.concordance.urn.apply(make_link)
