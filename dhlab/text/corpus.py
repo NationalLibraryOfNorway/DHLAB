@@ -43,14 +43,12 @@ class Corpus:
 
     def add(self, corpus = None):
         """Add a corpus to existing corpus"""
-        new_corpus = pd.concat([self.corpus, corpus.corpus]).drop_duplicates()
-        self.corpus = new_corpus
+        self.corpus = pd.concat([self.corpus, corpus.corpus], ignore_index=True).drop_duplicates()
         self.size = len(self.corpus)
     
     def extend_from_identifiers(self, identifiers=None):
-        corpus = get_metadata(urnlist(identifiers))
-        self.corpus = pd.concat([self.corpus, corpus]).drop_duplicates()
-        self.size = len(self.corpus)
+        other_corpus = get_metadata(urnlist(identifiers))
+        self.add(other_corpus)
         
     def evaluate_words(self, wordbags = None):
         df = evaluate_documents(wordbags = wordbags, urns = list(self.corpus.urn))
