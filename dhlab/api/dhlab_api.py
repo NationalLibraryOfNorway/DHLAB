@@ -291,8 +291,6 @@ def document_corpus(
 
     parms = locals()
     params = {x: parms[x] for x in parms if not parms[x] is None}
-    if "ddk" in params:
-        params["ddk"] = "^" + params['ddk'].replace('.', '"."')
 
     r = requests.post(BASE_URL + "/build_corpus", json=params)
 

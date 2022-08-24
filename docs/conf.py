@@ -11,6 +11,7 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import pathlib
+import re
 import sys
 
 sys.path.insert(0, pathlib.Path(__file__).parent.resolve().as_posix())
@@ -46,6 +47,29 @@ with working_directory("./notebooks"):
             branch='develop',
             overwrite=False,
             silent=True)
+
+
+# -- Filter version sections in changelog --------------------------------------------
+
+# Only include sections about versions where the MAJOR.MINOR numbers are updated
+# Ignore blocks where only PATCH is updated
+with pathlib.Path("../CHANGELOG.md").open() as cf:
+    changelog = []
+    patch_ver_regx = re.compile(r"## v(\d)\.(\d)\.(\d+) \([\d-]+\)")
+    fix_block = False
+    for line in cf.readlines():
+        if m := patch_ver_regx.match(line):
+            if m.groups()[-1] == "0":
+                print(m.groups())
+                fix_block = False
+            else:
+                fix_block = True
+        if fix_block:
+            continue
+        changelog.append(line)
+
+pathlib.Path("./DOCS_CHANGELOG.md").write_text("".join(changelog))
+
 
 # -- Project information -----------------------------------------------------
 

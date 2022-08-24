@@ -12,7 +12,7 @@ from dhlab.legacy import (
 # code from further down in the code tree
 
 # text 
-from dhlab.text.corpus import Corpus
+from dhlab.text.corpus import Corpus, EmptyCorpus
 from dhlab.text.chunking import Chunks
 from dhlab.text.conc_coll import Collocations, Concordance, Counts
 from dhlab.text.geo_data import GeoData, GeoNames
