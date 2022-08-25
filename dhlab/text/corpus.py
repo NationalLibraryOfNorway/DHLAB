@@ -43,7 +43,7 @@ class Corpus:
 
     def add(self, corpus = None):
         """Add a corpus to existing corpus"""
-        self.corpus = pd.concat([self.corpus, corpus.corpus], ignore_index=True).drop_duplicates().reset_index()
+        self.corpus = pd.concat([self.corpus, corpus.corpus]).drop_duplicates().reset_index(drop=True)
         self.size = len(self.corpus)
     
     def extend_from_identifiers(self, identifiers=None):
