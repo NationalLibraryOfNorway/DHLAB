@@ -6,6 +6,8 @@ import pandas as pd
 from dhlab.api.dhlab_api import get_document_frequencies, concordance, urn_collocation
 from dhlab.text.corpus import urnlist
 
+from typing import  Union
+
 
 # convert cell to a link
 def make_link(row):
@@ -29,6 +31,18 @@ class Concordance():
         self.concordance.columns = ['link', 'urn', 'concordance']
         self.corpus = corpus
         self.size = len(self.concordance)
+
+    def __repr__(self) -> str:
+        """
+        Return the string representation of the concordance datafrane
+        """
+        return self.corpus.__repr__()
+    
+    def _repr_html_(self) -> Union[str, None]:
+        """
+        Return the HTML representation of the concordance datafrane
+        """
+        return self.corpus._repr_html_()   
 
     def show(self, n=10, style=True):
         if style:
@@ -112,6 +126,17 @@ class Collocations():
             divisor = self.reference.iloc[:, 0] / self.reference.iloc[:, 0].sum()
             self.coll['relevance'] = teller / divisor
             
+    def __repr__(self) -> str:
+        """
+        Return the string representation of the collocation datafrane
+        """
+        return self.coll.__repr__()
+    
+    def _repr_html_(self) -> Union[str, None]:
+        """
+        Return the HTML representation of the collocation datafrane
+        """
+        return self.coll._repr_html_()       
 
     def show(self, sortby='counts', n=20):
         return self.coll.sort_values(by=sortby, ascending=False)
@@ -134,3 +159,17 @@ class Counts():
             # in the corpus
             self.counts = get_document_frequencies(
                 urns=urnlist(corpus), cutoff=0, words=words)
+
+
+    def __repr__(self) -> str:
+        """
+        Return the string representation of the counts datafrane
+        """
+        return self.counts.__repr__()
+    
+    def _repr_html_(self) -> Union[str, None]:
+        """
+        Return the HTML representation of the counts datafrane
+        """
+        return self.counts._repr_html_()  
+        
