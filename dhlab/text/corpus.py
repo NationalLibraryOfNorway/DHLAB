@@ -79,7 +79,6 @@ class Corpus_from_identifiers(Corpus):
         self.corpus = get_metadata(urnlist(identifiers))
         self.size = len(self.corpus)
 
-
 def urnlist(corpus):
     """Try to pull out a list of URNs from corpus"""
 
