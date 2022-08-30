@@ -1,5 +1,11 @@
 # Changelog 
 
+## v2.8.1 (2022-08-30)
+
+### Fix
+
+- delete whitespace
+
 ## v2.8.0 (2022-08-30)
 
 ### Feat
