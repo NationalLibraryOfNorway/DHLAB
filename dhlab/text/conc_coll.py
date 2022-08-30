@@ -172,3 +172,4 @@ class Counts():
         Return the HTML representation of the counts datafrane
         """
         return self.counts._repr_html_()  
+        
