@@ -17,6 +17,16 @@ def ner_from_urn(urn=None, model=None):
     df = pd.read_json(r.json())
     return df
 
+def pos_from_urn(urn=None, model=None):
+    """Get a partial SpaCy parse object for a text by URN 
+    :param urn: a URN
+    :param model: a spacy model (check with show_model what is available)"""
+    
+    params = locals()
+    r = requests.get(f"{BASE_URL}/pos_urn", params=params)
+    df = pd.read_json(r.json())
+    return df
+
 def show_spacy_models():
     """Show available models for use with spaCy"""
     r = requests.get(f"{BASE_URL}/ner_models")
