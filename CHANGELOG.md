@@ -1,5 +1,41 @@
 # Changelog 
 
+## v2.8.0 (2022-08-30)
+
+### Feat
+
+- added spacy pos parse (pos, lemma, dependency)
+
+### Refactor
+
+- **corpus**: ignore index in corpus.add (#84)
+
+## v2.7.0 (2022-08-24)
+
+## v2.6.3 (2022-08-23)
+
+### Feat
+
+- add Empty Corpus to dhlab.__init__
+
+### Fix
+
+- dewey search in corpus builder
+
+## v2.6.2 (2022-08-17)
+
+### Feat
+
+- add corpus default limit
+- add docstring to concordance
+
+### Fix
+
+- revert gitignore
+- revert Collocation
+
+## v2.6.1 (2022-08-15)
+
 ## v2.6.0 (2022-08-08)
 
 ### Feat
