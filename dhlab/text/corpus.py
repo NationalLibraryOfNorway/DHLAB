@@ -2,7 +2,7 @@ from pandas import DataFrame
 import pandas as pd
 
 from dhlab.api.dhlab_api import document_corpus, get_metadata, evaluate_documents
-
+from typing import Union
 
 class Corpus:
     def __init__(
@@ -39,7 +39,18 @@ class Corpus:
 
         self.size = len(self.corpus)
 
-
+    def __repr__(self) -> str:
+        """
+        Return the string representation of the corpus datafrane
+        """
+        return self.corpus.__repr__()
+    
+    def _repr_html_(self) -> Union[str, None]:
+        """
+        Return the HTML representation of the corpus datafrane
+        """
+        return self.corpus._repr_html_()
+    
 
     def add(self, corpus = None):
         """Add a corpus to existing corpus"""
