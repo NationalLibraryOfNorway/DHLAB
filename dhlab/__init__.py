@@ -10,5 +10,16 @@ from dhlab.legacy import (
 )
 
 # code from further down in the code tree
-from dhlab.text.corpus import Corpus
-from dhlab.text.conc_coll import Collocations, Concordance
+
+# text
+from dhlab.text.corpus import Corpus, EmptyCorpus
+from dhlab.text.chunking import Chunks
+from dhlab.text.conc_coll import Collocations, Concordance, Counts
+from dhlab.text.geo_data import GeoData, GeoNames
+from dhlab.text.parse import NER, POS, Models
+
+# ngram
+from dhlab.ngram.ngram import Ngram, NgramBook, NgramNews
+
+# wordbank
+from dhlab.wordbank.wordbank import WordParadigm, WordLemma, WordForm

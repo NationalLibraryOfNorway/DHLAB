@@ -1,13 +1,24 @@
 name: Bump version
 
 on:
+  workflow_dispatch:
   workflow_call:
+    outputs:
+      tag_name:
+        description: "The git tag with the new version number"
+        value: "v${{ jobs.bump-version.outputs.revision }}"
+      changes:
+        description: "The changelog snippet for the latest changes"
+        value: ${{ jobs.bump-version.outputs.changes }}
 
 jobs:
   bump-version:
     if: "!startsWith(github.event.head_commit.message, 'bump:')"
     runs-on: ubuntu-latest
     name: "Bump version and create changelog with commitizen"
+    outputs:
+      revision: ${{ env.REVISION }}
+      changes: ${{ env.CHANGES }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -15,17 +26,20 @@ jobs:
           fetch-depth: 0
       - id: cz
         name: Create bump and changelog
-        uses: commitizen-tools/commitizen-action@0.12.0
+        uses: commitizen-tools/commitizen-action@0.14.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
           git_name: github-actions[bot]
           git_email: github-actions[bot]@users.noreply.github.com
           changelog_increment_filename: body.md
           branch: main
-      - name: Release new version
+      - run: echo "::set-output name=body::${{ env.CHANGES }}"
+        env:
+          CHANGES: "$( cat body.md )"
+      - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: "body.md"
-          tag_name: v${{ env.REVISION }}
+          body_path: body.md
+          tag_name: "v${{ env.REVISION }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"

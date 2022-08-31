@@ -1,5 +1,91 @@
 # Changelog 
 
+## v2.8.1 (2022-08-30)
+
+### Fix
+
+- delete whitespace
+
+## v2.8.0 (2022-08-30)
+
+### Feat
+
+- added spacy pos parse (pos, lemma, dependency)
+
+### Refactor
+
+- **corpus**: ignore index in corpus.add (#84)
+
+## v2.7.0 (2022-08-24)
+
+## v2.6.3 (2022-08-23)
+
+### Feat
+
+- add Empty Corpus to dhlab.__init__
+
+### Fix
+
+- dewey search in corpus builder
+
+## v2.6.2 (2022-08-17)
+
+### Feat
+
+- add corpus default limit
+- add docstring to concordance
+
+### Fix
+
+- revert gitignore
+- revert Collocation
+
+## v2.6.1 (2022-08-15)
+
+## v2.6.0 (2022-08-08)
+
+### Feat
+
+- code for word evaluations
+
+## v2.5.0 (2022-08-05)
+
+### Feat
+
+-  geolocation
+
+## v2.4.0 (2022-07-12)
+
+### Feat
+
+- ner with spaCy
+
+## v2.3.6 (2022-07-12)
+
+### Fix
+
+- nb_ngram to point to new endpoint
+
+
+## v2.3.0 (2022-06-02)
+
+### Feat
+
+- added access to Norsk Ordbank, wordbank
+
+## v2.2.0 (2022-05-13)
+
+### Feat
+
+- ngram, geodata
+
+
+## v2.1.0 (2022-05-13)
+
+### Feat
+
+- geodata
+
 ## v2.0.25 (2022-04-27)
 
 ### Fix
@@ -7,17 +93,6 @@
 - **setup.cfg**: make package dhlab importable
 
 ## v2.0.24 (2022-04-19)
-
-### Fix
-
-- add missing newline  (#50)
-
-## v2.0.23 (2022-04-01)
-
-### Fix
-
-- **github-workflows**: change github access token (#47)
-- **github-workflows**: change github access token (#46)
 
 ### Refactor
 
@@ -83,10 +158,6 @@
 ## v2.0.12.chunk (2022-01-29)
 ### Refactor 
 - **text.chunking**: add attribute self.chunks
-
-### Fix 
-- imports
-
 
 ## v2.0.10chunks (2022-01-29)
 

@@ -150,3 +150,6 @@ docs/nbtext.py
 ./nbtext.py
 /docs/CHANGELOG_wip.md
 dhlab/_version.py
+
+# vscode settings
+.vscode

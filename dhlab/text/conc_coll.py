@@ -1,5 +1,5 @@
-
 import re
+from typing import Union
 
 import pandas as pd
 
@@ -18,17 +18,30 @@ def make_link(row):
 def find_hits(x): return ' '.join(re.findall("<b>(.+?)</b", x))
 
 
-class Concordance:
+class Concordance():
     """Wrapper for concordance function with added functionality"""
 
     def __init__(self, corpus=None, query=None, window=20, limit=500):
 
-        self.concordance = concordance(urns=urnlist(corpus), words=query, window=window, limit=limit)
+        self.concordance = concordance(urns=urnlist(corpus), words=query, window=window,
+                                       limit=limit)
         self.concordance['link'] = self.concordance.urn.apply(make_link)
         self.concordance = self.concordance[['link', 'urn', 'conc']]
         self.concordance.columns = ['link', 'urn', 'concordance']
         self.corpus = corpus
         self.size = len(self.concordance)
+
+    def __repr__(self) -> str:
+        """
+        Return the string representation of the concordance datafrane
+        """
+        return self.corpus.__repr__()
+
+    def _repr_html_(self) -> Union[str, None]:
+        """
+        Return the HTML representation of the concordance datafrane
+        """
+        return self.corpus._repr_html_()
 
     def show(self, n=10, style=True):
         if style:
@@ -43,16 +56,38 @@ class Collocations():
     """Collocations """
 
     def __init__(
-        self,
-        corpus=None,
-        words=None,
-        before=10,
-        after=10,
-        reference=None,
-        samplesize=20000
+            self,
+            corpus=None,
+            words=None,
+            before=10,
+            after=10,
+            reference=None,
+            samplesize=20000,
+            alpha=False,
+            ignore_caps=False
     ):
+        """Create collocations object
+
+        :param corpus: target corpus, defaults to None
+        :type corpus: dh.Corpus, optional
+        :param words: target words(s), defaults to None
+        :type words: str or list, optional
+        :param before: words to include before, defaults to 10
+        :type before: int, optional
+        :param after: words to include after, defaults to 10
+        :type after: int, optional
+        :param reference: reference frequency list, defaults to None
+        :type reference: pd.DataFrame, optional
+        :param samplesize: _description_, defaults to 20000
+        :type samplesize: int, optional
+        :param alpha: Only include alphabetical tokens, defaults to False
+        :type alpha: bool, optional
+        :param ignore_caps: Ignore capitalized letters, defaults to False
+        :type ignore_caps: bool, optional
+        """
         if isinstance(words, str):
             words = [words]
+
         coll = pd.concat(
             [
                 urn_collocation(
@@ -66,6 +101,16 @@ class Collocations():
             ]
         )[['counts']]
 
+        if alpha:
+            coll = coll.loc[[x for x in coll.index if x.isalpha()]]
+            if reference is not None:
+                reference = reference.loc[[x for x in reference.index if x.isalpha()]]
+
+        if ignore_caps:
+            coll.index = [x.lower() for x in coll.index]
+            if reference is not None:
+                reference.index = [x.lower() for x in reference.index]
+
         self.coll = coll.groupby(coll.index).sum()
         self.reference = reference
         self.before = before
@@ -73,8 +118,20 @@ class Collocations():
 
         if reference is not None:
             teller = self.coll.counts / self.coll.counts.sum()
-            divisor = self.reference.freq / self.reference.freq.sum()
+            divisor = self.reference.iloc[:, 0] / self.reference.iloc[:, 0].sum()
             self.coll['relevance'] = teller / divisor
+
+    def __repr__(self) -> str:
+        """
+        Return the string representation of the collocation datafrane
+        """
+        return self.coll.__repr__()
+
+    def _repr_html_(self) -> Union[str, None]:
+        """
+        Return the HTML representation of the collocation datafrane
+        """
+        return self.coll._repr_html_()
 
     def show(self, sortby='counts', n=20):
         return self.coll.sort_values(by=sortby, ascending=False)
@@ -97,3 +154,15 @@ class Counts():
             # in the corpus
             self.counts = get_document_frequencies(
                 urns=urnlist(corpus), cutoff=0, words=words)
+
+    def __repr__(self) -> str:
+        """
+        Return the string representation of the counts datafrane
+        """
+        return self.counts.__repr__()
+
+    def _repr_html_(self) -> Union[str, None]:
+        """
+        Return the HTML representation of the counts datafrane
+        """
+        return self.counts._repr_html_()

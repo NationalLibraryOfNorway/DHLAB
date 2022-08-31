@@ -8,8 +8,35 @@ from dhlab.utils import _docstring_parameters_from, _is_documented_by
 
 pd.options.display.max_rows = 100
 
-
 # fetch metadata
+
+
+def ner_from_urn(urn=None, model=None):
+    """Get a NER object for a text by URN using a spacy model
+    :param urn: a URN
+    :param model: a spacy model (check with show_model what is available)"""
+
+    params = locals()
+    r = requests.get(f"{BASE_URL}/ner_urn", params=params)
+    df = pd.read_json(r.json())
+    return df
+
+
+def pos_from_urn(urn=None, model=None):
+    """Get a partial SpaCy parse object for a text by URN
+    :param urn: a URN
+    :param model: a spacy model (check with show_model what is available)"""
+
+    params = locals()
+    r = requests.get(f"{BASE_URL}/pos_urn", params=params)
+    df = pd.read_json(r.json())
+    return df
+
+
+def show_spacy_models():
+    """Show available models for use with spaCy"""
+    r = requests.get(f"{BASE_URL}/ner_models")
+    return r.json()
 
 
 def get_places(urn: str, **kwargs) -> pd.DataFrame:
@@ -25,8 +52,21 @@ def get_places(urn: str, **kwargs) -> pd.DataFrame:
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/places", json=params)
-    print(r.status_code)
+    #print(r.status_code)
     return pd.DataFrame(r.json())
+
+
+def geo_lookup(places, feature_class = None, feature_code = None, field = 'alternatename'):
+    """From a list of places, return their geolocations
+
+    :param places: a list of place names - max 1000
+    :param feature_class: which classe to return
+    :param feature_code: which code to return
+    :param field: which name field to match - default alternatename
+    """
+    res = requests.post(f"{BASE_URL}/geo_data", json={'words':places, 'feature_class':feature_class, 'feature_code':feature_code, 'field':field})
+    columns = ["geonameid", "name", "alternatename", "latitude", "longitude", "feature_class", "feature_code"]
+    return pd.DataFrame(res.json(), columns = columns)
 
 
 def get_dispersion(
@@ -86,8 +126,8 @@ def get_chunks(urn: str = None, chunk_size: int = 300) -> dict:
     return result
 
 
-def get_chunks_para(urn: str = None) -> dict:
-    """Fetch paragraphs and their frequencies from a document.
+def get_chunks_para(urn=None) -> dict:
+    """Fetch chunks from document, one for each paragraph.
 
     Calls the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
     ``/chunks_para``.
@@ -103,6 +143,17 @@ def get_chunks_para(urn: str = None) -> dict:
     else:
         result = {}
     return result
+
+
+def evaluate_documents(wordbags: dict = None, urns: list[str] = None):
+    """From a list of urns and wordbag as dictionary, return an evaluation
+
+    :param wordbags: a dictionary of wordlists
+    :param urns: a list of URNs
+    """
+    res = requests.post(f"{BASE_URL}/evaluate", json={'wordbags':wordbags, 'urns':urns})
+    df = pd.DataFrame(res.json()).transpose()
+    return df
 
 
 def get_reference(
@@ -201,7 +252,7 @@ def _ngram_doc(
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
-    # df.index = df.index.map(pd.Timestamp)
+    #df.index = df.index.map(pd.Timestamp)
     return df
 
 
@@ -268,35 +319,47 @@ def ngram_news(
 def get_document_frequencies(
         urns: List[str] = None, cutoff: int = 0, words: List[str] = None
 ) -> pd.DataFrame:
-    """Fetch raw frequency counts of ``words`` in documents (``urns``).
+    """Fetch frequency counts of ``words`` in documents (``urns``).
 
     Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
     `/frequencies`.
+
+    :param urns: list of urn strings
+    :param cutoff: minimum frequency of a word to be counted
+    :param words: a list of words to be counted - if left None, whole document is returned
     """
     params = locals()
-    r = requests.post(BASE_URL + "/frequencies", json=params)
+    r = requests.post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
-    structure = {u[0][0]: dict([tuple(x[1:3]) for x in u])
-                 for u in result if u != []}
-    df = pd.DataFrame(structure)
-    return df.sort_values(by=df.columns[0], ascending=False)
+    # check if words are passed - return differs a bit
+    if words is None:
+        structure = dict()
+        for u in result:
+            try:
+                structure[u[0][0]] = dict([(x[1],x[2]) for x in u ])
+            except IndexError:
+                pass
+        df = pd.DataFrame(structure)
+        df = df.sort_values(by=df.columns[0], ascending=False).fillna(0)
+    else:
+        df = pd.DataFrame(result)
+        df.columns = ["urn", "word", "count", "urncount"]
+        df = pd.pivot_table(df,  values='count', index='word', columns = "urn").fillna(0)
+    return df
 
 
+@_docstring_parameters_from(get_document_frequencies, drop="words")
 def get_word_frequencies(
         urns: List[str] = None, cutoff: int = 0, words: List[str] = None
 ) -> pd.DataFrame:
-    """Calculate relative frequencies for ``words`` in documents (``urns``).
+    """Fetch frequency numbers for ``words`` in documents (``urns``).
 
     Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
     `/frequencies`.
+
+    :param words: a list of words to be counted - should not be left None
     """
-    params = locals()
-    r = requests.post(BASE_URL + "/frequencies", json=params)
-    result = r.json()
-    structure = {u[0][0]: dict([(x[1], x[2] / x[3]) for x in u])
-                 for u in result if u != []}
-    df = pd.DataFrame(structure)
-    return df.sort_values(by=df.columns[0], ascending=False)
+    return get_document_frequencies(urns, cutoff, words)
 
 
 def get_document_corpus(**kwargs):
@@ -344,8 +407,6 @@ def document_corpus(
     """
     parms = locals()
     params = {x: parms[x] for x in parms if not parms[x] is None}
-    if "ddk" in params:
-        params["ddk"] = "^" + params['ddk'].replace('.', '"."')
 
     r = requests.post(BASE_URL + "/build_corpus", json=params)
 
@@ -476,3 +537,53 @@ def collocation(
     }
     r = requests.post(BASE_URL + "/urncolldist", json=params)
     return pd.read_json(r.text)
+
+
+# Norwegian word bank
+
+def word_variant(word: str, form: str, lang: str = 'nob'):
+    """Find alternative form for a given word form."""
+    r = requests.get(
+        f"{BASE_URL}/variant_form",
+        params={'word': word, 'form': form, 'lang':lang}
+    )
+    return r.json()
+
+
+def word_paradigm(word, lang: str = 'nob'):
+    """Find paradigm form for a word."""
+    r = requests.get(
+        f"{BASE_URL}/paradigm",
+        params={'word': word, 'lang': lang}
+    )
+    return r.json()
+
+
+def word_paradigm_many(wordlist, lang = 'nob'):
+    """ Find alternative form for a list words """
+    r = requests.post(f"{BASE_URL}/paradigms", json = {'words': wordlist, 'lang':lang})
+    return r.json()
+
+
+def word_form(word, lang = 'nob'):
+    """ Find alternative form for a given word form, e.g. word_variant('spiste', 'pres-part') """
+    r = requests.get(f"{BASE_URL}/word_form", params = {'word': word, 'lang':lang})
+    return r.json()
+
+
+def word_form_many(wordlist, lang = 'nob'):
+    """ Find alternative forms for a list of words """
+    r = requests.post(f"{BASE_URL}/word_forms", json = {'words': wordlist, 'lang':lang})
+    return r.json()
+
+
+def word_lemma(word, lang = 'nob'):
+    """ Find lemma form for a given word form """
+    r = requests.get(f"{BASE_URL}/word_lemma", params = {'word': word, 'lang':lang})
+    return r.json()
+
+
+def word_lemma_many(wordlist, lang = 'nob'):
+    """ Find lemma form for a given word form """
+    r = requests.post(f"{BASE_URL}/word_lemmas", json = {'words': wordlist, 'lang':lang})
+    return r.json()
