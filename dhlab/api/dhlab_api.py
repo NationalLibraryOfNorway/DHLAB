@@ -542,7 +542,17 @@ def collocation(
 # Norwegian word bank
 
 def word_variant(word: str, form: str, lang: str = 'nob'):
-    """Find alternative form for a given word form."""
+    """Find alternative form for a given word form.
+
+    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint ``/variant_form``
+
+    Example: ``word_variant('spiste', 'pres-part')``
+
+    :param word: any word string
+    :param form: a morphological feature tag from the Norwegian wordbank
+        `"Orbanken" <https://www.nb.no/sprakbanken/ressurskatalog/oai-nb-no-sbr-5/>`_.
+    :param lang: either "nob" or "nno".
+    """
     r = requests.get(
         f"{BASE_URL}/variant_form",
         params={'word': word, 'form': form, 'lang':lang}
