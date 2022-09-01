@@ -58,8 +58,9 @@ class Corpus:
         self.size = len(self.corpus)
     
     def extend_from_identifiers(self, identifiers=None):
-        other_corpus = get_metadata(urnlist(identifiers))
-        self.add(other_corpus)
+        corpus = get_metadata(urnlist(identifiers))
+        self.corpus = pd.concat([self.corpus, corpus]).drop_duplicates().reset_index(drop=True)
+        self.size = len(self.corpus)
         
     def evaluate_words(self, wordbags = None):
         df = evaluate_documents(wordbags = wordbags, urns = list(self.corpus.urn))
