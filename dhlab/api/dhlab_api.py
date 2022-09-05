@@ -163,6 +163,22 @@ def find_urns(docids=None, mode: str = 'json') -> pd.DataFrame:
     return res
 
 
+def reference_words(
+    words = None,
+    doctype = "digibok",
+    from_year=1800,
+    to_year=2000):
+    """Collect reference data for a list of words over a time period"""
+    
+    params = locals()
+    r = requests.post(f"{BASE_URL}/reference_words", json=params)
+    print(r.status_code, BASE_URL)
+    if r.status_code == 200:
+        res = pd.DataFrame(r.json(), columns = ["word", "freq", "relative"])
+    else:
+        res = pd.DataFrame()
+    return res
+    
 def ngram_book(
     word=['.'],
     title=None,
