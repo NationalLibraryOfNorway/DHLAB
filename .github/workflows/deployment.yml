@@ -2,7 +2,7 @@ name: Deploy new version
 
 on:
   push:
-    branches: [ci/workflow_triggers]
+    branches: [main]
     paths:
       - "dhlab/**"
       - "!docs/**"
