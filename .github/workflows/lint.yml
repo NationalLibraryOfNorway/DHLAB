@@ -7,21 +7,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Python
-      uses: actions/checkout@v2
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pylint flake8 mypy
-    - name: Analysing the code with pylint
-      run: |
-        pylint dhlab -j 4 --reports=y --fail-under=8
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 dhlab --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 dhlab --count --exit-zero --max-complexity=10 \
-        --max-line-length=127 --statistics --ignore=W605
+      - name: Set up Python
+        uses: actions/checkout@v2
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint flake8 mypy
+      - name: Analysing the code with pylint
+        run: |
+          pylint dhlab -j 4 --reports=y --fail-under=8
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 dhlab --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 dhlab --count --exit-zero --max-complexity=10 \
+          --max-line-length=127 --statistics --ignore=W605
