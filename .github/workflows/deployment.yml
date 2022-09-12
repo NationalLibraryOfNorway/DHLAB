@@ -1,34 +1,53 @@
 name: Deploy new version
 
 on:
-  pull_request:
-    types: 
-      - closed
-    branches: [ main ]
+  push:
+    branches: [main]
+    paths:
+      - "dhlab/**"
+      - "!docs/**"
+      - "!**/*.yaml"
+      - "!**/*.yml"
+      - "!.gitignore"
+      - "!.pylintrc"
+      - "!**/*.toml"
+      - "!**/*.md"
+      - "!**/*.cfg"
+      - "!**/requirements*"
   workflow_dispatch:
-
 
 jobs:
   bump_version:
+    if: |
+      !startsWith(github.event.head_commit.message, 'build:') &&
+      !startsWith(github.event.head_commit.message, 'bump:') &&
+      !startsWith(github.event.head_commit.message, 'ci:') &&
+      !startsWith(github.event.head_commit.message, 'chore:') &&
+      !startsWith(github.event.head_commit.message, 'docs:') &&
+      !startsWith(github.event.head_commit.message, 'refactor:') &&
+      !startsWith(github.event.head_commit.message, 'style:') &&
+      !startsWith(github.event.head_commit.message, 'test:') &&
+      !startsWith(github.event.head_commit.message, 'typo:') &&
+      !startsWith(github.event.head_commit.message, 'revert:')
     uses: NationalLibraryOfNorway/DHLAB/.github/workflows/bump-version.yml@main
   upload_package:
     needs: bump_version
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with: 
-        ref: ${{ needs.bump_version.outputs.tag_name }}
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip setuptools build
-    - name: Build package
-      run: python -m build
-    - name: Publish package to PyPi
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_UPLOAD_TOKEN }}
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.bump_version.outputs.tag_name }}
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools build
+      - name: Build package
+        run: python -m build
+      - name: Publish package to PyPi
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_UPLOAD_TOKEN }}
