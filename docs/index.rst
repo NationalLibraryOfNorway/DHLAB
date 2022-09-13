@@ -46,7 +46,7 @@ Contents
    usage_text.rst
    usage_utilities.rst
    package_summary.rst
-   docs_changelog.rst
+   DOCS_CHANGELOG.md
 
 .. toctree::
    :hidden:

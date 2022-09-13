@@ -1,6 +1,10 @@
-# Changelog 
+# Changelog
 
 ## v2.9.1 (2022-09-12)
+
+### Fix
+
+- revert ngram_conv()
 
 ## v2.9.0 (2022-09-05)
 
@@ -9,6 +13,12 @@
 - added reference for words
 
 ## v2.8.2 (2022-09-01)
+
+### Fix
+
+- **corpus**: : extend_from_identifiers (#88)
+
+    need to be able to work with dataframe with urns
 
 ## v2.8.1 (2022-08-30)
 
@@ -27,6 +37,8 @@
 - **corpus**: ignore index in corpus.add (#84)
 
 ## v2.7.0 (2022-08-24)
+
+- automatic bump with features from 2.6.x versions
 
 ## v2.6.3 (2022-08-23)
 
@@ -51,6 +63,10 @@
 - revert Collocation
 
 ## v2.6.1 (2022-08-15)
+
+### Fix
+
+- error in pandas corpus (#75)
 
 ## v2.6.0 (2022-08-08)
 
@@ -116,21 +132,24 @@
 
 ### Refactor
 - move dhlab_v1 code into its own subpackage
-- **docs/package_summary.rst**: add reference table for legacy code 
+- **docs/package_summary.rst**: add reference table for legacy code
 
 ## v2.0.21 (2022-03-21)
-### Refactor 
-- **constants**: add global variables for URLs in constants.py 
+
+### Refactor
+
+- **constants**: add global variables for URLs in constants.py
 - Reformat code with pep8 tools
 - turn relative imports into absolute imports
 - simplify and reduce expressions
 - rename classes with CamelCase
 
-### Docs 
+### Docs
+
 - **README**: add "Example use"
 - add docstrings in subpackages
 - add docs/CHANGELOG.md
-- **docs**: add `*.rst` documentation files 
+- **docs**: add `*.rst` documentation files
 - add autosummary of whole dhlab package
 - **logo**: update logo image
 - add jupyter integration and toggle feature
@@ -140,44 +159,55 @@
 ## v2.0.20geo (2022-03-02)
 
 ### Feat
+
 - **dhlab.api.dhlab_api**: add function `get_places`
 - **text.geo_data**: add class `GeoData`
 
 ### Fix
-- **text.dispersion**: pass **kwargs to `plot()` 
+
+- **text.dispersion**: pass **kwargs to `plot()`
 
 ## v.2.0.18dispersion (2022-02-21)
 
 ### Feat
+
 - **text.dispersion**: add class Dispersion
 - **api.dhlab_api**: add get_dispersion
 
 ### Fix
-- **requirements**: remove wordcloud  
+
+- **requirements**: remove wordcloud
 
 ## v2.0.17params (2022-02-08)
+
 ### Refactor
+
 - **text.corpus**: add parameter fulltext
 - **api.dhlab_api.document_corpus**: add parameter fulltext
-- **text.conc_coll.Concordance**: add parameters window and limit 
+- **text.conc_coll.Concordance**: add parameters window and limit
 - **text.conc_coll.Collocations**: add parameter samplesize
 
-### Fix 
+### Fix
+
 - **text.corpus.urnlist**: fix urnlist assignment
 
 ## v2.0.12.chunk (2022-01-29)
-### Refactor 
+
+### Refactor
+
 - **text.chunking**: add attribute self.chunks
 
 ## v2.0.10chunks (2022-01-29)
 
 ### Feat
-- **text.conc_coll**: add class Counts 
+
+- **text.conc_coll**: add class Counts
 - **text.corpus**: add class Corpus_from_identifiers
 - **text.chunking**: add class Chunks
 - **text.chunking**: add functions get_chunks, get_chunks_para
 
-### Fix 
+### Fix
+
 - imports
 - **dhlab_api.get_chunks**: return dict not dataframe
 - apply autopep8
@@ -188,16 +218,16 @@
 
 - **nbtokenizer**: edit tokens for mail and web addresses
 
-### Feat 
+### Feat
 - add Tokens class
 
-### Fix 
+### Fix
 - imports
 
 
 ## v2.0.2a (2022-01-18)
 
-### Fix 
+### Fix
 
 - typecheck of corpus objects
 
@@ -220,13 +250,11 @@
 
 - include installation instructions in README
 
-
 ## v1.0.0 (2022-01-06)
 
 - Set up Github Actions to run automatic linting and testing
 - Set up documentation pages
 - Include documentation of the code in docstrings
-
 
 ### Fix
 
