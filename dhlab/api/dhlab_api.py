@@ -174,7 +174,6 @@ def get_chunks(urn: str = None, chunk_size: int = 300) -> Union[Dict, List]:
     :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
     :param int chunk_size: Number of tokens to include in each chunk.
     :return: list of dicts with the resulting chunk frequencies, or an empty dict
-    .. todo:: Verify unit of ``chunk_size``
     """
 
     if urn is None:
