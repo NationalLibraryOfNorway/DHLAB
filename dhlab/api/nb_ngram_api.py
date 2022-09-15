@@ -9,8 +9,8 @@ from dhlab.constants import NGRAM_API, GALAXY_API
 def get_ngram(terms: str, corpus: str = "avis", lang: str = "nob") -> dict:
     """Fetch raw and relative frequencies for the ``terms``.
 
+    Call the :py:data:`NGRAM_API`.
     The frequencies are aggregated per year between 1800-2021.
-    Calls the API at :py:data:`NGRAM_API` with the parameters:
 
     :param str terms: comma separated string of words
     :param str corpus: type of documents to search through
@@ -35,6 +35,8 @@ def make_word_graph(
         words: str, corpus: str = 'all', cutoff: int = 16, leaves: int = 0
 ) -> nx.DiGraph:
     """Get galaxy from ngram-database.
+
+    Call the :py:obj:`~dhlab.constants.GALAXY_API` endpoint.
 
     :param str words: comma-separated string of words
     :param str corpus: document type: ``'book'``, ``'avis'``, or ``'all'``,
