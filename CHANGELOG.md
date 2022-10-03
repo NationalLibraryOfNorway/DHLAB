@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.9.2 (2022-10-03)
+
+### Fix
+
+- lang added to ngram
+
 ## v2.9.1 (2022-09-12)
 
 ### Fix
