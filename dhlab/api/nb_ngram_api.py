@@ -6,12 +6,13 @@ import requests
 from dhlab.constants import NGRAM_API, GALAXY_API
 
 
-def get_ngram(terms, corpus='avis'):
+def get_ngram(terms, corpus='avis', lang='nob'):
     req = requests.get(
         NGRAM_API,
         params={
             'terms': terms,
-            'corpus': corpus
+            'corpus': corpus,
+            'lang':lang
         }
     )
     if req.status_code == 200:

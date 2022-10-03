@@ -7,7 +7,8 @@ def nb_ngram(terms: str,
              corpus: str = 'bok',
              smooth: int = 3,
              years: tuple = (1810, 2010),
-             mode: str = 'relative'):
+             mode: str = 'relative',
+            lang: str = 'nob'):
     """Extract N-gram frequencies from given ``terms`` and ``years``.
 
     :param terms: comma
@@ -15,11 +16,12 @@ def nb_ngram(terms: str,
     :param smooth:
     :param years:
     :param mode:
+    :param lang:
     :return: A sorted Pandas DataFrame index
 
     :meta private:
     """
-    df = ngram_conv(get_ngram(terms, corpus=corpus), smooth=smooth, years=years, mode=mode)
+    df = ngram_conv(get_ngram(terms, corpus=corpus, lang = lang), smooth=smooth, years=years, mode=mode)
     df.index = df.index.astype(int)
     return df.sort_index()
 

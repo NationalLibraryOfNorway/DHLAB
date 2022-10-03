@@ -28,7 +28,7 @@ class Ngram:
                 doctype = 'bok'
         else:
             doctype = 'bok'
-        ngrm = nb_ngram(terms=', '.join(words), corpus=doctype, years=(from_year, to_year))
+        ngrm = nb_ngram(terms=', '.join(words), corpus=doctype, years=(from_year, to_year), lang = lang)
         ngrm.index = ngrm.index.astype(str)
         self.ngram = ngrm
 
