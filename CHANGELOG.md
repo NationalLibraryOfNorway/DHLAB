@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.9.3 (2022-10-04)
+
+### Fix
+
+- ngram smooth param
+
 ## v2.9.2 (2022-10-03)
 
 ### Fix
