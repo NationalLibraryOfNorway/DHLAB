@@ -7,7 +7,7 @@ from dhlab.ngram.nb_ngram import nb_ngram
 class Ngram:
     """Top level class for ngrams"""
 
-    def __init__(self, words=None, from_year=None, to_year=None, doctype=None, lang='nob') -> None:
+    def __init__(self, words=None, from_year=None, to_year=None, doctype=None, mode='relative', lang='nob') -> None:
 
         self.date = datetime.now()
         if to_year is None:
@@ -28,7 +28,7 @@ class Ngram:
                 doctype = 'bok'
         else:
             doctype = 'bok'
-        ngrm = nb_ngram(terms=', '.join(words), corpus=doctype, years=(from_year, to_year), smooth = 1, lang = lang)
+        ngrm = nb_ngram(terms=', '.join(words), corpus=doctype, years=(from_year, to_year), smooth = 1, lang = lang, mode=mode)
         ngrm.index = ngrm.index.astype(str)
         self.ngram = ngrm
 
