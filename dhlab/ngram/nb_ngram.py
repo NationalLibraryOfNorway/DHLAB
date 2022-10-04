@@ -54,6 +54,16 @@ def ngram_conv_old(ngrams, smooth: int = 1, years: tuple = (1810, 2013), mode: s
 
 
 def ngram_conv(ngrams, smooth=1, years=(1810,2013), mode='relative'):
+    """Construct a dataframe with ngram mean frequencies per year over a given time period.
+
+    :param ngrams: TODO: FIll in appropriate type and description.
+    :param smooth: Smoothing factor for the graph visualisation.
+    :param years: Tuple with start and end years for the time period of interest
+    :param mode: Frequency measure. Defaults to 'relative'.
+    :return: pandas dataframe with mean values for each year
+
+    :meta private:
+    """
     ngc = {}
     # check if relative frequency or absolute frequency is in question
     if mode.startswith('rel') or mode=='y':
