@@ -5,7 +5,7 @@ from dhlab.api.nb_ngram_api import get_ngram
 
 def nb_ngram(terms: str,
              corpus: str = 'bok',
-             smooth: int = 3,
+             smooth: int = 1,
              years: tuple = (1810, 2010),
              mode: str = 'relative',
             lang: str = 'nob'):
@@ -61,6 +61,9 @@ def ngram_conv(ngrams, smooth=1, years=(1810,2013), mode='relative'):
     else:
         arg = 'f'
     for x in ngrams:
+        # check if x is a non empty ngram - empty ngrams are coded as empty lists
+        # if x is non emtpy it accepts keys - look at alternative isinstance(x, dict)?
         if x != []:
             ngc[x['key']] = {z['x']:z[arg] for z in x['values'] if int(z['x']) <= int(years[1]) and int(z['x']) >= int(years[0])}
+    
     return pd.DataFrame(ngc).rolling(window=smooth, win_type='triang').mean()

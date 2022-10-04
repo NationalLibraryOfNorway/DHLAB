@@ -28,14 +28,17 @@ class Ngram:
                 doctype = 'bok'
         else:
             doctype = 'bok'
-        ngrm = nb_ngram(terms=', '.join(words), corpus=doctype, years=(from_year, to_year), lang = lang)
+        ngrm = nb_ngram(terms=', '.join(words), corpus=doctype, years=(from_year, to_year), smooth = 1, lang = lang)
         ngrm.index = ngrm.index.astype(str)
         self.ngram = ngrm
 
-    def plot(self, **kwargs):
-        self.ngram.plot(**kwargs)
+    def plot(self, smooth = 4, **kwargs):
+        """:param smooth: smoothing the curve"""
+        grf = self.ngram.rolling(window=smooth, win_type='triang').mean()
+        grf.plot(**kwargs)
 
     def compare(self, another_ngram):
+        """Divide one ngram by another - measures difference"""
         start_year = max(datetime(self.from_year, 1, 1),
                          datetime(another_ngram.from_year, 1, 1)).year
         end_year = min(datetime(self.to_year, 1, 1), datetime(another_ngram.to_year, 1, 1)).year
@@ -61,7 +64,7 @@ class NgramBook(Ngram):
             subject=None
     ):
 
-        super().__init__(words, from_year, to_year, lang)
+        super().__init__(words, from_year = from_year, to_year = to_year, lang = lang, doctype = 'bok')
         self.date = datetime.now()
         if to_year is None:
             to_year = self.date.year
@@ -91,6 +94,7 @@ class NgramNews(Ngram):
             from_year=None,
             to_year=None
     ):
+        super().__init__(words, from_year = from_year, to_year = to_year, doctype = 'avis')
         self.date = datetime.now()
         if to_year is None:
             to_year = self.date.year
