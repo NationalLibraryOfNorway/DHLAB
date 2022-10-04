@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.9.4 (2022-10-04)
+
+### Fix
+
+- relative and absolute
+
 ## v2.9.3 (2022-10-04)
 
 ### Fix
