@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.10.0 (2022-10-26)
+
+### Feat
+
+- added image search in bokhylla books to api
+
 ## v2.9.5 (2022-10-26)
 
 ### Fix
