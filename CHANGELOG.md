@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.9.5 (2022-10-26)
+
+### Fix
+
+- nbtokenizer now handles numbers combined with words, e.g. '1800-tallet'
+
 ## v2.9.4 (2022-10-04)
 
 ### Fix
