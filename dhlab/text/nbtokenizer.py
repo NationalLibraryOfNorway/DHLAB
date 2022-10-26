@@ -376,9 +376,11 @@ num3 = r'\.\d+'
 num4 = r'\.\.\.+'
 """Tre eller flere punktum blir ett token."""
 
+num5 = r'\d+(?:[-–]\w+)'
+"""Tallord kombinert med ord, f.eks. 1900-tallet"""
 
 # TODO: kombiner til det regulære uttrykket num eller num0 eller...
-num = '|'.join([num0, num1, num2, num3, num4, num])
+num = '|'.join([num0, num1, num2, num3, num4, num5, num])
 
 
 parnum0 = r'(?<=§ )\d+(?:[-–—]\d+)*|(?<=§)\d+(?:[-–—]\d+)*'
