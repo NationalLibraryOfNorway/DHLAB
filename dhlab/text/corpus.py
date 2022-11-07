@@ -19,26 +19,62 @@ class Corpus:
             ddk=None,
             subject=None,
             lang=None,
-            limit=10):
+            limit=10,
+            ):
 
-        self.corpus = document_corpus(
-            doctype,
-            author,
-            freetext,
-            fulltext,
-            from_year,
-            to_year,
-            from_timestamp,
-            to_timestamp,
-            title,
-            ddk,
-            subject,
-            lang,
-            limit
-        )
-
+        if (doctype 
+            or author
+            or freetext
+            or fulltext
+            or from_year
+            or to_year
+            or from_timestamp
+            or to_timestamp
+            or title
+            or ddk
+            or lang):
+            self.corpus = document_corpus(
+                doctype,
+                author,
+                freetext,
+                fulltext,
+                from_year,
+                to_year,
+                from_timestamp,
+                to_timestamp,
+                title,
+                ddk,
+                subject,
+                lang,
+                limit
+            )
+            
+        else:
+            self.corpus = pd.DataFrame(columns=["urn"])
+        
+        self.urn = self.corpus.urn
         self.size = len(self.corpus)
 
+    @classmethod
+    def from_df(cls, df):
+        """Typecast Pandas DataFrame to Corpus class
+        
+        DataFrame most contain URN column"""        
+        corpus = Corpus()
+        corpus.corpus = cls._urn_id_in_dataframe_cols(df)
+        corpus.urn = corpus.corpus.urn
+        corpus.size = len(corpus.corpus)
+        return corpus
+        
+    @staticmethod
+    def _urn_id_in_dataframe_cols(dataframe):
+        """Checks if dataframe contains URN column"""
+        
+        if "urn" in dataframe.columns:
+            if dataframe.urn.str.contains("^URN:NBN:no-nb_.+").all():
+                return dataframe                    
+        raise ValueError("No'urn'-column in dataframe.")       
+    
     def __repr__(self) -> str:
         """
         Return the string representation of the corpus datafrane
