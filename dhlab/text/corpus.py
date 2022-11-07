@@ -87,6 +87,8 @@ class Corpus:
         """
         return self.corpus._repr_html_()
     
+    def to_csv(self, path):
+        self.corpus.to_csv(path)
 
     def add(self, corpus = None):
         """Add a corpus to existing corpus"""
