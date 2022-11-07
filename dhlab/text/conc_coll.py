@@ -36,13 +36,13 @@ class Concordance():
         """
         Return the string representation of the concordance datafrane
         """
-        return self.corpus.__repr__()
+        return self.show().__repr__()
     
     def _repr_html_(self) -> Union[str, None]:
         """
         Return the HTML representation of the concordance datafrane
         """
-        return self.corpus._repr_html_()   
+        return self.show()._repr_html_()   
 
     def show(self, n=10, style=True):
         if style:
@@ -130,13 +130,13 @@ class Collocations():
         """
         Return the string representation of the collocation datafrane
         """
-        return self.coll.__repr__()
+        return self.show().__repr__()
     
     def _repr_html_(self) -> Union[str, None]:
         """
         Return the HTML representation of the collocation datafrane
         """
-        return self.coll._repr_html_()       
+        return self.show()._repr_html_()       
 
     def show(self, sortby='counts', n=20):
         return self.coll.sort_values(by=sortby, ascending=False)
