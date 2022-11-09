@@ -25,6 +25,7 @@ class Concordance(DhlabObj):
         self.concordance.columns = ['link', 'urn', 'concordance']
         self.corpus = corpus
         self.size = len(self.concordance)
+
         
         super().__init__(self.concordance)  
 
