@@ -11,14 +11,14 @@ pd.options.display.max_rows = 100
 
 # fetch metadata
 
-def images(text = None, part=True): 
+def images(text = None, part=True):
     """ Retrive images from bokhylla
     :param text: fulltext query expression for sqlite
     :param part: if a number the whole page is shown
     ... bug prevents these from going thru
     :param delta: if part=True then show additional pixels around image
     :parsm hits: number of images"""
-    
+
     params = locals()
     r = requests.get(f"{BASE_URL}/images", params=params)
     js = r.json()

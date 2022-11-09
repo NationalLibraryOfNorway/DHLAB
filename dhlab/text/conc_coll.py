@@ -12,22 +12,26 @@ def make_link(row):
 
 
 # find hits a cell
-def find_hits(x): return ' '.join(re.findall("<b>(.+?)</b", x))
+def find_hits(x):
+    return ' '.join(re.findall("<b>(.+?)</b", x))
 
 class Concordance(DhlabObj):
     """Wrapper for concordance function with added functionality"""
 
     def __init__(self, corpus=None, query=None, window=20, limit=500):
 
-        self.concordance = concordance(urns=urnlist(corpus), words=query, window=window, limit=limit)
+        self.concordance = concordance(urns=urnlist(corpus),
+                                       words=query,
+                                       window=window,
+                                       limit=limit)
         self.concordance['link'] = self.concordance.urn.apply(make_link)
         self.concordance = self.concordance[['link', 'urn', 'conc']]
         self.concordance.columns = ['link', 'urn', 'concordance']
         self.corpus = corpus
         self.size = len(self.concordance)
 
-        
-        super().__init__(self.concordance)  
+
+        super().__init__(self.concordance)
 
     def show(self, n=10, style=True):
         if style:
@@ -37,7 +41,7 @@ class Concordance(DhlabObj):
             result = self.concordance.sample(min(n, self.size))
         return result
 
-    
+
 
 class Collocations(DhlabObj):
     """Collocations """
@@ -73,8 +77,8 @@ class Collocations(DhlabObj):
         :type ignore_caps: bool, optional
         """
         if isinstance(words, str):
-            words = [words]  
-                
+            words = [words]
+
         coll = pd.concat(
             [
                 urn_collocation(
@@ -87,12 +91,12 @@ class Collocations(DhlabObj):
                 for w in words
             ]
         )[['counts']]
-        
+
         if alpha:
             coll = coll.loc[[x for x in coll.index if x.isalpha()]]
             if reference is not None:
-                reference = reference.loc[[x for x in reference.index if x.isalpha()]]            
-            
+                reference = reference.loc[[x for x in reference.index if x.isalpha()]]
+
         if ignore_caps:
             coll.index = [x.lower() for x in coll.index]
             if reference is not None:
@@ -101,13 +105,13 @@ class Collocations(DhlabObj):
         self.coll = coll.groupby(coll.index).sum()
         self.reference = reference
         self.before = before
-        self.after = after        
+        self.after = after
 
         if reference is not None:
             teller = self.coll.counts / self.coll.counts.sum()
             divisor = self.reference.iloc[:, 0] / self.reference.iloc[:, 0].sum()
             self.coll['relevance'] = teller / divisor
-            
+
         super().__init__(self.coll)
 
     def show(self, sortby='counts', n=20):
@@ -137,19 +141,17 @@ class Counts(DhlabObj):
             # in the corpus
             self.counts = get_document_frequencies(
                 urns=urnlist(corpus), cutoff=0, words=words)
-        
-        super().__init__(self.counts)        
-    
+
+        super().__init__(self.counts)
+
     def sum(self):
         c = Counts()
         c.counts = self.counts.sum(axis=1)
-        return c     
-    
+        return c
+
     @classmethod
     def from_df(cls, df):
         obj = Counts()
         obj.counts = df
         obj.frame = df
         return obj
-    
-        
