@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.10.1 (2022-11-09)
+
+### Fix
+
+- **conc_coll**: fix __repr__ functions
+
 ## v2.10.0 (2022-10-26)
 
 ### Feat
