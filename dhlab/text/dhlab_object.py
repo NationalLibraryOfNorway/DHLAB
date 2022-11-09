@@ -41,10 +41,10 @@ class DhlabObj:
         return self.from_df(self.frame.sort_values(by=by, ascending=asc))
     
     def to_csv(self, path):
-        self.to_csv(path, index=None)
+        self.frame.to_csv(path, index=None)
         
     def to_excel(self, path):
-        self.to_excel(path, index=None)    
+        self.frame.to_excel(path, index=None)    
         
     @classmethod
     def from_df(cls, df):
@@ -52,7 +52,7 @@ class DhlabObj:
     
     @classmethod
     def from_csv(cls, path):
-        df = pd.read(path)
+        df = pd.read_csv(path)
         return cls.from_df(df)        
 
         
