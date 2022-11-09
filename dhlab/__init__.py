@@ -23,3 +23,6 @@ from dhlab.ngram.ngram import Ngram, NgramBook, NgramNews
 
 # wordbank 
 from dhlab.wordbank.wordbank import WordParadigm, WordLemma, WordForm
+
+# api
+from dhlab.api.dhlab_api import totals
