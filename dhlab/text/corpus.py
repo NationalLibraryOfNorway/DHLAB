@@ -1,10 +1,11 @@
 from pandas import DataFrame
 import pandas as pd
-
+from dhlab.text.dhlab_object import DhlabObj
 from dhlab.api.dhlab_api import document_corpus, get_metadata, evaluate_documents
 from typing import Union
 
-class Corpus:
+class Corpus(DhlabObj):
+    """Class representing as DHLAB Corpus"""
     def __init__(
             self,
             doctype=None,
@@ -33,6 +34,7 @@ class Corpus:
             or title
             or ddk
             or lang):
+            
             self.corpus = document_corpus(
                 doctype,
                 author,
@@ -52,6 +54,7 @@ class Corpus:
         else:
             self.corpus = pd.DataFrame(columns=["urn"])
         
+        super().__init__(self.corpus)
         self.urn = self.corpus.urn
         self.size = len(self.corpus)
 
@@ -63,8 +66,15 @@ class Corpus:
         corpus = Corpus()
         corpus.corpus = cls._urn_id_in_dataframe_cols(df)
         corpus.urn = corpus.corpus.urn
+        corpus.frame = corpus.corpus
         corpus.size = len(corpus.corpus)
         return corpus
+    
+    @classmethod
+    def from_csv(cls, path):
+        """Import corpus from csv"""
+        df = pd.read_csv(path)
+        return cls.from_df(df)
         
     @staticmethod
     def _urn_id_in_dataframe_cols(dataframe):
@@ -75,20 +85,8 @@ class Corpus:
                 return dataframe                    
         raise ValueError("No'urn'-column in dataframe.")       
     
-    def __repr__(self) -> str:
-        """
-        Return the string representation of the corpus datafrane
-        """
-        return self.corpus.__repr__()
-    
-    def _repr_html_(self) -> Union[str, None]:
-        """
-        Return the HTML representation of the corpus datafrane
-        """
-        return self.corpus._repr_html_()
-    
     def to_csv(self, path):
-        self.corpus.to_csv(path)
+        self.corpus.to_csv(path, index=None)        
 
     def add(self, corpus = None):
         """Add a corpus to existing corpus"""
@@ -108,7 +106,16 @@ class Corpus:
         df = df.set_index('urn')
         return df[cols].fillna(0)
     
+    def sample(self, n=5):
+        "Create random subkorpus with `n` entries"
+        # if n >= self.size:            
+        n = min(n, self.size)
+            #raise ValueError(f"Sample must be smaller than main corpus ({self.size})")        
+        sample = self.corpus.sample(n).copy()
+        return Corpus.from_df(sample)
+    
 class EmptyCorpus(Corpus):
+    """DEPRECATED: call Corpus without parameters to represent an empty corpus"""
     def __init__(self):
         self.corpus = pd.DataFrame()
         self.size = 0
