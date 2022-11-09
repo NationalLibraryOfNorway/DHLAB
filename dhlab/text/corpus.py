@@ -2,7 +2,7 @@ from pandas import DataFrame
 import pandas as pd
 from dhlab.text.dhlab_object import DhlabObj
 from dhlab.api.dhlab_api import document_corpus, get_metadata, evaluate_documents
-
+from dhlab.text.conc_coll import Concordance, Collocations, Counts
 
 class Corpus(DhlabObj):
     """Class representing as DHLAB Corpus"""
@@ -111,6 +111,28 @@ class Corpus(DhlabObj):
         n = min(n, self.size)
         sample = self.corpus.sample(n).copy()
         return Corpus.from_df(sample)
+
+    def concordances(self, words, window=20, limit=500):
+        return Concordance(self.frame, words, window, limit)
+
+    def collocations(
+        self,
+        words=None,
+        before=10,
+        after=10,
+        reference=None,
+        samplesize=20000,
+        alpha=False,
+        ignore_caps=False):
+        return Collocations(self.frame, words,
+                            before, after,
+                            reference, samplesize,
+                            alpha, ignore_caps)
+        
+    def count(self, words):
+        return Counts(self.frame, words)
+
+
 
     @staticmethod
     def _is_Corpus(corpus) -> bool:
