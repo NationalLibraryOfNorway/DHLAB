@@ -2,8 +2,9 @@ from pandas import DataFrame
 import pandas as pd
 from dhlab.text.dhlab_object import DhlabObj
 from dhlab.api.dhlab_api import document_corpus, get_metadata, evaluate_documents
-from dhlab.text.conc_coll import Concordance, Collocations, Counts
-
+import dhlab as dh
+from dhlab.text.utils import urnlist
+# from dhlab.text.conc_coll import Concordance, Collocations, Counts
 class Corpus(DhlabObj):
     """Class representing as DHLAB Corpus"""
     def __init__(
@@ -110,10 +111,13 @@ class Corpus(DhlabObj):
         "Create random subkorpus with `n` entries"
         n = min(n, self.size)
         sample = self.corpus.sample(n).copy()
-        return Corpus.from_df(sample)
+        return dh.Corpus.from_df(sample)
 
     def concordances(self, words, window=20, limit=500):
-        return Concordance(self.frame, words, window, limit)
+        return dh.Concordance(self.frame, words, window, limit)
+
+    def conc(self, words, window=20, limit=500):
+        return dh.Concordance(self.frame, words, window, limit)
 
     def collocations(
         self,
@@ -124,13 +128,26 @@ class Corpus(DhlabObj):
         samplesize=20000,
         alpha=False,
         ignore_caps=False):
-        return Collocations(self.frame, words,
+        return dh.Collocations(self.frame, words,
                             before, after,
                             reference, samplesize,
                             alpha, ignore_caps)
-        
+    def coll(
+        self,
+        words=None,
+        before=10,
+        after=10,
+        reference=None,
+        samplesize=20000,
+        alpha=False,
+        ignore_caps=False):
+        return dh.Collocations(self.frame, words,
+                            before, after,
+                            reference, samplesize,
+                            alpha, ignore_caps)
+
     def count(self, words):
-        return Counts(self.frame, words)
+        return dh.Counts(self.frame, words)
 
 
 
@@ -152,14 +169,4 @@ class Corpus_from_identifiers(Corpus):
         self.corpus = get_metadata(urnlist(identifiers))
         self.size = len(self.corpus)
 
-def urnlist(corpus):
-    """Try to pull out a list of URNs from corpus"""
-    if isinstance(corpus, Corpus):
-        _urnlist = list(corpus.corpus.urn)
-    elif isinstance(corpus, DataFrame):
-        _urnlist = list(corpus.urn)
-    elif isinstance(corpus, list):
-        _urnlist = corpus
-    else:
-        _urnlist = []
-    return _urnlist
+
