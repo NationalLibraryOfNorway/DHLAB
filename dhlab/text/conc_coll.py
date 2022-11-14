@@ -1,8 +1,9 @@
 import re
 import pandas as pd
 from dhlab.api.dhlab_api import get_document_frequencies, concordance, urn_collocation
-from dhlab.text.corpus import urnlist
+# from dhlab.text.corpus import urnlist
 from dhlab.text.dhlab_object import DhlabObj
+from dhlab.text.utils import urnlist
 
 # convert cell to a link
 def make_link(row):

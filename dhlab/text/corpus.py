@@ -2,8 +2,9 @@ from pandas import DataFrame
 import pandas as pd
 from dhlab.text.dhlab_object import DhlabObj
 from dhlab.api.dhlab_api import document_corpus, get_metadata, evaluate_documents
-
-
+import dhlab as dh
+from dhlab.text.utils import urnlist
+# from dhlab.text.conc_coll import Concordance, Collocations, Counts
 class Corpus(DhlabObj):
     """Class representing as DHLAB Corpus"""
     def __init__(
@@ -55,17 +56,18 @@ class Corpus(DhlabObj):
             self.corpus = pd.DataFrame(columns=["urn"])
 
         super().__init__(self.corpus)
-        self.urn = self.corpus.urn
         self.size = len(self.corpus)
 
     @classmethod
-    def from_df(cls, df):
+    def from_df(cls, df, check_for_urn=False):
         """Typecast Pandas DataFrame to Corpus class
 
         DataFrame most contain URN column"""
         corpus = Corpus()
-        corpus.corpus = cls._urn_id_in_dataframe_cols(df)
-        corpus.urn = corpus.corpus.urn
+        if check_for_urn:
+            corpus.corpus = cls._urn_id_in_dataframe_cols(df)
+        else:
+            corpus.corpus = df
         corpus.frame = corpus.corpus
         corpus.size = len(corpus.corpus)
         return corpus
@@ -104,13 +106,40 @@ class Corpus(DhlabObj):
         self.frame = pd.concat([self.frame, new_corpus]).drop_duplicates().reset_index(drop=True)
         self.corpus = self.frame
         self.size = len(self.frame)
-        self.urn = self.frame.urn
 
     def sample(self, n=5):
         "Create random subkorpus with `n` entries"
         n = min(n, self.size)
         sample = self.corpus.sample(n).copy()
-        return Corpus.from_df(sample)
+        return self.from_df(sample)
+
+    def conc(self, words, window=20, limit=500):
+        "Get concodances of `words` in corpus"
+        return dh.Concordance(corpus=self.frame, query=words, window=window, limit=limit)
+
+    def coll(
+        self,
+        words=None,
+        before=10,
+        after=10,
+        reference=None,
+        samplesize=20000,
+        alpha=False,
+        ignore_caps=False):
+        "Get collocations of `words` in corpus"
+        return dh.Collocations(
+            corpus=self.frame,
+            words=words,
+            before=before,
+            after=after,
+            reference=reference,
+            samplesize=samplesize,
+            alpha=alpha,
+            ignore_caps=ignore_caps
+            )
+
+    def count(self, words):
+        return dh.Counts(self.frame, words)
 
     @staticmethod
     def _is_Corpus(corpus) -> bool:
@@ -130,14 +159,4 @@ class Corpus_from_identifiers(Corpus):
         self.corpus = get_metadata(urnlist(identifiers))
         self.size = len(self.corpus)
 
-def urnlist(corpus):
-    """Try to pull out a list of URNs from corpus"""
-    if isinstance(corpus, Corpus):
-        _urnlist = list(corpus.corpus.urn)
-    elif isinstance(corpus, DataFrame):
-        _urnlist = list(corpus.urn)
-    elif isinstance(corpus, list):
-        _urnlist = corpus
-    else:
-        _urnlist = []
-    return _urnlist
+

@@ -11,12 +11,9 @@ class DhlabObj:
     def __init__(self, frame):
         self.frame = frame
 
-        self.urn = None
         self.size = None
         if isinstance(frame, pd.DataFrame):
             self.size = len(frame)
-            if "urn" in frame.columns:
-                self.urn = frame.urn
 
     def __repr__(self) -> str:
         """
