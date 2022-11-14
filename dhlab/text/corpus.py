@@ -56,17 +56,18 @@ class Corpus(DhlabObj):
             self.corpus = pd.DataFrame(columns=["urn"])
 
         super().__init__(self.corpus)
-        self.urn = self.corpus.urn
         self.size = len(self.corpus)
 
     @classmethod
-    def from_df(cls, df):
+    def from_df(cls, df, check_for_urn=False):
         """Typecast Pandas DataFrame to Corpus class
 
         DataFrame most contain URN column"""
         corpus = Corpus()
-        corpus.corpus = cls._urn_id_in_dataframe_cols(df)
-        corpus.urn = corpus.corpus.urn
+        if check_for_urn:
+            corpus.corpus = cls._urn_id_in_dataframe_cols(df)
+        else:
+            corpus.corpus = df
         corpus.frame = corpus.corpus
         corpus.size = len(corpus.corpus)
         return corpus
@@ -105,33 +106,17 @@ class Corpus(DhlabObj):
         self.frame = pd.concat([self.frame, new_corpus]).drop_duplicates().reset_index(drop=True)
         self.corpus = self.frame
         self.size = len(self.frame)
-        self.urn = self.frame.urn
 
     def sample(self, n=5):
         "Create random subkorpus with `n` entries"
         n = min(n, self.size)
         sample = self.corpus.sample(n).copy()
-        return dh.Corpus.from_df(sample)
-
-    def concordances(self, words, window=20, limit=500):
-        return dh.Concordance(self.frame, words, window, limit)
+        return self.from_df(sample)
 
     def conc(self, words, window=20, limit=500):
-        return dh.Concordance(self.frame, words, window, limit)
+        "Get concodances of `words` in corpus"
+        return dh.Concordance(corpus=self.frame, query=words, window=window, limit=limit)
 
-    def collocations(
-        self,
-        words=None,
-        before=10,
-        after=10,
-        reference=None,
-        samplesize=20000,
-        alpha=False,
-        ignore_caps=False):
-        return dh.Collocations(self.frame, words,
-                            before, after,
-                            reference, samplesize,
-                            alpha, ignore_caps)
     def coll(
         self,
         words=None,
@@ -141,15 +126,20 @@ class Corpus(DhlabObj):
         samplesize=20000,
         alpha=False,
         ignore_caps=False):
-        return dh.Collocations(self.frame, words,
-                            before, after,
-                            reference, samplesize,
-                            alpha, ignore_caps)
+        "Get collocations of `words` in corpus"
+        return dh.Collocations(
+            corpus=self.frame,
+            words=words,
+            before=before,
+            after=after,
+            reference=reference,
+            samplesize=samplesize,
+            alpha=alpha,
+            ignore_caps=ignore_caps
+            )
 
     def count(self, words):
         return dh.Counts(self.frame, words)
-
-
 
     @staticmethod
     def _is_Corpus(corpus) -> bool:

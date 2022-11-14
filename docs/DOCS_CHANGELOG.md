@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.10.0 (2022-10-26)
+
+### Feat
+
+- added image search in bokhylla books to api
+
 ## v2.9.0 (2022-09-05)
 
 ### Feat
@@ -17,6 +23,8 @@
 - **corpus**: ignore index in corpus.add (#84)
 
 ## v2.7.0 (2022-08-24)
+
+- automatic bump with features from 2.6.x versions
 
 ## v2.6.0 (2022-08-08)
 
