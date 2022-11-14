@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.11.1 (2022-11-14)
+
+### Feat
+
+- **totals**: Add totals() to top level
+- **DhlabObj**: add DhlabObj
+- **Corpus**: allow empty Corpus and construct df
+
+### Fix
+
+- **conc_coll**: fix __repr__ functions
+
+### Refactor
+
+- **corpus**: change add()
+
 ## v2.10.0 (2022-10-26)
 
 ### Feat
