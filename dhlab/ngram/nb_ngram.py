@@ -10,6 +10,7 @@ def nb_ngram(terms: str,
              mode: str = 'relative',
             lang: str = 'nob'):
     """Extract N-gram frequencies from given ``terms`` and ``years``.
+    `lang` param is not supported for corpus=`avis` and will be set to None if `avis` is passed.
 
     :param terms: comma
     :param corpus:
@@ -21,6 +22,10 @@ def nb_ngram(terms: str,
 
     :meta private:
     """
+    # Set default lang for 'bok'-corpus
+    if corpus == "avis":
+        lang = None
+    
     df = ngram_conv(get_ngram(terms, corpus=corpus, lang = lang), smooth=smooth, years=years, mode=mode)
     df.index = df.index.astype(int)
     return df.sort_index()
