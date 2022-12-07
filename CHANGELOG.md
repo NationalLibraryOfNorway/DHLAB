@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.13.0 (2022-12-07)
+
+### Feat
+
+- **api**: added start page and to page for NER and POS (#122)
+
 ## v2.12.0 (2022-12-07)
 
 ### Feat
