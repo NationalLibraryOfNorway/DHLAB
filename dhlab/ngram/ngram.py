@@ -2,9 +2,8 @@ from datetime import datetime
 
 from dhlab.api.dhlab_api import ngram_book, ngram_news
 from dhlab.ngram.nb_ngram import nb_ngram
-
-
-class Ngram:
+from dhlab.text.dhlab_object import DhlabObj
+class Ngram(DhlabObj):
     """Top level class for ngrams"""
 
     def __init__(self,
@@ -70,6 +69,8 @@ class Ngram:
         ngrm.index = ngrm.index.astype(str)
         self.ngram = ngrm
 
+        super().__init__(self.ngram)
+
     def plot(self, smooth = 4, **kwargs):
         """:param smooth: smoothing the curve"""
         grf = self.ngram.rolling(window=smooth, win_type='triang').mean()
@@ -85,6 +86,8 @@ class Ngram:
         compare = (transposed_ngram / sum_other_ngram).transpose()
         return compare
 
+    def _ipython_display_(self):
+        self.plot()
 
 class NgramBook(Ngram):
     """Extract ngrams using metadata with functions to be inherited."""
@@ -102,7 +105,8 @@ class NgramBook(Ngram):
             subject=None
     ):
 
-        super().__init__(words, from_year = from_year, to_year = to_year, lang = lang, doctype = 'bok')
+        super().__init__(words, from_year = from_year,
+                         to_year = to_year, lang = lang, doctype = 'bok')
         self.date = datetime.now()
         if to_year is None:
             to_year = self.date.year

@@ -79,6 +79,9 @@ def ngram_conv(ngrams, smooth=1, years=(1810,2013), mode='relative'):
         # check if x is a non empty ngram - empty ngrams are coded as empty lists
         # if x is non emtpy it accepts keys - look at alternative isinstance(x, dict)?
         if x != []:
-            ngc[x['key']] = {z['x']:z[arg] for z in x['values'] if int(z['x']) <= int(years[1]) and int(z['x']) >= int(years[0])}
-    
+            ngc[x['key']] \
+            = \
+            {z['x']:z[arg] for z in x['values'] \
+                if int(z['x']) <= int(years[1]) and int(z['x']) >= int(years[0])}
+
     return pd.DataFrame(ngc).rolling(window=smooth, win_type='triang').mean()
