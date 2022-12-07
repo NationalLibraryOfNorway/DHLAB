@@ -24,7 +24,7 @@ def images(text = None, part=True):
     js = r.json()
     return js
 
-def ner_from_urn(urn: str = None, model: str = None) -> DataFrame:
+def ner_from_urn(urn: str = None, model: str = None, start_page = 0, to_page = 0) -> DataFrame:
     """Get NER annotations for a text (``urn``) using a spacy ``model``.
 
     :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
@@ -39,7 +39,7 @@ def ner_from_urn(urn: str = None, model: str = None) -> DataFrame:
     return df
 
 
-def pos_from_urn(urn: str = None, model: str = None) -> DataFrame:
+def pos_from_urn(urn: str = None, model: str = None, start_page = 0, to_page = 0) -> DataFrame:
     """Get part of speech tags and dependency parse annotations for a text (``urn``) with a SpaCy ``model``.
 
     :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``

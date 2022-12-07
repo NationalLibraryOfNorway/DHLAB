@@ -9,13 +9,13 @@ class Models:
         
 class NER:
     """Provide NER """
-    def __init__(self, urn=None, model=None):
+    def __init__(self, urn=None, model=None, start_page=0, to_page=0):
         self.model = model
-        self.ner = ner_from_urn(urn=urn, model=self.model)
+        self.ner = ner_from_urn(urn=urn, model=self.model, start_page=start_page, to_page=to_page)
         
 class POS:
     """Provide POS and a parse"""
     def __init__(self, urn=None, model=None):
         self.model = model
-        self.pos = pos_from_urn(urn=urn, model=self.model)
+        self.pos = pos_from_urn(urn=urn, model=self.model, start_page=start_page, to_page=to_page)
 
