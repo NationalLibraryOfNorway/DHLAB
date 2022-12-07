@@ -6,9 +6,34 @@ from dhlab.text.dhlab_object import DhlabObj
 class Ngram(DhlabObj):
     """Top level class for ngrams"""
 
-    def __init__(self, words=None, from_year=None,
-                 to_year=None, doctype=None,
-                 mode='relative', lang='nob') -> None:
+    def __init__(self,
+                 words=None,
+                 from_year=None,
+                 to_year=None,
+                 doctype='bok',
+                 mode='relative',
+                 lang="nob"
+                 ):
+        """Ngram builder class.
+
+        Build Ngrams from the National Librarys collections.
+        Use with book corpus or newspaper corpus.
+        Lang parameter is only supported for book (`bok`) corpus. 
+        Defaults to `None` if doctype is `avis`.
+
+        :param words: words to examine, defaults to None
+        :type words: str or list of str, optional
+        :param from_year: lower period cutoff, defaults to None
+        :type from_year: int, optional
+        :param to_year: upper period cutoff, defaults to None
+        :type to_year: int, optional
+        :param doctype: `bok` or `avis` , defaults to 'bok'
+        :type doctype: str, optional
+        :param mode: Frequency measure, defaults to 'relative'
+        :type mode: str, optional
+        :param lang: `nob`, `nno`. Only use with docytype='bok', defaults to 'nob'
+        :type lang: str, optional
+        """
 
         self.date = datetime.now()
         if to_year is None:
@@ -20,6 +45,7 @@ class Ngram(DhlabObj):
         self.to_year = to_year
         self.words = words
         self.lang = lang
+
         if not doctype is None:
             if 'bok' in doctype:
                 doctype = 'bok'
@@ -29,11 +55,16 @@ class Ngram(DhlabObj):
                 doctype = 'bok'
         else:
             doctype = 'bok'
+
+        # Set default lang for 'bok'-corpus
+        if doctype == "avis":
+            lang = None
+
+
         ngrm = nb_ngram(terms=', '.join(words),
                         corpus=doctype,
                         years=(from_year, to_year),
-                        smooth = 1,
-                        lang = lang,
+                        smooth = 1, lang = lang,
                         mode=mode)
         ngrm.index = ngrm.index.astype(str)
         self.ngram = ngrm

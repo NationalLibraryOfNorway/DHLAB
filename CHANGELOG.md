@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.11.2 (2022-11-24)
+
+### Fix
+
+- **ngram**: lang param is not supported for avis
+- **requirements**: add scipy to reqirements
+
 ## v2.11.1 (2022-11-14)
 
 ### Feat
