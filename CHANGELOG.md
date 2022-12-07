@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.12.0 (2022-12-07)
+
+### Feat
+
+- **ngram**: make ngram subclass of dhlabobj (#121)
+
 ## v2.11.2 (2022-11-24)
 
 ### Fix
