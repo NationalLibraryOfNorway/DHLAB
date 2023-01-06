@@ -1,32 +1,36 @@
 name: Upload Python Package
 
 on:
-  release:
-    types:
-      - published
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      ref_tag:
+        required: true
+        type: string
+
+permissions:
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ github.ref_name }}"
       - name: Checkout triggering tag
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ inputs.ref_tag }}
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.x"
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip setuptools build --user
+          python -m pip install --upgrade pip setuptools build
       - name: Build package
         run: python -m build --sdist --wheel --outdir dist/ .
       - name: Publish package to PyPi
-        if: startsWith(github.ref, 'refs/tags')
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@v1.5.1
         with:
+          print_hash: true
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}

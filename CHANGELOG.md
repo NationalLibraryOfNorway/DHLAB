@@ -1,6 +1,16 @@
 # Changelog
 
+## v2.13.2 (2023-01-06)
+
+### Fix
+
+- **dhlab_api**: construct df from response.json (#124)
+
 ## v2.13.1 (2022-12-08)
+
+### Fix
+
+- Pos0 (#123)
 
 ## v2.13.0 (2022-12-07)
 
@@ -13,6 +23,7 @@
 ### Feat
 
 - **ngram**: make ngram subclass of dhlabobj (#121)
+
 
 ## v2.11.2 (2022-11-24)
 
