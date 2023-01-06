@@ -40,7 +40,7 @@ jobs:
           git_email: github-actions[bot]@users.noreply.github.com
           changelog_increment_filename: body.md
           merge: true
-          branch: CI
+          branch: main
           no_raise: 21
       - name: Print version and changelog update
         run: |
