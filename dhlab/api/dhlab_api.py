@@ -605,7 +605,7 @@ def urn_collocation(
         "samplesize": samplesize,
     }
     r = requests.post(BASE_URL + "/urncolldist_urn", json=params)
-    return pd.read_json(r.text)
+    return pd.read_json(r.json())
 
 
 def totals(top_words: int = 50000) -> DataFrame:
@@ -694,7 +694,7 @@ def collocation(
         "after": after,
     }
     r = requests.post(BASE_URL + "/urncolldist", json=params)
-    return pd.read_json(r.text)
+    return pd.read_json(r.json())
 
 
 # Norwegian word bank
