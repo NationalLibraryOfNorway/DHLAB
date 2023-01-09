@@ -3,16 +3,37 @@ import pandas as pd
 from dhlab.api.dhlab_api import get_places, geo_lookup, ner_from_urn
 from dhlab.text.parse import NER, Models
 
-spacy = Models()
 
 class GeoData:
     """Fetch place data from a text (book, newspaper or ...) identified by URN
-    with an appropriate and available spacy model. The models are gotten at by instantiaiting class Models()"""
+    with an appropriate and available spacy model.
+
+    The models are retrieved by instantiating :py:class:`~text.parse.Models`.
+    """
     
-    def __init__(self, urn=None, model=spacy.models[0]):
-        df = NER(urn = urn, model = model).ner
-        self.place_names = df[df['ner'].str.contains('LOC')]
+    def __init__(self, urn=None, model=None):
+        self.place_names = self._fetch_place_names(urn, model)
         
+
+    def _fetch_place_names(self, urn, model):
+        try:
+            assert urn is not None
+            spacy = Models()
+            model = model if model is not None else spacy.models[0]
+            df = NER(urn = urn, model = model).ner
+            place_names = df[df['ner'].str.contains('LOC')]
+        except AssertionError:
+            print("Please provide a document URN to fill the ``place_names`` dataframe attribute.")
+            place_names = pd.DataFrame()
+        except IndexError as error:
+            print("GeoData couldn't load any SpaCy NER models.")
+            place_names = pd.DataFrame()
+        except Exception as error:
+            print(error.__doc__, error)
+            place_names = pd.DataFrame()
+        return place_names
+
+
     def add_geo_locations(self, feature_class = None, feature_code = None):
         """Get location data for the names in object, attribute self.place_names"""
         chunksize = 900
