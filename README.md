@@ -5,7 +5,7 @@
 the National Library of Norway (NLN), *Nasjonalbiblioteket* (*NB*) in Norwegian. 
  It is developed and maintained by [The Digital Humanities lab group](https://www.nb.no/dh-lab/).
 
-The python package includes wrapper functions for the [API](https://api.nb.no/) (Application 
+The python package includes wrapper functions for the [DHLAB API](https://api.nb.no/dhlab) (Application 
 Programming Interface) that can be used to query the texts in [NB Digital](https://www.nb.no/search), the NLN's digital collection of books and newspapers.
 
 The API allows for textual qualitative and quantitative analyses of the digital texts by generating 
