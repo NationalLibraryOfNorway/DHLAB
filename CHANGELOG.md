@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.13.3 (2023-01-09)
+
+### Fix
+
+- handle API errors
+
 ## v2.13.2 (2023-01-06)
 
 ### Fix
