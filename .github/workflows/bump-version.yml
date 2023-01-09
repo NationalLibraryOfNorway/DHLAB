@@ -24,8 +24,8 @@ jobs:
     steps:
       - name: Print triggering commit message
         run: |
-          echo ${{ github.event.head_commit.message }}
-          echo ${{ github.ref }}
+          echo "${{ github.event.head_commit.message }}"
+          echo "${{ github.ref }}"
       - name: Check out repository
         uses: actions/checkout@v3
         with:
