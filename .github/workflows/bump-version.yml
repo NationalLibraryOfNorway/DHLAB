@@ -17,7 +17,6 @@ jobs:
     name: "Bump package version and update changelog using commitizen"
     outputs:
       tag_name: "v${{ steps.cz.outputs.version }}"
-      changes: ${{ steps.release_notes.outputs.changes }}
       url: ${{ steps.rel.outputs.url }}
       id: ${{ steps.rel.outputs.id }}
       result: ${{ steps.rel.result }}
@@ -50,14 +49,6 @@ jobs:
       - name: Generate release assets
         run: |
           echo ${{ github.sha }} > release_sha.txt
-      - name: Save release notes to environment variable
-        id: body
-        run: |
-          echo "changes=$(cat body.md)" >> $GITHUB_OUTPUT
-      - name: Test output
-        run: echo ${{ steps.body.outputs.changes }}
-      - name: Check environment
-        run: env
       - name: Create github release
         id: rel
         uses: softprops/action-gh-release@v1
