@@ -12,7 +12,8 @@ class Ngram(DhlabObj):
                  to_year=None,
                  doctype='bok',
                  mode='relative',
-                 lang="nob"
+                 lang="nob",
+                 **kwargs
                  ):
         """Ngram builder class.
 
@@ -33,6 +34,7 @@ class Ngram(DhlabObj):
         :type mode: str, optional
         :param lang: `nob`, `nno`. Only use with docytype='bok', defaults to 'nob'
         :type lang: str, optional
+        :param \**kwargs: Keyword arguments for  Ngram._ipython_display_() Ngram.plot()
         """
 
         self.date = datetime.now()
@@ -69,6 +71,8 @@ class Ngram(DhlabObj):
         ngrm.index = ngrm.index.astype(str)
         self.ngram = ngrm
 
+        self.kwargs = kwargs
+        
         super().__init__(self.ngram)
 
     def plot(self, smooth = 4, **kwargs):
@@ -87,7 +91,7 @@ class Ngram(DhlabObj):
         return compare
 
     def _ipython_display_(self):
-        self.plot()
+        self.plot(**self.kwargs)
 
 class NgramBook(Ngram):
     """Extract ngrams using metadata with functions to be inherited."""
@@ -102,11 +106,35 @@ class NgramBook(Ngram):
             from_year=None,
             to_year=None,
             ddk=None,
-            subject=None
-    ):
+            subject=None,
+            **kwargs
+        ):
+        """Create Dhlab Ngram from metadata
+
+        :param words: words to examine, defaults to None
+        :type words: str or list of str optional
+        :param title: _description_, defaults to None
+        :type title: _type_, optional
+        :param publisher: _description_, defaults to None
+        :type publisher: _type_, optional
+        :param city: _description_, defaults to None
+        :type city: _type_, optional
+        :param lang: _description_, defaults to 'nob'
+        :type lang: str, optional
+        :param from_year: _description_, defaults to None
+        :type from_year: _type_, optional
+        :param to_year: _description_, defaults to None
+        :type to_year: _type_, optional
+        :param ddk: _description_, defaults to None
+        :type ddk: _type_, optional
+        :param subject: _description_, defaults to None
+        :type subject: _type_, optional
+        :return: _description_
+        :rtype: _type_
+        """
 
         super().__init__(words, from_year = from_year,
-                         to_year = to_year, lang = lang, doctype = 'bok')
+                         to_year = to_year, lang = lang, doctype = 'bok', **kwargs)
         self.date = datetime.now()
         if to_year is None:
             to_year = self.date.year
@@ -123,8 +151,9 @@ class NgramBook(Ngram):
         self.subject = subject
         self.ngram = ngram_book(word=words, title=title, publisher=publisher, lang=lang, city=city,
                                 period=(from_year, to_year), ddk=ddk, topic=subject)
+        # update frame attribute
+        self.frame = self.ngram
         # self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
-        return None
 
 
 class NgramNews(Ngram):
@@ -134,9 +163,10 @@ class NgramNews(Ngram):
             title=None,
             city=None,
             from_year=None,
-            to_year=None
+            to_year=None,
+            **kwargs
     ):
-        super().__init__(words, from_year = from_year, to_year = to_year, doctype = 'avis')
+        super().__init__(words, from_year = from_year, to_year = to_year, doctype = 'avis', **kwargs)
         self.date = datetime.now()
         if to_year is None:
             to_year = self.date.year
@@ -147,4 +177,6 @@ class NgramNews(Ngram):
         self.words = words
         self.title = title
         self.ngram = ngram_news(word=words, title=title, period=(from_year, to_year))
+        # update frame attribute
+        self.frame = self.ngram
         # self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()

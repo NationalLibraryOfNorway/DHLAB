@@ -26,9 +26,7 @@ def make_word_graph(words, corpus='all', cutoff=16, leaves=0):
     """Get galaxy from ngram-database.
     corpus is bok, avis or both
     words is a commaseparated string
-    English and German provided by Google N-gram.
-    Set leaves=1 to get the leaves. Parameter cutoff only works for lang='nob'.
-    Specify English by setting lang='eng' and German by lang='ger'"""
+    Set leaves=1 to get the leaves. Parameter cutoff only works for lang='nob'."""
 
     params = dict()
     params['terms'] = words

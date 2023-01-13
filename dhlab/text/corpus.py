@@ -138,7 +138,7 @@ class Corpus(DhlabObj):
             ignore_caps=ignore_caps
             )
 
-    def count(self, words):
+    def count(self, words=None):
         return dh.Counts(self.frame, words)
 
     @staticmethod
