@@ -6,7 +6,7 @@ on:
     outputs:
       tag_name:
         description: "The git tag with the new version number"
-        value: "v${{ jobs.bump_version.outputs.tag_name }}"
+        value: "${{ jobs.bump_version.outputs.tag_name }}"
 
 jobs:
   bump_version:
@@ -56,7 +56,7 @@ jobs:
           body_path: "body.md"
           files: release_sha.txt
           tag_name: "v${{ steps.cz.outputs.version }}"
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
       - name: In case of failure
         if: ${{ cancelled() || failure() }}
         run: |
