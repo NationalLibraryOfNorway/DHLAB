@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Bump package version and update changelog using commitizen"
     outputs:
-      tag_name: "v${{ steps.cz.outputs.version }}"
+      tag_name: "${{ steps.cz.outputs.version }}"
       url: ${{ steps.rel.outputs.url }}
       id: ${{ steps.rel.outputs.id }}
       result: ${{ steps.rel.result }}
@@ -55,8 +55,8 @@ jobs:
         with:
           body_path: "body.md"
           files: release_sha.txt
-          tag_name: "v${{ steps.cz.outputs.version }}"
-          token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+          tag_name: ${{ steps.cz.outputs.version }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
       - name: In case of failure
         if: ${{ cancelled() || failure() }}
         run: |
