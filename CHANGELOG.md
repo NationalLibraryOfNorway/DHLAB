@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.14.0 (2023-01-13)
+
+### Feat
+
+- **visualize, ngram, wordbank**: (#126)
+
 ## v2.13.3 (2023-01-09)
 
 ### Fix
