@@ -29,7 +29,7 @@ commands =
 [tool.commitizen]
 name = "cz_conventional_commits"
 version = "2.14.0"
-tag_format = "v$major.$minor.$patch$prerelease"
+tag_format = "v$version"
 bump_message = "bump: version $current_version → $new_version [skip-ci]"
 update_changelog_on_bump = true
 annotated_tag = true
