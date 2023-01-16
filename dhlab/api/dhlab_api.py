@@ -9,6 +9,21 @@ from dhlab.constants import BASE_URL
 
 pd.options.display.max_rows = 100
 
+# wildcard search for words
+
+
+def wildcard_search(word, factor=2, freq_limit=10, limit = 50):
+    res = requests.get(f"{BASE_URL}/wildcard_word_search", 
+                        params={
+                            'word':word, 
+                            'factor':factor, 
+                            'freq_lim':freq_limit, 
+                            'limit':limit
+                        }
+                       )
+    #columns = ["key", "name", "alternatename", "latitude", "longitude", "feature class", "feature code"]
+    return pd.DataFrame.from_dict(res.json(), orient = 'index', columns=['freq'])
+
 
 # fetch metadata
 
