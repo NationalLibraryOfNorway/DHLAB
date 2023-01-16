@@ -1,4 +1,4 @@
-from pandas import DataFrame
+from pandas import DataFrame, Series
 import dhlab as dh
 
 def urnlist(corpus):
@@ -9,6 +9,8 @@ def urnlist(corpus):
         _urnlist = list(corpus.urn)
     elif isinstance(corpus, list):
         _urnlist = corpus
+    elif isinstance(corpus, Series):
+        _urnlist = corpus.to_list()
     else:
         _urnlist = []
     return _urnlist

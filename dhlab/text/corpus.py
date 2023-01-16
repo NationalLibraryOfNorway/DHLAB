@@ -57,6 +57,14 @@ class Corpus(DhlabObj):
 
         super().__init__(self.corpus)
         self.size = len(self.corpus)
+        
+    @classmethod
+    def from_identifiers(cls, identifiers):
+        """Construct Corpus from list of identifiers"""
+        corpus = Corpus()
+        corpus.extend_from_identifiers(identifiers=identifiers)
+        return corpus
+        
 
     @classmethod
     def from_df(cls, df, check_for_urn=False):
@@ -81,7 +89,6 @@ class Corpus(DhlabObj):
     @staticmethod
     def _urn_id_in_dataframe_cols(dataframe):
         """Checks if dataframe contains URN column"""
-
         if "urn" in dataframe.columns:
             if dataframe.urn.str.contains("^URN:NBN:no-nb_.+").all():
                 return dataframe
@@ -151,12 +158,16 @@ class Corpus(DhlabObj):
 class EmptyCorpus(Corpus):
     """DEPRECATED: call Corpus without parameters to represent an empty corpus"""
     def __init__(self):
+        print("DEPRECATED: use Corpus without parameters to create empty coprus")
         self.corpus = pd.DataFrame()
         self.size = 0
 
 class Corpus_from_identifiers(Corpus):
+    """DEPRECATED: build Corpus from list of identifiers. Use Corpus.extend_from_identifiers() instead"""
     def __init__(self, identifiers=None):
+        print("DEPRECATED: use Corpus.from_identifiers()")
         self.corpus = get_metadata(urnlist(identifiers))
         self.size = len(self.corpus)
+        self.frame = self.corpus
 
 
