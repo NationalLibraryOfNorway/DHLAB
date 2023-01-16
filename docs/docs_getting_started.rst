@@ -1,21 +1,20 @@
-.. _getting_started:
+.. _get-started:
 
 ===============
-Getting started
+Get started
 ===============
 
-.. _installation:
+On our `official homepage <https://www.nb.no/dh-lab/>`_ (in Norwegian), you can view and run `example jupyter notebooks <https://www.nb.no/dh-lab/digital-tekstanalyse/>`_
+without installing anything.
 
-.. include:: ../README.md
-   :parser: myst_parser.sphinx_
-   :start-after: <!-- start installation -->
-   :end-before: <!-- end installation -->
+Below you'll find installation instructions, and examples of using the `dhlab <https://pypi.org/project/dhlab/>`_ python package.
 
 
+.. toctree::
+   :name: get-started-toc
+   :maxdepth: 2
 
-Ways to use dhlab
-~~~~~~~~~~~~~~~~~~~~~~~~~
-* With the :doc:`Jupyter Notebooks <docs_notebooks>` visual interface
-* Directly from a python console with the :doc:`API wrappers <usage_api>`
-
+   installation.rst
+   docs_notebooks.rst
+   example_usage.rst
 

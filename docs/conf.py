@@ -18,6 +18,7 @@ sys.path.insert(0, pathlib.Path(__file__).parent.resolve().as_posix())
 sys.path.insert(0, pathlib.Path(__file__).parent.joinpath("../dhlab").resolve().as_posix())
 print(sys.path)
 
+<<<<<<< HEAD
 # -- download notebooks --------------------------
 
 from dhlab.utils.files import download_from_github, working_directory
@@ -48,6 +49,8 @@ with working_directory("./notebooks"):
             overwrite=False,
             silent=True)
 
+=======
+>>>>>>> cff7c88 (docs: remove notebook copies from the repo)
 
 # -- Filter version sections in changelog --------------------------------------------
 
