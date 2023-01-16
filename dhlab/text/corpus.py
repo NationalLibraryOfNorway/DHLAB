@@ -161,6 +161,7 @@ class EmptyCorpus(Corpus):
         print("DEPRECATED: use Corpus without parameters to create empty coprus")
         self.corpus = pd.DataFrame()
         self.size = 0
+        self.frame = self.corpus
 
 class Corpus_from_identifiers(Corpus):
     """DEPRECATED: build Corpus from list of identifiers. Use Corpus.extend_from_identifiers() instead"""
