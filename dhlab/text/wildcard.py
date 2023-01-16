@@ -12,5 +12,5 @@ class WildcardWordSearch:
         :freq_lim: the frequency of returned words lower limit
         :limit int: number of words returned
         """
-        self.words = wildcard_search(word, factor=2, freq_limit=10, limit = 50)
+        self.words = wildcard_search(word, factor=factor, freq_limit=freq_limit, limit = limit)
         
