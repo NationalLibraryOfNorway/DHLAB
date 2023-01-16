@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.17.0 (2023-01-16)
+
+### Feat
+
+- added wildcard search for words
+
 ## v2.16.0 (2023-01-16)
 
 ### Feat
