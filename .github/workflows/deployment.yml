@@ -45,4 +45,4 @@ jobs:
     uses: ./.github/workflows/upload-package.yml
     secrets: inherit
     with:
-      ref_tag: ${{ needs.bump_version.outputs.tag_name }}
+      ref_tag: "v${{ needs.bump_version.outputs.tag_name }}"
