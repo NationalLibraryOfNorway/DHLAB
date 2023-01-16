@@ -17,6 +17,7 @@ from dhlab.text.chunking import Chunks
 from dhlab.text.conc_coll import Collocations, Concordance, Counts
 from dhlab.text.geo_data import GeoData, GeoNames
 from dhlab.text.parse import NER, POS, Models
+from dhlab.text.wildcard import WildcardWordSearch
 
 # ngram 
 from dhlab.ngram.ngram import Ngram, NgramBook, NgramNews
