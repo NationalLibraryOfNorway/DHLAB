@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.17.1 (2023-01-16)
+
+### Fix
+
+- parameter passing wildcard
+
 ## v2.17.0 (2023-01-16)
 
 ### Feat
