@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.15.0 (2023-01-16)
+
+### Feat
+
+- **corpus**: (#128)
+
+### Fix
+
+- **bump-version**: disable triggering new workflow [skip-ci] (#127)
+
 ## v2.14.0 (2023-01-13)
 
 ### Feat
