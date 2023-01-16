@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.16.0 (2023-01-16)
+
+### Feat
+
+- **heatmap**: add heatmap wrapper to viz package
+
 ## v2.15.1 (2023-01-16)
 
 ### Fix
