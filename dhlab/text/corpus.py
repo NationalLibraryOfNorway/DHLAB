@@ -1,10 +1,10 @@
 from pandas import DataFrame
 import pandas as pd
 from dhlab.text.dhlab_object import DhlabObj
-from dhlab.api.dhlab_api import document_corpus, get_metadata, \
-    evaluate_documents
+from dhlab.api.dhlab_api import document_corpus, get_metadata, evaluate_documents
 import dhlab as dh
 from dhlab.text.utils import urnlist
+
 # from dhlab.text.conc_coll import Concordance, Collocations, Counts
 
 
@@ -15,22 +15,23 @@ class Corpus(DhlabObj):
     in National Library's collections and metadata about them.
     Use with `.coll`, `.conc` or `.freq` to analyse using dhlab tools.
     """
+
     def __init__(
-            self,
-            doctype=None,
-            author=None,
-            freetext=None,
-            fulltext=None,
-            from_year=None,
-            to_year=None,
-            from_timestamp=None,
-            to_timestamp=None,
-            title=None,
-            ddk=None,
-            subject=None,
-            lang=None,
-            limit=10,
-            ):
+        self,
+        doctype=None,
+        author=None,
+        freetext=None,
+        fulltext=None,
+        from_year=None,
+        to_year=None,
+        from_timestamp=None,
+        to_timestamp=None,
+        title=None,
+        ddk=None,
+        subject=None,
+        lang=None,
+        limit=10,
+    ):
         """Create Corpus
 
         :param str doctype: ``"digibok"``, ``"digavis"``, \
@@ -55,17 +56,19 @@ class Corpus(DhlabObj):
         :param int limit: number of items to sample.
         """
 
-        if (doctype
-                or author
-                or freetext
-                or fulltext
-                or from_year
-                or to_year
-                or from_timestamp
-                or to_timestamp
-                or title
-                or ddk
-                or lang):
+        if (
+            doctype
+            or author
+            or freetext
+            or fulltext
+            or from_year
+            or to_year
+            or from_timestamp
+            or to_timestamp
+            or title
+            or ddk
+            or lang
+        ):
 
             self.corpus = document_corpus(
                 doctype,
@@ -80,7 +83,7 @@ class Corpus(DhlabObj):
                 ddk,
                 subject,
                 lang,
-                limit
+                limit,
             )
 
         else:
@@ -133,19 +136,18 @@ class Corpus(DhlabObj):
         df.index = df.index.astype(int)
         cols = df.columns
         df = pd.concat(
-            [df, self.corpus[['dhlabid', 'urn']].set_index('dhlabid')], axis=1
-            )
-        df = df.set_index('urn')
+            [df, self.corpus[["dhlabid", "urn"]].set_index("dhlabid")], axis=1
+        )
+        df = df.set_index("urn")
         return df[cols].fillna(0)
 
     def add(self, new_corpus):
         """Utility for appending Corpus or DataFrame to self"""
         if self._is_Corpus(new_corpus):
             new_corpus = new_corpus.frame
-        self.frame = (pd.concat([self.frame, new_corpus])
-                      .drop_duplicates()
-                      .reset_index(drop=True)
-                      )
+        self.frame = (
+            pd.concat([self.frame, new_corpus]).drop_duplicates().reset_index(drop=True)
+        )
         self.corpus = self.frame
         self.size = len(self.frame)
 
@@ -158,20 +160,19 @@ class Corpus(DhlabObj):
     def conc(self, words, window=20, limit=500):
         "Get concodances of `words` in corpus"
         return dh.Concordance(
-            corpus=self.frame,
-            query=words,
-            window=window,
-            limit=limit)
+            corpus=self.frame, query=words, window=window, limit=limit
+        )
 
     def coll(
-            self,
-            words=None,
-            before=10,
-            after=10,
-            reference=None,
-            samplesize=20000,
-            alpha=False,
-            ignore_caps=False):
+        self,
+        words=None,
+        before=10,
+        after=10,
+        reference=None,
+        samplesize=20000,
+        alpha=False,
+        ignore_caps=False,
+    ):
         "Get collocations of `words` in corpus"
         return dh.Collocations(
             corpus=self.frame,
@@ -181,8 +182,8 @@ class Corpus(DhlabObj):
             reference=reference,
             samplesize=samplesize,
             alpha=alpha,
-            ignore_caps=ignore_caps
-            )
+            ignore_caps=ignore_caps,
+        )
 
     def freq(self, words=None):
         return dh.Counts(self.frame, words)
