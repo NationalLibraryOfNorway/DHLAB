@@ -1,8 +1,9 @@
 import pandas as pd
 
 from dhlab.api.dhlab_api import wildcard_search
+from dhlab.text.dhlab_object import DhlabObj
 
-class WildcardWordSearch:
+class WildcardWordSearch(DhlabObj):
     """
     Find a class of words matching a wildcard string
     """
@@ -13,4 +14,4 @@ class WildcardWordSearch:
         :limit int: number of words returned
         """
         self.words = wildcard_search(word, factor=factor, freq_limit=freq_limit, limit = limit)
-        
+        super().__init__(self.words) 
