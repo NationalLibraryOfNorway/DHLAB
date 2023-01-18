@@ -20,27 +20,24 @@ dhlab documentation
    :end-before: <!-- end dhlab-intro -->
 
 
-..
-    # TODO: Add a demo view?
+Indexed references
+-------------------
 
+* :ref:`Alphabetical Index <genindex>`
+* :ref:`Module Index <modindex>`
+* :ref:`Search <search>`
 
 *******
 
-
-Contents
---------------
-
-
 ..
-    # The following toctree blocks are shown in the left side panel
+    # This toctree is only shown in the left side panel
 
 .. toctree::
    :name: contents
    :hidden:
 
    docs_getting_started
-   docs_functionality
-   references/api_reference
+   package_summary
    whats_new
 
 .. toctree::
@@ -48,17 +45,8 @@ Contents
    :name: extlinks-toc
    :caption: External links
 
-   Pypi package <https://pypi.org/project/dhlab/>
-   Source code, GitHub <https://github.com/NationalLibraryOfNorway/DHLAB>
-   Source Jupyter Notebooks, GitHub <https://github.com/NationalLibraryOfNorway/digital_tekstanalyse>
-   Hosted Jupyter notebooks <https://mybinder.org/v2/gh/DH-LAB-NB/DHLAB/master>
-   DH-lab Homepage <https://www.nb.no/dh-lab/>
+   pypi package <https://pypi.org/project/dhlab/>
+   DHLAB on GitHub <https://github.com/NationalLibraryOfNorway/DHLAB>
+   DH-lab Homepage (nb-no) <https://www.nb.no/dh-lab/>
    DH-lab Web applications <https://www.nb.no/dh-lab/apper/>
-   Search the National Library online <https://www.nb.no/search>
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
+   The online National Library <https://www.nb.no/search>

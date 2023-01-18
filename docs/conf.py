@@ -18,39 +18,6 @@ sys.path.insert(0, pathlib.Path(__file__).parent.resolve().as_posix())
 sys.path.insert(0, pathlib.Path(__file__).parent.joinpath("../dhlab").resolve().as_posix())
 print(sys.path)
 
-<<<<<<< HEAD
-# -- download notebooks --------------------------
-
-from dhlab.utils.files import download_from_github, working_directory
-
-filenames = [
-    'Oppstart.ipynb',
-    '1_Bygg_korpus.ipynb',
-    '2_Konkordans.ipynb',
-    '3_Kollokasjoner.ipynb',
-    '4_N-gram_og_galakser.ipynb',
-    '5_Navnegrafer.ipynb',
-    '6_Søk_med_trunkering.ipynb',
-    '7_Setningsuttrekk.ipynb',
-    '8_Sammenlign_metadata.ipynb',
-    '9_Ordparadigmer.ipynb',
-    '10_Søk_i_aviser.ipynb',
-    '10_Frekvenslister.ipynb',
-    'Anbefalt_lesning.ipynb',
-]
-
-with working_directory("./notebooks"):
-    for filename in filenames:
-        download_from_github(
-            filename=filename,
-            user="NationalLibraryOfNorway",
-            repository='digital_tekstanalyse',
-            branch='develop',
-            overwrite=False,
-            silent=True)
-
-=======
->>>>>>> cff7c88 (docs: remove notebook copies from the repo)
 
 # -- Filter version sections in changelog --------------------------------------------
 
@@ -225,7 +192,6 @@ html_theme = 'furo'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-<<<<<<< HEAD
     "light_css_variables": {
         "color-brand-primary": "#33C1CC",
         "color-brand-content": "teal",
@@ -237,7 +203,6 @@ html_theme_options = {
         # "color-admonition-background": "cyan",
     },
     "sidebar_hide_name": False,
-=======
     # "light_css_variables": {
     #     "color-brand-primary": "#cf2e2e",
     #     "color-brand-content": "#0693e3",
@@ -249,7 +214,6 @@ html_theme_options = {
     #     "color-admonition-background": "#7b715e",
     # },
     "sidebar_hide_name": True,
->>>>>>> 94b6243 (docs: restructure documentation pages)
     "navigation_with_keys": True,
 
 }
@@ -257,6 +221,9 @@ html_theme_options = {
 html_css_files = [
     'dhlab/css_style_sheets/grade3.css',
     'dhlab/css_style_sheets/monokai.css',
+    'dhlab/css_style_sheets/nb_notebook_2.css',
+    'dhlab/css_style_sheets/nb_notebook_blue.css',
+    'dhlab/css_style_sheets/nb_notebook.css'
 ]
 
 # Add any paths that contain custom themes here, relative to this directory.
