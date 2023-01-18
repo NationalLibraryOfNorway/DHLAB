@@ -225,6 +225,7 @@ html_theme = 'furo'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
+<<<<<<< HEAD
     "light_css_variables": {
         "color-brand-primary": "#33C1CC",
         "color-brand-content": "teal",
@@ -236,6 +237,19 @@ html_theme_options = {
         # "color-admonition-background": "cyan",
     },
     "sidebar_hide_name": False,
+=======
+    # "light_css_variables": {
+    #     "color-brand-primary": "#cf2e2e",
+    #     "color-brand-content": "#0693e3",
+    #     "color-admonition-background": "#edeae5",
+    # },
+    # "dark_css_variables": {
+    #     "color-brand-primary": "#cf2e2e",
+    #     "color-brand-content": "#0693e3",
+    #     "color-admonition-background": "#7b715e",
+    # },
+    "sidebar_hide_name": True,
+>>>>>>> 94b6243 (docs: restructure documentation pages)
     "navigation_with_keys": True,
 
 }

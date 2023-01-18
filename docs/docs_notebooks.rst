@@ -20,9 +20,8 @@ Run notebooks locally
       cd digital_tekstanalyse
       jupyter-lab
 
-
 Once ``jupyter lab`` is up and running, just open any ``.ipynb`` notebook file in the left-hand
- menu and follow the instructions to execute the code in the cells.
+menu and follow the instructions to execute the code in the cells.
 
 
 ..

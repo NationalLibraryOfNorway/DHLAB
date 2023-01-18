@@ -35,18 +35,13 @@ Contents
     # The following toctree blocks are shown in the left side panel
 
 .. toctree::
-   :maxdepth: 2
+   :name: contents
+   :hidden:
 
-   docs_getting_started.rst
-   docs_notebooks.rst
-   usage_api.rst
-   usage_images.rst
-   usage_metadata.rst
-   usage_ngrams.rst
-   usage_text.rst
-   usage_utilities.rst
-   package_summary.rst
-   DOCS_CHANGELOG.md
+   docs_getting_started
+   docs_functionality
+   references/api_reference
+   whats_new
 
 .. toctree::
    :hidden:
