@@ -257,9 +257,6 @@ html_theme_options = {
 html_css_files = [
     'dhlab/css_style_sheets/grade3.css',
     'dhlab/css_style_sheets/monokai.css',
-    'dhlab/css_style_sheets/nb_notebook_2.css',
-    'dhlab/css_style_sheets/nb_notebook_blue.css',
-    'dhlab/css_style_sheets/nb_notebook.css'
 ]
 
 # Add any paths that contain custom themes here, relative to this directory.
