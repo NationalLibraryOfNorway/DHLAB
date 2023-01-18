@@ -5,8 +5,15 @@ from dhlab.api.dhlab_api import document_corpus, get_metadata, evaluate_document
 import dhlab as dh
 from dhlab.text.utils import urnlist
 # from dhlab.text.conc_coll import Concordance, Collocations, Counts
+
+
 class Corpus(DhlabObj):
-    """Class representing as DHLAB Corpus"""
+    """Class representing as DHLAB Corpus
+
+    Primary object for working with dhlab data. Contains references to texts
+    in National Library's collections and metadata about them.
+    Use with `.coll`, `.conc` or `.freq` to analyse using dhlab tools.
+    """
     def __init__(
             self,
             doctype=None,
@@ -35,7 +42,29 @@ class Corpus(DhlabObj):
             or title
             or ddk
             or lang):
+            """Create Corpus
 
+        :param str doctype: ``"digibok"``, ``"digavis"``, \
+            ``"digitidsskrift"`` or ``"digistorting"``
+        :param str author: Name of an author.
+        :param str freetext: any of the parameters, for example:\
+            ``"digibok AND Ibsen"``.
+        :param str fulltext: words within the publication.
+        :param int from_year: Start year for time period of interest.
+        :param int to_year: End year for time period of interest.
+        :param int from_timestamp: Start date for time period of interest.
+            Format: ``YYYYMMDD``, books have ``YYYY0101``
+        :param int to_timestamp: End date for time period of interest.
+            Format: ``YYYYMMDD``, books have ``YYYY0101``
+        :param str title: Name or title of a document.
+        :param str ddk: `Dewey Decimal Classification \
+            <https://no.wikipedia.org/wiki/Deweys_desimalklassifikasjon>`\
+                _ identifier.
+        :param str subject: subject (keywords) of the publication.
+        :param str lang: Language of the publication, as a 3-letter ISO code.
+            Example: ``"nob"`` or ``"nno"``
+        :param int limit: number of items to sample.
+        """
             self.corpus = document_corpus(
                 doctype,
                 author,
@@ -155,20 +184,5 @@ class Corpus(DhlabObj):
             raise TypeError("Input is not Corpus or DataFrame")
         return isinstance(corpus, Corpus)
 
-class EmptyCorpus(Corpus):
-    """DEPRECATED: call Corpus without parameters to represent an empty corpus"""
-    def __init__(self):
-        print("DEPRECATED: use Corpus without parameters to create empty coprus")
-        self.corpus = pd.DataFrame()
-        self.size = 0
-        self.frame = self.corpus
-
-class Corpus_from_identifiers(Corpus):
-    """DEPRECATED: build Corpus from list of identifiers. Use Corpus.extend_from_identifiers() instead"""
-    def __init__(self, identifiers=None):
-        print("DEPRECATED: use Corpus.from_identifiers()")
-        self.corpus = get_metadata(urnlist(identifiers))
-        self.size = len(self.corpus)
-        self.frame = self.corpus
 
 
