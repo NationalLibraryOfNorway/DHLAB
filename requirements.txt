@@ -10,6 +10,5 @@ pandas == 1.4.2
 python_louvain == 0.16
 requests == 2.27.1
 seaborn == 0.11.2
-wordcloud == 1.8.1
 scipy == 1.9.3
 spacy # added 13 juli 2022
