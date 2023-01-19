@@ -1,5 +1,6 @@
+# Bibliography
 <body>
-  <h1>Bibliography</h1>
+
 <div class="csl-bib-body" style="line-height: 1.35; margin-left: 2em; text-indent:-2em;">
   <div class="csl-entry">Kveim Lie, Anne Helene, Lars G. Johnsen, Helge Jordheim, and Espen Ytreberg. “The Rise of Health: A Collocation Analysis of Conceptual Changes in News Discourse, 1950–2010.” <i>Contributions to the History of Concepts</i> 17, no. 2 (December 1, 2022): 18–40. <a href="https://doi.org/10.3167/choc.2022.170202">https://doi.org/10.3167/choc.2022.170202</a>.</div>
   <span class="Z3988" title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.3167%2Fchoc.2022.170202&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=The%20Rise%20of%20Health%3A%20A%20Collocation%20Analysis%20of%20Conceptual%20Changes%20in%20News%20Discourse%2C%201950%E2%80%932010&amp;rft.jtitle=Contributions%20to%20the%20History%20of%20Concepts&amp;rft.volume=17&amp;rft.issue=2&amp;rft.aufirst=Anne%20Helene&amp;rft.aulast=Kveim%20Lie&amp;rft.au=Anne%20Helene%20Kveim%20Lie&amp;rft.au=Lars%20G.%20Johnsen&amp;rft.au=Helge%20Jordheim&amp;rft.au=Espen%20Ytreberg&amp;rft.date=2022-12-01&amp;rft.pages=18-40&amp;rft.spage=18&amp;rft.epage=40&amp;rft.issn=1807-9326%2C%201874-656X"></span>
