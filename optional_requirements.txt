@@ -1,0 +1,8 @@
+# Optional requirements 
+# Mostly related to read
+sphinx_inline_tabs
+myst-parser
+nbsphinx
+sphinx-togglebutton
+pip install sphinx-copybutton
+furo
