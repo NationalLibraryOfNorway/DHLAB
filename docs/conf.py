@@ -89,6 +89,7 @@ extensions = [
     # "'sphinx_gallery.load_style',
     'sphinx_togglebutton',
     'sphinx_copybutton',
+    'sphinx-design',
 ]
 
 # # Extension written directly in the conf.py file
