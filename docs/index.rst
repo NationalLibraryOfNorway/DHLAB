@@ -19,15 +19,14 @@ dhlab documentation
    :start-after: <!-- start dhlab-intro -->
    :end-before: <!-- end dhlab-intro -->
 
+.. include:: docs_functionality.md
+   :parser: myst_parser.sphinx_
 
-Indexed references
 -------------------
 
-* :ref:`Alphabetical Index <genindex>`
-* :ref:`Module Index <modindex>`
-* :ref:`Search <search>`
-
-*******
+- :ref:`Alphabetical Index <genindex>`
+- :ref:`Module Index <modindex>`
+- :ref:`Search <search>`
 
 ..
     # This toctree is only shown in the left side panel
@@ -38,6 +37,7 @@ Indexed references
 
    docs_getting_started
    package_summary
+   glossary
    whats_new
 
 .. toctree::

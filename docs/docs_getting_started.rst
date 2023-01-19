@@ -12,7 +12,7 @@ Below you'll find installation instructions, and examples of using the `dhlab <h
 
 .. toctree::
    :name: get-started-toc
-   :maxdepth: 2
+   :titlesonly:
 
    docs_ways_to_use
    docs_installation
