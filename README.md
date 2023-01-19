@@ -1,3 +1,4 @@
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/NationalLibraryOfNorway/digital_tekstanalyse/HEAD)
 # DHLAB
 <!-- start dhlab-intro -->
 
@@ -18,7 +19,7 @@ It is also possible to build one's own corpora based on bibliographic metadata.
 
 The Jupyter Notebooks in the [digital_tekstanalyse](https://github.com/NationalLibraryOfNorway/digital_tekstanalyse) repo show examples on
 how to use the library, and can be used
-[directly in your browser](https://mybinder.org/v2/gh/DH-LAB-NB/DHLAB/master)
+[directly in your browser](https://mybinder.org/v2/gh/NationalLibraryOfNorway/digital_tekstanalyse/HEAD)
 without prior programming experience.
 
 
