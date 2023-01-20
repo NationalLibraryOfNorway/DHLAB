@@ -27,20 +27,16 @@ print(sys.path)
 # Ignore blocks where only PATCH is updated
 with pathlib.Path("../CHANGELOG.md").open() as cf:
     changelog = []
-    patch_ver_regx = re.compile(r"## v(\d)\.(\d)\.(\d+) \([\d-]+\)")
+    version_regx = re.compile(r"## v(\d+)\.(\d+)\.(\d+) \([\d-]+\)")
     fix_block = False
     for line in cf.readlines():
-        if m := patch_ver_regx.match(line):
-            if m.groups()[-1] == "0":
-                print(m.groups())
-                fix_block = False
-            else:
-                fix_block = True
+        if (m := version_regx.match(line)) is not None:
+            fix_block = int(m.groups()[-1]) > 0
         if fix_block:
             continue
         changelog.append(line)
 
-pathlib.Path("./DOCS_CHANGELOG.md").write_text("".join(changelog))
+pathlib.Path("./whats_new.md").write_text("".join(changelog))
 
 
 # -- Project information -----------------------------------------------------
