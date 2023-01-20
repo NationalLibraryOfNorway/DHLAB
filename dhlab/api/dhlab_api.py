@@ -174,7 +174,6 @@ def get_chunks(urn: str = None, chunk_size: int = 300) -> Union[Dict, List]:
     :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
     :param int chunk_size: Number of tokens to include in each chunk.
     :return: list of dicts with the resulting chunk frequencies, or an empty dict
-    .. todo:: Verify unit of ``chunk_size``
     """
 
     if urn is None:
@@ -360,6 +359,58 @@ def reference_words(
     return res
 
 
+def _ngram_doc(
+        doctype: str = None,
+        word: Union[List, str] = ['.'],
+        title: str = None,
+        period: Tuple[int, int] = None,
+        publisher: str = None,
+        lang: str = None,
+        city: str = None,
+        ddk: str = None,
+        topic: str = None
+) -> pd.DataFrame:
+    """Count occurrences of one or more words over a time period.
+
+    The type of document to search through is decided by the ``endpoint``.
+    Filter the selection of documents with metadata.
+    Use % as wildcard where appropriate - no wildcards in ``word`` or ``lang``.
+
+    :param str doctype: API endpoint for the document type to get ngrams for.
+        Can be ``'book'``, ``'periodicals'``, or ``'newspapers'``.
+    :param word: Word(s) to search for.
+        Can be several words in a single string, separated by comma.
+    :type word: str or list of str
+    :param title: Title of a specific document to search through.
+    :param tuple[int,int] period: Start and end years of a time period,
+        given as ``(start year, end year)``.
+    :param str publisher: Name of a publisher.
+    :param str lang: Language as a 3-letter ISO code (e.g. ``"nob"`` or ``"nno"``)
+    :param str city: City of publication.
+    :param str ddk: `Dewey Decimal Classification
+        <https://no.wikipedia.org/wiki/Deweys_desimalklassifikasjon>`_ identifier.
+    :param str topic: Topic of the documents.
+    :return: a `pandas.DataFrame` with the resulting frequency counts of the word(s),
+        spread across years. One year per row.
+    """
+    params = locals()
+    if isinstance(word, str):
+        # assume a comma separated string
+        word = [w.strip() for w in word.split(',')]
+    params['word'] = tuple(word)
+    params = {x: params[x] for x in params if not params[x] is None}
+    r = requests.post(BASE_URL + "/ngram_" + doctype, json=params)
+    # print(r.status_code)
+    df = pd.DataFrame.from_dict(r.json(), orient='index')
+    df.index = df.index.map(lambda x: tuple(x.split()))
+    columns = df.index.levels[0]
+    df = pd.concat([df.loc[x] for x in columns], axis=1)
+    df.columns = columns
+    # df.index = df.index.map(pd.Timestamp)
+    return df
+
+
+# @_docstring_parameters_from(_ngram_doc, drop="doctype")
 def ngram_book(
         word: Union[List, str] = ["."],
         title: str = None,
@@ -411,6 +462,7 @@ def ngram_book(
     return df
 
 
+# @_docstring_parameters_from(_ngram_doc, drop="doctype")
 def ngram_periodicals(
         word: Union[List, str] = ["."],
         title: str = None,

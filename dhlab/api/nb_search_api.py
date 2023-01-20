@@ -1,30 +1,44 @@
+from typing import Iterable
+
 import pandas as pd
 import requests
 
 
-def load_picture(url):
+def load_picture(url: str):
+    """Load the raw image object from a URL."""
     r = requests.get(url, stream=True)
     r.raw.decode_content = True
     # print(r.status_code)
     return r.raw
 
 
-def iiif_manifest(urn):
+def iiif_manifest(urn: str):
+    """Fetch the IIIF manifest of the images that the book """
     r = requests.get(f"https://api.nb.no/catalog/v1/iiif/{urn}/manifest")
     return r.json()
 
 
-def mods(urn):
+def mods(urn: str):
     r = requests.get(f"https://api.nb.no:443/catalog/v1/metadata/{urn}/mods")
     return r.json()
 
 
-def super_search(term, number=50, page=0, mediatype='bilder'):
-    """Søk etter term og få ut json"""
+def super_search(term: str, number: int = 50, page: int = 0, mediatype: str = 'bilder') -> dict:
+    """Search for a term, return a json object with the matches.
+
+    :param str term: Search term, word, or token. Default is the empty string.
+    :param int number: Size of the response. Maximum 50.
+    :param int page: The page number to search from.
+        .. todo:: Fill in description.
+    :param str mediatype: Default 'bilder'.
+        .. todo::  Which other value options are available for this parameter?
+    :return: a dict (json object) with the search results.
+    """
+    url = "https://api.nb.no:443/catalog/v1/items"
     number = min(number, 50)
     if term == '':
         r = requests.get(
-            "https://api.nb.no:443/catalog/v1/items",
+            url,
             params={
                 'filter': f'mediatype:{mediatype}',
                 'page': page,
@@ -33,7 +47,7 @@ def super_search(term, number=50, page=0, mediatype='bilder'):
         )
     else:
         r = requests.get(
-            "https://api.nb.no:443/catalog/v1/items",
+            url,
             params={
                 'q': term,
                 'filter': f'mediatype:{mediatype}',
@@ -44,23 +58,18 @@ def super_search(term, number=50, page=0, mediatype='bilder'):
     return r.json()
 
 
-def total_search(size=50, page=0):
-    """Finn de første antallet = 'size' fra side 'page' og få ut json"""
-    size = min(size, 50)
-    r = requests.get(
-        "https://api.nb.no:443/catalog/v1/items",
-        params={
-            'filter': 'mediatype:bilder',
-            'page': page,
-            'size': size
-        }
-    )
-    return r.json()
+def total_search(size: int = 50, page: int = 0) -> dict:
+    """Retrieve the first ``size`` occurrences from ``page``.
+
+    Wrapper-function for :func:`super_search` with arguments
+    ``medietype="bilder"`` and ``term=''``.
+    """
+    return super_search(term='', number=size, page=page, mediatype='bilder')
 
 
-def get_df(frases, title='aftenposten'):
-    """get document phrases"""
-    querystring = " + ".join(['"' + frase + '"' for frase in frases])
+def get_df(phrases: Iterable, title: str = 'aftenposten'):
+    """Get ``phrases`` from documents of ``title``, and aggregate their frequencies."""
+    querystring = " + ".join(['"' + frase + '"' for frase in phrases])
     query = {
         'q': querystring,
         'size': 1,
@@ -73,9 +82,8 @@ def get_df(frases, title='aftenposten'):
     return {x['key']: x['count'] for x in aggs}
 
 
-def get_json(frases, mediatype='aviser'):
-
-    querystring = " + ".join(['"' + frase + '"' for frase in frases])
+def get_json(phrases, mediatype='aviser'):
+    querystring = " + ".join(['"' + frase + '"' for frase in phrases])
     query = {
         'q': querystring,
         'size': 1,
