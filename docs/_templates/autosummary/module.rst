@@ -1,9 +1,9 @@
 
 {% block navigation %}
-{% if module == 'dhlab' %}
-<< :ref:`dhlab`
-{% else %}
-<< :ref:`dhlab` << :py:obj:`{{ module }}`
+{% if module == 'dhlab' or module == fullname -%}
+:doc:`home </index>` << :ref:`dhlab`
+{% else -%}
+:doc:`home </index>` << :ref:`dhlab` << :py:obj:`{{ module }}`
 {% endif %}
 {% endblock %}
 {{ name | escape | underline}}

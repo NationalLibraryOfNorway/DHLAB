@@ -1,9 +1,9 @@
 
 {% block navigation %}
-{% if module == 'dhlab' %}
-<< :ref:`dhlab`
+{% if module == 'dhlab' or module == fullname %}
+:doc:`home </index>` << :ref:`dhlab`
 {% else %}
-<< :ref:`dhlab` << :py:obj:`{{ module }}`
+:doc:`home </index>` << :ref:`dhlab` << :py:obj:`{{ module }}`
 {% endif %}
 {% endblock %}
 
@@ -21,6 +21,7 @@
 .. currentmodule:: {{ module }}
 
 .. autoclass:: {{ objname }}
+
 
    {% block methods %}
    {% if methods %}
