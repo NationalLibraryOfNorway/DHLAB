@@ -38,7 +38,7 @@ dhlab documentation
    :maxdepth: 1
 
    docs_getting_started
-   library/*
+   library/dhlab
    glossary
    whats_new
 

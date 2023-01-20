@@ -146,20 +146,20 @@ add_module_names = False
 
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autosummary_generate_overwrite = True
-#autosectionlabel_prefix_document = True
+autosectionlabel_prefix_document = True
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
 autodoc_class_signature = "mixed"
 autodoc_typehints =  "description"  #"description"
 autodoc_typehints_description_target = "documented"
 autodoc_default_options = {
     #'members': True,  # 'var1, var2',
-    'member-order':  'bysource',  #'groupwise', or # 'alphabetical',
+    'member-order': "groupwise", # 'bysource',  #'groupwise', or # 'alphabetical',
     #'special-members': None,
     #'undoc-members': None,
    # 'private-members': False,
-    'exclude-members': '__dict__,__weakref__,__init__',
+    'exclude-members': '__weakref__',
     #'inherited-members': 'none',
-   # 'show-inheritance': True,
+    'show-inheritance': True,
      #'ignore-module-all': True,
     # 'imported-members': False,
     # 'class-doc-from': None,
@@ -217,11 +217,15 @@ def create_autocontext():
         if not obj_name.startswith("_")
     ]
 
-def create_autosummary_filename_map():
+def autosummary_map_module_path_to_toplevelobj():
+    top_objs = create_autocontext()
+    return {f"{obj['module']}.{obj['name']}":f"{obj['package']}.{obj['name']}" for obj in top_objs}
+
+def autosummary_map_toplevelobj_to_module_path():
     top_objs = create_autocontext()
     return {f"{obj['package']}.{obj['name']}":f"{obj['module']}.{obj['name']}" for obj in top_objs}
 
-autosummary_filename_map = create_autosummary_filename_map()
+#autosummary_filename_map = autosummary_map_module_path_to_toplevelobj()
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'

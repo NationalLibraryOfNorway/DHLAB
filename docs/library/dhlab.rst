@@ -3,57 +3,15 @@
 dhlab
 --------------
 
-
 .. currentmodule:: dhlab
 
-Sub-packages
-~~~~~~~~~~~~~
+.. toctree::
+   :maxdepth: 2
 
-.. autosummary::
-   :recursive:
-   :toctree: generated
+   subpackages
+   classes
+   functions
 
-   api
-   text
-   ngram
-   images
-   visualize
-   wordbank
-
-
-Classes
-~~~~~~~~
-.. autosummary::
-   :recursive:
-   :toctree: generated
-
-   Corpus
-   Chunks
-   Collocations
-   Concordance
-   Counts
-   GeoData
-   GeoNames
-   NER
-   POS
-   Models
-   WildcardWordSearch
-   Ngram
-   NgramBook
-   NgramNews
-   WordParadigm
-   WordLemma
-   WordForm
-
-
-Functions
-~~~~~~~~~~
-
-.. autosummary::
-   :nosignatures:
-   :toctree: generated
-
-   totals
 
 API endpoints
 ~~~~~~~~~~~~~~
