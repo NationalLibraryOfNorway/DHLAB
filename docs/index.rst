@@ -38,7 +38,7 @@ Contents
    :maxdepth: 2
 
    bibliography.md
-   docs_getting_started.rsts
+   docs_getting_started.rst
    docs_notebooks.rst
    usage_api.rst
    usage_images.rst
