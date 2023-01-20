@@ -37,6 +37,7 @@ Contents
 .. toctree::
    :maxdepth: 2
 
+   bibliography.md
    docs_getting_started.rst
    docs_notebooks.rst
    usage_api.rst
@@ -47,6 +48,7 @@ Contents
    usage_utilities.rst
    package_summary.rst
    DOCS_CHANGELOG.md
+   
 
 .. toctree::
    :hidden:

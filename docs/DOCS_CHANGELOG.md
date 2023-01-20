@@ -1,5 +1,111 @@
 # Changelog
 
+## v2.18.0 (2023-01-18)
+
+### Feat
+
+- **text**: (#133)
+
+## v2.17.1 (2023-01-16)
+
+### Fix
+
+- parameter passing wildcard
+
+## v2.17.0 (2023-01-16)
+
+### Feat
+
+- added wildcard search for words
+
+## v2.16.0 (2023-01-16)
+
+### Feat
+
+- **heatmap**: add heatmap wrapper to viz package
+
+## v2.15.1 (2023-01-16)
+
+### Fix
+
+- EmptyCorpus (#129)
+
+## v2.15.0 (2023-01-16)
+
+### Feat
+
+- **corpus**: (#128)
+
+### Fix
+
+- **bump-version**: disable triggering new workflow [skip-ci] (#127)
+
+## v2.14.0 (2023-01-13)
+
+### Feat
+
+- **visualize, ngram, wordbank**: (#126)
+
+## v2.13.3 (2023-01-09)
+
+### Fix
+
+- handle API errors
+
+## v2.13.2 (2023-01-06)
+
+### Fix
+
+- **dhlab_api**: construct df from response.json (#124)
+
+## v2.13.1 (2022-12-08)
+
+### Fix
+
+- Pos0 (#123)
+
+## v2.13.0 (2022-12-07)
+
+### Feat
+
+- **api**: added start page and to page for NER and POS (#122)
+
+## v2.12.0 (2022-12-07)
+
+### Feat
+
+- **ngram**: make ngram subclass of dhlabobj (#121)
+
+
+## v2.11.2 (2022-11-24)
+
+### Fix
+
+- **ngram**: lang param is not supported for avis
+- **requirements**: add scipy to reqirements
+
+## v2.11.1 (2022-11-14)
+
+### Feat
+
+- **totals**: Add totals() to top level
+- **DhlabObj**: add DhlabObj
+- **Corpus**: allow empty Corpus and construct df
+
+### Fix
+
+- **conc_coll**: fix __repr__ functions
+
+### Refactor
+
+- **corpus**: change add()
+
+## v2.10.0 (2022-10-26)
+
+### Feat
+
+- added image search in bokhylla books to api
+
 ## v2.9.0 (2022-09-05)
 
 ### Feat
@@ -17,6 +123,8 @@
 - **corpus**: ignore index in corpus.add (#84)
 
 ## v2.7.0 (2022-08-24)
+
+- automatic bump with features from 2.6.x versions
 
 ## v2.6.0 (2022-08-08)
 
