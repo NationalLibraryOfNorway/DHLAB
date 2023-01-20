@@ -121,7 +121,7 @@ source_suffix = ['.rst', '.md']
 
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['templates']
+templates_path = ['_templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -146,45 +146,82 @@ add_module_names = False
 
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autosummary_generate_overwrite = True
-autosectionlabel_prefix_document = True
+#autosectionlabel_prefix_document = True
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
-autodoc_typehints = "description"
+autodoc_class_signature = "mixed"
+autodoc_typehints =  "description"  #"description"
 autodoc_typehints_description_target = "documented"
 autodoc_default_options = {
-    'members': True,  # 'var1, var2',
-    'member-order': 'groupwise',  # 'bysource' or 'alphabetical' or 'groupwise'
-   # 'special-members': '__init__',
-    'undoc-members': False,
-    'private-members': False,
-    'exclude-members': '__weakref__',
-   # 'inherited-members': True,
+    #'members': True,  # 'var1, var2',
+    'member-order':  'bysource',  #'groupwise', or # 'alphabetical',
+    #'special-members': None,
+    #'undoc-members': None,
+   # 'private-members': False,
+    'exclude-members': '__dict__,__weakref__,__init__',
+    #'inherited-members': 'none',
    # 'show-inheritance': True,
-     'ignore-module-all': True,
+     #'ignore-module-all': True,
     # 'imported-members': False,
     # 'class-doc-from': None,
     # 'no-value': False,
 }
-from sphinx.ext.autosummary import Autosummary
 
+#from sphinx.ext.autosummary import Autosummary
 
-def create_autosummary_filename_map():
+def extract_autocontext_vars(obj_name, obj_ref):
+    """Extract the variables in the object context to be used in the autosummary templates.
+
+    See the sphinx docs
+    `customizing templates <https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html#customizing-templates>`_
+    for more info.
+
+    autocontext_variable_names = [
+        'name',
+        'objname',
+        'fullname',
+        'objtype',
+        'module',
+        'class',
+        'underline',
+        'members',
+        'inherited_members',
+        'functions',
+        'classes',
+        'exceptions',
+        'methods',
+        'attributes',
+        'modules'
+    ]
+    """
+
+    objtype = obj_ref.__class__.__name__
+    module = obj_ref.__module__ if objtype != "module" else obj_ref.__package__
+    fullname = f"{module}.{obj_name}"
+
+    return {
+        "name": obj_name,
+        "objname": obj_name,
+        "accessname": obj_ref.__name__,
+        "fullname":  fullname,
+        "objtype": objtype,
+        "module": module,
+        "package": "dhlab"
+        }
+
+def create_autocontext():
     import dhlab
 
-    mapping = {}
+    return [
+        extract_autocontext_vars(obj_name, obj_ref)
+        for obj_name, obj_ref  in dhlab.__dict__.items()
+        if not obj_name.startswith("_")
+    ]
 
-    for obj_name, obj_ref  in dhlab.__dict__.items():
-        if obj_name.startswith("_"):
-            continue
-        obj_refstr = str(obj_ref)
-        if obj_refstr.startswith("<module"):
-            mapping[obj_name] = obj_ref.__name__
-        elif obj_refstr.startswith("<function") or obj_refstr.startswith("dhlab."):
-            mapping[obj_name] = f'{obj_ref.__module__}.{obj_ref.__name__}'
-    return mapping
+def create_autosummary_filename_map():
+    top_objs = create_autocontext()
+    return {f"{obj['package']}.{obj['name']}":f"{obj['module']}.{obj['name']}" for obj in top_objs}
 
-
-#autosummary_filename_map = create_autosummary_filename_map()
-
+autosummary_filename_map = create_autosummary_filename_map()
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -211,31 +248,29 @@ html_theme = 'furo'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "light_css_variables": {
-        "color-brand-primary": "#33C1CC",
-        "color-brand-content": "teal",
-        # "color-admonition-background": "cyan",
-    },
-    "dark_css_variables": {
-        "color-brand-primary": "#33C1CC",
-        "color-brand-content": "teal",
-        # "color-admonition-background": "cyan",
-    },
-    "sidebar_hide_name": False,
+   # "announcement": "Welcome to the dhlab documentation!",
+    "sidebar_hide_name": True,
+    "navigation_with_keys": True,
+    "source_repository": "https://github.com/NationalLibraryOfNorway/DHLAB",
+    "source_branch": "main",
+    "source_directory": "docs/",
+    # "light_logo": "",
     # "light_css_variables": {
     #     "color-brand-primary": "#cf2e2e",
     #     "color-brand-content": "#0693e3",
     #     "color-admonition-background": "#edeae5",
     # },
+    # "dark_logo": "",
     # "dark_css_variables": {
     #     "color-brand-primary": "#cf2e2e",
     #     "color-brand-content": "#0693e3",
     #     "color-admonition-background": "#7b715e",
     # },
-    "sidebar_hide_name": True,
-    "navigation_with_keys": True,
+    # "top_of_page_button": "edit",
+    # For components/edit-this-page.html
 
 }
+
 
 html_css_files = [
     'dhlab/css_style_sheets/grade3.css',

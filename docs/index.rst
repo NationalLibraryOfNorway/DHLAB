@@ -34,9 +34,11 @@ dhlab documentation
 .. toctree::
    :name: contents
    :hidden:
+   :glob:
+   :maxdepth: 1
 
    docs_getting_started
-   package_summary
+   library/*
    glossary
    whats_new
 
