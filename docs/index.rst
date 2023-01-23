@@ -18,9 +18,13 @@ dhlab documentation
    :parser: myst_parser.sphinx_
    :start-after: <!-- start dhlab-intro -->
    :end-before: <!-- end dhlab-intro -->
+ 
 
 .. include:: docs_functionality.md
    :parser: myst_parser.sphinx_
+
+
+Further reading <https://nationallibraryofnorway.github.io/DHLAB-kunnskapsbase/>
 
 -------------------
 
@@ -38,7 +42,6 @@ dhlab documentation
    :maxdepth: 1
 
    docs_getting_started
-   bibliography
    library/dhlab
    glossary
    whats_new
@@ -52,4 +55,5 @@ dhlab documentation
    DHLAB on GitHub <https://github.com/NationalLibraryOfNorway/DHLAB>
    DH-lab Homepage (nb-no) <https://www.nb.no/dh-lab/>
    DH-lab Web applications <https://www.nb.no/dh-lab/apper/>
+   DH-lab Knowledge base <https://nationallibraryofnorway.github.io/DHLAB-kunnskapsbase/>
    The online National Library <https://www.nb.no/search>
