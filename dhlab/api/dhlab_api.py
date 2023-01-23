@@ -2,7 +2,7 @@ from typing import Union, List, Tuple, Dict
 
 import pandas as pd
 import requests
-from requests import HTTPError, JSONDecodeError, ConnectionError
+#from requests import HTTPError, JSONDecodeError, ConnectionError
 from pandas import DataFrame, Series
 
 from dhlab.constants import BASE_URL
@@ -73,13 +73,13 @@ def show_spacy_models() -> List:
     """Show available SpaCy model names."""
     try:
         r = requests.get(f"{BASE_URL}/ner_models")
-        r.raise_for_status()
-        return r.json()
-    except (HTTPError, JSONDecodeError, ConnectionError) as error:
-        print(error.__doc__, error)
+        #r.raise_for_status()
+        res = r.json()
+    except: #(HTTPError, JSONDecodeError, ConnectionError) as error:
+        #print(error.__doc__, error)
         print("Server-request gikk ikke gjennom. Kan ikke vise SpaCy-modellnavn.")
-        return []
-
+        res =  []
+    return res
 
 def get_places(urn: str) -> DataFrame:
     """Look up placenames in a specific URN.
