@@ -22,7 +22,7 @@ from matplotlib.pylab import rcParams
 try:
     from wordcloud import WordCloud
 except BaseException:
-    print(f"wordcloud er ikke installert, kan ikke lage ordskyer")
+    pass #print(f"wordcloud er ikke installert, kan ikke lage ordskyer")
 
 
 # ************** For defining wordbag search
