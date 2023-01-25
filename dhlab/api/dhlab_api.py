@@ -25,6 +25,9 @@ def wildcard_search(word, factor=2, freq_limit=10, limit = 50):
     return pd.DataFrame.from_dict(res.json(), orient = 'index', columns=['freq'])
 
 
+
+
+
 # fetch metadata
 
 def images(text = None, part=True):
@@ -597,6 +600,29 @@ def get_word_frequencies(
     """
     return get_document_frequencies(urns, cutoff, words)
 
+def get_urn_frequencies(
+        urns: List[str] = None, dhlabid: List = None
+) -> DataFrame:
+    """Fetch frequency counts of documents as URNs or DH-lab ids.
+    
+    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
+    `/frequencies`.
+
+    :param list urns: list of uniform resource name strings, for example:
+        ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]``
+    :param list dhlabid: list of numbers for dhlabid:
+        ``[1000001, 2000003]``
+    """
+    if dhlabid == None:
+        params = {'urns': urns}
+    else:
+        params = {'dhlabid': dhlabid}
+    r = requests.post(f"{BASE_URL}/urn_frequencies", json=params)
+    result = r.json()
+    # check if words are passed - return differs a bit
+    df = pd.DataFrame(result)
+    df.columns = ["urn", "freq"]
+    return df
 
 def get_document_corpus(**kwargs):
     return document_corpus(**kwargs)
