@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.19.0 (2023-01-25)
+
+### Feat
+
+- added urncount - removed wordcloud message
+
 ## v2.18.1 (2023-01-23)
 
 ## v2.18.0 (2023-01-18)
