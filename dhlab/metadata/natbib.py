@@ -9,6 +9,7 @@ def api_call_deco(service):
     """Decorator for calling a service from DH-lab API
 
     :param service: Name of service
+    
     """
 
     def inner_decorator(func):
