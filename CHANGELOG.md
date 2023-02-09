@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.20.0 (2023-02-09)
+
+### Feat
+
+- **metadata**: update metadata service tools
+
 ## v2.19.0 (2023-01-25)
 
 ### Feat
