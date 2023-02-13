@@ -29,6 +29,7 @@ class Corpus(DhlabObj):
             subject=None,
             lang=None,
             limit=10,
+            order_by="random"
             ):
 
         if (doctype
@@ -78,7 +79,8 @@ class Corpus(DhlabObj):
                 ddk,
                 subject,
                 lang,
-                limit
+                limit,
+                order_by
             )
 
         else:

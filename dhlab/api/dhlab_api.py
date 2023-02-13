@@ -642,6 +642,7 @@ def document_corpus(
         subject: str = None,
         lang: str = None,
         limit: int = None,
+        order_by: str = None,
 ) -> DataFrame:
     """Fetch a corpus based on metadata.
 
@@ -665,6 +666,7 @@ def document_corpus(
     :param str lang: Language of the publication, as a 3-letter ISO code.
         Example: ``"nob"`` or ``"nno"``
     :param int limit: number of items to sample.
+    :param str order_by: order of elements in the corpus object. Typically used in combination with a limit. Example ``"random"`` (random order, the slowest), ``"rank"`` (ordered by relevance, faster) or ``"first"`` (breadth-first, using the order in the database table, the fastest method) 
     :return: a ``pandas.DataFrame`` with the corpus information.
     """
     parms = locals()
