@@ -16,5 +16,6 @@ Sub-packages
    text
    wordbank.wordbank
    metadata.metadata
+   metadata.natbib
    images.nbpictures
    visualize
