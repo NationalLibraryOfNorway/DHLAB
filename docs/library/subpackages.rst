@@ -15,6 +15,6 @@ Sub-packages
    ngram
    text
    wordbank.wordbank
-   metadata.metadata
+   metadata
    images.nbpictures
    visualize
