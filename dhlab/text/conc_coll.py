@@ -154,12 +154,16 @@ class Counts(DhlabObj):
         """
         if corpus is None and words is None:
             self.counts = pd.DataFrame()
+            self.title_dct = None
         elif corpus is not None:
             # count - if words is none result will be as if counting all words
             # in the corpus
             self.counts = get_document_frequencies(
                 urns=urnlist(corpus), cutoff=0, words=words
             )
+            
+            # Include dhlab and title link in object
+            self.title_dct = {k : v for k, v in zip(corpus.frame.dhlabid, corpus.frame.title)} 
 
         super().__init__(self.counts)
 
@@ -168,9 +172,13 @@ class Counts(DhlabObj):
 
         :return: frequency list for Corpus
         """
-        c = Counts()
-        c.counts = self.counts.sum(axis=1)
-        return c
+        #c = Counts()
+        #c.counts = self.counts.sum(axis=1)
+        return self.from_df(self.counts.sum(axis=1).to_frame("freqs"))
+    
+    def display_names(self):
+        "Display data with record names as column titles."
+        return self.frame.rename(self.title_dct, axis=1)
 
     @classmethod
     def from_df(cls, df):

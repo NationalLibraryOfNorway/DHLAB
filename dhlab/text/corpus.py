@@ -177,7 +177,7 @@ class Corpus(DhlabObj):
             )
 
     def count(self, words=None):
-        return dh.Counts(self.frame, words)
+        return dh.Counts(self, words)
 
     @staticmethod
     def _is_Corpus(corpus) -> bool:
