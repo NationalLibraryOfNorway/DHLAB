@@ -552,9 +552,7 @@ def ngram_news(
     return df
 
 
-def get_document_frequencies(
-        urns: List[str] = None, cutoff: int = 0, words: List[str] = None
-) -> DataFrame:
+def get_document_frequencies(urns: List[str] = None, cutoff: int = 0, words: List[str] = None) -> DataFrame:
     """Fetch frequency counts of ``words`` in documents (``urns``).
 
     Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
@@ -581,7 +579,8 @@ def get_document_frequencies(
     else:
         df = pd.DataFrame(result)
         df.columns = ["urn", "word", "count", "urncount"]
-        df = pd.pivot_table(df, values="count", index="word", columns="urn").fillna(0)
+        df['relfreq'] = df['count']/df.urncount
+        df = pd.pivot_table(df, values=["count",'relfreq'], index="word", columns="urn").fillna(0)
     return df
 
 
