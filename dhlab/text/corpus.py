@@ -177,8 +177,13 @@ class Corpus(DhlabObj):
             )
 
     def count(self, words=None):
+        "Get word frequencies for corpus"
         return dh.Counts(self, words)
-
+    
+    def freq(self, words=None):
+        "Get word frequencies for corpus"
+        return dh.Counts(self, words)
+    
     @staticmethod
     def _is_Corpus(corpus) -> bool:
         """Check if `input` is Corpus or DataFrame"""
