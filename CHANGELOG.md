@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.21.2 (2023-02-16)
+
+### Fix
+
+- **freq**: add freq Counts method to corpus
+
 ## v2.21.1 (2023-02-15)
 
 ### Fix
