@@ -561,7 +561,7 @@ def get_document_frequencies(urns: List[str] = None, cutoff: int = 0, words: Lis
     :param list urns: list of uniform resource name strings, for example:
         ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]``
     :param int cutoff: minimum frequency of a word to be counted
-    :param list words: a list of words to be counted - if left None, whole document is returned.
+    :param list words: a list of words to be counted - if left None, whole document is returned. If not None both the counts and their relative frequency is returned.
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/frequencies", json=params)
