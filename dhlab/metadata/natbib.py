@@ -3,9 +3,10 @@
 import os
 import requests
 from dhlab.constants import BASE_URL
+from functools import wraps
 
 
-def api_call_deco(service):
+def _api_call_deco(service):
     """Decorator for calling a service from DH-lab API
 
     :param service: Name of service
@@ -13,11 +14,12 @@ def api_call_deco(service):
     """
 
     def inner_decorator(func):
+        
         """Inner decorator
 
         :param func: function to decorate. Must return params
         """
-
+        @wraps(func)
         def wrapper(*args, **kwargs):
             params = func(*args, **kwargs)
             return requests.post(os.path.join(BASE_URL, service), json=params).json()
@@ -27,7 +29,7 @@ def api_call_deco(service):
     return inner_decorator
 
 
-@api_call_deco("metadata_query")
+@_api_call_deco("metadata_query")
 def metadata_query(conditions, limit=5):
     """Query the Norwegian National Bibliography using Marc 21 fields and values
     
@@ -48,7 +50,7 @@ def metadata_query(conditions, limit=5):
     return params
 
 
-@api_call_deco("metadata_from_urn")
+@_api_call_deco("metadata_from_urn")
 def metadata_from_urn(urns, fields=None):
     """Gets MARC 21 json for a URN or list of URN
 
