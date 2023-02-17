@@ -29,3 +29,6 @@ from dhlab.wordbank.wordbank import WordParadigm, WordLemma, WordForm
 
 # api
 from dhlab.api.dhlab_api import totals
+
+# metadata
+from dhlab.metadata.natbib import metadata_query, metadata_from_urn
