@@ -1,5 +1,6 @@
 import re
 import pandas as pd
+import dhlab as dh
 from dhlab.api.dhlab_api import get_document_frequencies, concordance, urn_collocation
 # from dhlab.text.corpus import urnlist
 from dhlab.text.dhlab_object import DhlabObj
@@ -163,10 +164,21 @@ class Counts(DhlabObj):
             )
             
             # Include dhlab and title link in object
-            self.title_dct = {k : v for k, v in zip(corpus.frame.dhlabid, corpus.frame.title)} 
+            if isinstance(corpus, dh.Corpus):
+                source = corpus.frame
+            elif isinstance(corpus, pd.DataFrame):
+                source = corpus
+            else:
+                raise TypeError("Corpus must be of type dh.Corpus or pd.DataFrame")               
+                
+            try:    
+                self.title_dct = {k : v for k, v in zip(source.dhlabid, source.title)} 
+            except:
+                self.title_dct = None    
+                
 
         super().__init__(self.counts)
-
+        
     def sum(self):
         """Summarize Corpus frequencies
 

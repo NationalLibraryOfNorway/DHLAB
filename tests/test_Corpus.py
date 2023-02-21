@@ -15,7 +15,7 @@ class TestCorpus():
         
     def test_corpus_freq(self):
         c = dh.Corpus(doctype="digavis", limit=2)
-        freq = c.count()
+        freq = c.freq()
         assert len(freq.frame) > 0 
         assert len(freq.frame.columns) == 2
     
