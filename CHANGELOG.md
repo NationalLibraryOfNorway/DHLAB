@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.22.2 (2023-02-21)
+
+### Fix
+
+- **natbib, Counts**: add functools.wraps (#150)
+
 ## v2.22.1 (2023-02-16)
 
 ## v2.22.0 (2023-02-16)
