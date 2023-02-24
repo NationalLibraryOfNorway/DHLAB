@@ -67,8 +67,8 @@ class Corpus(pd.DataFrame):
     def get_freqs(self):
         return Frequencies.get_freqs(self)
 
-    def get_concs(self, words, window=20, limit=500):
-        return Concordance.get_conc(self, words, window=window, limit=limit)
+    def get_concordances(self, words, window=20, limit=500):
+        return Concordance.get_concordances(self, words, window=window, limit=limit)
 
     def get_collocations(
         self,
@@ -81,7 +81,7 @@ class Corpus(pd.DataFrame):
         alpha=False,
         ignore_caps=False,
     ):
-        return Collocations.get_coll(
+        return Collocations.get_collocations(
             self,
             corpus=None,
             words=None,
