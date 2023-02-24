@@ -2,7 +2,6 @@ import re
 import pandas as pd
 import dhlab as dh
 from dhlab.api.dhlab_api import get_document_frequencies, concordance, urn_collocation
-# from dhlab.text.corpus import urnlist
 from dhlab.text.dhlab_object import DhlabObj
 from dhlab.text.utils import urnlist
 
@@ -154,43 +153,52 @@ class Counts(DhlabObj):
         :param words: list of words to be counted, defaults to None
         """
         if corpus is None and words is None:
-            self.counts = pd.DataFrame()
+            self.freq = pd.DataFrame()
             self.title_dct = None
         elif corpus is not None:
+            # Make sure corpus is a dhlab corpus
+            # if not, try to make it one
+            if isinstance(corpus, pd.DataFrame):
+                corpus = dh.Corpus.from_df(corpus)
+            
+            if not isinstance(corpus, dh.Corpus):
+                raise TypeError("Corpus must be of type dh.Corpus or pd.DataFrame")
+
             # count - if words is none result will be as if counting all words
             # in the corpus
-            self.counts = get_document_frequencies(
+            self.freq = get_document_frequencies(
                 urns=urnlist(corpus), cutoff=0, words=words
             )
-            
-            # Include dhlab and title link in object
-            if isinstance(corpus, dh.Corpus):
-                source = corpus.frame
-            elif isinstance(corpus, pd.DataFrame):
-                source = corpus
-            else:
-                raise TypeError("Corpus must be of type dh.Corpus or pd.DataFrame")               
-                
-            try:    
-                self.title_dct = {k : v for k, v in zip(source.dhlabid, source.title)} 
-            except:
-                self.title_dct = None    
-                
 
-        super().__init__(self.counts)
-        
+            # Include dhlab and title link in object
+            try:
+                self.title_dct = {
+                    k: v for k, v in zip(corpus.frame.dhlabid, corpus.frame.title)
+                }
+            except:
+                self.title_dct = None
+
+            # Add relative frequencies if available
+            if words is not None:
+                self.relfreq = self.freq.relfreq
+                self.freq = self.freq.freq
+
+        super().__init__(self.freq)
+
     def sum(self):
         """Summarize Corpus frequencies
 
         :return: frequency list for Corpus
         """
-        #c = Counts()
-        #c.counts = self.counts.sum(axis=1)
-        return self.from_df(self.counts.sum(axis=1).to_frame("freqs"))
-    
+        return self.from_df(self.counts.sum(axis=1).to_frame("freq"))
+
     def display_names(self):
         "Display data with record names as column titles."
         return self.frame.rename(self.title_dct, axis=1)
+    
+    def display_rel_names(self):
+        "Display relfreq data with record names as column titles."
+        return self.relfreq.rename(self.title_dct, axis=1)
 
     @classmethod
     def from_df(cls, df):
@@ -198,3 +206,11 @@ class Counts(DhlabObj):
         obj.counts = df
         obj.frame = df
         return obj
+
+    ### Legacy properties and methods ###
+
+    @property
+    def counts(self):
+        "Legacy property for freq"
+        return self.freq
+
