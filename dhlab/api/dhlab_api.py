@@ -578,9 +578,9 @@ def get_document_frequencies(urns: List[str] = None, cutoff: int = 0, words: Lis
         df = df.sort_values(by=df.columns[0], ascending=False).fillna(0)
     else:
         df = pd.DataFrame(result)
-        df.columns = ["urn", "word", "count", "urncount"]
-        df['relfreq'] = df['count']/df.urncount
-        df = pd.pivot_table(df, values=["count",'relfreq'], index="word", columns="urn").fillna(0)
+        df.columns = ["urn", "word", "freq", "urncount"]
+        df['relfreq'] = df['freq']/df.urncount
+        df = pd.pivot_table(df, values=["freq",'relfreq'], index="word", columns="urn").fillna(0)
     return df
 
 
