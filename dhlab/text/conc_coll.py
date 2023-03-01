@@ -158,11 +158,11 @@ class Counts(DhlabObj):
         elif corpus is not None:
             # Make sure corpus is a dhlab corpus
             # if not, try to make it one
-            if isinstance(corpus, pd.DataFrame):
-                corpus = dh.Corpus.from_df(corpus)
+            # if isinstance(corpus, pd.DataFrame):
+            #     corpus = dh.Corpus.from_df(corpus)
             
-            if not isinstance(corpus, dh.Corpus):
-                raise TypeError("Corpus must be of type dh.Corpus or pd.DataFrame")
+            # if not isinstance(corpus, dh.Corpus):
+            #     raise TypeError("Corpus must be of type dh.Corpus or pd.DataFrame")
 
             # count - if words is none result will be as if counting all words
             # in the corpus
@@ -194,6 +194,7 @@ class Counts(DhlabObj):
 
     def display_names(self):
         "Display data with record names as column titles."
+        assert self.title_dct is not None, "No titles available"            
         return self.frame.rename(self.title_dct, axis=1)
     
     def display_rel_names(self):
