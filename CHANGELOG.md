@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.24.0 (2023-03-03)
+
+### Feat
+
+- konkordanser basert på ord er lagt til
+
 ## v2.23.3 (2023-03-01)
 
 ### Fix
