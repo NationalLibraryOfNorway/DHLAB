@@ -777,6 +777,38 @@ def konkordans(
     return concordance(**locals())
 
 
+def word_concordance(
+        urn: list = None, dhlabid: list = None, words: list = None, before: int = 12, after: int = 12, limit: int = 100, samplesize: int = 50000
+) -> DataFrame:
+    """Get a list of concordances from the National Library's database.
+
+    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
+    `/conc <https://api.nb.no/dhlab/#/default/conc_word_urn>`_.
+
+    :param list urns: dhlab serial ids. (server can take both urns and dhlabid but so we may rewrite this to)
+    :param str words: Word(s) to search for -- must be a list
+    :param int before: between 0-24.
+    :param int after: between 0-24 (before + sum <= 24)
+    :param int limit: max. number of concordances per server process.
+    :param int samplesize: samples from urns.
+    :return: a table of concordances
+    """
+
+    # server checks if either dhlabid or urns are present in the parameters, so only one of them
+    # is passed. The return is dhlabid anyhow.
+
+    if dhlabid is not None:
+        params = {"dhlabid": dhlabid, "words": words, "before": before, "after": after, "limit": limit, "samplesize":samplesize}
+    elif urns is not None:
+        params = {"urn": urns, "words": words,  "before": before, "after": after, "limit": limit, "samplesize":samplesize}
+    else:
+        params = {"words": words,  "before": before, "after": after, "limit": limit, "samplesize":samplesize}
+
+    r = requests.post(BASE_URL + "/conc_word_urn", json=params)
+
+    return pd.DataFrame([x for y in r.json() for x in y], columns=['dhlabid', 'before','target','after'])
+
+
 def collocation(
         corpusquery: str = "norge", word: str = "arbeid", before: int = 5, after: int = 0
 ) -> DataFrame:
