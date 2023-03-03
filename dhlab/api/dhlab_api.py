@@ -166,6 +166,10 @@ def get_metadata(urns: List[str] = None) -> DataFrame:
     r = requests.post(f"{BASE_URL}/get_metadata", json=params)
     return DataFrame(r.json())
 
+def get_identifiers(identifiers: list = None) -> list:
+    """Convert a list of identifiers, oaiid, sesamid, urns or isbn10 to dhlabids"""
+    res = requests.post(f"{BASE_URL}/identifiers", json={'identifiers':[i for i in identifiers if i != '']})
+    return res.json()
 
 def get_chunks(urn: str = None, chunk_size: int = 300) -> Union[Dict, List]:
     """Get the text in the document ``urn`` as frequencies of chunks
