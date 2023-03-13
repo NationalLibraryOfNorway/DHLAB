@@ -137,9 +137,9 @@ class Concordance(pd.DataFrame):
 
     def show(self, n=10, style=True):
         if style:
-            result = self.sample(min(n, self.size))[["link", "concordance"]].style
+            result = self.sample(min(n, len(self)))[["link", "concordance"]].style
         else:
-            result = self.sample(min(n, self.size))
+            result = self.sample(min(n, len(self)))
         return result
 
     def split_view(self, html=False):
