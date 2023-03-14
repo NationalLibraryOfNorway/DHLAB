@@ -26,38 +26,38 @@ def find_hits(x):
 class Corpus(pd.DataFrame):
     @classmethod
     def build(
-            self,
-            doctype=None,
-            author=None,
-            freetext=None,
-            fulltext=None,
-            from_year=None,
-            to_year=None,
-            from_timestamp=None,
-            to_timestamp=None,
-            title=None,
-            ddk=None,
-            subject=None,
-            lang=None,
-            limit=10,
-            order_by="random"
-            ):
+        self,
+        doctype=None,
+        author=None,
+        freetext=None,
+        fulltext=None,
+        from_year=None,
+        to_year=None,
+        from_timestamp=None,
+        to_timestamp=None,
+        title=None,
+        ddk=None,
+        subject=None,
+        lang=None,
+        limit=10,
+        order_by="random",
+    ):
         res = document_corpus(
-                doctype,
-                author,
-                freetext,
-                fulltext,
-                from_year,
-                to_year,
-                from_timestamp,
-                to_timestamp,
-                title,
-                ddk,
-                subject,
-                lang,
-                limit,
-                order_by
-            )
+            doctype,
+            author,
+            freetext,
+            fulltext,
+            from_year,
+            to_year,
+            from_timestamp,
+            to_timestamp,
+            title,
+            ddk,
+            subject,
+            lang,
+            limit,
+            order_by,
+        )
         return Corpus(res)
 
     def extend_from_identifiers(self, identifiers=None):
@@ -72,7 +72,7 @@ class Corpus(pd.DataFrame):
 
     def get_collocations(
         self,
-        corpus=None,
+      #  corpus=None,
         words=None,
         before=10,
         after=10,
@@ -82,16 +82,15 @@ class Corpus(pd.DataFrame):
         ignore_caps=False,
     ):
         return Collocations.get_collocations(
-            self,
-            corpus=None,
-            words=None,
-            before=10,
-            after=10,
-            reference=None,
-            samplesize=20000,
-            alpha=False,
-            ignore_caps=False,
-            )
+            corpus=self,
+            words=words,
+            before=before,
+            after=after,
+            reference=reference,
+            samplesize=samplesize,
+            alpha=alpha,
+            ignore_caps=ignore_caps,
+        )
 
     @property
     def _constructor(self):
@@ -99,7 +98,6 @@ class Corpus(pd.DataFrame):
 
 
 class Frequencies(pd.DataFrame):
-
     _metadata = ["_title_dct"]
 
     @classmethod
@@ -127,7 +125,7 @@ class Concordance(pd.DataFrame):
 
     @classmethod
     def get_concordances(self, corpus, words, window=20, limit=500):
-        res = concordance(urns=urnlist(corpus), words=words, limit=limit)
+        res = concordance(urns=urnlist(corpus), words=words, window=window, limit=limit)
 
         res["link"] = res.urn.apply(make_link)
 
