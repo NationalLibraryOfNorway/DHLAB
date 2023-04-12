@@ -204,7 +204,7 @@ class Counts(DhlabObj):
     @classmethod
     def from_df(cls, df):
         obj = Counts()
-        obj.counts = df
+        obj.freq = df
         obj.frame = df
         return obj
 
