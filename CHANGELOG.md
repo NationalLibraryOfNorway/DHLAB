@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.26.1 (2023-04-12)
+
+### Fix
+
+- **counts**: bug on from_df method
+
 ## v2.26.0 (2023-03-16)
 
 ### Feat
