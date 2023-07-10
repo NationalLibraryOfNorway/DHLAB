@@ -9,6 +9,13 @@
 
 Check out our [documentation](https://dhlab.readthedocs.io/en/latest/) for more info.
 
+## Installation with pip
+
+Install the latest version of [`dhlab`](https://pypi.org/project/dhlab/) in your (Unix) terminal with pip:
+
+```shell
+pip install -U dhlab
+```
 
 ## Install dhlab from github repo
 
