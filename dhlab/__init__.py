@@ -11,7 +11,7 @@ from dhlab.utils.display import css
 from dhlab.utils.files import download_from_github,get_file_from_github
 
 # ngram 
-from dhlab.ngram.ngram import Ngram, NgramBook, NgramNews
+from dhlab.ngram.ngram import Ngram
 
 # api
 from dhlab.api.dhlab_api import totals
