@@ -2,6 +2,7 @@ import pandas as pd
 from dhlab.api.dhlab_api import urn_collocation
 from dhlab.text.utils import urnlist
 
+
 class Collocations(pd.DataFrame):
     @property
     def _constructor(self):

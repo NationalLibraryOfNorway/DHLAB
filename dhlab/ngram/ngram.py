@@ -97,6 +97,5 @@ class Ngram(pd.DataFrame):
         compare = (transposed_ngram / sum_other_ngram).transpose()
         return compare
 
-    
     def _ipython_display_(self):
         self.ngram_plot()

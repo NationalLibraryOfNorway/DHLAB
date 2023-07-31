@@ -2,7 +2,8 @@ from typing import Union, List, Tuple, Dict
 
 import pandas as pd
 import requests
-#from requests import HTTPError, JSONDecodeError, ConnectionError
+
+# from requests import HTTPError, JSONDecodeError, ConnectionError
 from pandas import DataFrame, Series
 
 from dhlab.constants import BASE_URL
@@ -12,26 +13,20 @@ pd.options.display.max_rows = 100
 # wildcard search for words
 
 
-def wildcard_search(word, factor=2, freq_limit=10, limit = 50):
-    res = requests.get(f"{BASE_URL}/wildcard_word_search", 
-                        params={
-                            'word':word, 
-                            'factor':factor, 
-                            'freq_lim':freq_limit, 
-                            'limit':limit
-                        }
-                       )
-    #columns = ["key", "name", "alternatename", "latitude", "longitude", "feature class", "feature code"]
-    return pd.DataFrame.from_dict(res.json(), orient = 'index', columns=['freq'])
-
-
-
+def wildcard_search(word, factor=2, freq_limit=10, limit=50):
+    res = requests.get(
+        f"{BASE_URL}/wildcard_word_search",
+        params={"word": word, "factor": factor, "freq_lim": freq_limit, "limit": limit},
+    )
+    # columns = ["key", "name", "alternatename", "latitude", "longitude", "feature class", "feature code"]
+    return pd.DataFrame.from_dict(res.json(), orient="index", columns=["freq"])
 
 
 # fetch metadata
 
-def images(text = None, part=True):
-    """ Retrive images from bokhylla
+
+def images(text=None, part=True):
+    """Retrive images from bokhylla
     :param text: fulltext query expression for sqlite
     :param part: if a number the whole page is shown
     ... bug prevents these from going thru
@@ -43,7 +38,10 @@ def images(text = None, part=True):
     js = r.json()
     return js
 
-def ner_from_urn(urn: str = None, model: str = None, start_page = 0, to_page = 0) -> DataFrame:
+
+def ner_from_urn(
+    urn: str = None, model: str = None, start_page=0, to_page=0
+) -> DataFrame:
     """Get NER annotations for a text (``urn``) using a spacy ``model``.
 
     :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
@@ -58,7 +56,9 @@ def ner_from_urn(urn: str = None, model: str = None, start_page = 0, to_page = 0
     return df
 
 
-def pos_from_urn(urn: str = None, model: str = None, start_page = 0, to_page = 0) -> DataFrame:
+def pos_from_urn(
+    urn: str = None, model: str = None, start_page=0, to_page=0
+) -> DataFrame:
     """Get part of speech tags and dependency parse annotations for a text (``urn``) with a SpaCy ``model``.
 
     :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
@@ -76,13 +76,14 @@ def show_spacy_models() -> List:
     """Show available SpaCy model names."""
     try:
         r = requests.get(f"{BASE_URL}/ner_models")
-        #r.raise_for_status()
+        # r.raise_for_status()
         res = r.json()
-    except: #(HTTPError, JSONDecodeError, ConnectionError) as error:
-        #print(error.__doc__, error)
+    except:  # (HTTPError, JSONDecodeError, ConnectionError) as error:
+        # print(error.__doc__, error)
         print("Server-request gikk ikke gjennom. Kan ikke vise SpaCy-modellnavn.")
-        res =  []
+        res = []
     return res
+
 
 def get_places(urn: str) -> DataFrame:
     """Look up placenames in a specific URN.
@@ -99,10 +100,10 @@ def get_places(urn: str) -> DataFrame:
 
 
 def geo_lookup(
-        places: List,
-        feature_class: str = None,
-        feature_code: str = None,
-        field: str = "alternatename",
+    places: List,
+    feature_class: str = None,
+    feature_code: str = None,
+    field: str = "alternatename",
 ) -> DataFrame:
     """From a list of places, return their geolocations
 
@@ -133,10 +134,10 @@ def geo_lookup(
 
 
 def get_dispersion(
-        urn: str = None,
-        words: List = None,
-        window: int = 300,
-        pr: int = 100,
+    urn: str = None,
+    words: List = None,
+    window: int = 300,
+    pr: int = 100,
 ) -> Series:
     """Count occurrences of words in the given URN object.
 
@@ -166,10 +167,15 @@ def get_metadata(urns: List[str] = None) -> DataFrame:
     r = requests.post(f"{BASE_URL}/get_metadata", json=params)
     return DataFrame(r.json())
 
+
 def get_identifiers(identifiers: list = None) -> list:
     """Convert a list of identifiers, oaiid, sesamid, urns or isbn10 to dhlabids"""
-    res = requests.post(f"{BASE_URL}/identifiers", json={'identifiers':[i for i in identifiers if i != '']})
+    res = requests.post(
+        f"{BASE_URL}/identifiers",
+        json={"identifiers": [i for i in identifiers if i != ""]},
+    )
     return res.json()
+
 
 def get_chunks(urn: str = None, chunk_size: int = 300) -> Union[Dict, List]:
     """Get the text in the document ``urn`` as frequencies of chunks
@@ -231,11 +237,11 @@ def evaluate_documents(wordbags: Dict = None, urns: List[str] = None) -> DataFra
 
 
 def get_reference(
-        corpus: str = "digavis",
-        from_year: int = 1950,
-        to_year: int = 1955,
-        lang: str = "nob",
-        limit: int = 100000,
+    corpus: str = "digavis",
+    from_year: int = 1950,
+    to_year: int = 1955,
+    lang: str = "nob",
+    limit: int = 100000,
 ) -> DataFrame:
     """Reference frequency list of the n most frequent words from a given corpus in a given period.
 
@@ -280,15 +286,15 @@ def find_urns(docids: Union[Dict, DataFrame] = None, mode: str = "json") -> Data
 
 
 def _ngram_doc(
-        doctype: str = None,
-        word: Union[List, str] = ["."],
-        title: str = None,
-        period: Tuple[int, int] = None,
-        publisher: str = None,
-        lang: str = None,
-        city: str = None,
-        ddk: str = None,
-        topic: str = None,
+    doctype: str = None,
+    word: Union[List, str] = ["."],
+    title: str = None,
+    period: Tuple[int, int] = None,
+    publisher: str = None,
+    lang: str = None,
+    city: str = None,
+    ddk: str = None,
+    topic: str = None,
 ) -> DataFrame:
     """Count occurrences of one or more words over a time period.
 
@@ -332,10 +338,10 @@ def _ngram_doc(
 
 
 def reference_words(
-        words: List = None,
-        doctype: str = "digibok",
-        from_year: Union[str, int] = 1800,
-        to_year: Union[str, int] = 2000,
+    words: List = None,
+    doctype: str = "digibok",
+    from_year: Union[str, int] = 1800,
+    to_year: Union[str, int] = 2000,
 ) -> DataFrame:
     """Collect reference data for a list of words over a time period.
 
@@ -367,15 +373,15 @@ def reference_words(
 
 
 def _ngram_doc(
-        doctype: str = None,
-        word: Union[List, str] = ['.'],
-        title: str = None,
-        period: Tuple[int, int] = None,
-        publisher: str = None,
-        lang: str = None,
-        city: str = None,
-        ddk: str = None,
-        topic: str = None
+    doctype: str = None,
+    word: Union[List, str] = ["."],
+    title: str = None,
+    period: Tuple[int, int] = None,
+    publisher: str = None,
+    lang: str = None,
+    city: str = None,
+    ddk: str = None,
+    topic: str = None,
 ) -> pd.DataFrame:
     """Count occurrences of one or more words over a time period.
 
@@ -403,12 +409,12 @@ def _ngram_doc(
     params = locals()
     if isinstance(word, str):
         # assume a comma separated string
-        word = [w.strip() for w in word.split(',')]
-    params['word'] = tuple(word)
+        word = [w.strip() for w in word.split(",")]
+    params["word"] = tuple(word)
     params = {x: params[x] for x in params if not params[x] is None}
     r = requests.post(BASE_URL + "/ngram_" + doctype, json=params)
     # print(r.status_code)
-    df = pd.DataFrame.from_dict(r.json(), orient='index')
+    df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
@@ -419,14 +425,14 @@ def _ngram_doc(
 
 # @_docstring_parameters_from(_ngram_doc, drop="doctype")
 def ngram_book(
-        word: Union[List, str] = ["."],
-        title: str = None,
-        period: Tuple[int, int] = None,
-        publisher: str = None,
-        lang: str = None,
-        city: str = None,
-        ddk: str = None,
-        topic: str = None,
+    word: Union[List, str] = ["."],
+    title: str = None,
+    period: Tuple[int, int] = None,
+    publisher: str = None,
+    lang: str = None,
+    city: str = None,
+    ddk: str = None,
+    topic: str = None,
 ) -> DataFrame:
     """Count occurrences of one or more words in books over a given time period.
 
@@ -455,12 +461,12 @@ def ngram_book(
     params = locals()
     if isinstance(word, str):
         # assume a comma separated string
-        word = [w.strip() for w in word.split(',')]
-    params['word'] = tuple(word)
+        word = [w.strip() for w in word.split(",")]
+    params["word"] = tuple(word)
     params = {x: params[x] for x in params if not params[x] is None}
     r = requests.post(BASE_URL + "/ngram_book", json=params)
     # print(r.status_code)
-    df = pd.DataFrame.from_dict(r.json(), orient='index')
+    df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
@@ -471,15 +477,15 @@ def ngram_book(
 
 # @_docstring_parameters_from(_ngram_doc, drop="doctype")
 def ngram_periodicals(
-        word: Union[List, str] = ["."],
-        title: str = None,
-        period: Tuple[int, int] = None,
-        publisher: str = None,
-        lang: str = None,
-        city: str = None,
-        ddk: str = None,
-        topic: str = None,
-        **kwargs,
+    word: Union[List, str] = ["."],
+    title: str = None,
+    period: Tuple[int, int] = None,
+    publisher: str = None,
+    lang: str = None,
+    city: str = None,
+    ddk: str = None,
+    topic: str = None,
+    **kwargs,
 ) -> DataFrame:
     """Get a time series of frequency counts for ``word`` in periodicals.
 
@@ -505,12 +511,12 @@ def ngram_periodicals(
     params = locals()
     if isinstance(word, str):
         # assume a comma separated string
-        word = [w.strip() for w in word.split(',')]
-    params['word'] = tuple(word)
+        word = [w.strip() for w in word.split(",")]
+    params["word"] = tuple(word)
     params = {x: params[x] for x in params if not params[x] is None}
     r = requests.post(BASE_URL + "/ngram_periodicals", json=params)
     # print(r.status_code)
-    df = pd.DataFrame.from_dict(r.json(), orient='index')
+    df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
@@ -520,9 +526,9 @@ def ngram_periodicals(
 
 
 def ngram_news(
-        word: Union[List, str] = ["."],
-        title: str = None,
-        period: Tuple[int, int] = None,
+    word: Union[List, str] = ["."],
+    title: str = None,
+    period: Tuple[int, int] = None,
 ) -> DataFrame:
     """Get a time series of frequency counts for ``word`` in newspapers.
 
@@ -542,12 +548,12 @@ def ngram_news(
     params = locals()
     if isinstance(word, str):
         # assume a comma separated string
-        word = [w.strip() for w in word.split(',')]
-    params['word'] = tuple(word)
+        word = [w.strip() for w in word.split(",")]
+    params["word"] = tuple(word)
     params = {x: params[x] for x in params if not params[x] is None}
     r = requests.post(BASE_URL + "/ngram_newspapers", json=params)
     # print(r.status_code)
-    df = pd.DataFrame.from_dict(r.json(), orient='index')
+    df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
@@ -556,7 +562,9 @@ def ngram_news(
     return df
 
 
-def get_document_frequencies(urns: List[str] = None, cutoff: int = 0, words: List[str] = None) -> DataFrame:
+def get_document_frequencies(
+    urns: List[str] = None, cutoff: int = 0, words: List[str] = None
+) -> DataFrame:
     """Fetch frequency counts of ``words`` in documents (``urns``).
 
     Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
@@ -583,13 +591,15 @@ def get_document_frequencies(urns: List[str] = None, cutoff: int = 0, words: Lis
     else:
         df = pd.DataFrame(result)
         df.columns = ["urn", "word", "freq", "urncount"]
-        df['relfreq'] = df['freq']/df.urncount
-        df = pd.pivot_table(df, values=["freq",'relfreq'], index="word", columns="urn").fillna(0)
+        df["relfreq"] = df["freq"] / df.urncount
+        df = pd.pivot_table(
+            df, values=["freq", "relfreq"], index="word", columns="urn"
+        ).fillna(0)
     return df
 
 
 def get_word_frequencies(
-        urns: List[str] = None, cutoff: int = 0, words: List[str] = None
+    urns: List[str] = None, cutoff: int = 0, words: List[str] = None
 ) -> DataFrame:
     """Fetch frequency numbers for ``words`` in documents (``urns``).
 
@@ -603,11 +613,10 @@ def get_word_frequencies(
     """
     return get_document_frequencies(urns, cutoff, words)
 
-def get_urn_frequencies(
-        urns: List[str] = None, dhlabid: List = None
-) -> DataFrame:
+
+def get_urn_frequencies(urns: List[str] = None, dhlabid: List = None) -> DataFrame:
     """Fetch frequency counts of documents as URNs or DH-lab ids.
-    
+
     Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
     `/frequencies`.
 
@@ -617,9 +626,9 @@ def get_urn_frequencies(
         ``[1000001, 2000003]``
     """
     if dhlabid == None:
-        params = {'urns': urns}
+        params = {"urns": urns}
     else:
-        params = {'dhlabid': dhlabid}
+        params = {"dhlabid": dhlabid}
     r = requests.post(f"{BASE_URL}/urn_frequencies", json=params)
     result = r.json()
     # check if words are passed - return differs a bit
@@ -627,25 +636,26 @@ def get_urn_frequencies(
     df.columns = ["urn", "freq"]
     return df
 
+
 def get_document_corpus(**kwargs):
     return document_corpus(**kwargs)
 
 
 def document_corpus(
-        doctype: str = None,
-        author: str = None,
-        freetext: str = None,
-        fulltext: str = None,
-        from_year: int = None,
-        to_year: int = None,
-        from_timestamp: int = None,
-        to_timestamp: int = None,
-        title: str = None,
-        ddk: str = None,
-        subject: str = None,
-        lang: str = None,
-        limit: int = None,
-        order_by: str = None,
+    doctype: str = None,
+    author: str = None,
+    freetext: str = None,
+    fulltext: str = None,
+    from_year: int = None,
+    to_year: int = None,
+    from_timestamp: int = None,
+    to_timestamp: int = None,
+    title: str = None,
+    ddk: str = None,
+    subject: str = None,
+    lang: str = None,
+    limit: int = None,
+    order_by: str = None,
 ) -> DataFrame:
     """Fetch a corpus based on metadata.
 
@@ -669,7 +679,7 @@ def document_corpus(
     :param str lang: Language of the publication, as a 3-letter ISO code.
         Example: ``"nob"`` or ``"nno"``
     :param int limit: number of items to sample.
-    :param str order_by: order of elements in the corpus object. Typically used in combination with a limit. Example ``"random"`` (random order, the slowest), ``"rank"`` (ordered by relevance, faster) or ``"first"`` (breadth-first, using the order in the database table, the fastest method) 
+    :param str order_by: order of elements in the corpus object. Typically used in combination with a limit. Example ``"random"`` (random order, the slowest), ``"rank"`` (ordered by relevance, faster) or ``"first"`` (breadth-first, using the order in the database table, the fastest method)
     :return: a ``pandas.DataFrame`` with the corpus information.
     """
     parms = locals()
@@ -681,11 +691,11 @@ def document_corpus(
 
 
 def urn_collocation(
-        urns: List = None,
-        word: str = "arbeid",
-        before: int = 5,
-        after: int = 0,
-        samplesize: int = 200000,
+    urns: List = None,
+    word: str = "arbeid",
+    before: int = 5,
+    after: int = 0,
+    samplesize: int = 200000,
 ) -> DataFrame:
     """Create a collocation from a list of URNs.
 
@@ -727,7 +737,7 @@ def totals(top_words: int = 50000) -> DataFrame:
 
 
 def concordance(
-        urns: list = None, words: str = None, window: int = 25, limit: int = 100
+    urns: list = None, words: str = None, window: int = 25, limit: int = 100
 ) -> DataFrame:
     """Get a list of concordances from the National Library's database.
 
@@ -751,7 +761,7 @@ def concordance(
 
 
 def concordance_counts(
-        urns: list = None, words: str = None, window: int = 25, limit: int = 100
+    urns: list = None, words: str = None, window: int = 25, limit: int = 100
 ) -> DataFrame:
     """Count concordances (keyword in context) for a corpus query (used for collocation analysis).
 
@@ -775,14 +785,20 @@ def concordance_counts(
 
 
 def konkordans(
-        urns: list = None, words: str = None, window: int = 25, limit: int = 100
+    urns: list = None, words: str = None, window: int = 25, limit: int = 100
 ):
     """Wrapper for :func:`concordance`."""
     return concordance(**locals())
 
 
 def word_concordance(
-        urn: list = None, dhlabid: list = None, words: list = None, before: int = 12, after: int = 12, limit: int = 100, samplesize: int = 50000
+    urn: list = None,
+    dhlabid: list = None,
+    words: list = None,
+    before: int = 12,
+    after: int = 12,
+    limit: int = 100,
+    samplesize: int = 50000,
 ) -> DataFrame:
     """Get a list of concordances from the National Library's database.
 
@@ -802,19 +818,42 @@ def word_concordance(
     # is passed. The return is dhlabid anyhow.
 
     if dhlabid is not None:
-        params = {"dhlabid": dhlabid, "words": words, "before": before, "after": after, "limit": limit, "samplesize":samplesize}
+        params = {
+            "dhlabid": dhlabid,
+            "words": words,
+            "before": before,
+            "after": after,
+            "limit": limit,
+            "samplesize": samplesize,
+        }
     elif urns is not None:
-        params = {"urn": urns, "words": words,  "before": before, "after": after, "limit": limit, "samplesize":samplesize}
+        params = {
+            "urn": urns,
+            "words": words,
+            "before": before,
+            "after": after,
+            "limit": limit,
+            "samplesize": samplesize,
+        }
     else:
-        params = {"words": words,  "before": before, "after": after, "limit": limit, "samplesize":samplesize}
+        params = {
+            "words": words,
+            "before": before,
+            "after": after,
+            "limit": limit,
+            "samplesize": samplesize,
+        }
 
     r = requests.post(BASE_URL + "/conc_word_urn", json=params)
 
-    return pd.DataFrame([x for y in r.json() for x in y], columns=['dhlabid', 'before','target','after'])
+    return pd.DataFrame(
+        [x for y in r.json() for x in y],
+        columns=["dhlabid", "before", "target", "after"],
+    )
 
 
 def collocation(
-        corpusquery: str = "norge", word: str = "arbeid", before: int = 5, after: int = 0
+    corpusquery: str = "norge", word: str = "arbeid", before: int = 5, after: int = 0
 ) -> DataFrame:
     """Make a collocation from a corpus query.
 
