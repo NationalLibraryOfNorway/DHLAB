@@ -3,6 +3,7 @@ from dhlab.api.dhlab_api import concordance
 from dhlab.text.utils import urnlist, make_link
 from IPython.display import HTML
 
+
 class Concordance(pd.DataFrame):
     @property
     def _constructor(self):
@@ -38,5 +39,3 @@ class Concordance(pd.DataFrame):
             return HTML(df.to_html())
         else:
             return df
-        
-

@@ -3,7 +3,8 @@ from dhlab.api.dhlab_api import document_corpus, get_metadata
 from dhlab.text.collocations import Collocations
 from dhlab.text.concordance import Concordance
 from dhlab.text.frequencies import Frequencies
-from dhlab.text.utils import urnlist
+from dhlab.text.utils import urnlist, remove_empty_columns
+
 
 class Corpus(pd.DataFrame):
     @classmethod
@@ -40,7 +41,7 @@ class Corpus(pd.DataFrame):
             limit,
             order_by,
         )
-        return Corpus(res)
+        return remove_empty_columns(Corpus(res))
 
     def extend_from_identifiers(self, identifiers=None):
         new_corpus = get_metadata(urnlist(identifiers))
@@ -54,7 +55,7 @@ class Corpus(pd.DataFrame):
 
     def get_collocations(
         self,
-      #  corpus=None,
+        #  corpus=None,
         words=None,
         before=10,
         after=10,

@@ -17,12 +17,7 @@ def get_ngram(terms: str, corpus: str = "avis", lang: str = "nob") -> dict:
     :return: table of annual frequency counts per term
     """
     req = requests.get(
-        NGRAM_API,
-        params={
-            'terms': terms,
-            'corpus': corpus,
-            'lang':lang
-        }
+        NGRAM_API, params={"terms": terms, "corpus": corpus, "lang": lang}
     )
     if req.status_code == 200:
         res = req.text
@@ -32,7 +27,7 @@ def get_ngram(terms: str, corpus: str = "avis", lang: str = "nob") -> dict:
 
 
 def make_word_graph(
-        words: str, corpus: str = 'all', cutoff: int = 16, leaves: int = 0
+    words: str, corpus: str = "all", cutoff: int = 16, leaves: int = 0
 ) -> nx.DiGraph:
     """Get galaxy from ngram-database.
 
@@ -46,23 +41,25 @@ def make_word_graph(
     """
 
     params = dict()
-    params['terms'] = words
-    params['corpus'] = corpus
-    params['limit'] = cutoff
-    params['leaves'] = leaves
+    params["terms"] = words
+    params["corpus"] = corpus
+    params["limit"] = cutoff
+    params["leaves"] = leaves
     result = requests.get(GALAXY_API, params=params)
     G = nx.DiGraph()
     edgelist = []
     if result.status_code == 200:
         graph = json.loads(result.text)
         # print(graph)
-        nodes = graph['nodes']
-        edges = graph['links']
+        nodes = graph["nodes"]
+        edges = graph["links"]
         for edge in edges:
             edgelist += [
-                (nodes[edge['source']]['name'],
-                 nodes[edge['target']]['name'],
-                 abs(edge['value']))
+                (
+                    nodes[edge["source"]]["name"],
+                    nodes[edge["target"]]["name"],
+                    abs(edge["value"]),
+                )
             ]
     # print(edgelist)
     G.add_weighted_edges_from(edgelist)
