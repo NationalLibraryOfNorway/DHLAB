@@ -1,5 +1,4 @@
 import pandas as pd
-
 from dhlab.api.dhlab_api import get_dispersion
 
 
@@ -32,3 +31,6 @@ class Dispersion:
 
     def plot(self, **kwargs):
         self.dispersion.plot(**kwargs)
+        
+    def _ipython_display_(self):
+        self.plot()
