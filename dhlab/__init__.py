@@ -3,7 +3,9 @@
 # text 
 from dhlab.text.corpus import Corpus
 from dhlab.text.chunking import Chunks
-from dhlab.text.conc_coll import Collocations, Concordance, Counts
+from dhlab.text.collocations import Collocations
+from dhlab.text.concordance import Concordance
+from dhlab.text.frequencies import Frequencies
 from dhlab.text.wildcard import WildcardWordSearch
 from dhlab.utils.display import css
 from dhlab.utils.files import download_from_github,get_file_from_github
