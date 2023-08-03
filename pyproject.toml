@@ -46,6 +46,7 @@ sphinx_inline_tabs = "^2023.4.21"
 ipykernel = "^6.25.0"
 pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
+black = "^23.7.0"
 
 [build-system]
 requires = ["poetry-core"]
