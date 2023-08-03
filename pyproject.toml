@@ -40,12 +40,14 @@ jupyter = [
     "ipykernel",
 ]
 docs = [
-    "sphinx_inline_tabs",
-    "myst-parser",
-    "nbsphinx",
-    "sphinx-togglebutton",
-    "sphinx-copybutton",
+    "Sphinx",
     "furo",
+    "myst-parser",
+    "readthedocs-sphinx-search",
+    "sphinx-copybutton",
+    "sphinx-togglebutton",
+    "sphinx_design",
+    "sphinx_inline_tabs"
 ]
 test = [
     "pytest",

@@ -1,8 +1,8 @@
-# Optional requirements 
-# Mostly related to read
-sphinx_inline_tabs
-myst-parser
-nbsphinx
-sphinx-togglebutton
-pip install sphinx-copybutton
-furo
+furo==2023.7.26
+myst-parser==2.0.0
+readthedocs-sphinx-search==0.3.1
+Sphinx==7.1.2
+sphinx-copybutton==0.5.2
+sphinx-togglebutton==0.3.2
+sphinx_design==0.5.0
+sphinx_inline_tabs==2023.4.21
