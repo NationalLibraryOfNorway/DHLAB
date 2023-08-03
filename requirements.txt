@@ -1,8 +1,0 @@
-ipython==8.14.0
-matplotlib==3.7.2
-networkx==3.1
-pandas==2.0.3
-python-louvain==0.16
-requests==2.31.0
-scipy==1.11.1
-seaborn==0.12.2
