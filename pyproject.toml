@@ -1,15 +1,79 @@
 [build-system]
-requires = [ "setuptools>=42", "wheel >= 0.29.0", "setuptools_scm>=6.2"]
+requires = [ "setuptools>=42", "setuptools_scm>=6.2"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "dhlab"
+authors = [
+    {name = "The Digital Humanities Lab at The National Library of Norway (NB)", email = "dh-lab@nb.no"},
+]
+description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["version"]
+dependencies = [  # Replaces setup.cfg `options.install_requires`
+    "ipython == 8.14.0",
+    "matplotlib == 3.7.2",
+    "networkx == 3.1",
+    "pandas == 2.0.3",
+    "python-louvain == 0.16",
+    "requests == 2.31.0",
+    "seaborn == 0.12.2",
+    "scipy == 1.11.1",
+]
+
+[project.urls]
+Homepage = "https://www.nb.no/dh-lab/"
+Documentation = "https://dhlab.readthedocs.io/en/stable/"
+Repository = "https://github.com/NationalLibraryOfNorway/DHLAB"
+Changelog = "https://github.com/NationalLibraryOfNorway/DHLAB/blob/main/CHANGELOG.md"
+Tutorial = "https://nationallibraryofnorway.github.io/digital_tekstanalyse/tutorial.html"
+
+[project.optional-dependencies]
+jupyter = [
+    "ipykernel",
+]
+docs = [
+    "sphinx_inline_tabs",
+    "myst-parser",
+    "nbsphinx",
+    "sphinx-togglebutton",
+    "sphinx-copybutton",
+    "furo",
+]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = true
+
+[tool.setuptools.packages]
+find = {}  # Replaces `[options] packages = find: ` in setup.cfg
+
+[tool.setuptools.dynamic]
+version = {attr = "dhlab._version.version"}
 
 [tool.setuptools_scm]
 write_to = "dhlab/_version.py"
 
+[tool.pip-tools]
+upgrade = true
+allow-unsafe = false
+annotation-style = "line"
+
 [tool.pytest.ini_options]
 filterwarnings = [
-     "ignore::DeprecationWarning"
+    "ignore::DeprecationWarning"
 ]
-
 
 [tool.tox]
 legacy_tox_ini = """
@@ -29,6 +93,10 @@ commands =
 [tool.commitizen]
 name = "cz_conventional_commits"
 version = "2.26.1"
+version_files = [
+    "dhlab/_version.py",
+]
+version_provider = "scm"
 tag_format = "v$version"
 bump_message = "bump: version $current_version → $new_version [skip-ci]"
 update_changelog_on_bump = true
