@@ -28,7 +28,9 @@ pip install -U -e .
 ```
 
 ## For developers
-We use poetry to manage dependencies and the python package distribution.
+
+### Dependency management
+We use poetry to manage dependencies.
 
 - [Install poetry](https://python-poetry.org/docs/#installation)
 - Activate a virtual environment:
@@ -37,10 +39,10 @@ We use poetry to manage dependencies and the python package distribution.
     poetry shell
     ```
 
-- Install the project dependencies, including the extra development dependencies:
+- Install the project dependencies (including extra dependencies for building documentation, running the test suite, and linting/reformatting the code):
 
     ```shell
-    poetry install --with dev
+    poetry install --all-extras
     ```
 
 - Update dependency versions (see [poetry docs](https://python-poetry.org/docs/managing-dependencies/#dependency-groups) for more on dependency management):
@@ -50,6 +52,31 @@ We use poetry to manage dependencies and the python package distribution.
     ```
 
 NB! Please commit the `poetry.lock` and `pyproject.toml` files if any dependencies got updated.
+
+### Run test suite
+
+```shell
+pytest tests
+```
+
+### Reformat code
+
+```shell
+black dhlab
+```
+
+### Build documentation
+
+```shell
+cd docs
+make html
+```
+
+View the pages in a browser:
+
+```shell
+open _build/html/index.html
+```
 
 ## Contact
 <!-- start contact-info -->
