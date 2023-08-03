@@ -27,6 +27,30 @@ cd DHLAB
 pip install -U -e .
 ```
 
+## For developers
+We use poetry to manage dependencies and the python package distribution.
+
+- [Install poetry](https://python-poetry.org/docs/#installation)
+- Activate a virtual environment:
+
+    ```shell
+    poetry shell
+    ```
+
+- Install the project dependencies, including the extra development dependencies:
+
+    ```shell
+    poetry install --with dev
+    ```
+
+- Update dependency versions (see [poetry docs](https://python-poetry.org/docs/managing-dependencies/#dependency-groups) for more on dependency management):
+
+    ```shell
+    poetry update
+    ```
+
+NB! Please commit the `poetry.lock` and `pyproject.toml` files if any dependencies got updated.
+
 ## Contact
 <!-- start contact-info -->
 The code here is developed and maintained by [The Digital Humanities lab group](https://www.nb.no/dh-lab/).
