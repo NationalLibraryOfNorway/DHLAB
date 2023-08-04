@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dhlab"
-version = "3.0.0a2"
+version = "0.0.0"  # Placeholder for the poetry-dynamic-versioning plugin
 description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
 authors = ["The Digital Humanities Lab at The National Library of Norway (NB) <dh-lab@nb.no>"]
 license = "MIT"
@@ -49,5 +49,9 @@ pytest-cov = "^4.1.0"
 black = "^23.7.0"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+metadata = true
