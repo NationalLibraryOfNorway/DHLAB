@@ -79,6 +79,16 @@ View the pages in a browser:
 open _build/html/index.html
 ```
 
+### Create new release
+
+Use poetry to generate the new annotated version tag, and push the tag:
+
+```shell
+export VERSION_TAG=$(poetry version --short)
+git tag -a -m "Release version $VERSION_TAG" $VERSION_TAG
+git push --tags
+```
+
 ## Contact
 <!-- start contact-info -->
 The code here is developed and maintained by [The Digital Humanities lab group](https://www.nb.no/dh-lab/).
