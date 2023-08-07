@@ -27,6 +27,9 @@ jobs:
       - name: Update PATH
         run: echo "$HOME/.local/bin" >> $GITHUB_PATH
 
+      - name: Enable dynamic versioning plugin
+        run: poetry self add "poetry-dynamic-versioning[plugin]"
+
       - name: Build project for distribution
         run: poetry build
 
@@ -48,4 +51,6 @@ jobs:
           POETRY_PYPI_TOKEN_TESTPYPI: ${{ secrets.TESTPYPI_API_TOKEN }}
         run: |
           poetry config repositories.testpypi https://test.pypi.org/legacy/
-          poetry publish -r testpypi
+          poetry config repo
+          echo "poetry publish -r testpypi"
+
