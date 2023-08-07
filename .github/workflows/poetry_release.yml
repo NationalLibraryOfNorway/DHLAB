@@ -43,6 +43,8 @@ jobs:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           draft: false
           prerelease: steps.check-version.outputs.prerelease == 'true'
+          generateReleaseNotes: true
+          allowUpdates: true
 
       - name: Publish to testPyPI
         env:
