@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+        python-version: [ "3.9", "3.10", "3.11", "3.12"]
 
     steps:
       - uses: actions/checkout@v3
@@ -21,10 +21,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install tox
-      - name: Run pytest with tox
-        # Run tox using the version of Python in `PATH`
-        run: tox -e py
+          pip install pytest
+
+      - name: Run pytest
+        run: python -m pytest tests --cov=dhlab

@@ -1,0 +1,13 @@
+name: Sanity check
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  test_code:
+    uses: ./.github/workflows/test.yml
+  lint_code:
+    uses: ./.github/workflows/lint.yml
