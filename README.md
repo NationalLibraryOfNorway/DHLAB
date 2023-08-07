@@ -85,8 +85,8 @@ Use poetry to generate the new annotated version tag, and push the tag:
 
 ```shell
 export VERSION_TAG=$(poetry version --short)
-git tag -a -m "Release version $VERSION_TAG" $VERSION_TAG
-git push --tags
+git tag -a -m "Release version $VERSION_TAG" $VERSION_TAG   # Annotate the tag
+git push --follow-tags                                      # Push commits + tags
 ```
 
 ## Contact
