@@ -62,7 +62,8 @@ pytest tests
 ### Reformat code
 
 ```shell
-black dhlab
+isort dhlab     # Sort imports
+black dhlab     # Reformat code style according to pep8
 ```
 
 ### Build documentation
