@@ -1,19 +1,6 @@
 name: Deploy new version
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "dhlab/**"
-      - "!docs/**"
-      - "!**/*.yaml"
-      - "!**/*.yml"
-      - "!.gitignore"
-      - "!.pylintrc"
-      - "!**/*.toml"
-      - "!**/*.md"
-      - "!**/*.cfg"
-      - "!**/requirements*"
   workflow_dispatch:
   workflow_call:
 
