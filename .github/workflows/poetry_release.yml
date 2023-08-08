@@ -1,9 +1,12 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - '*.*.*'
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: 'Name of the new version to release, in the format "v0.0.0"'
+        required: true
+        type: string
 
 jobs:
   release:
