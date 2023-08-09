@@ -1,12 +1,13 @@
 from typing import Union
+
 from IPython.display import HTML
 from PIL import Image
 
 from dhlab.api.nb_search_api import (
     iiif_manifest,
+    load_picture,
     super_search,
     total_search,
-    load_picture,
 )
 
 

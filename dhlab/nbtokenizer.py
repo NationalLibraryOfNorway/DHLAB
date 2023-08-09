@@ -51,7 +51,6 @@ import re
 import sys
 import time
 
-
 fork = [
     "L\\.",
     "A/S",

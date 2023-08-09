@@ -1,4 +1,4 @@
-from typing import Union, List, Tuple, Dict
+from typing import Dict, List, Tuple, Union
 
 import pandas as pd
 import requests

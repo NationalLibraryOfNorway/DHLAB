@@ -1,9 +1,10 @@
 import pandas as pd
+
 from dhlab.api.dhlab_api import document_corpus, get_metadata
 from dhlab.text.collocations import Collocations
 from dhlab.text.concordance import Concordance
 from dhlab.text.frequencies import Frequencies
-from dhlab.text.utils import urnlist, remove_empty_columns
+from dhlab.text.utils import remove_empty_columns, urnlist
 
 
 class Corpus(pd.DataFrame):

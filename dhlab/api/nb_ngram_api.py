@@ -3,7 +3,7 @@ import json
 import networkx as nx
 import requests
 
-from dhlab.constants import NGRAM_API, GALAXY_API
+from dhlab.constants import GALAXY_API, NGRAM_API
 
 
 def get_ngram(terms: str, corpus: str = "avis", lang: str = "nob") -> dict:

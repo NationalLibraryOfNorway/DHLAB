@@ -1,4 +1,5 @@
 import pandas as pd
+
 from dhlab.api.dhlab_api import get_document_frequencies
 from dhlab.text.utils import urnlist
 

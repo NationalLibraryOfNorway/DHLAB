@@ -1,7 +1,8 @@
 import pandas as pd
-from dhlab.api.dhlab_api import concordance
-from dhlab.text.utils import urnlist, make_link
 from IPython.display import HTML
+
+from dhlab.api.dhlab_api import concordance
+from dhlab.text.utils import make_link, urnlist
 
 
 class Concordance(pd.DataFrame):
