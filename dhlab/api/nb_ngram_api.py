@@ -1,3 +1,4 @@
+"""Python wrappers for the ngram-database API."""
 import json
 
 import networkx as nx

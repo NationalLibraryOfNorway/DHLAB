@@ -1,3 +1,4 @@
+"""Handle wildcard searches."""
 from dhlab.api.dhlab_api import wildcard_search
 
 

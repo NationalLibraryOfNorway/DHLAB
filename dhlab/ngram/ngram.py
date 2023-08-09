@@ -1,3 +1,4 @@
+"""Handle ngram data from the ngram-database."""
 from datetime import datetime
 
 import pandas as pd

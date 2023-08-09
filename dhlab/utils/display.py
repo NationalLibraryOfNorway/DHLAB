@@ -1,3 +1,4 @@
+"""Style sheets and code toggling for notebooks."""
 from urllib.parse import urlparse
 
 import requests

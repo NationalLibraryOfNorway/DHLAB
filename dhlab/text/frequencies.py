@@ -1,3 +1,4 @@
+"""Handle frequencies of words in a corpus."""
 import pandas as pd
 
 from dhlab.api.dhlab_api import get_document_frequencies

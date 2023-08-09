@@ -1,3 +1,4 @@
+"""Utility functions for text analysis."""
 from pandas import DataFrame, Series
 
 import dhlab as dh

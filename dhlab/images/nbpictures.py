@@ -1,3 +1,4 @@
+"""Analyse pictures from the digital archive."""
 from typing import Union
 
 from IPython.display import HTML

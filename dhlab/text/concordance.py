@@ -1,3 +1,4 @@
+"""Handle condordances from a corpus."""
 import pandas as pd
 from IPython.display import HTML
 

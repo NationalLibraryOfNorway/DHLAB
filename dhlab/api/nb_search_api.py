@@ -1,3 +1,4 @@
+"""API for searching in the National Library of Norway's catalogue of scanned images."""
 from typing import Iterable
 
 import pandas as pd

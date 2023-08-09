@@ -1,3 +1,4 @@
+"""Fetch raw files from Github and write them to working directory."""
 import contextlib
 import os
 from pathlib import Path

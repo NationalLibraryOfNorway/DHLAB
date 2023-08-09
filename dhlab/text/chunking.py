@@ -1,3 +1,4 @@
+"""Handle chunks of texts (paragraphs or sentences)."""
 import pandas as pd
 
 from dhlab.api.dhlab_api import get_chunks, get_chunks_para

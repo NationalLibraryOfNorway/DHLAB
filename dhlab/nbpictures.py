@@ -1,3 +1,4 @@
+"""Retrieve and handle scanned images of digital objects from the National Library's collection."""
 import os
 import re
 

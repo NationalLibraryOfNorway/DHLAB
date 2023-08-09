@@ -1,3 +1,4 @@
+"""Retrieve metadata from objects in the digital archive."""
 from typing import List
 
 import pandas as pd

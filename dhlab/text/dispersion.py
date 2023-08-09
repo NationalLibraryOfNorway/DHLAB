@@ -1,11 +1,11 @@
+"""Handle dispersion of words in a text."""
 import pandas as pd
 
 from dhlab.api.dhlab_api import get_dispersion
 
 
 class Dispersion:
-    """
-    Wrapper class for get_dispersion
+    """Wrapper class for get_dispersion.
 
     Count occurrences of words in the given URN object.
     """

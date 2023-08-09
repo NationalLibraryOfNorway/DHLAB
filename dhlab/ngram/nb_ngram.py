@@ -1,3 +1,4 @@
+"""Extract ngram frequencies."""
 import pandas as pd
 
 from dhlab.api.nb_ngram_api import get_ngram

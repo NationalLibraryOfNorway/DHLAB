@@ -1,3 +1,4 @@
+"""Python wrappers for the dhlab full text API."""
 from typing import Dict, List, Tuple, Union
 
 import pandas as pd
