@@ -33,14 +33,9 @@ seaborn = "^0.12.2"
 scipy = { version = "^1.11.1", python = ">=3.9,<3.13" }
 
 [tool.poetry.group.docs.dependencies]
-Sphinx = "^7.1.2"
-furo = "^2023.7.26"
-myst-parser = "^2.0.0"
-readthedocs-sphinx-search = "^0.3.1"
-sphinx-copybutton = "^0.5.2"
-sphinx-togglebutton = "^0.3.2"
-sphinx_design = "^0.5.0"
-sphinx_inline_tabs = "^2023.4.21"
+mkdocs = "^1.5.2"
+mkdocstrings = {extras = ["python"], version = "^0.22.0"}
+mkdocs-material = "^9.1.21"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.25.0"
