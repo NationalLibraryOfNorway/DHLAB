@@ -4,17 +4,15 @@ from typing import Dict, List, Tuple, Union
 import pandas as pd
 import requests
 
-# from requests import HTTPError, JSONDecodeError, ConnectionError
 from pandas import DataFrame, Series
 
 from dhlab.constants import BASE_URL
 
 pd.options.display.max_rows = 100
 
-# wildcard search for words
-
 
 def wildcard_search(word, factor=2, freq_limit=10, limit=50):
+    """Search for words containing a wildcard."""
     res = requests.get(
         f"{BASE_URL}/wildcard_word_search",
         params={"word": word, "factor": factor, "freq_lim": freq_limit, "limit": limit},
@@ -27,12 +25,15 @@ def wildcard_search(word, factor=2, freq_limit=10, limit=50):
 
 
 def images(text=None, part=True):
-    """Retrive images from bokhylla
-    :param text: fulltext query expression for sqlite
-    :param part: if a number the whole page is shown
-    ... bug prevents these from going thru
-    :param delta: if part=True then show additional pixels around image
-    :parsm hits: number of images"""
+    """Retrive images from bokhylla.
+
+    Args:
+        text: Fulltext query expression for sqlite.
+        part (bool): If False, the full page is shown.
+
+    Returns:
+        A list of image URLs for the scanned object.
+    """
 
     params = locals()
     r = requests.get(f"{BASE_URL}/images", params=params)
@@ -43,12 +44,13 @@ def images(text=None, part=True):
 def ner_from_urn(
     urn: str = None, model: str = None, start_page=0, to_page=0
 ) -> DataFrame:
-    """Get NER annotations for a text (``urn``) using a spacy ``model``.
+    """Get NER annotations for a text using a SpaCy NLP pipeline.
 
-    :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
-    :param str model: name of a spacy model.
-        Check which models are available with :func:`show_spacy_models`
-    :return: Dataframe with annotations and their frequencies
+    Args:
+        urn (str): Uniform resource name, for example: URN:NBN:no-nb_digibok_2011051112001
+        model (str): Name of a spacy model. Check which models are available with `show_spacy_models`
+    Returns:
+        A pandas.Dataframe with annotations and their frequencies
     """
 
     params = locals()
@@ -60,12 +62,13 @@ def ner_from_urn(
 def pos_from_urn(
     urn: str = None, model: str = None, start_page=0, to_page=0
 ) -> DataFrame:
-    """Get part of speech tags and dependency parse annotations for a text (``urn``) with a SpaCy ``model``.
+    """Get part of speech tags and dependency parse annotations for a text using a SpaCy NLP pipeline.
 
-    :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
-    :param str model: name of a spacy model.
-        Check which models are available with :func:`show_spacy_models`
-    :return: Dataframe with annotations and their frequencies
+    Args:
+        urn (str): Uniform resource name, for example: URN:NBN:no-nb_digibok_2011051112001
+        model (str): Name of a spacy model. Check which models are available with `show_spacy_models`
+    Returns:
+        A pandas.Dataframe with annotations and their frequencies
     """
     params = locals()
     r = requests.get(f"{BASE_URL}/pos_urn", params=params)
@@ -89,10 +92,12 @@ def show_spacy_models() -> List:
 def get_places(urn: str) -> DataFrame:
     """Look up placenames in a specific URN.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/places <https://api.nb.no/dhlab/#/default/post_places>`_.
+    Call the API endpoint `/places`: https://api.nb.no/dhlab/#/default/post_places
 
-    :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
+    Args:
+        urn (str): Uniform resource name, for example: URN:NBN:no-nb_digibok_2011051112001
+    Returns:
+        A pandas.Dataframe with placenames occurring in the document
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/places", json=params)
@@ -108,10 +113,13 @@ def geo_lookup(
 ) -> DataFrame:
     """From a list of places, return their geolocations
 
-    :param list places: a list of place names - max 1000
-    :param str feature_class: which GeoNames feature class to return. Example: ``P``
-    :param str feature_code: which GeoNames feature code to return. Example: ``PPL``
-    :param str field: which name field to match - default "alternatename".
+    Args:
+        places (list): a list of place names - max 1000
+        feature_class (str): which GeoNames feature class to return. Example: `P`
+        feature_code (str): which GeoNames feature code to return. Example: `PPL`
+        field (str): which name field to match - default "alternatename".
+    Returns:
+        A pandas.Dataframe with geolocations for the places
     """
     res = requests.post(
         f"{BASE_URL}/geo_data",
