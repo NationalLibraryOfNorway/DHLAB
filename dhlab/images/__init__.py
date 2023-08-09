@@ -1,1 +1,1 @@
-"""Image processing functionality."""
+"""Retrieve and analyze image data."""
