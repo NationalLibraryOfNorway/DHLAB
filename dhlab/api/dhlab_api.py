@@ -319,13 +319,15 @@ def get_reference(
     return pd.DataFrame(result, columns=["word", "freq"]).set_index("word")
 
 
-def find_urns(docids: Optional[Union[Dict, DataFrame]] = None, mode: str = "json") -> DataFrame:
+def find_urns(
+    dhlabids: Optional[Union[Dict, DataFrame]] = None, mode: str = "json"
+) -> DataFrame:
     """Return a list of URNs from a collection of docids.
 
     Wrapper for the API endpoint `/find_urn`.
 
     Args:
-        docids: dictionary of document IDs (`{docid: URN}`) or a `pandas.DataFrame`.
+        dhlabids: dictionary of document IDs (`{docid: URN}`) or a `pandas.DataFrame`.
         mode: format of the input data.
 
     Returns:
