@@ -1,29 +1,11 @@
-"""Retrieve data from the digital collection of the National Library of Norway.
+"""The dhlab library subpackages and modules contain functions and objects
+to retrieve and analyze data from the digital collection of the National Library of Norway.
 
-Build text or image corpora, retrieve their metadata, and do quantitative analyses.
+You can build text corpora, retrieve their metadata, search for images, and do quantitative analyses.
 
-Examples:
+## Objects available at the top level of the package (`dhlab.*`)
 
-    >>> import dhlab as dh
-    >>> word_frequencies = dh.totals(5)
-            freq
-    .   7655423257
-    ,   5052171514
-    i   2531262027
-    og  2520268056
-    -   1314451583
-    >>> corpus = dh.Corpus.build(doctype='digibok', limit=5)
-        dhlabid                                  urn                                              title  ...  doctype ocr_creator ocr_timestamp
-    0  100131623  URN:NBN:no-nb_digibok_2013012306066  Jeg vil bestemt avvise at jeg snakker tåkete :...  ...  digibok          nb      20060101
-    1  100130790  URN:NBN:no-nb_digibok_2013012306049                              Viser for vêr og vind  ...  digibok          nb      20060101
-    2  100452778  URN:NBN:no-nb_digibok_2008080500063  The King's many bodies : the self-destruction ...  ...  digibok          nb      20060101
-    3  100205526  URN:NBN:no-nb_digibok_2014051308028  Samling af Eksempler til Indøvelse af Grammati...  ...  digibok          nb      20060101
-    4  100145471  URN:NBN:no-nb_digibok_2013041908040                                          Vilt blod  ...  digibok          nb      20060101
-
-    [5 rows x 19 columns]
-
-
-Subpackages exported by this package:
+### Subpackages
 
 - `api`: Python wrappers for API calls to the databases containing NLN's digital archive.
 - `images`: Retrieve and analyze image data.
@@ -32,13 +14,14 @@ Subpackages exported by this package:
 - `text`: Retrieve and analyze text data.
 - `utils`: Utility functions.
 
-Modules exported at the top level of this package:
+### Modules
 
 - `constants`: Constant variables used across modules.
 - `nbpictures`: Retrieve and analyze image data.
 - `nbtokenizer`: Tokenize text.
 
-Classes and functions exported at the top level of this package:
+### Classes and functions
+
 - `Corpus`
 - `Ngram`
 - `Chunks`
@@ -49,6 +32,25 @@ Classes and functions exported at the top level of this package:
 - `metadata_from_urn`
 - `metadata_query`
 - `totals`
+
+
+Examples:
+    >>> from dhlab import totals, Corpus
+    >>> totals(5)                          # get the 5 most frequent words in the whole digital text collection
+            freq
+    .   7655423257
+    ,   5052171514
+    i   2531262027
+    og  2520268056
+    -   1314451583
+
+    >>> Corpus.build(doctype='digibok', limit=5)        # build a corpus of 5 books
+        dhlabid                                  urn                                              title  ...  doctype ocr_creator ocr_timestamp
+    0  100380777  URN:NBN:no-nb_digibok_2018061307595                           Meldal rotaryklubb 50 år  ...  digibok          nb      20060101
+    1  100539747  URN:NBN:no-nb_digibok_2011051808092                  Peter : fisker, discipel, apostel  ...  digibok          nb      20060101
+    2  100284614  URN:NBN:no-nb_digibok_2016022548132                             Barcelona og Catalonia  ...  digibok          nb      20060101
+    3  100184299  URN:NBN:no-nb_digibok_2009060904091                   Det kan komme fine dager : roman  ...  digibok          nb      20060101
+    4  100363545  URN:NBN:no-nb_digibok_2018021305017  Miljølære i grunnskolen : [for barnetrinnet]. ...  ...  digibok          nb      20060101
 """
 
 # api
