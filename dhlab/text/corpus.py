@@ -13,15 +13,13 @@ class Corpus(pd.DataFrame):
 
     Examples:
         >>> from dhlab import Corpus
-        >>> corpus = Corpus.build(doctype='digibok', limit=5)
+        >>> Corpus.build(doctype='digibok', limit=5)
             dhlabid                                  urn                                              title  ...  doctype ocr_creator ocr_timestamp
         0  100131623  URN:NBN:no-nb_digibok_2013012306066  Jeg vil bestemt avvise at jeg snakker tåkete :...  ...  digibok          nb      20060101
         1  100130790  URN:NBN:no-nb_digibok_2013012306049                              Viser for vêr og vind  ...  digibok          nb      20060101
         2  100452778  URN:NBN:no-nb_digibok_2008080500063  The King's many bodies : the self-destruction ...  ...  digibok          nb      20060101
         3  100205526  URN:NBN:no-nb_digibok_2014051308028  Samling af Eksempler til Indøvelse af Grammati...  ...  digibok          nb      20060101
         4  100145471  URN:NBN:no-nb_digibok_2013041908040                                          Vilt blod  ...  digibok          nb      20060101
-
-        [5 rows x 19 columns]
 
     The attributes of the corpus are the same as for a
     [pandas DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html),
