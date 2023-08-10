@@ -1,0 +1,15 @@
+site_name: dhlab documentation
+
+
+theme:
+  name: "material"
+
+plugins:
+  - mkdocstrings
+
+nav:
+  - index.md
+  - docs_installation.md
+  - reference.md
+  - docs_functionality.md
+  - docs_example_use.md
