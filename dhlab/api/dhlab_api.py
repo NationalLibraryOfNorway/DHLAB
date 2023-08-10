@@ -86,7 +86,12 @@ def pos_from_urn(
 
 
 def show_spacy_models() -> List:
-    """Show available SpaCy model names."""
+    """Show available SpaCy model names.
+
+    Examples:
+        >>> show_spacy_models()
+        ['nb_core_news_lg', 'da_core_news_lg', 'nb_core_news_sm', 'en_core_web_lg', 'en_core_web_md', 'da_core_news_trf']
+    """
     try:
         r = requests.get(f"{BASE_URL}/ner_models")
         # r.raise_for_status()
@@ -101,13 +106,16 @@ def show_spacy_models() -> List:
 def get_places(urn: str) -> DataFrame:
     """Look up placenames in a specific URN.
 
-    Call the API endpoint `/places`: https://api.nb.no/dhlab/#/default/post_places
+    Wrapper for the API endpoint [`/places`](https://api.nb.no/dhlab/#/default/post_places)
 
     Args:
         urn: Uniform resource name, for example: URN:NBN:no-nb_digibok_2011051112001
 
     Returns:
         A pandas.Dataframe with placenames occurring in the document
+
+    Warning:
+        The input parameter is **not** optional.
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/places", json=params)
@@ -180,8 +188,15 @@ def get_dispersion(
 def get_metadata(urns: Optional[List[str]] = None) -> DataFrame:
     """Get metadata for a list of URNs.
 
-    Calls the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/get_metadata <https://api.nb.no/dhlab/#/default/post_get_metadata>`_.
+    Wrapper for the API endpoint [`/get_metadata`](https://api.nb.no/dhlab/#/default/post_get_metadata).
+
+    Examples:
+        >>> urns = ["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2008040200106"]
+        >>> meta = get_metadata(urns)
+        >>> meta.title
+        0    Historiske skildringer fra Baahuslen (Viken) :...
+        1    Ibsen-ordbok : ordforrådet i Henrik Ibsens sam...
+        Name: title, dtype: object
 
     Args:
         urns: Uniform resource name strings.
@@ -200,6 +215,11 @@ def get_metadata(urns: Optional[List[str]] = None) -> DataFrame:
 def get_identifiers(identifiers: Optional[list] = None) -> list:
     """Convert a list of resource identifiers to dhlabids.
 
+    Examples:
+        >>> urns = ['URN:NBN:no-nb_digibok_2008051404065', 'URN:NBN:no-nb_digibok_2008040200106']
+        >>> ids = get_identifiers(urns)
+        >>> ids
+        [100445059, 100480157, 100615433]
 
     Args:
         identifiers: collection of oaiid, sesamid, urn or isbn10 identifiers
@@ -222,6 +242,10 @@ def get_chunks(urn: Optional[str] = None, chunk_size: int = 300) -> Union[Dict, 
 
     Wrapper for the API endpoint `/chunks`.
 
+    Examples:
+        >>> chunks = get_chunks("URN:NBN:no-nb_digibok_2006082900066", chunk_size=100)
+        >>> len(chunks)
+        154              # Number of chunks that were found
 
     Args:
         urn: Uniform resource name
@@ -272,6 +296,20 @@ def evaluate_documents(
 
     Wrapper for the API endpoint `/evaluate`.
 
+    Examples:
+        >>> wordbags = {"natur": ["planter", "skog", "fjell", "fjord"], "dyr": ["hund", "katt", "fugl"]}
+        >>> urns = ["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]
+        >>> df = evaluate_documents(wordbags, urns)
+        >>> df.dyr
+        100014739     NaN
+        100445059    40.0
+        100630502     NaN
+        Name: dyr, dtype: float64
+        >>> df.natur
+        100014739    19.0
+        100445059    38.0
+        100630502    20.0
+        Name: natur, dtype: float64
 
     Args:
         wordbags: mapping between topics and lists of associated words or keywords.
@@ -299,6 +337,21 @@ def get_reference(
 
     Wrapper for the API endpoint [`/reference_corpus`](https://api.nb.no/dhlab/#/default/get_reference_corpus).
 
+    Examples:
+        >>> df = r = get_reference(limit=10)
+        >>> df.freq.head(10)
+        word
+        .      179730338
+        ,      105895990
+        i       63385398
+        og      58712477
+        til     30987239
+        det     30559690
+        er      30390595
+        som     27248209
+        av      26264497
+        for     10385602
+        Name: freq, dtype: int64
 
     Args:
         corpus: Document type to include in the corpus, can be either `'digibok'` or `'digavis'`.
@@ -738,14 +791,15 @@ def totals(top_words: int = 50000) -> DataFrame:
     Wrapper for the API endpoint [`/totals/{top_words}`](https://api.nb.no/dhlab/#/default/get_totals__top_words).
 
     Examples:
-        >>> # get the 5 most frequent words in the whole digital text collection
-        >>> totals(5)
-                freq
-        .   7655423257
-        ,   5052171514
-        i   2531262027
-        og  2520268056
-        -   1314451583
+        >>> # get the 5 most frequent words
+        >>> t = totals(5)
+        >>> t.freq
+        .     7655423257
+        ,     5052171514
+        i     2531262027
+        og    2520268056
+        -     1314451583
+        Name: freq, dtype: int64
 
     Args:
         top_words: The number of words to get total frequencies for.
