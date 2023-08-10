@@ -6,10 +6,10 @@ theme:
 
 plugins:
   - mkdocstrings
+  - search
+  - autorefs
 
 nav:
-  - index.md
-  - docs_installation.md
+  - Home: index.md
   - reference.md
-  - docs_functionality.md
-  - docs_example_use.md
+  - API wrappers: sub_api.md
