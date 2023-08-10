@@ -11,8 +11,11 @@ from dhlab.constants import BASE_URL
 pd.options.display.max_rows = 100
 
 
-def wildcard_search(word, factor=2, freq_limit=10, limit=50):
+def wildcard_search(
+    word: str, factor: int = 2, freq_limit: int = 10, limit: int = 50
+) -> DataFrame:
     """Search for words containing a wildcard."""
+
     res = requests.get(
         f"{BASE_URL}/wildcard_word_search",
         params={"word": word, "factor": factor, "freq_lim": freq_limit, "limit": limit},
@@ -21,15 +24,12 @@ def wildcard_search(word, factor=2, freq_limit=10, limit=50):
     return pd.DataFrame.from_dict(res.json(), orient="index", columns=["freq"])
 
 
-# fetch metadata
-
-
-def images(text=None, part=True):
+def images(text: Optional[str] = None, part: bool = True):
     """Retrive images from bokhylla.
 
     Args:
         text: Fulltext query expression for sqlite.
-        part (bool): If False, the full page is shown.
+        part: If False, the full page is shown.
 
     Returns:
         A list of image URLs for the scanned object.
@@ -42,17 +42,21 @@ def images(text=None, part=True):
 
 
 def ner_from_urn(
-    urn: Optional[str] = None, model: Optional[str] = None, start_page=0, to_page=0
+    urn: Optional[str] = None,
+    model: Optional[str] = None,
+    start_page: int = 0,
+    to_page: int = 0,
 ) -> DataFrame:
     """Get NER annotations for a text using a SpaCy NLP pipeline.
 
     Args:
-        urn (str): Uniform resource name, for example: URN:NBN:no-nb_digibok_2011051112001
-        model (str): Name of a spacy model. Check which models are available with `show_spacy_models`
+        urn: Uniform resource name, for example: URN:NBN:no-nb_digibok_2011051112001
+        model: Name of a spacy model. Check which models are available with `show_spacy_models()`
+        start_page: First page to include in the analysis
+        to_page: Last page to include in the analysis
     Returns:
-        A pandas.Dataframe with annotations and their frequencies
+        Name annotations and their frequencies
     """
-
     params = locals()
     r = requests.get(f"{BASE_URL}/ner_urn", params=params)
     df = pd.read_json(r.json())
@@ -60,15 +64,20 @@ def ner_from_urn(
 
 
 def pos_from_urn(
-    urn: Optional[str] = None, model: Optional[str] = None, start_page=0, to_page=0
+    urn: Optional[str] = None,
+    model: Optional[str] = None,
+    start_page: int = 0,
+    to_page: int = 0,
 ) -> DataFrame:
     """Get part of speech tags and dependency parse annotations for a text using a SpaCy NLP pipeline.
 
     Args:
-        urn (str): Uniform resource name, for example: URN:NBN:no-nb_digibok_2011051112001
-        model (str): Name of a spacy model. Check which models are available with `show_spacy_models`
+        urn: Uniform resource name, for example: URN:NBN:no-nb_digibok_2011051112001
+        model: Name of a spacy model. Check which models are available with `show_spacy_models`
+        start_page: First page to include in the analysis
+        to_page: Last page to include in the analysis
     Returns:
-        A pandas.Dataframe with annotations and their frequencies
+        POS tag annotations and their frequencies
     """
     params = locals()
     r = requests.get(f"{BASE_URL}/pos_urn", params=params)
@@ -95,7 +104,8 @@ def get_places(urn: str) -> DataFrame:
     Call the API endpoint `/places`: https://api.nb.no/dhlab/#/default/post_places
 
     Args:
-        urn (str): Uniform resource name, for example: URN:NBN:no-nb_digibok_2011051112001
+        urn: Uniform resource name, for example: URN:NBN:no-nb_digibok_2011051112001
+
     Returns:
         A pandas.Dataframe with placenames occurring in the document
     """
@@ -111,15 +121,16 @@ def geo_lookup(
     feature_code: Optional[str] = None,
     field: str = "alternatename",
 ) -> DataFrame:
-    """From a list of places, return their geolocations
+    """From a list of places, return their geolocations.
 
     Args:
-        places (list): a list of place names - max 1000
-        feature_class (str): which GeoNames feature class to return. Example: `P`
-        feature_code (str): which GeoNames feature code to return. Example: `PPL`
-        field (str): which name field to match - default "alternatename".
+        places: a list of place names - max 1000
+        feature_class: which GeoNames feature class to return. Example: `P`
+        feature_code: which GeoNames feature code to return. Example: `PPL`
+        field: which name field to match.
+
     Returns:
-        A pandas.Dataframe with geolocations for the places
+        Placenames and their corresponding geolocations.
     """
     res = requests.post(
         f"{BASE_URL}/geo_data",
@@ -150,20 +161,16 @@ def get_dispersion(
 ) -> Series:
     """Count occurrences of words in the given URN object.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint ``/dispersion``.
+    Wrapper for the API endpoint `/dispersion`.
 
     Args:
-        urn (str): uniform resource name, example: ``URN:NBN:no-
-            nb_digibok_2011051112001``
-        words (list): list of words. Defaults to a list of punctuation
-            marks.
-        window (int): The number of tokens to search through per row.
-            Defaults to 300.
-        pr (int): defaults to 100.
+        urn: Uniform resource name, for example: `URN:NBN:no-nb_digibok_2011051112001`
+        words: Words to count occurrences of. Defaults to a list of punctuation marks.
+        window: The number of tokens to search through per row.
+        pr: The number of rows to search through per request.
 
     Returns:
-        a ``pandas.Series`` with frequency counts of the words in the
-        URN object.
+        Frequency counts of the words in the `urn` text object.
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/dispersion", json=params)
@@ -177,9 +184,13 @@ def get_metadata(urns: Optional[List[str]] = None) -> DataFrame:
     `/get_metadata <https://api.nb.no/dhlab/#/default/post_get_metadata>`_.
 
     Args:
-        urns (list): list of uniform resource name strings, for example:
-            ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-
-            nb_digibok_2010092120011"]``
+        urns: Uniform resource name strings.
+
+    Returns:
+        Metadata for the given URNs.
+
+    Warning:
+        The input parameter is **not** optional.
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/get_metadata", json=params)
@@ -187,7 +198,18 @@ def get_metadata(urns: Optional[List[str]] = None) -> DataFrame:
 
 
 def get_identifiers(identifiers: Optional[list] = None) -> list:
-    """Convert a list of identifiers, oaiid, sesamid, urns or isbn10 to dhlabids"""
+    """Convert a list of resource identifiers to dhlabids.
+
+
+    Args:
+        identifiers: collection of oaiid, sesamid, urn or isbn10 identifiers
+
+    Returns:
+        list of dhlabids corresponding to the input identifiers.
+
+    Warning:
+        The input parameter is **not** optional.
+    """
     res = requests.post(
         f"{BASE_URL}/identifiers",
         json={"identifiers": [i for i in identifiers if i != ""]},
@@ -196,16 +218,14 @@ def get_identifiers(identifiers: Optional[list] = None) -> list:
 
 
 def get_chunks(urn: Optional[str] = None, chunk_size: int = 300) -> Union[Dict, List]:
-    """Get the text in the document ``urn`` as frequencies of chunks
-     of the given ``chunk_size``.
+    """Fetch word frequencies for chunks of a given number of tokens per chunk in a text document.
 
-    Calls the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    ``/chunks``.
+    Wrapper for the API endpoint `/chunks`.
+
 
     Args:
-        urn (str): uniform resource name, example: ``URN:NBN:no-
-            nb_digibok_2011051112001``
-        chunk_size (int): Number of tokens to include in each chunk.
+        urn: Uniform resource name
+        chunk_size: Number of tokens to include in each chunk.
 
     Returns:
         list of dicts with the resulting chunk frequencies, or an empty
@@ -223,18 +243,16 @@ def get_chunks(urn: Optional[str] = None, chunk_size: int = 300) -> Union[Dict, 
 
 
 def get_chunks_para(urn: Optional[str] = None) -> Union[Dict, List]:
-    """Fetch chunks and their frequencies from paragraphs in a document (``urn``).
+    """Fetch chunks and their word frequencies from paragraphs in a text document.
 
-    Calls the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    ``/chunks_para``.
+    Wrapper for the API endpoint `/chunks_para`.
 
     Args:
-        urn (str): uniform resource name, example: ``URN:NBN:no-
-            nb_digibok_2011051112001``
+        urn: Uniform resource name, example: `URN:NBN:no-nb_digibok_2011051112001`
 
     Returns:
-        list of dicts with the resulting chunk frequencies, or an empty
-        dict
+        A list of paragraph dictionaries with word frequencies.
+        If the input parameter is missing, an empty dict is returned.
     """
 
     if urn is None:
@@ -247,20 +265,21 @@ def get_chunks_para(urn: Optional[str] = None) -> Union[Dict, List]:
     return result
 
 
-def evaluate_documents(wordbags: Optional[Dict] = None, urns: Optional[List[str]] = None) -> DataFrame:
-    """Count and aggregate occurrences of topic ``wordbags`` for each document in a list of ``urns``.
+def evaluate_documents(
+    wordbags: Optional[Dict] = None, urns: Optional[List[str]] = None
+) -> DataFrame:
+    """Count and aggregate occurrences of topic words in a collection of text documents.
+
+    Wrapper for the API endpoint `/evaluate`.
+
 
     Args:
-        wordbags (dict): a dictionary of topic keywords and lists of
-            associated words. Example: ``{"natur": ["planter", "skog",
-            "fjell", "fjord"], ... }``
-        urns (list): uniform resource names, for example:
-            ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-
-            nb_digibok_2010092120011"]``
+        wordbags: mapping between topics and lists of associated words or keywords.
+        urns: uniform resource names of the documents to evaluate.
 
     Returns:
-        a ``pandas.DataFrame`` with the topics as columns, indexed by
-        the dhlabids of the documents.
+        Aggregated frequencies of the keywords in each topic per text document.
+        The index is the dhlabid of the document.
     """
     res = requests.post(
         f"{BASE_URL}/evaluate", json={"wordbags": wordbags, "urns": urns}
@@ -276,22 +295,20 @@ def get_reference(
     lang: str = "nob",
     limit: int = 100000,
 ) -> DataFrame:
-    """Reference frequency list of the n most frequent words from a given corpus in a given period.
+    """Fetch a reference for the most frequent words from a given corpus in a given period.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/reference_corpus <https://api.nb.no/dhlab/#/default/get_reference_corpus>`_.
+    Wrapper for the API endpoint [`/reference_corpus`](https://api.nb.no/dhlab/#/default/get_reference_corpus).
+
 
     Args:
-        corpus (str): Document type to include in the corpus, can be
-            either ``'digibok'`` or ``'digavis'``.
-        from_year (int): Starting point for time period of the corpus.
-        to_year (int): Last year of the time period of the corpus.
-        lang (str): Language of the corpus, can be one of ``'nob,',
-            'nno,', 'sme,', 'sma,', 'smj', 'fkv'``
-        limit (int): Maximum number of most frequent words.
+        corpus: Document type to include in the corpus, can be either `'digibok'` or `'digavis'`.
+        from_year: Starting point for time period of the corpus.
+        to_year: Last year of the time period of the corpus.
+        lang: Language of the corpus. Valid values are `'nob','nno','sme','sma','smj','fkv'`.
+        limit: Maximum number of most frequent words.
 
     Returns:
-        A ``pandas.DataFrame`` with the results.
+        A multilevel dataframe with word frequencies, where the words are the index.
     """
     params = locals()
     r = requests.get(BASE_URL + "/reference_corpus", params=params)
@@ -305,13 +322,11 @@ def get_reference(
 def find_urns(docids: Optional[Union[Dict, DataFrame]] = None, mode: str = "json") -> DataFrame:
     """Return a list of URNs from a collection of docids.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/find_urn`.
+    Wrapper for the API endpoint `/find_urn`.
 
     Args:
-        docids: dictionary of document IDs (``{docid: URN}``) or a
-            ``pandas.DataFrame``.
-        mode (str): Default 'json'.
+        docids: dictionary of document IDs (`{docid: URN}`) or a `pandas.DataFrame`.
+        mode: format of the input data.
 
     Returns:
         the URNs that were found, in a ``pandas.DataFrame``.
@@ -325,64 +340,6 @@ def find_urns(docids: Optional[Union[Dict, DataFrame]] = None, mode: str = "json
     return res
 
 
-def _ngram_doc(
-    doctype: Optional[str] = None,
-    word: Union[List, str] = ["."],
-    title: Optional[str] = None,
-    period: Optional[Tuple[int, int]] = None,
-    publisher: Optional[str] = None,
-    lang: Optional[str] = None,
-    city: Optional[str] = None,
-    ddk: Optional[str] = None,
-    topic: Optional[str] = None,
-) -> DataFrame:
-    """Count occurrences of one or more words over a time period.
-
-    The type of document to search through is decided by the ``doctype``.
-    Filter the selection of documents with metadata.
-    Use % as wildcard where appropriate - no wildcards in ``word`` or ``lang``.
-
-    Args:
-        doctype (str): API endpoint for the document type to get ngrams
-            for. Can be ``'book'``, ``'periodicals'``, or
-            ``'newspapers'``.
-        word (str or list of str): Word(s) to search for. Can be several
-            words in a single string, separated by comma, e.g.
-            ``"ord,ordene,orda"``.
-        title (str): Title of a specific document to search through.
-        period (tuple of ints): Start and end years or dates of a time
-            period, given as ``(YYYY, YYYY)`` or ``(YYYYMMDD,
-            YYYYMMDD)``.
-        publisher (str): Name of a publisher.
-        lang (str): Language as a 3-letter ISO code (e.g. ``"nob"`` or
-            ``"nno"``)
-        city (str): City of publication.
-        ddk (str): `Dewey Decimal Classification
-            <https://no.wikipedia.org/wiki/Deweys_desimalklassifikasjon>
-            `_ identifier.
-        topic (str): Topic of the documents.
-
-    Returns:
-        a ``pandas.DataFrame`` with the resulting frequency counts of
-        the word(s), spread across years. One year per row.
-    """
-    params = locals()
-    if isinstance(word, str):
-        # assume a comma separated string
-        word = [w.strip() for w in word.split(",")]
-    params["word"] = tuple(word)
-    params = {x: params[x] for x in params if not params[x] is None}
-    r = requests.post(BASE_URL + "/ngram_" + doctype, json=params)
-    # print(r.status_code)
-    df = pd.DataFrame.from_dict(r.json(), orient="index")
-    df.index = df.index.map(lambda x: tuple(x.split()))
-    columns = df.index.levels[0]
-    df = pd.concat([df.loc[x] for x in columns], axis=1)
-    df.columns = columns
-    # df.index = df.index.map(pd.Timestamp)
-    return df
-
-
 def reference_words(
     words: Optional[List] = None,
     doctype: str = "digibok",
@@ -391,24 +348,20 @@ def reference_words(
 ) -> DataFrame:
     """Collect reference data for a list of words over a time period.
 
-    Reference data are the absolute and relative frequencies of the ``words``
-    across all documents of the given ``doctype`` in the given time period
-    (``from_year`` - ``to_year``).
+    Reference data are the absolute and relative frequencies of the `words`
+    across all documents of the given `doctype` in the given time period
+    (`from_year` - `to_year`).
 
     Args:
-        words (list): list of word strings.
-        doctype (str): type of reference document. Can be ``"digibok"``
-            or ``"digavis"``. Defaults to ``"digibok"``.
-
-            .. note::
-               If any other string is given as the ``doctype``,
-               the resulting data is equivalent to what you get with
-               ``doctype="digavis"``.
-        from_year (int): first year of publication
-        to_year (int): last year of publication
+        words: list of word strings.
+        doctype: type of reference document. Can be `"digibok"` or `"digavis"`.
+            > **Note:** If any other string is given as the `doctype`,
+               the resulting data is equivalent to what you get with `doctype="digavis"`.
+        from_year: first year of publication to include
+        to_year: last year of publication to include
 
     Returns:
-        a DataFrame with the words' frequency data
+        A dataframe with frequencies per year for each input word.
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/reference_words", json=params)
@@ -430,34 +383,29 @@ def _ngram_doc(
     city: Optional[str] = None,
     ddk: Optional[str] = None,
     topic: Optional[str] = None,
-) -> pd.DataFrame:
+) -> DataFrame:
     """Count occurrences of one or more words over a time period.
 
-    The type of document to search through is decided by the ``endpoint``.
+    The type of document to search through is decided by the `doctype`.
     Filter the selection of documents with metadata.
-    Use % as wildcard where appropriate - no wildcards in ``word`` or ``lang``.
+    Use % as wildcard where appropriate - no wildcards in `word` or `lang`.
 
     Args:
-        doctype (str): API endpoint for the document type to get ngrams
-            for. Can be ``'book'``, ``'periodicals'``, or
-            ``'newspapers'``.
-        word (str or list of str): Word(s) to search for. Can be several
-            words in a single string, separated by comma.
+        doctype: API endpoint for the document type to get ngrams for.
+            Can be `'book', 'periodicals', or 'newspapers'`.
+        word: Word(s) to search for. Can be several words in a single string separated by comma,
+            for example `"ord,ordene,orda"`.
         title: Title of a specific document to search through.
-        period (tuple[int,int]): Start and end years of a time period,
-            given as ``(start year, end year)``.
-        publisher (str): Name of a publisher.
-        lang (str): Language as a 3-letter ISO code (e.g. ``"nob"`` or
-            ``"nno"``)
-        city (str): City of publication.
-        ddk (str): `Dewey Decimal Classification
-            <https://no.wikipedia.org/wiki/Deweys_desimalklassifikasjon>
-            `_ identifier.
-        topic (str): Topic of the documents.
+        period: Start and end years or dates of a time period,
+            given as `(YYYY, YYYY)` or `(YYYYMMDD, YYYYMMDD)`.
+        publisher: Name of a publisher.
+        lang: Language as a 3-letter ISO code, for example `"nob"` or `"nno"`
+        city: City of publication.
+        ddk: Dewey Decimal Classification identifier.
+        topic: Topic of the documents.
 
     Returns:
-        a `pandas.DataFrame` with the resulting frequency counts of the
-        word(s), spread across years. One year per row.
+        Frequency counts of the word(s), spread across years. One year per row.
     """
     params = locals()
     if isinstance(word, str):
@@ -489,32 +437,25 @@ def ngram_book(
 ) -> DataFrame:
     """Count occurrences of one or more words in books over a given time period.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/ngram_book`.
+    Wrapper for the API endpoint `/ngram_book`.
 
     Filter the selection of books with metadata.
     Use % as wildcard where appropriate - no wildcards in ``word`` or ``lang``.
 
     Args:
-        word (str or list of str): Word(s) to search for. Can be several
-            words in a single string, separated by comma, e.g.
-            ``"ord,ordene,orda"``.
-        title (str): Title of a specific document to search through.
-        period (tuple of ints): Start and end years or dates of a time
-            period, given as ``(YYYY, YYYY)`` or ``(YYYYMMDD,
-            YYYYMMDD)``.
-        publisher (str): Name of a publisher.
-        lang (str): Language as a 3-letter ISO code (e.g. ``"nob"`` or
-            ``"nno"``)
-        city (str): City of publication.
-        ddk (str): `Dewey Decimal Classification
-            <https://no.wikipedia.org/wiki/Deweys_desimalklassifikasjon>
-            `_ identifier.
-        topic (str): Topic of the documents.
+        word: Word(s) to search for. Can be several words in a single string separated by comma,
+            for example `"ord,ordene,orda"`.
+        title: Title of a specific document to search through.
+        period: Start and end years or dates of a time period,
+            given as `(YYYY, YYYY)` or `(YYYYMMDD, YYYYMMDD)`.
+        publisher: Name of a publisher.
+        lang: Language as a 3-letter ISO code, for example `"nob"` or `"nno"`
+        city: City of publication.
+        ddk: Dewey Decimal Classification identifier.
+        topic: Topic of the documents.
 
     Returns:
-        a ``pandas.DataFrame`` with the resulting frequency counts of
-        the word(s), spread across years. One year per row.
+        Frequency counts of the word(s), spread across years. One year per row.
     """
     params = locals()
     if isinstance(word, str):
@@ -545,31 +486,22 @@ def ngram_periodicals(
     topic: Optional[str] = None,
     **kwargs,
 ) -> DataFrame:
-    """Get a time series of frequency counts for ``word`` in periodicals.
-
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/ngram_periodicals`.
+    """Get a time series of frequency counts for `word` in periodicals.
 
     Args:
-        word (str or list of str): Word(s) to search for. Can be several
-            words in a single string, separated by comma, e.g.
-            ``"ord,ordene,orda"``.
-        title (str): Title of a specific document to search through.
-        period (tuple of ints): Start and end years or dates of a time
-            period, given as ``(YYYY, YYYY)`` or ``(YYYYMMDD,
-            YYYYMMDD)``.
-        publisher (str): Name of a publisher.
-        lang (str): Language as a 3-letter ISO code (e.g. ``"nob"`` or
-            ``"nno"``)
-        city (str): City of publication.
-        ddk (str): `Dewey Decimal Classification
-            <https://no.wikipedia.org/wiki/Deweys_desimalklassifikasjon>
-            `_ identifier.
-        topic (str): Topic of the documents.
+        word: Word(s) to search for. Can be several words in a single string separated by comma,
+            for example `"ord,ordene,orda"`.
+        title: Title of a specific document to search through.
+        period: Start and end years or dates of a time period,
+            given as `(YYYY, YYYY)` or `(YYYYMMDD, YYYYMMDD)`.
+        publisher: Name of a publisher.
+        lang: Language as a 3-letter ISO code, for example `"nob"` or `"nno"`
+        city: City of publication.
+        ddk: Dewey Decimal Classification identifier.
+        topic: Topic of the documents.
 
     Returns:
-        a ``pandas.DataFrame`` with the resulting frequency counts of
-        the word(s), spread across years. One year per row.
+        Frequency counts of the word(s), spread across years. One year per row.
     """
     params = locals()
     if isinstance(word, str):
@@ -593,23 +525,19 @@ def ngram_news(
     title: Optional[str] = None,
     period: Optional[Tuple[int, int]] = None,
 ) -> DataFrame:
-    """Get a time series of frequency counts for ``word`` in newspapers.
+    """Get a time series of frequency counts for a given word in newspapers.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/ngram_newspapers`.
+    Wrapper for the API endpoint `/ngram_newspapers`.
 
     Args:
-        word (str or list of str): Word(s) to search for. Can be several
-            words in a single string, separated by comma, e.g.
-            ``"ord,ordene,orda"``.
-        title (str): Title of a specific newspaper to search through.
-        period (tuple of ints): Start and end years or dates of a time
-            period, given as ``(YYYY, YYYY)`` or ``(YYYYMMDD,
-            YYYYMMDD)``.
+        word: Word(s) to search for. Can be several words in a single string separated by comma,
+            for example `"ord,ordene,orda"`.
+        title: Title of a specific newspaper to search through.
+        period: Start and end years or dates of a time period,
+            given as `(YYYY, YYYY)` or `(YYYYMMDD, YYYYMMDD)`.
 
     Returns:
-        a ``pandas.DataFrame`` with the resulting frequency counts of
-        the word(s), spread across the dates given in the time period.
+        Frequency counts of the word(s), spread across the dates given in the time period.
         Either one year or one day per row.
     """
     params = locals()
@@ -632,19 +560,17 @@ def ngram_news(
 def get_document_frequencies(
     urns: Optional[List[str]] = None, cutoff: int = 0, words: Optional[List[str]] = None
 ) -> DataFrame:
-    """Fetch frequency counts of ``words`` in documents (``urns``).
+    """Fetch frequency counts of `words` in text documents.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/frequencies`.
+    Wrapper for the API endpoint `/frequencies`.
 
     Args:
-        urns (list): list of uniform resource name strings, for example:
-            ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-
-            nb_digibok_2010092120011"]``
-        cutoff (int): minimum frequency of a word to be counted
-        words (list): a list of words to be counted - if left None,
-            whole document is returned. If not None both the counts and
-            their relative frequency is returned.
+        urns: list of uniform resource name strings, for example:
+            `["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]`
+        cutoff: minimum frequency of a word to be counted
+        words: a list of words to be counted.
+            If a value is provided, both word counts and their relative frequency is returned.
+            If not, all words from the whole document are returned.
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/frequencies", json=params)
@@ -672,34 +598,30 @@ def get_document_frequencies(
 def get_word_frequencies(
     urns: Optional[List[str]] = None, cutoff: int = 0, words: Optional[List[str]] = None
 ) -> DataFrame:
-    """Fetch frequency numbers for ``words`` in documents (``urns``).
+    """Fetch frequencies for `words` in text documents.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/frequencies`.
+    Wrapper for the API endpoint `/frequencies`.
 
     Args:
-        urns (list): list of uniform resource name strings, for example:
-            ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-
-            nb_digibok_2010092120011"]``
-        cutoff (int): minimum frequency of a word to be counted
-        words (list): a list of words to be counted - should not be left
-            None.
+        urns: Uniform resource name strings, for example:
+            `["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]`
+        cutoff: minimum frequency of a word to include in the output.
+        words: a list of words to be counted - should not be left None.
     """
     return get_document_frequencies(urns, cutoff, words)
 
 
-def get_urn_frequencies(urns: Optional[List[str]] = None, dhlabid: Optional[List] = None) -> DataFrame:
-    """Fetch frequency counts of documents as URNs or DH-lab ids.
+def get_urn_frequencies(
+    urns: Optional[List[str]] = None, dhlabid: Optional[List] = None
+) -> DataFrame:
+    """Fetch frequency counts of documents as URNs or dhlabids.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/frequencies`.
+    Wrapper for the API endpoint `/frequencies`.
 
     Args:
-        urns (list): list of uniform resource name strings, for example:
-            ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-
-            nb_digibok_2010092120011"]``
-        dhlabid (list): list of numbers for dhlabid: ``[1000001,
-            2000003]``
+        urns: Uniform resource name strings, for example:
+            `["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]`
+        dhlabid: list of dhlabids, e.g. `[1000001,2000003]`
     """
     if dhlabid == None:
         params = {"urns": urns}
@@ -714,6 +636,7 @@ def get_urn_frequencies(urns: Optional[List[str]] = None, dhlabid: Optional[List
 
 
 def get_document_corpus(**kwargs):
+    """Wrapper for `document_corpus()`."""
     return document_corpus(**kwargs)
 
 
@@ -735,39 +658,34 @@ def document_corpus(
 ) -> DataFrame:
     """Fetch a corpus based on metadata.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/build_corpus <https://api.nb.no/dhlab/#/default/post_build_corpus>`_.
+    Wrapper for the API endpoint [`/build_corpus`](https://api.nb.no/dhlab/#/default/post_build_corpus).
 
     Args:
-        doctype (str): ``"digibok"``, ``"digavis"``,
-            ``"digitidsskrift"`` or ``"digistorting"``
-        author (str): Name of an author.
-        freetext (str): any of the parameters, for example: ``"digibok
-            AND Ibsen"``.
-        fulltext (str): words within the publication.
-        from_year (int): Start year for time period of interest.
-        to_year (int): End year for time period of interest.
-        from_timestamp (int): Start date for time period of interest.
-            Format: ``YYYYMMDD``, books have ``YYYY0101``
-        to_timestamp (int): End date for time period of interest.
-            Format: ``YYYYMMDD``, books have ``YYYY0101``
-        title (str): Name or title of a document.
-        ddk (str): `Dewey Decimal Classification
-            <https://no.wikipedia.org/wiki/Deweys_desimalklassifikasjon>
-            `_ identifier.
-        subject (str): subject (keywords) of the publication.
-        lang (str): Language of the publication, as a 3-letter ISO code.
-            Example: ``"nob"`` or ``"nno"``
-        limit (int): number of items to sample.
-        order_by (str): order of elements in the corpus object.
-            Typically used in combination with a limit. Example
-            ``"random"`` (random order, the slowest), ``"rank"``
-            (ordered by relevance, faster) or ``"first"`` (breadth-
-            first, using the order in the database table, the fastest
-            method)
+        doctype: `"digibok"`, `"digavis"`, `"digitidsskrift"` or `"digistorting"`.
+        author: Name of an author.
+        freetext: SQL query syntax for any of the metadata parameter values, for example: `"digibok AND Ibsen"`.
+        fulltext: words within the publication.
+        from_year: Start year for time period of interest.
+        to_year: End year for time period of interest.
+        from_timestamp: Start date for time period of interest.
+            Format: `YYYYMMDD`, books have `YYYY0101`
+        to_timestamp: End date for time period of interest.
+            Format: `YYYYMMDD`, books have `YYYY0101`
+        title: Name or title of a document.
+        ddk: Dewey Decimal Classification identifier.
+        subject: subject or topic keywords of the publication.
+        lang: Language of the publication, as a 3-letter ISO code.
+            Example: `"nob"` or `"nno"`
+        limit: number of items to sample.
+        order_by: order of elements in the corpus object.
+            Typically used in combination with a limit.
+            Example:
+                `"random"` (random order, the slowest),
+                `"rank"` (ordered by relevance, faster)
+                or `"first"` (breadth-first, using the order in the database table, the fastest method)
 
     Returns:
-        a ``pandas.DataFrame`` with the corpus information.
+        Corpus metadata in a DataFrame.
     """
     parms = locals()
     params = {x: parms[x] for x in parms if not parms[x] is None}
@@ -786,22 +704,19 @@ def urn_collocation(
 ) -> DataFrame:
     """Create a collocation from a list of URNs.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/urncolldist_urn`.
+    Wrapper for the API endpoint `/urncolldist_urn`.
 
     Args:
-        urns (list): list of uniform resource name strings, for example:
-            ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-
-            nb_digibok_2010092120011"]``
-        word (str): word to construct collocation with.
-        before (int): number of words preceding the given ``word``.
-        after (int): number of words following the given ``word``.
-        samplesize (int): total number of ``urns`` to search through.
+        urns: list of uniform resource name strings, for example:
+            `["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]`
+        word: word to construct collocation with.
+        before: number of words preceding the given `word`.
+        after: number of words following the given `word`.
+        samplesize: total number of `urns` to search through.
 
     Returns:
-        a ``pandas.DataFrame`` with distance (sum of distances and
-        bayesian distance) and frequency for words collocated with
-        ``word``.
+        A dataframe with distances (the sum of distances and
+        bayesian distance) and frequencies for words collocated with `word`.
     """
 
     params = {
@@ -831,34 +746,33 @@ def totals(top_words: int = 50000) -> DataFrame:
         -   1314451583
 
     Args:
-        top_words: The number of words to get total frequencies
-            for.
+        top_words: The number of words to get total frequencies for.
 
     Returns:
-        a dataframe with the most frequent words.
+        The most frequent words in the complete digital text collection.
     """
     r = requests.get(BASE_URL + f"/totals/{top_words}")
     return pd.DataFrame.from_dict(dict(r.json()), orient="index", columns=["freq"])
 
 
 def concordance(
-    urns: Optional[list] = None, words: Optional[str] = None, window: int = 25, limit: int = 100
+    urns: Optional[list] = None,
+    words: Optional[str] = None,
+    window: int = 25,
+    limit: int = 100,
 ) -> DataFrame:
-    """Get a list of concordances from the National Library's database.
+    """Get concordances for given words from a collection of text documents.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/conc <https://api.nb.no/dhlab/#/default/post_conc>`_.
+    Wrapper for the API endpoint [`/conc`](https://api.nb.no/dhlab/#/default/post_conc).
 
     Args:
-        urns (list): uniform resource names, for example:
-            ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-
-            nb_digibok_2010092120011"]``
-        words (str): Word(s) to search for. Can be an SQLite fulltext
+        urns: uniform resource names, for example:
+            `["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]`
+        words: Word(s) to search for. Can be an SQLite fulltext
             query, an fts5 string search expression.
-        window (int): number of tokens on either side to show in the
+        window: number of tokens on either side to show in the
             collocations, between 1-25.
-        limit (int): max. number of concordances per document. Maximum
-            value is 1000.
+        limit: max. number of concordances per document. Maximum value is 1000.
 
     Returns:
         a table of concordances
@@ -872,26 +786,27 @@ def concordance(
 
 
 def concordance_counts(
-    urns: Optional[list] = None, words: Optional[str] = None, window: int = 25, limit: int = 100
+    urns: Optional[list] = None,
+    words: Optional[str] = None,
+    window: int = 25,
+    limit: int = 100,
 ) -> DataFrame:
     """Count concordances (keyword in context) for a corpus query (used for collocation analysis).
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/conccount <https://api.nb.no/dhlab/#/default/post_conccount>`_.
+    Wrapper for the API endpoint [`/conccount`](https://api.nb.no/dhlab/#/default/post_conccount).
 
     Args:
-        urns (list): uniform resource names, for example:
-            ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-
-            nb_digibok_2010092120011"]``
-        words (str): Word(s) to search for. Can be an SQLite fulltext
+        urns: uniform resource names, for example:
+            `["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]`
+        words: Word(s) to search for. Can be an SQLite fulltext
             query, an fts5 string search expression.
-        window (int): number of tokens on either side to show in the
+        window: number of tokens on either side to show in the
             collocations, between 1-25.
-        limit (int): max. number of concordances per document. Maximum
+        limit: Maximum number of concordances to include per document. Maximum
             value is 1000.
 
     Returns:
-        a table of counts
+        A frequency table for the concordances
     """
     if words is None:
         return {}  # exit condition
@@ -902,14 +817,17 @@ def concordance_counts(
 
 
 def konkordans(
-    urns: Optional[list] = None, words: Optional[str] = None, window: int = 25, limit: int = 100
+    urns: Optional[list] = None,
+    words: Optional[str] = None,
+    window: int = 25,
+    limit: int = 100,
 ):
-    """Wrapper for :func:`concordance`."""
+    """Wrapper for `concordance()`."""
     return concordance(**locals())
 
 
 def word_concordance(
-    urn: Optional[list] = None,
+    urns: Optional[list] = None,
     dhlabid: Optional[list] = None,
     words: Optional[list] = None,
     before: int = 12,
@@ -919,17 +837,16 @@ def word_concordance(
 ) -> DataFrame:
     """Get a list of concordances from the National Library's database.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
-    `/conc <https://api.nb.no/dhlab/#/default/conc_word_urn>`_.
+    Wrapper for the API endpoint [`/conc`](https://api.nb.no/dhlab/#/default/conc_word_urn).
 
     Args:
-        urns (list): dhlab serial ids. (server can take both urns and
-            dhlabid but so we may rewrite this to)
-        words (str): Word(s) to search for -- must be a list
-        before (int): between 0-24.
-        after (int): between 0-24 (before + sum <= 24)
-        limit (int): max. number of concordances per server process.
-        samplesize (int): samples from urns.
+        urns: dhlab serial ids.
+            > Note: The server can take both urns and dhlabid, so we may rewrite this)
+        words: Word(s) to search for. Must be a list.
+        before: Between 0-24.
+        after: Between 0-24 (before + sum <= 24)
+        limit: max. number of concordances per server process.
+        samplesize: samples from urns.
 
     Returns:
         a table of concordances
@@ -979,10 +896,10 @@ def collocation(
     """Make a collocation from a corpus query.
 
     Args:
-        corpusquery (str): query string
-        word (str): target word for the collocations.
-        before (int): number of words prior to ``word``
-        after (int): number of words following ``word``
+        corpusquery: query string
+        word: target word for the collocations.
+        before: number of words prior to `word`
+        after: number of words following `word`
 
     Returns:
         a dataframe with the resulting collocations
@@ -1001,19 +918,18 @@ def collocation(
 
 
 def word_variant(word: str, form: str, lang: str = "nob") -> list:
-    """Find alternative ``form`` for a given ``word`` form.
+    """Find an alternative wordform for a given word.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint ``/variant_form``
+    Wrapper for the API endpoint `/variant_form`.
 
-    Example: ``word_variant('spiste', 'pres-part')``
+    Examples:
+        >>> word_variant('spiste', 'pres-part')
 
     Args:
-        word (str): any word string
-        form (str): a morphological feature tag from the Norwegian
-            wordbank `"Orbanken"
-            <https://www.nb.no/sprakbanken/ressurskatalog/oai-nb-no-
-            sbr-5/>`_.
-        lang (str): either "nob" or "nno"
+        word: any word string
+        form: a morphological feature tag from the Norwegian wordbank
+            [Orbanken](https://www.nb.no/sprakbanken/ressurskatalog/oai-nb-no-sbr-5/).
+        lang: either "nob" or "nno"
     """
     r = requests.get(
         f"{BASE_URL}/variant_form", params={"word": word, "form": form, "lang": lang}
@@ -1024,19 +940,16 @@ def word_variant(word: str, form: str, lang: str = "nob") -> list:
 def word_paradigm(word: str, lang: str = "nob") -> list:
     """Find paradigms for a given ``word`` form.
 
-    Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint ``/paradigm``
+    API endpoint `/paradigm`.
 
-    Example:
-
-    .. code-block:: python
-
-        word_paradigm('spiste')
-        # [['adj', ['spisende', 'spist', 'spiste']],
-        # ['verb', ['spis', 'spise', 'spiser', 'spises', 'spist', 'spiste']]]
+    Examples:
+        >>> word_paradigm('spiste')
+        [['adj', ['spisende', 'spist', 'spiste']],
+        ['verb', ['spis', 'spise', 'spiser', 'spises', 'spist', 'spiste']]]
 
     Args:
-        word (str): any word string
-        lang (str): either "nob" or "nno"
+        word: any word string
+        lang: either "nob" or "nno"
     """
     r = requests.get(f"{BASE_URL}/paradigm", params={"word": word, "lang": lang})
     return r.json()
@@ -1049,19 +962,19 @@ def word_paradigm_many(wordlist: list, lang: str = "nob") -> list:
 
 
 def word_form(word: str, lang: str = "nob") -> list:
-    """Look up the morphological feature specification of a ``word`` form."""
+    """Look up the morphological feature specification of a word form."""
     r = requests.get(f"{BASE_URL}/word_form", params={"word": word, "lang": lang})
     return r.json()
 
 
 def word_form_many(wordlist: list, lang: str = "nob") -> list:
-    """Look up the morphological feature specifications for word forms in a ``wordlist``."""
+    """Look up the morphological feature specifications for word forms in a wordlist."""
     r = requests.post(f"{BASE_URL}/word_forms", json={"words": wordlist, "lang": lang})
     return r.json()
 
 
 def word_lemma(word: str, lang: str = "nob") -> list:
-    """Find the list of possible lemmas for a given ``word`` form."""
+    """Find the list of possible lemmas for a given word form."""
     r = requests.get(f"{BASE_URL}/word_lemma", params={"word": word, "lang": lang})
     return r.json()
 
