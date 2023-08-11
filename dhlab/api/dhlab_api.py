@@ -169,7 +169,7 @@ def get_dispersion(
 ) -> Series:
     """Count occurrences of words in the given URN object.
 
-    Wrapper for the API endpoint `/dispersion`.
+    Wrapper for the API endpoint [`/dispersion`](https://api.nb.no/dhlab/#/default/post_dispersion).
 
     Args:
         urn: Uniform resource name, for example: `URN:NBN:no-nb_digibok_2011051112001`
@@ -240,7 +240,7 @@ def get_identifiers(identifiers: Optional[list] = None) -> list:
 def get_chunks(urn: Optional[str] = None, chunk_size: int = 300) -> Union[Dict, List]:
     """Fetch word frequencies for chunks of a given number of tokens per chunk in a text document.
 
-    Wrapper for the API endpoint `/chunks`.
+    Wrapper for the API endpoint [`/chunks`](https://api.nb.no/dhlab/#/default/get_chunks).
 
     Examples:
         >>> chunks = get_chunks("URN:NBN:no-nb_digibok_2006082900066", chunk_size=100)
@@ -269,7 +269,7 @@ def get_chunks(urn: Optional[str] = None, chunk_size: int = 300) -> Union[Dict, 
 def get_chunks_para(urn: Optional[str] = None) -> Union[Dict, List]:
     """Fetch chunks and their word frequencies from paragraphs in a text document.
 
-    Wrapper for the API endpoint `/chunks_para`.
+    Wrapper for the API endpoint [`/chunks_para`](https://api.nb.no/dhlab/#/default/get_chunks_para).
 
     Args:
         urn: Uniform resource name, example: `URN:NBN:no-nb_digibok_2011051112001`
@@ -293,8 +293,6 @@ def evaluate_documents(
     wordbags: Optional[Dict] = None, urns: Optional[List[str]] = None
 ) -> DataFrame:
     """Count and aggregate occurrences of topic words in a collection of text documents.
-
-    Wrapper for the API endpoint `/evaluate`.
 
     Examples:
         >>> wordbags = {"natur": ["planter", "skog", "fjell", "fjord"], "dyr": ["hund", "katt", "fugl"]}
@@ -376,8 +374,6 @@ def find_urns(
     dhlabids: Optional[Union[Dict, DataFrame]] = None, mode: str = "json"
 ) -> DataFrame:
     """Return a list of URNs from a collection of docids.
-
-    Wrapper for the API endpoint `/find_urn`.
 
     Args:
         dhlabids: dictionary of document IDs (`{docid: URN}`) or a `pandas.DataFrame`.
@@ -492,7 +488,7 @@ def ngram_book(
 ) -> DataFrame:
     """Count occurrences of one or more words in books over a given time period.
 
-    Wrapper for the API endpoint `/ngram_book`.
+    Wrapper for the API endpoint [`/ngram_book`](https://api.nb.no/dhlab/#/default/post_ngram_book)
 
     Filter the selection of books with metadata.
     Use % as wildcard where appropriate - no wildcards in ``word`` or ``lang``.
@@ -543,6 +539,8 @@ def ngram_periodicals(
 ) -> DataFrame:
     """Get a time series of frequency counts for `word` in periodicals.
 
+    Wrapper for the API endpoint [`/ngram_periodicals`](https://api.nb.no/dhlab/#/default/post_ngram_periodicals).
+
     Args:
         word: Word(s) to search for. Can be several words in a single string separated by comma,
             for example `"ord,ordene,orda"`.
@@ -582,7 +580,7 @@ def ngram_news(
 ) -> DataFrame:
     """Get a time series of frequency counts for a given word in newspapers.
 
-    Wrapper for the API endpoint `/ngram_newspapers`.
+    Wrapper for the API endpoint [`ngram_newspapers`](https://api.nb.no/dhlab/#/default/post_ngram_newspapers).
 
     Args:
         word: Word(s) to search for. Can be several words in a single string separated by comma,
@@ -617,7 +615,7 @@ def get_document_frequencies(
 ) -> DataFrame:
     """Fetch frequency counts of `words` in text documents.
 
-    Wrapper for the API endpoint `/frequencies`.
+    Wrapper for the API endpoint [`/frequencies`](https://api.nb.no/dhlab/#/default/post_frequencies).
 
     Args:
         urns: list of uniform resource name strings, for example:
@@ -655,7 +653,7 @@ def get_word_frequencies(
 ) -> DataFrame:
     """Fetch frequencies for `words` in text documents.
 
-    Wrapper for the API endpoint `/frequencies`.
+    Wrapper for the API endpoint [`/frequencies`](https://api.nb.no/dhlab/#/default/post_frequencies).
 
     Args:
         urns: Uniform resource name strings, for example:
@@ -671,7 +669,7 @@ def get_urn_frequencies(
 ) -> DataFrame:
     """Fetch frequency counts of documents as URNs or dhlabids.
 
-    Wrapper for the API endpoint `/frequencies`.
+    Wrapper for the API endpoint [`/frequencies`](https://api.nb.no/dhlab/#/default/post_frequencies).
 
     Args:
         urns: Uniform resource name strings, for example:
@@ -893,7 +891,7 @@ def word_concordance(
 ) -> DataFrame:
     """Get a list of concordances from the National Library's database.
 
-    Wrapper for the API endpoint [`/conc`](https://api.nb.no/dhlab/#/default/conc_word_urn).
+    Wrapper for the API endpoint [`/conc_word_urn`](https://api.nb.no/dhlab/#/default/conc_word_urn).
 
     Args:
         urns: dhlab serial ids.
@@ -976,8 +974,6 @@ def collocation(
 def word_variant(word: str, form: str, lang: str = "nob") -> list:
     """Find an alternative wordform for a given word.
 
-    Wrapper for the API endpoint `/variant_form`.
-
     Examples:
         >>> word_variant('spiste', 'pres-part')
 
@@ -995,8 +991,6 @@ def word_variant(word: str, form: str, lang: str = "nob") -> list:
 
 def word_paradigm(word: str, lang: str = "nob") -> list:
     """Find paradigms for a given ``word`` form.
-
-    API endpoint `/paradigm`.
 
     Examples:
         >>> word_paradigm('spiste')
