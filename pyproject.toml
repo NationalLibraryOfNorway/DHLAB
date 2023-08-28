@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dhlab"
-version = "0.0.0"  # Placeholder for the poetry-dynamic-versioning plugin
+version = "3.0.0a6"  # Placeholder for the poetry-dynamic-versioning plugin
 description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
 authors = ["The Digital Humanities Lab at The National Library of Norway (NB) <dh-lab@nb.no>"]
 license = "MIT"
@@ -21,9 +21,6 @@ exclude = ["docs/", "tests/"]
 "Changelog" = "https://github.com/NationalLibraryOfNorway/DHLAB/blob/main/CHANGELOG.md"
 "Tutorials" = "https://nationallibraryofnorway.github.io/digital_tekstanalyse/tutorial.html"
 
-[[tool.poetry.repositories]]
-url = "https://test.pypi.org/legacy/"
-name = "testpypi"
 
 [tool.poetry.dependencies]
 python = "^3.9"
