@@ -21,6 +21,10 @@ exclude = ["docs/", "tests/"]
 "Changelog" = "https://github.com/NationalLibraryOfNorway/DHLAB/blob/main/CHANGELOG.md"
 "Tutorials" = "https://nationallibraryofnorway.github.io/digital_tekstanalyse/tutorial.html"
 
+[[tool.poetry.repositories]]
+url = "https://test.pypi.org/legacy/"
+name = "testpypi"
+
 [tool.poetry.dependencies]
 python = "^3.9"
 ipython = "^8.14.0"
