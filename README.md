@@ -3,7 +3,7 @@
 
 <!-- start dhlab-intro -->
 
- [`dhlab`](https://pypi.org/project/dhlab/) is a python library for doing qualitative and quantitative analyses of the digital texts from [*nettbiblioteket*](https://www.nb.no/search) (eng: "the online library") at the [National Library of Norway](https://www.nb.no/) (NLN). *Nettbiblioteket* is the NLN's digital collection of media publications.
+ [`dhlab`](https://pypi.org/project/dhlab/) is a python library for doing qualitative and quantitative analyses of the digital texts from [*Nettbiblioteket*](https://www.nb.no/search) (eng: "the online library") at the [National Library of Norway](https://www.nb.no/) (NLN). *Nettbiblioteket* is the NLN's digital collection of media publications.
 
 <!-- end dhlab-intro -->
 
