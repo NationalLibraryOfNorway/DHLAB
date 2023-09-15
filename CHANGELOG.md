@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.26.2 (2023-09-15)
+
+### Fix
+
+- metadata natbib
+- readme
+
 ## v2.26.1 (2023-04-12)
 
 ### Fix
