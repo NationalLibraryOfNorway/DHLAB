@@ -10,3 +10,6 @@ def test_metadata_query():
     assert len(res) > 0
     assert isinstance(res, list)
     
+def test_metadata_from_urn():
+    pass
+    
