@@ -12,4 +12,7 @@ def test_metadata_query():
     
 def test_metadata_from_urn():
     pass
+
+def test_metadata():
+    pass
     
