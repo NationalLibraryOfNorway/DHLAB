@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.26.4 (2023-09-26)
+
+### Fix
+
+- add test placeholder
+
 ## v2.26.3 (2023-09-26)
 
 ### Fix
