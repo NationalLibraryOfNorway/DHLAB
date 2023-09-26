@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.26.3 (2023-09-26)
+
+### Fix
+
+- add test for metadata_from_urn
+
 ## v2.26.2 (2023-09-15)
 
 ### Fix
