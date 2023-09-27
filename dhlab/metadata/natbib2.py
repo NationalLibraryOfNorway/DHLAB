@@ -20,7 +20,7 @@ class QueryBuilder:
     """
 
     endpoint = (
-        "https://api.nb.no/dhlab/metadata_query2"  # Replace with your actual endpoint
+        "https://api.nb.no/dhlab/metadata_query2" 
     )
 
     def __init__(self):
