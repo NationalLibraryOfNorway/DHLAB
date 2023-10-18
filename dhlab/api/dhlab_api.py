@@ -901,5 +901,10 @@ def word_lemma(word: str, lang: str = "nob") -> list:
 
 def word_lemma_many(wordlist, lang="nob"):
     """Find lemmas for a list of given word forms."""
-    r = requests.post(f"{BASE_URL}/word_lemmas", json={"words": wordlist, "lang": lang})
+
+def query_imagination_corpus(category=None, author=None, title=None, year=None, publisher=None, place=None, oversatt=None):
+    params = locals()
+    params = {key: params[key] for key in params if params[key] is not None}
+    #print(params)
+    r = requests.get(f"{BASE_URL}/imagination", params=params)
     return r.json()
