@@ -903,6 +903,7 @@ def word_lemma_many(wordlist, lang="nob"):
     """Find lemmas for a list of given word forms."""
 
 def query_imagination_corpus(category=None, author=None, title=None, year=None, publisher=None, place=None, oversatt=None):
+    """Fetch data from imagination corpus"""
     params = locals()
     params = {key: params[key] for key in params if params[key] is not None}
     #print(params)
