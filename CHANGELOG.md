@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.26.5 (2023-10-19)
+
+### Fix
+
+- Update corpus_conc_coll.py
+
 ## v2.26.4 (2023-09-26)
 
 ### Fix
