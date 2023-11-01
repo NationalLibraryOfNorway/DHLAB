@@ -2,22 +2,34 @@ name: Lint Python Code
 
 on:
   workflow_call:
+  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.x"
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pylint
+
       - name: Analysing the code with pylint
         run: pylint dhlab --ignore legacy --suggestion-mode True --exit-zero
+
+      - name: Reformat code with black
+        uses: psf/black@stable
+
+      - name: Commit reformatted code
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "style: Automatically reformat code with Black [skip-ci]"

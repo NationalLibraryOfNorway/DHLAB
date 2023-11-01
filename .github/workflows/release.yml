@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: 'Name of the new version to release, in the format "vX.Y.Z"'
+        required: true
+        type: string
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python - -y
+
+      - name: Update PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Enable dynamic versioning plugin
+        run: poetry self add "poetry-dynamic-versioning[plugin]"
+
+      - name: Build project for distribution
+        run: poetry build
+
+      - name: Check Version
+        id: check-version
+        run: |
+          [[ "$(poetry version --short)" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || echo prerelease=true >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/*"
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          draft: false
+          prerelease: steps.check-version.outputs.prerelease == 'true'
+          generateReleaseNotes: true
+          allowUpdates: true
+
+      - name: Publish to testPyPI
+        env:
+          POETRY_PYPI_TOKEN_TESTPYPI: ${{ secrets.TESTPYPI_API_TOKEN }}
+        run: |
+          poetry config repositories.testpypi https://test.pypi.org/legacy/
+          poetry config repo
+          echo "poetry publish -r testpypi"
+
+      - name: Publish to Pypi
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          echo "poetry publish"
