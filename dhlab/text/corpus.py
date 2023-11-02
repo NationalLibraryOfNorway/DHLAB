@@ -1,6 +1,6 @@
 from pandas import DataFrame
 import pandas as pd
-# from dhlab.text.dhlab_object import DhlabObj
+from dhlab.text.dhlab_object import DhlabObj
 from dhlab.api.dhlab_api import document_corpus, get_metadata, evaluate_documents
 import dhlab as dh
 from dhlab.text.utils import urnlist
