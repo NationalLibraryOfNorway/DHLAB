@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.27.0 (2023-11-02)
+
+### Feat
+
+- **corpus**: subsetting methods
+
 ## v2.26.5 (2023-10-19)
 
 ### Fix
