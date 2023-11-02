@@ -1,20 +1,35 @@
 from typing import Union
 import pandas as pd
+from abc import ABC, abstractmethod
 
 
-class DhlabObj:
+class DhlabObj(ABC):
     """DHLAB base class
 
     Provides shared utility methods to DHLAB classes.
     """
 
-    def __init__(self, frame):
+    def __init__(self, frame : pd.DataFrame = pd.DataFrame()):
         self.frame = frame
 
-        self.size = None
-        if isinstance(frame, pd.DataFrame):
-            self.size = len(frame)
+        # self.size = None
+        # if isinstance(frame, pd.DataFrame):
+        #     self.size = len(frame)
 
+    @property
+    def size(self):
+        return len(self.frame)
+    
+    @property
+    def loc(self):
+        return self.frame.loc
+    
+    def make_subset(self, row_slice, col_slice):
+        return self.from_df(self.frame.loc[:, col_slice].iloc[row_slice])
+    
+    def __getitem__(self, *args, **kwargs):
+        return self.from_df(self.frame.__getitem__(*args, **kwargs))
+    
     def __repr__(self) -> str:
         """
         Return the string representation of the  DhlabObj frame attribute
@@ -44,9 +59,9 @@ class DhlabObj:
     def to_excel(self, path):
         self.frame.to_excel(path, index=None)
 
-    @classmethod
+    @abstractmethod
     def from_df(cls, df):
-        return DhlabObj(df)
+        pass
 
     @classmethod
     def from_csv(cls, path):
