@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.27.1 (2023-11-02)
+
+### Fix
+
+- **corpus**: small bug
+
 ## v2.27.0 (2023-11-02)
 
 ### Feat
