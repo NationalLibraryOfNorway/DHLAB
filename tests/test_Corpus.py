@@ -18,4 +18,7 @@ class TestCorpus():
         freq = c.freq()
         assert len(freq.frame) > 0 
         assert len(freq.frame.columns) == 2
+        
+    def test_empty_corpus(self):
+        pass
     

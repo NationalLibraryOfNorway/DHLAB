@@ -87,7 +87,9 @@ class Corpus(DhlabObj):
             self.corpus = pd.DataFrame(columns=["urn"])
 
         super().__init__(self.corpus)
-        self.size = len(self.corpus)
+        # self.size = len(self.corpus)
+        
+        self.frame.rename(columns={'urn':'urn', 'authors':'author', "langs" : "language", "genres" : "genre"}, inplace=True)
         
     @classmethod
     def from_identifiers(cls, identifiers):
@@ -102,13 +104,17 @@ class Corpus(DhlabObj):
         """Typecast Pandas DataFrame to Corpus class
 
         DataFrame most contain URN column"""
+        
+        # If Series, return as is
+        if isinstance(df, pd.Series):
+            return df
+            
         corpus = Corpus()
         if check_for_urn:
             corpus.corpus = cls._urn_id_in_dataframe_cols(df)
         else:
             corpus.corpus = df
         corpus.frame = corpus.corpus
-        corpus.size = len(corpus.corpus)
         return corpus
 
     @classmethod
@@ -190,6 +196,44 @@ class Corpus(DhlabObj):
         if type(corpus) not in [DataFrame, Corpus]:
             raise TypeError("Input is not Corpus or DataFrame")
         return isinstance(corpus, Corpus)
+    
+    def __add__(self, other):
+        """Add two Corpus objects"""
+        if not self._is_Corpus(other):
+            raise TypeError("Input is not Corpus or DataFrame")
+        return self.from_df(pd.concat([self.frame, other.frame]).drop_duplicates().reset_index(drop=True))
+    
+    
+    def _make_subcorpus(self, **kwargs):
+        dct = kwargs.copy()
+        year_range = dct.pop('year_range', None)
+        
+        for key in dct.keys():
+            if key not in self.frame.columns:
+                print(f"Key {key} not in corpus")
+                return None   
+        
+        # Make result dataframe
+        res = self.frame.copy()
+        
+        # Get year range
+        if year_range is not None:
+            y1 = int(year_range[0])
+            y2 = int(year_range[1])
+            
+            # Apply year range
+            res = res.loc[res['year'] >= y1].loc[res["year"] <= y2]
+            
+        for key, val in dct.items():
+            res = res.loc[res[key].str.contains(val)]
+    
+        return self.from_df(res)
 
-
-
+    def make_subcorpus(self, authors = None, title = None):
+        dct = {}
+        if authors is not None:
+            dct['author'] = authors
+        if title is not None:
+            dct['title'] = title
+            
+        return self._make_subcorpus(**dct)
