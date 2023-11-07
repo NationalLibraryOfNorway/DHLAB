@@ -4,6 +4,7 @@ from dhlab.text.dhlab_object import DhlabObj
 from dhlab.api.dhlab_api import document_corpus, get_metadata, evaluate_documents
 import dhlab as dh
 from dhlab.text.utils import urnlist
+
 # from dhlab.text.conc_coll import Concordance, Collocations, Counts
 
 
@@ -14,25 +15,26 @@ class Corpus(DhlabObj):
     in National Library's collections and metadata about them.
     Use with `.coll`, `.conc` or `.freq` to analyse using dhlab tools.
     """
-    def __init__(
-            self,
-            doctype=None,
-            author=None,
-            freetext=None,
-            fulltext=None,
-            from_year=None,
-            to_year=None,
-            from_timestamp=None,
-            to_timestamp=None,
-            title=None,
-            ddk=None,
-            subject=None,
-            lang=None,
-            limit=10,
-            order_by="random"
-            ):
 
-        if (doctype
+    def __init__(
+        self,
+        doctype=None,
+        author=None,
+        freetext=None,
+        fulltext=None,
+        from_year=None,
+        to_year=None,
+        from_timestamp=None,
+        to_timestamp=None,
+        title=None,
+        ddk=None,
+        subject=None,
+        lang=None,
+        limit=10,
+        order_by="random",
+    ):
+        if (
+            doctype
             or author
             or freetext
             or fulltext
@@ -42,7 +44,8 @@ class Corpus(DhlabObj):
             or to_timestamp
             or title
             or ddk
-            or lang):
+            or lang
+        ):
             """Create Corpus
 
         :param str doctype: ``"digibok"``, ``"digavis"``, \
@@ -80,7 +83,7 @@ class Corpus(DhlabObj):
                 subject,
                 lang,
                 limit,
-                order_by
+                order_by,
             )
 
         else:
@@ -88,27 +91,34 @@ class Corpus(DhlabObj):
 
         super().__init__(self.corpus)
         # self.size = len(self.corpus)
-        
-        self.frame.rename(columns={'urn':'urn', 'authors':'author', "langs" : "language", "genres" : "genre"}, inplace=True)
-        
+
+        self.frame.rename(
+            columns={
+                "urn": "urn",
+                "authors": "author",
+                "langs": "language",
+                "genres": "genre",
+            },
+            inplace=True,
+        )
+
     @classmethod
     def from_identifiers(cls, identifiers):
         """Construct Corpus from list of identifiers"""
         corpus = Corpus()
         corpus.extend_from_identifiers(identifiers=identifiers)
         return corpus
-        
 
     @classmethod
     def from_df(cls, df, check_for_urn=False):
         """Typecast Pandas DataFrame to Corpus class
 
         DataFrame most contain URN column"""
-        
+
         # If Series, return as is
         if isinstance(df, pd.Series):
             return df
-            
+
         corpus = Corpus()
         if check_for_urn:
             corpus.corpus = cls._urn_id_in_dataframe_cols(df)
@@ -135,19 +145,23 @@ class Corpus(DhlabObj):
         new_corpus = get_metadata(urnlist(identifiers))
         self.add(new_corpus)
 
-    def evaluate_words(self, wordbags = None):
-        df = evaluate_documents(wordbags = wordbags, urns = list(self.corpus.urn))
+    def evaluate_words(self, wordbags=None):
+        df = evaluate_documents(wordbags=wordbags, urns=list(self.corpus.urn))
         df.index = df.index.astype(int)
         cols = df.columns
-        df = pd.concat([df, self.corpus[['dhlabid','urn']].set_index('dhlabid')], axis = 1)
-        df = df.set_index('urn')
+        df = pd.concat(
+            [df, self.corpus[["dhlabid", "urn"]].set_index("dhlabid")], axis=1
+        )
+        df = df.set_index("urn")
         return df[cols].fillna(0)
 
     def add(self, new_corpus):
         """Utility for appending Corpus or DataFrame to self"""
         if self._is_Corpus(new_corpus):
             new_corpus = new_corpus.frame
-        self.frame = pd.concat([self.frame, new_corpus]).drop_duplicates().reset_index(drop=True)
+        self.frame = (
+            pd.concat([self.frame, new_corpus]).drop_duplicates().reset_index(drop=True)
+        )
         self.corpus = self.frame
         # self.size = len(self.frame)
 
@@ -159,7 +173,9 @@ class Corpus(DhlabObj):
 
     def conc(self, words, window=20, limit=500):
         "Get concodances of `words` in corpus"
-        return dh.Concordance(corpus=self.frame, query=words, window=window, limit=limit)
+        return dh.Concordance(
+            corpus=self.frame, query=words, window=window, limit=limit
+        )
 
     def coll(
         self,
@@ -169,7 +185,8 @@ class Corpus(DhlabObj):
         reference=None,
         samplesize=20000,
         alpha=False,
-        ignore_caps=False):
+        ignore_caps=False,
+    ):
         "Get collocations of `words` in corpus"
         return dh.Collocations(
             corpus=self.frame,
@@ -179,61 +196,64 @@ class Corpus(DhlabObj):
             reference=reference,
             samplesize=samplesize,
             alpha=alpha,
-            ignore_caps=ignore_caps
-            )
+            ignore_caps=ignore_caps,
+        )
 
     def count(self, words=None):
         "Get word frequencies for corpus"
         return dh.Counts(self, words)
-    
+
     def freq(self, words=None):
         "Get word frequencies for corpus"
         return dh.Counts(self, words)
-    
+
     @staticmethod
     def _is_Corpus(corpus) -> bool:
         """Check if `input` is Corpus or DataFrame"""
         if type(corpus) not in [DataFrame, Corpus]:
             raise TypeError("Input is not Corpus or DataFrame")
         return isinstance(corpus, Corpus)
-    
+
     def __add__(self, other):
         """Add two Corpus objects"""
         if not self._is_Corpus(other):
             raise TypeError("Input is not Corpus or DataFrame")
-        return self.from_df(pd.concat([self.frame, other.frame]).drop_duplicates().reset_index(drop=True))
-    
-    
+        return self.from_df(
+            pd.concat([self.frame, other.frame])
+            .drop_duplicates()
+            .reset_index(drop=True)
+        )
+
     def _make_subcorpus(self, **kwargs):
         dct = kwargs.copy()
-        year_range = dct.pop('year_range', None)
-        
+        year_range = dct.pop("year_range", None)
+
         for key in dct.keys():
             if key not in self.frame.columns:
                 print(f"Key {key} not in corpus")
-                return None   
-        
+                return None
+
         # Make result dataframe
         res = self.frame.copy()
-        
+
         # Get year range
         if year_range is not None:
             y1 = int(year_range[0])
             y2 = int(year_range[1])
-            
+
             # Apply year range
-            res = res.loc[res['year'] >= y1].loc[res["year"] <= y2]
-            
+            res = res.loc[res["year"] >= y1].loc[res["year"] <= y2]
+
         for key, val in dct.items():
             res = res.loc[res[key].str.contains(val)]
-    
+
         return self.from_df(res)
 
-    def make_subcorpus(self, authors = None, title = None):
+    def make_subcorpus(self, authors=None, title=None):
         dct = {}
         if authors is not None:
-            dct['author'] = authors
+            dct["author"] = authors
         if title is not None:
-            dct['title'] = title
-            
+            dct["title"] = title
+
         return self._make_subcorpus(**dct)
