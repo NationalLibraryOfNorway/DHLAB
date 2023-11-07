@@ -149,7 +149,7 @@ class Corpus(DhlabObj):
             new_corpus = new_corpus.frame
         self.frame = pd.concat([self.frame, new_corpus]).drop_duplicates().reset_index(drop=True)
         self.corpus = self.frame
-        self.size = len(self.frame)
+        # self.size = len(self.frame)
 
     def sample(self, n=5):
         "Create random subkorpus with `n` entries"
