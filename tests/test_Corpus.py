@@ -20,5 +20,32 @@ class TestCorpus():
         assert len(freq.frame.columns) == 2
         
     def test_empty_corpus(self):
-        pass
+        c = dh.Corpus(doctype="digavis", limit=0)
+        assert len(c.frame) == 0
+        assert "urn" in c.frame.columns
+        assert c.size == 0
+        
+    def test_add_dunder(self):
+        c = dh.Corpus(doctype="digavis", limit=4)
+        assert c.size == 4
+        d = dh.Corpus(doctype="digavis", limit=7)
+        assert d.size == 7
+        e = c + d
+        assert e.size == 11
+        
+    def test_add(self):
+        c = dh.Corpus(doctype="digavis", limit=4)
+        assert c.size == 4
+        d = dh.Corpus(doctype="digavis", limit=7)
+        assert d.size == 7
+        c.add(d)
+        assert c.size == 11
+        
+    def test_extend_from_identifiers(self):
+        c = dh.Corpus(doctype="digavis", limit=4)
+        assert c.size == 4
+        d = dh.Corpus(doctype="digavis", limit=7)
+        assert d.size == 7
+        c.extend_from_identifiers(d.frame)
+        assert c.size == 11
     
