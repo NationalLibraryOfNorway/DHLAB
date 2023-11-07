@@ -30,14 +30,18 @@ class Concordance(DhlabObj):
         :param limit: limit returned hits, defaults to 500
         """
 
-        self.concordance = concordance(
-            urns=urnlist(corpus), words=query, window=window, limit=limit
-        )
-        self.concordance["link"] = self.concordance.urn.apply(make_link)
-        self.concordance = self.concordance[["link", "urn", "conc"]]
-        self.concordance.columns = ["link", "urn", "concordance"]
-        self.corpus = corpus
-        self.size = len(self.concordance)
+        if corpus is None:
+            self.concordance = pd.DataFrame()
+            self.corpus = None
+        else:
+            self.concordance = concordance(
+                urns=urnlist(corpus), words=query, window=window, limit=limit
+            )
+            self.concordance["link"] = self.concordance.urn.apply(make_link)
+            self.concordance = self.concordance[["link", "urn", "conc"]]
+            self.concordance.columns = ["link", "urn", "concordance"]
+            self.corpus = corpus
+        # self.size = len(self.concordance)
 
         super().__init__(self.concordance)
 
@@ -49,6 +53,14 @@ class Concordance(DhlabObj):
         else:
             result = self.concordance.sample(min(n, self.size))
         return result
+    
+    @classmethod
+    def from_df(cls, df):
+        "Typecast DataFrame to Concordance"
+        obj = Concordance()
+        obj.concordance = df
+        obj.frame = df
+        return obj
 
 
 class Collocations(DhlabObj):
