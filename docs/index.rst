@@ -43,7 +43,7 @@ Further reading <https://nationallibraryofnorway.github.io/DHLAB-kunnskapsbase/>
 
    docs_getting_started
    library/dhlab
-   glossary
+   term_definitions
 
 .. toctree::
    :hidden:
