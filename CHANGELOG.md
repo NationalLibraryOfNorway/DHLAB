@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.28.0 (2023-11-07)
+
+### Feat
+
+- **conc**: add tests for Corpus and Concordance
+
+### Fix
+
+- **corpus**: bug in corpus.add
+
+### Refactor
+
+- **corpus**: formatting
+
 ## v2.27.1 (2023-11-02)
 
 ### Fix
