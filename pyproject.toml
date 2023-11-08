@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dhlab"
-version = "0.0.0"  # Placeholder for the poetry-dynamic-versioning plugin
+version = "2.28.0"  # Placeholder for the poetry-dynamic-versioning plugin
 description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
 authors = ["The Digital Humanities Lab at The National Library of Norway (NB) <dh-lab@nb.no>"]
 license = "MIT"
@@ -56,8 +56,8 @@ pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
 
 [tool.poetry-dynamic-versioning]
-enable = true
-bump  = true
+enable = false
+bump  = false
 vcs = "git"
 format = "v{base}{stage}{revision}"
 
