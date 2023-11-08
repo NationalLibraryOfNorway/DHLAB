@@ -44,7 +44,6 @@ Further reading <https://nationallibraryofnorway.github.io/DHLAB-kunnskapsbase/>
    docs_getting_started
    library/dhlab
    glossary
-   whats_new
 
 .. toctree::
    :hidden:
