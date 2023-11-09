@@ -252,7 +252,13 @@ pygments_dark_style = "monokai"
 togglebutton_hint = "Show"
 togglebutton_hint_hide = "Hide"
 
-myst_enable_extensions = ["colon_fence"]
+myst_enable_extensions = [
+    "colon_fence",
+    "attrs_block",
+    "attrs_inline",
+    "deflist",
+    "fieldlist",
+]
 
 # -- Options for HTML output -------------------------------------------------
 

@@ -1,11 +1,6 @@
 # Installation
 
-## Prerequisites
-
-Ensure the following are installed:
-
-- [Python](https://www.python.org/downloads/) (a version between 3.8 - 3.11)
-- [pip](https://pip.pypa.io/en/stable/installation/)
+Ensure you have [Python](https://www.python.org/downloads/) installed with a version between 3.9 and 3.12.
 
 ## Installation with pip
 

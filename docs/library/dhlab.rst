@@ -1,6 +1,6 @@
 .. _dhlab:
 
-dhlab
+dhlab reference
 --------------
 
 .. currentmodule:: dhlab
@@ -15,6 +15,8 @@ dhlab
 
 API endpoints
 ~~~~~~~~~~~~~~
+
+The python package calls the `DHLAB API <https://api.nb.no/dhlab/>`_ to retrieve and present data from the digital texts.
 
 .. currentmodule:: dhlab.constants
 
