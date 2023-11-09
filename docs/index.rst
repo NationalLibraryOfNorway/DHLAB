@@ -20,11 +20,19 @@ dhlab documentation
    :end-before: <!-- end dhlab-intro -->
  
 
+On our `official homepage <https://www.nb.no/dh-lab/>`_ (in Norwegian), 
+you can view and run `example jupyter notebooks <https://www.nb.no/dh-lab/digital-tekstanalyse/>`_
+in your browser. 
+
+.. include:: ../README.md
+   :parser: myst_parser.sphinx_
+   :start-after: <!-- start installation -->
+   :end-before: <!-- end installation -->
+
+Get started with some :doc:`examples <./docs_example_use>`.
+
 .. include:: docs_functionality.md
    :parser: myst_parser.sphinx_
-
-
-Further reading <https://nationallibraryofnorway.github.io/DHLAB-kunnskapsbase/>
 
 -------------------
 
@@ -41,19 +49,20 @@ Further reading <https://nationallibraryofnorway.github.io/DHLAB-kunnskapsbase/>
    :glob:
    :maxdepth: 1
 
-   docs_getting_started
+   docs_installation
+   docs_example_use
    library/dhlab
-   glossary
-   whats_new
+   term_definitions
 
 .. toctree::
    :hidden:
    :name: extlinks-toc
    :caption: External links
 
+   Official Homepage (nb.no) <https://www.nb.no/dh-lab/>
+   GitHub repo <https://github.com/NationalLibraryOfNorway/DHLAB>
    pypi package <https://pypi.org/project/dhlab/>
-   DHLAB on GitHub <https://github.com/NationalLibraryOfNorway/DHLAB>
-   DH-lab Homepage (nb-no) <https://www.nb.no/dh-lab/>
-   DH-lab Web applications <https://www.nb.no/dh-lab/apper/>
-   DH-lab Knowledge base <https://nationallibraryofnorway.github.io/DHLAB-kunnskapsbase/>
-   The online National Library <https://www.nb.no/search>
+   R package on Github <https://github.com/NationalLibraryOfNorway/dhlab-r>
+   Web applications <https://www.nb.no/dh-lab/apper/>
+   Knowledge base <https://nationallibraryofnorway.github.io/DHLAB-kunnskapsbase/>
+   The National Library online <https://www.nb.no/search>
