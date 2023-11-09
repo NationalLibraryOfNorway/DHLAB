@@ -380,7 +380,7 @@ latex_documents = [
         "index",
         "dhlab.tex",
         "DHLAB Documentation",
-        "National Library of Norway",
+        author,
         "manual",
     ),
 ]
