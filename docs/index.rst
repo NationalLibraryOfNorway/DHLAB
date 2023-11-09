@@ -19,12 +19,14 @@ dhlab documentation
    :start-after: <!-- start dhlab-intro -->
    :end-before: <!-- end dhlab-intro -->
  
+.. include:: ../README.md
+   :parser: myst_parser.sphinx_
+   :start-after: <!-- start installation -->
+   :end-before: <!-- end installation -->
 
 .. include:: docs_functionality.md
    :parser: myst_parser.sphinx_
 
-
-Further reading <https://nationallibraryofnorway.github.io/DHLAB-kunnskapsbase/>
 
 -------------------
 
