@@ -380,11 +380,7 @@ latex_documents = [
         "index",
         "dhlab.tex",
         "DHLAB Documentation",
-        "Lars Johnsen, "
-        "Magnus Breder Birkenes, "
-        "Andre Kåsen, "
-        "Yngvil Beyer, "
-        "Ingerid Løyning Dale",
+        "National Library of Norway",
         "manual",
     ),
 ]
