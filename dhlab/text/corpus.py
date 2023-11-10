@@ -324,5 +324,4 @@ class Corpus(DhlabObj):
 
         return True
     
-    def __len__(self):
-        return len(self.corpus)
+
