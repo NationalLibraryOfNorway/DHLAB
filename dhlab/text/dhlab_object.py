@@ -69,7 +69,7 @@ class DhlabObj(ABC):
 
     @abstractmethod
     def from_df(cls, df):
-        "Typecast Pandas DataFrame to Corpus class"
+        "Typecast Pandas DataFrame to dhlab class"
         pass
 
     @classmethod
