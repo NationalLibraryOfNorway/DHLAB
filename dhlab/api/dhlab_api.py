@@ -1,5 +1,5 @@
 from typing import Union, List, Tuple, Dict
-
+from io import StringIO
 import pandas as pd
 import requests
 #from requests import HTTPError, JSONDecodeError, ConnectionError
@@ -710,7 +710,8 @@ def urn_collocation(
         "samplesize": samplesize,
     }
     r = requests.post(BASE_URL + "/urncolldist_urn", json=params)
-    return pd.read_json(r.json())
+    return pd.read_json(StringIO(r.json()))
+    
 
 
 def totals(top_words: int = 50000) -> DataFrame:
