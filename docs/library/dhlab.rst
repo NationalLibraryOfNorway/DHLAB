@@ -1,7 +1,7 @@
 .. _dhlab:
 
 dhlab reference
---------------
+-----------------
 
 .. currentmodule:: dhlab
 
