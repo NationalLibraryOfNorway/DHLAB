@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dhlab"
-version = "2.28.1a0"  # Placeholder for the poetry-dynamic-versioning plugin
+version = "2.28.1"  # Placeholder for the poetry-dynamic-versioning plugin
 description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
 authors = ["The Digital Humanities Lab at The National Library of Norway (NB) <dh-lab@nb.no>"]
 license = "MIT"
