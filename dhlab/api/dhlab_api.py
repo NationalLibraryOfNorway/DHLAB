@@ -1,8 +1,10 @@
-from typing import Union, List, Tuple, Dict
 from io import StringIO
+from typing import Dict, List, Tuple, Union
+
 import pandas as pd
 import requests
-#from requests import HTTPError, JSONDecodeError, ConnectionError
+
+# from requests import HTTPError, JSONDecodeError, ConnectionError
 from pandas import DataFrame, Series
 
 from dhlab.constants import BASE_URL
