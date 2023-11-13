@@ -1,11 +1,13 @@
-"""Tools for querying the Norwegian National Bibliography Marc 21
-"""
+"""Tools for querying the Norwegian National Bibliography Marc 21"""
 import os
-import requests
-from dhlab.constants import BASE_URL
 from functools import wraps
 
+import requests
+
+from dhlab.constants import BASE_URL
+
 # TODO: Add support for more fields
+
 
 def _api_call_deco(service):
     """Decorator for calling a service from DH-lab API
