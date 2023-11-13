@@ -8,8 +8,8 @@ from dhlab import nbtext
         "https://www.nb.no/items/URN:NBN:no-nb_digibok_2019100726008",
         "URN:NBN:no-nb_digibok_2019100726008",
         "digibok_2019100726008",
-        ["2019100726008", "2019100726008", "2019100726008"]
-    ]
+        ["2019100726008", "2019100726008", "2019100726008"],
+    ],
 )
 def test_pure_urn(input_data):
     # when

@@ -44,6 +44,9 @@ class DhlabObj(ABC):
         Return the HTML representation of the DhlabObj frame attribute
         """
         return self.frame._repr_html_()
+    
+    def __len__(self):
+        return len(self.frame)
 
     def head(self, n=5):
         "Return first n rows"
@@ -69,7 +72,7 @@ class DhlabObj(ABC):
 
     @abstractmethod
     def from_df(cls, df):
-        "Typecast Pandas DataFrame to Corpus class"
+        "Typecast Pandas DataFrame to dhlab class"
         pass
 
     @classmethod
