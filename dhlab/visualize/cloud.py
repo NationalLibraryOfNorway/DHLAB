@@ -1,6 +1,7 @@
 import json
-import matplotlib.pyplot as plt
 from collections import Counter
+
+import matplotlib.pyplot as plt
 
 try:
     from wordcloud import WordCloud

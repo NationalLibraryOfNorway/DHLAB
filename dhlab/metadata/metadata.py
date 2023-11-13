@@ -1,6 +1,7 @@
+from typing import List
+
 import pandas as pd
 import requests
-from typing import List
 
 from dhlab.constants import BASE_URL
 

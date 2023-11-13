@@ -1,17 +1,18 @@
-"Possible future funcs"
+"""Possible future funcs"""
+import re
 
 import pandas as pd
+from IPython.display import HTML
+
 import dhlab as dh
-import re
 from dhlab.api.dhlab_api import (
-    document_corpus,
-    get_metadata,
-    get_document_frequencies,
     concordance,
+    document_corpus,
+    get_document_frequencies,
+    get_metadata,
     urn_collocation,
 )
 from dhlab.text.utils import urnlist
-from IPython.display import HTML
 
 
 # convert cell to a link
@@ -74,7 +75,7 @@ class Corpus(pd.DataFrame):
 
     def get_collocations(
         self,
-      #  corpus=None,
+        #  corpus=None,
         words=None,
         before=10,
         after=10,
@@ -116,7 +117,7 @@ class Frequencies(pd.DataFrame):
         return self.sum(axis=1).to_frame("frequencies")
 
     def display_names(self):
-        "Display data with record names as column titles."
+        """Display data with record names as column titles."""
         return self.rename(self._title_dct, axis=1)
 
 
