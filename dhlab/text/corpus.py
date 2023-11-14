@@ -1,14 +1,14 @@
-from pandas import DataFrame
-import pandas as pd
-from dhlab.text.dhlab_object import DhlabObj
-from dhlab.api.dhlab_api import document_corpus, get_metadata, evaluate_documents
-# import dhlab as dh
-from dhlab.text.utils import urnlist
-from typing import Union
-import dhlab.text.conc_coll as dh
 from typing import List
 
+import pandas as pd
+from pandas import DataFrame
+
+# import dhlab as dh
 # from dhlab.text.conc_coll import Concordance, Collocations, Counts
+import dhlab.text.conc_coll as dh
+from dhlab.api.dhlab_api import document_corpus, evaluate_documents, get_metadata
+from dhlab.text.dhlab_object import DhlabObj
+from dhlab.text.utils import urnlist
 
 
 class Corpus(DhlabObj):
@@ -181,13 +181,13 @@ class Corpus(DhlabObj):
         # self.size = len(self.frame)
 
     def sample(self, n: int = 5):
-        "Create random subkorpus with `n` entries"
+        """Create random subkorpus with `n` entries"""
         n = min(n, self.size)
         sample = self.corpus.sample(n).copy()
         return self.from_df(sample)
 
     def conc(self, words, window: int = 20, limit: int = 500) -> dh.Concordance:
-        "Get concodances of `words` in corpus"
+        """Get concodances of `words` in corpus"""
         return dh.Concordance(
             corpus=self.frame, query=words, window=window, limit=limit
         )
@@ -202,7 +202,7 @@ class Corpus(DhlabObj):
         alpha=False,
         ignore_caps=False,
     ) -> dh.Collocations:
-        "Get collocations of `words` in corpus"
+        """Get collocations of `words` in corpus"""
         return dh.Collocations(
             corpus=self.frame,
             words=words,
@@ -215,11 +215,11 @@ class Corpus(DhlabObj):
         )
 
     def count(self, words=None):
-        "Get word frequencies for corpus"
+        """Get word frequencies for corpus"""
         return dh.Counts(self, words)
 
     def freq(self, words=None):
-        "Get word frequencies for corpus"
+        """Get word frequencies for corpus"""
         return dh.Counts(self, words)
 
     @staticmethod
@@ -272,7 +272,7 @@ class Corpus(DhlabObj):
             title (str, optional): search title field. Defaults to None.
 
         Returns:
-            _type_: _description_
+            Corpus: A subset of the original corpus
         """
         dct = {}
         if authors is not None:
@@ -323,5 +323,3 @@ class Corpus(DhlabObj):
             raise ValueError("Some URN values are in an incorrect format.")
 
         return True
-    
-

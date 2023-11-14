@@ -1,6 +1,6 @@
 import pandas as pd
 
-from dhlab.api.dhlab_api import get_places, geo_lookup, ner_from_urn
+from dhlab.api.dhlab_api import geo_lookup, get_places, ner_from_urn
 from dhlab.text.parse import NER, Models
 
 

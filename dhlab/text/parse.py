@@ -2,6 +2,7 @@ import pandas as pd
 
 from dhlab.api.dhlab_api import ner_from_urn, pos_from_urn, show_spacy_models
 
+
 class Models:
     """Show the spaCy language models available"""
     def __init__(self):

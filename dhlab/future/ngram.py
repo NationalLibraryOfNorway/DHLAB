@@ -1,7 +1,9 @@
-import pandas as pd
 from datetime import datetime
-from dhlab.ngram.nb_ngram import nb_ngram
+
+import pandas as pd
+
 from dhlab.api.dhlab_api import ngram_book, ngram_news
+from dhlab.ngram.nb_ngram import nb_ngram
 
 
 class Ngram(pd.DataFrame):

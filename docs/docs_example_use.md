@@ -96,7 +96,7 @@ ner = dh.api.dhlab_api.get_places(docid)
 
 ## Word dispersions
 
-Plot narrative graphs of word [dispersions](#dhlab.Dispersion) in a publication, for instance in "Kristin Lavransdatter":
+Plot narrative graphs of word [dispersions](#dhlab.text.dispersion.Dispersion) in a publication, for instance in "Kristin Lavransdatter":
 
 ```{code-block} python
 from dhlab.text.dispersion import Dispersion

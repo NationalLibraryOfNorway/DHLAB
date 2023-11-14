@@ -1,7 +1,9 @@
 import re
+
 import pandas as pd
+
 import dhlab as dh
-from dhlab.api.dhlab_api import get_document_frequencies, concordance, urn_collocation
+from dhlab.api.dhlab_api import concordance, get_document_frequencies, urn_collocation
 from dhlab.text.dhlab_object import DhlabObj
 from dhlab.text.utils import urnlist
 

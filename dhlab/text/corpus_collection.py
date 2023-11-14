@@ -1,5 +1,7 @@
 from typing import Dict, Optional
+
 from dhlab.text.corpus import Corpus
+
 
 class CorpusCollection:
     """A class for handling a collection of corpora."""

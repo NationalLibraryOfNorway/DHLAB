@@ -13,5 +13,5 @@ Here are some of the text mining and automatic analyses you can do with `dhlab`:
 - [collocations](#dhlab.Collocations)
 - Retrieve [n-gram](#dhlab.ngram.nb_ngram) frequencies per yer in a time period.
 - Extract occurrences of [named entities](#dhlab.NER).
-- Plot narrative graphs of word [dispersions](#dhlab.Dispersion) in a publication.
+- Plot narrative graphs of word [dispersions](#dhlab.text.dispersion.Dispersion) in a publication.
 <!-- end docs-functionality -->
