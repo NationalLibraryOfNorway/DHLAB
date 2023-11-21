@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 import pandas as pd
 from pandas import DataFrame
@@ -116,7 +116,7 @@ class Corpus(DhlabObj):
         )
 
     @classmethod
-    def from_identifiers(cls, identifiers: List[str | int]):
+    def from_identifiers(cls, identifiers: List[Union[str, int]]):
         """Construct Corpus from list of identifiers"""
         corpus = Corpus()
         corpus.extend_from_identifiers(identifiers=identifiers)
@@ -149,7 +149,7 @@ class Corpus(DhlabObj):
         return cls.from_df(df)
 
     @staticmethod
-    def _urn_id_in_dataframe_cols(dataframe: DataFrame | type("Corpus")) -> DataFrame:
+    def _urn_id_in_dataframe_cols(dataframe: Union[DataFrame, type("Corpus")]) -> DataFrame:
         """Checks if dataframe contains URN column"""
         if "urn" in dataframe.columns:
             if dataframe.urn.str.contains("^URN:NBN:no-nb_.+").all():
@@ -170,7 +170,7 @@ class Corpus(DhlabObj):
         df = df.set_index("urn")
         return df[cols].fillna(0)
 
-    def add(self, new_corpus: DataFrame | type("Corpus")):
+    def add(self, new_corpus: Union[DataFrame, type("Corpus")]):
         """Utility for appending Corpus or DataFrame to self"""
         if self._is_Corpus(new_corpus):
             new_corpus = new_corpus.frame

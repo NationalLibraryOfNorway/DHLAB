@@ -22,7 +22,7 @@ exclude = ["docs/", "tests/"]
 "Tutorials" = "https://nationallibraryofnorway.github.io/digital_tekstanalyse/tutorial.html"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+python = ">=3.8,<3.13"
 ipython = "^8.17.2"
 matplotlib = "^3.8.1"
 networkx = "^3.2.1"
