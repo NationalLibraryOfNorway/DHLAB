@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version_bump_command: 
-      description: 'Type of semantic version bump, see the poetry documentation for more info: https://python-poetry.org/docs/cli/#version'
+        description: 'Type of semantic version bump, see the poetry documentation for more info: https://python-poetry.org/docs/cli/#version'
         required: true
         type: choice
         options:
