@@ -191,6 +191,11 @@ class Corpus(DhlabObj):
         mask = self.frame.author.apply(lambda x: len(x.split('/'))) == 1
         return self.from_df(self.frame[mask])
 
+    def only_one_language(self):
+        """Only select items with one language"""
+        mask = self.frame.language.apply(lambda x: len(x.split('/'))) == 1
+        return self.from_df(self.frame[mask])
+
     def conc(self, words, window: int = 20, limit: int = 500) -> dh.Concordance:
         """Get concodances of `words` in corpus"""
         return dh.Concordance(
