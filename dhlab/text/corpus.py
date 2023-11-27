@@ -186,6 +186,11 @@ class Corpus(DhlabObj):
         sample = self.corpus.sample(n).copy()
         return self.from_df(sample)
 
+    def only_one_author(self):
+        """Only select items with one author"""
+        mask = self.frame.author.apply(lambda x: len(x.split('/'))) == 1
+        return self.from_df(self.frame[mask])
+
     def conc(self, words, window: int = 20, limit: int = 500) -> dh.Concordance:
         """Get concodances of `words` in corpus"""
         return dh.Concordance(
