@@ -75,7 +75,7 @@ jobs:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           draft: false
           prerelease: steps.check-version.outputs.prerelease == 'true'
-          generateReleaseNotes: true
+          generateReleaseNotes: false
           allowUpdates: true
 
       - name: Publish to testPyPI
@@ -90,4 +90,4 @@ jobs:
         env:
           POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
         run: |
-          echo "poetry publish"
+          poetry publish
