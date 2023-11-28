@@ -15,10 +15,6 @@ on:
           - preminor
           - prepatch
           - prerelease
-      auto_commit: 
-        description: 'True to use auto-commit-action + tagging. False to use a tagging + push action.'
-        required: false
-        type: boolean
 
 jobs:
   release:
@@ -55,24 +51,21 @@ jobs:
         id: check-version
         run: |
           [[ "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || echo prerelease=true >> "$GITHUB_OUTPUT"
-
+      
+      - name: Commit the changes to pyproject.toml        
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "ci: bump version to ${{ env.NEW_VERSION }}[skip-ci]"
+          file_pattern: 'pyproject.toml'
+  
       - name: Create and push tag
         id: tag_version
-        if: ${{ !inputs.auto_commit }}
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           default_bump: false
           default_prerelease_bump: false
           custom_tag: ${{ env.NEW_VERSION }} 
-      
-      - name: Commit the changes to pyproject.toml
-        if: ${{ inputs.auto_commit }}
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "ci: bump version [skip-ci]"
-          file_pattern: 'pyproject.toml'
-          tagging_message: "v${{ env.NEW_VERSION }}"
 
       - name: Build project for distribution
         run: |
@@ -81,15 +74,15 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           tag: ${{ steps.tag_version.outputs.new_tag }}
           skipIfReleaseExists: true
+          draft: false
+          allowUpdates: true
+          generateReleaseNotes: false
           body: ${{ steps.tag_version.outputs.changelog }}
           artifacts: "dist/*"
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          draft: false
           prerelease: steps.check-version.outputs.prerelease == 'true'
-          generateReleaseNotes: false
-          allowUpdates: true
 
       - name: Publish to testPyPI
         env:
