@@ -91,15 +91,17 @@ jobs:
           artifacts: "dist/*"
           prerelease: steps.check-version.outputs.prerelease == 'true'
 
-      - run: poetry config repositories.testpypi https://test.pypi.org/simple/
       - name: Publish to testPyPI
         env:
-          POETRY_PYPI_TOKEN_TESTPYPI: ${{ secrets.TESTPYPI_API_TOKEN }}
+          TESTPYPI_TOKEN: ${{ secrets.TESTPYPI_API_TOKEN }}
         run: |
+          poetry config repositories.testpypi https://test.pypi.org/legacy/
+          poetry config pypi-token.testpypi $TESTPYPI_TOKEN  
           poetry publish --build -r testpypi
 
       - name: Publish to Pypi
         env:
-          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+          PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         run: |
+          poetry config pypi-token.pypi $PYPI_TOKEN
           echo "poetry publish --build"
