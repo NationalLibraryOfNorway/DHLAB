@@ -8,8 +8,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
+      - name: Permacache Poetry
+        id: cache-poetry
+        uses: actions/cache@v3
+        with:
+          path: ~/.poetry
+          key: poetry
       - name: Install Poetry
-        run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+        if: steps.cache-poetry.outputs.cache-hit != 'true'
+        run: curl -sSL https://install.python-poetry.org | python - -y
       - name: Add Poetry to path
         run: echo "${HOME}/.poetry/bin" >> $GITHUB_PATH
       - name: Install venv
