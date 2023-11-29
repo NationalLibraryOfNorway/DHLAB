@@ -16,11 +16,11 @@ on:
           - prepatch
           - prerelease
       no_release:
-        description: "**Don't** create a Github Release or tag with the new version number"
+        description: "Don't create a Github Release or tag with the new version number"
         required: true
         type: boolean
       no_publish:
-        description: "**Don't** publish the new version to pypi"
+        description: "Don't publish the new version to pypi"
         required: true
         type: boolean
 
