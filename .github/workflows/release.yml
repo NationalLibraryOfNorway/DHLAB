@@ -15,6 +15,10 @@ on:
           - preminor
           - prepatch
           - prerelease
+      create_release:
+        description: 'Create a Github Release and Tag with the new version number'
+        required: true
+        type: boolean
 
 jobs:
   release:
@@ -52,13 +56,15 @@ jobs:
         run: |
           [[ "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || echo prerelease=true >> "$GITHUB_OUTPUT"
       
-      - name: Commit the changes to pyproject.toml        
+      - name: Commit the changes to pyproject.toml
+        if: ${{ inputs.create_release }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "ci: bump version to ${{ env.NEW_VERSION }} [skip-ci]"
           file_pattern: 'pyproject.toml'
   
       - name: Create and push tag
+        if: ${{ inputs.create_release }}
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
         with:
@@ -72,6 +78,7 @@ jobs:
           poetry build
 
       - name: Create Release
+        if: ${{ inputs.create_release }}
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -84,11 +91,11 @@ jobs:
           artifacts: "dist/*"
           prerelease: steps.check-version.outputs.prerelease == 'true'
 
+      - run: poetry config repositories.testpypi https://test.pypi.org/simple/
       - name: Publish to testPyPI
         env:
           POETRY_PYPI_TOKEN_TESTPYPI: ${{ secrets.TESTPYPI_API_TOKEN }}
         run: |
-          poetry config repositories.testpypi https://test.pypi.org/simple/
           poetry publish --build -r testpypi
 
       - name: Publish to Pypi
