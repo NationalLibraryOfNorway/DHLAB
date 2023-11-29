@@ -15,12 +15,12 @@ on:
           - preminor
           - prepatch
           - prerelease
-      create_release:
-        description: 'Create a Github Release and Tag with the new version number'
+      no_release:
+        description: '**Don't** create a Github Release or tag with the new version number'
         required: true
         type: boolean
-      publish:
-        description: 'Publish the new version to pypi'
+      no_publish:
+        description: '**Don't** publish the new version to pypi'
         required: true
         type: boolean
 
@@ -72,14 +72,14 @@ jobs:
         run: poetry check --no-interaction
 
       - name: Commit the changes to pyproject.toml
-        if: ${{ inputs.create_release }}
+        if: ${{ !inputs.no_release }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "ci: bump version to ${{ env.NEW_VERSION }} [skip-ci]"
           file_pattern: 'pyproject.toml'
   
       - name: Create and push tag
-        if: ${{ inputs.create_release }}
+        if: ${{ !inputs.no_release }}
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
         with:
@@ -93,7 +93,7 @@ jobs:
           poetry build
 
       - name: Create Release
-        if: ${{ inputs.create_release }}
+        if: ${{ !inputs.no_release }}
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -107,14 +107,14 @@ jobs:
           prerelease: steps.check-version.outputs.prerelease == 'true'
 
       - name: Publish to testPyPI
-        if: ${{ inputs.publish }}
+        if: ${{ !inputs.no_publish }}
         run: |
           poetry config repositories.testpypi https://test.pypi.org/legacy/
           poetry config pypi-token.testpypi ${{ secrets.TESTPYPI_API_TOKEN }}  
           poetry publish -r testpypi
 
       - name: Publish to Pypi
-        if: ${{ inputs.publish }}
+        if: ${{ !inputs.no_publish }}
         run: |
           poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
           poetry publish
