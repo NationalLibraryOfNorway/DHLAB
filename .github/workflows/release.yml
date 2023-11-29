@@ -19,6 +19,10 @@ on:
         description: 'Create a Github Release and Tag with the new version number'
         required: true
         type: boolean
+      publish:
+        description: 'Publish the new version to pypi'
+        required: true
+        type: boolean
 
 jobs:
   release:
@@ -92,16 +96,18 @@ jobs:
           prerelease: steps.check-version.outputs.prerelease == 'true'
 
       - name: Publish to testPyPI
+        if: ${{ inputs.publish }}
         env:
           TESTPYPI_TOKEN: ${{ secrets.TESTPYPI_API_TOKEN }}
         run: |
           poetry config repositories.testpypi https://test.pypi.org/legacy/
           poetry config pypi-token.testpypi $TESTPYPI_TOKEN  
-          poetry publish --build -r testpypi
+          poetry publish -r testpypi
 
       - name: Publish to Pypi
+        if: ${{ inputs.publish }}
         env:
           PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         run: |
           poetry config pypi-token.pypi $PYPI_TOKEN
-          echo "poetry publish --build"
+          poetry publish
