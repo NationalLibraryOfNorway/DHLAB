@@ -71,7 +71,7 @@ class DhlabObj(ABC):
         "Write to excel"
         self.frame.to_excel(path, index=None)
 
-    @abstractmethod
+    # @abstractmethod
     def from_df(cls, df):
         "Typecast Pandas DataFrame to dhlab class"
         pass
