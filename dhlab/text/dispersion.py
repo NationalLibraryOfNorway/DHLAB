@@ -41,3 +41,10 @@ class Dispersion(DhlabObj):
 
     def plot(self, **kwargs):
         self.dispersion.plot(**kwargs)
+    
+    @classmethod
+    def from_df(cls, df):
+        d = Dispersion()
+        d.frame = df
+        d.dispersion = df
+        return d

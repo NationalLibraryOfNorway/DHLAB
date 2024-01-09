@@ -37,3 +37,18 @@ class TestDispersion:
         mock_plot = mocker.patch('dhlab.Dispersion.plot')
         d.plot()
         mock_plot.assert_called_once()
+        
+    def head(self, urn):
+        d = dh.Dispersion(urn, wordbag = 'han')
+        assert isinstance(d.head(), dh.Dispersion)
+        assert len(d.head()) == 5
+        
+    def tail(self, urn):
+        d = dh.Dispersion(urn, wordbag = 'han')
+        assert isinstance(d.tail(), dh.Dispersion)
+        assert len(d.tail()) == 5
+        
+    def sort(self, urn):
+        d = dh.Dispersion(urn, wordbag = 'han')
+        assert isinstance(d.sort(), dh.Dispersion)
+        assert len(d.sort()) == len(d)
