@@ -1,9 +1,9 @@
 import pandas as pd
-
+from dhlab.text.dhlab_object import DhlabObj
 from dhlab.api.dhlab_api import get_dispersion
 
 
-class Dispersion:
+class Dispersion(DhlabObj):
     """Count occurrences of words in the given URN object."""
 
     def __init__(
@@ -36,6 +36,15 @@ class Dispersion:
         else:
             dispersion = {}
         self.dispersion = pd.DataFrame(dispersion)
+        
+        super().__init__(self.dispersion)
 
     def plot(self, **kwargs):
         self.dispersion.plot(**kwargs)
+    
+    @classmethod
+    def from_df(cls, df):
+        d = Dispersion()
+        d.frame = df
+        d.dispersion = df
+        return d
