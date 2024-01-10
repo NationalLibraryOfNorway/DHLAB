@@ -31,8 +31,8 @@ python-louvain = "^0.16"
 requests = "^2.31.0"
 seaborn = "^0.13.0"
 scipy = "^1.11.3"
-bs4 = "^0.0.1"
 openpyxl = "^3.1.2"
+beautifulsoup4 = "^4.12.2"
 
 [tool.poetry.group.docs.dependencies]
 Sphinx = "^7.2.6"
