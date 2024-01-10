@@ -55,7 +55,7 @@ class Concordance(DhlabObj):
         else:
             result = self.concordance.sample(min(n, self.size))
         return result
-    
+
     @classmethod
     def from_df(cls, df):
         "Typecast DataFrame to Concordance"
@@ -174,7 +174,7 @@ class Counts(DhlabObj):
             # if not, try to make it one
             # if isinstance(corpus, pd.DataFrame):
             #     corpus = dh.Corpus.from_df(corpus)
-            
+
             # if not isinstance(corpus, dh.Corpus):
             #     raise TypeError("Corpus must be of type dh.Corpus or pd.DataFrame")
 
@@ -208,9 +208,9 @@ class Counts(DhlabObj):
 
     def display_names(self):
         "Display data with record names as column titles."
-        assert self.title_dct is not None, "No titles available"            
+        assert self.title_dct is not None, "No titles available"
         return self.frame.rename(self.title_dct, axis=1)
-    
+
     def display_rel_names(self):
         "Display relfreq data with record names as column titles."
         return self.relfreq.rename(self.title_dct, axis=1)
@@ -228,4 +228,3 @@ class Counts(DhlabObj):
     def counts(self):
         "Legacy property for freq"
         return self.freq
-

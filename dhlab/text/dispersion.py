@@ -36,12 +36,12 @@ class Dispersion(DhlabObj):
         else:
             dispersion = {}
         self.dispersion = pd.DataFrame(dispersion)
-        
+
         super().__init__(self.dispersion)
 
     def plot(self, **kwargs):
         self.dispersion.plot(**kwargs)
-    
+
     @classmethod
     def from_df(cls, df):
         d = Dispersion()
