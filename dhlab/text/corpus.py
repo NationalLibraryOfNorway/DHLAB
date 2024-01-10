@@ -44,6 +44,7 @@ class Corpus(DhlabObj):
         lang=None,
         limit=10,
         order_by="random",
+        allow_duplicates=False,
     ):
         """Create Corpus
 
@@ -103,7 +104,6 @@ class Corpus(DhlabObj):
             self.corpus = pd.DataFrame(columns=["urn"])
 
         super().__init__(self.corpus)
-        # self.size = len(self.corpus)
 
         self.frame.rename(
             columns={
@@ -114,6 +114,9 @@ class Corpus(DhlabObj):
             },
             inplace=True,
         )
+
+        if not allow_duplicates:
+            self._check_for_urn_duplicates()
 
     @classmethod
     def from_identifiers(cls, identifiers: List[Union[str, int]]):
@@ -149,7 +152,9 @@ class Corpus(DhlabObj):
         return cls.from_df(df)
 
     @staticmethod
-    def _urn_id_in_dataframe_cols(dataframe: Union[DataFrame, type("Corpus")]) -> DataFrame:
+    def _urn_id_in_dataframe_cols(
+        dataframe: Union[DataFrame, type("Corpus")]
+    ) -> DataFrame:
         """Checks if dataframe contains URN column"""
         if "urn" in dataframe.columns:
             if dataframe.urn.str.contains("^URN:NBN:no-nb_.+").all():
@@ -172,12 +177,11 @@ class Corpus(DhlabObj):
 
     def add(self, new_corpus: Union[DataFrame, type("Corpus")]):
         """Utility for appending Corpus or DataFrame to self"""
-        if self._is_Corpus(new_corpus):
+        if isinstance(new_corpus, Corpus):
             new_corpus = new_corpus.frame
-        self.frame = (
-            pd.concat([self.frame, new_corpus]).drop_duplicates().reset_index(drop=True)
-        )
+        self.frame = pd.concat([self.frame, new_corpus])
         self.corpus = self.frame
+        self._drop_urn_duplicates()
         # self.size = len(self.frame)
 
     def sample(self, n: int = 5):
@@ -188,12 +192,12 @@ class Corpus(DhlabObj):
 
     def only_one_author(self):
         """Only select items with one author"""
-        mask = self.frame.author.apply(lambda x: len(x.split('/'))) == 1
+        mask = self.frame.author.apply(lambda x: len(x.split("/"))) == 1
         return self.from_df(self.frame[mask])
 
     def only_one_language(self):
         """Only select items with one language"""
-        mask = self.frame.language.apply(lambda x: len(x.split('/'))) == 1
+        mask = self.frame.language.apply(lambda x: len(x.split("/"))) == 1
         return self.from_df(self.frame[mask])
 
     def conc(self, words, window: int = 20, limit: int = 500) -> dh.Concordance:
@@ -237,17 +241,16 @@ class Corpus(DhlabObj):
         """Check if `input` is Corpus or DataFrame"""
         if type(corpus) not in [DataFrame, Corpus]:
             raise TypeError("Input is not Corpus or DataFrame")
-        return isinstance(corpus, Corpus)
+        return isinstance(corpus, Corpus) | isinstance(corpus, DataFrame)
 
     def __add__(self, other):
         """Add two Corpus objects"""
         if not self._is_Corpus(other):
             raise TypeError("Input is not Corpus or DataFrame")
-        return self.from_df(
-            pd.concat([self.frame, other.frame])
-            .drop_duplicates()
-            .reset_index(drop=True)
-        )
+        new = self.from_df(pd.concat([self.frame, other.frame]).reset_index(drop=True))
+        new._drop_urn_duplicates()
+
+        return new
 
     def _make_subcorpus(self, **kwargs) -> "Corpus":
         dct = kwargs.copy()
@@ -333,3 +336,24 @@ class Corpus(DhlabObj):
             raise ValueError("Some URN values are in an incorrect format.")
 
         return True
+
+    def _check_for_urn_duplicates(self):
+        """Check for duplicate URNs in corpus"""
+        if self.frame.urn.duplicated().any():
+            self._drop_urn_duplicates()
+
+    def _drop_urn_duplicates(self, reset_index=True):
+        """Drop duplicate URNs in corpus
+
+        dhlab sometimes contains multiple versions of the text for a text object.
+        Usually these are different OCR results. This method drops all but the last as this is usually the best.
+        Dhlabid is always unique."""
+
+        if len(self.frame) == 0:
+            return
+
+        self.frame.sort_values(by="dhlabid", inplace=True)
+        self.frame.drop_duplicates(subset="urn", inplace=True, keep="last")
+        if reset_index:
+            self.frame.reset_index(drop=True, inplace=True)
+        self.corpus = self.frame

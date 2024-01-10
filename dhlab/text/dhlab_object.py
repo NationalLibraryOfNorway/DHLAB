@@ -45,7 +45,7 @@ class DhlabObj(ABC):
         Return the HTML representation of the DhlabObj frame attribute
         """
         return self.frame._repr_html_()
-    
+
     def __len__(self):
         return len(self.frame)
 
