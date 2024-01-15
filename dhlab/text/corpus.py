@@ -299,7 +299,7 @@ class Corpus(DhlabObj):
             raise ValueError("Corpus is empty.")
 
         # Check for the presence of essential columns
-        required_columns = ["urn", "dhlabid", "author", "language", "genre"]
+        required_columns = ["urn", "dhlabid", "authors", "langs", "genres"]
         for col in required_columns:
             if col not in self.corpus.columns:
                 raise ValueError(f"Essential column '{col}' is missing.")
