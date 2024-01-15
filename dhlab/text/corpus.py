@@ -105,16 +105,6 @@ class Corpus(DhlabObj):
         super().__init__(self.corpus)
         # self.size = len(self.corpus)
 
-        self.frame.rename(
-            columns={
-                "urn": "urn",
-                "authors": "author",
-                "langs": "language",
-                "genres": "genre",
-            },
-            inplace=True,
-        )
-
     @classmethod
     def from_identifiers(cls, identifiers: List[str | int]):
         """Construct Corpus from list of identifiers"""
