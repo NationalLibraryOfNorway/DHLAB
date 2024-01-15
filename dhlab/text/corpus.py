@@ -104,6 +104,9 @@ class Corpus(DhlabObj):
             self.corpus = pd.DataFrame(columns=["urn"])
 
         super().__init__(self.corpus)
+        
+        if not allow_duplicates:
+            self._check_for_urn_duplicates()
 
     @classmethod
     def from_identifiers(cls, identifiers: List[Union[str, int]]):
