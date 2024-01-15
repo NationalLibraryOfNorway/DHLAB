@@ -1,25 +1,26 @@
-"""Tools for querying the Norwegian National Bibliography Marc 21
-"""
+"""Tools for querying the Norwegian National Bibliography Marc 21"""
 import os
-import requests
-from dhlab.constants import BASE_URL
 from functools import wraps
 
+import requests
+
+from dhlab.constants import BASE_URL
+
 # TODO: Add support for more fields
+
 
 def _api_call_deco(service):
     """Decorator for calling a service from DH-lab API
 
     :param service: Name of service
-    
     """
 
     def inner_decorator(func):
-        
         """Inner decorator
 
         :param func: function to decorate. Must return params
         """
+
         @wraps(func)
         def wrapper(*args, **kwargs):
             params = func(*args, **kwargs)
@@ -65,13 +66,13 @@ def metadata_from_urn(urns, fields=None):
 
 ## Utility
 
+
 def pretty_print_marc21json(record):
     """Prints a record from the Norwegian National Bibliography in a readable format
-    
+
     :param record: Marc 21 record in json format
     """
-    
-    
+
     print("Record:")
     for field in record["fields"]:
         for key, val in field.items():
@@ -79,7 +80,7 @@ def pretty_print_marc21json(record):
                 print(key + ":")
                 for subfield in val["subfields"]:
                     for subfield_k, subfield_val in subfield.items():
-                        print("\t" +subfield_k + ": " + subfield_val)                    
+                        print("\t" + subfield_k + ": " + subfield_val)
             else:
                 print(key + ": " + val)
     print()

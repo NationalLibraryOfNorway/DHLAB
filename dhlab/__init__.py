@@ -1,34 +1,34 @@
+# api
+from dhlab.api.dhlab_api import totals
+
 # legacy code
-from dhlab.text import nbtokenizer
 from dhlab.legacy import (
-    nbtext,
     graph_networkx_louvain,
-    token_map,
-    nbpictures,
+    module_update,
     nb_external_files,
-    module_update
+    nbpictures,
+    nbtext,
+    token_map,
 )
 
-# code from further down in the code tree
+# metadata
+from dhlab.metadata.natbib import metadata_from_urn, metadata_query
 
-# text 
-from dhlab.text.corpus import Corpus
+# ngram
+from dhlab.ngram.ngram import Ngram, NgramBook, NgramNews
+
+# text
+from dhlab.text import nbtokenizer
 from dhlab.text.chunking import Chunks
 from dhlab.text.conc_coll import Collocations, Concordance, Counts
+from dhlab.text.corpus import Corpus
+from dhlab.text.dispersion import Dispersion
 from dhlab.text.geo_data import GeoData, GeoNames
 from dhlab.text.parse import NER, POS, Models
 from dhlab.text.wildcard import WildcardWordSearch
 from dhlab.utils.display import css
-from dhlab.utils.files import download_from_github,get_file_from_github
+from dhlab.utils.files import download_from_github, get_file_from_github
 
-# ngram 
-from dhlab.ngram.ngram import Ngram, NgramBook, NgramNews
 
-# wordbank 
-from dhlab.wordbank.wordbank import WordParadigm, WordLemma, WordForm
-
-# api
-from dhlab.api.dhlab_api import totals
-
-# metadata
-from dhlab.metadata.natbib import metadata_query, metadata_from_urn
+# wordbank
+from dhlab.wordbank.wordbank import WordForm, WordLemma, WordParadigm

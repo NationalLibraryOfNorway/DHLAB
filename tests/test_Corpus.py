@@ -1,6 +1,7 @@
 import dhlab as dh
 import pytest
 import pandas as pd
+from typing import List
 
 
 class TestCorpus:
@@ -91,3 +92,30 @@ class TestCorpusIntegrityCheck:
         c = dh.Corpus.from_df(pd.DataFrame({"urn": ["123", "456"]}))
         with pytest.raises(ValueError) as exc_info:
             c.check_integrity()
+            
+class TestCheckForUrnDuplicates:
+    test_urns: List[str] = [["URN:NBN:no-nb_digibok_2008040104069"]]
+    test_str: List[str] = ["Undersøgelseskomiteens Indberetning sammenholdt med de virkelige Begivenheder i 1884 og 1893"]
+    
+    
+    @pytest.mark.parametrize("txt", test_str)
+    def test_corpus_from_str_w_duplicates(self, txt):
+        c = dh.Corpus(title=txt, allow_duplicates=True)
+        assert len(c) == 2
+        
+    @pytest.mark.parametrize("txt", test_str)
+    def test_corpus_from_str_wo_duplicates(self, txt):
+        c = dh.Corpus(title=txt, allow_duplicates=False)
+        assert len(c) == 1
+    
+    @pytest.mark.parametrize("urn", test_urns)
+    def test_extend_w_deduplication(self, urn):
+        c = dh.Corpus()
+        c.extend_from_identifiers(urn)
+        assert len(c) == 1
+        
+
+    
+    
+    
+    

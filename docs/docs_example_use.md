@@ -11,7 +11,7 @@ Here are some of the text mining and automatic analyses you can do with `dhlab`:
 
 ## Build a corpus
 
-Build a [corpus](#dhlab.Corpus) from bibliographic metadata about publications, e.g. books published between 1980 and 1905: 
+Build a [corpus](#dhlab.Corpus) from bibliographic metadata about publications, e.g. books published between 1980 and 2005: 
 
 ```{code-block} python
 import dhlab as dh
@@ -59,22 +59,22 @@ Compute [collocations](#dhlab.Collocations), a ranking of relevant words to a gi
 
 ```{code-block} python
 c = book_corpus.coll(words="sol")
-c.coll.head(10) # The top 10 most relevant words to "sol" in our corpus
-#                 counts
-#,                     1
-#.                     2
-#Ei                    1
-#Lite                  1
-#Norge                 1
-#antydninger           1
-#det                   1
-#enkelte               1
-#etterkrigstiden       1
-#gi                    2
+c.coll.sort_values("counts", ascending=False).head(10) # The top 10 most relevant words to "sol" in our corpus
+       counts
+,          10
+.           9
+og          5
+på          3
+nicht       3
+man         3
+the         3
+to          3
+lte         3
+ein         3
 ```
 
 ## N-grams
-Retrieve [n-gram](#dhlab.ngram.nb_ngram) frequencies per yer in a time period. 
+Retrieve [n-gram](#dhlab.ngram.nb_ngram) frequencies per year in a time period. 
 
 ```{code-block} python
 n = dh.ngram.nb_ngram.nb_ngram("sol,troll,skog")
@@ -96,7 +96,7 @@ ner = dh.api.dhlab_api.get_places(docid)
 
 ## Word dispersions
 
-Plot narrative graphs of word [dispersions](#dhlab.Dispersion) in a publication, for instance in "Kristin Lavransdatter":
+Plot narrative graphs of word [dispersions](#dhlab.text.dispersion.Dispersion) in a publication, for instance in "Kristin Lavransdatter":
 
 ```{code-block} python
 from dhlab.text.dispersion import Dispersion

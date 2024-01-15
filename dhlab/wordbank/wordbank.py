@@ -1,14 +1,17 @@
-import pandas as pd
-from dhlab.api.dhlab_api import (
-    word_variant, 
-    word_paradigm, 
-    word_paradigm_many,
-    word_form, 
-    word_form_many, 
-    word_lemma, 
-    word_lemma_many
-)
 from typing import Union
+
+import pandas as pd
+
+from dhlab.api.dhlab_api import (
+    word_form,
+    word_form_many,
+    word_lemma,
+    word_lemma_many,
+    word_paradigm,
+    word_paradigm_many,
+    word_variant,
+)
+
 
 class WordbankSuper():
     """Super class for wordbank classes"""
