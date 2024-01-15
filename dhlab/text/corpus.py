@@ -105,19 +105,6 @@ class Corpus(DhlabObj):
 
         super().__init__(self.corpus)
 
-        self.frame.rename(
-            columns={
-                "urn": "urn",
-                "authors": "author",
-                "langs": "language",
-                "genres": "genre",
-            },
-            inplace=True,
-        )
-
-        if not allow_duplicates:
-            self._check_for_urn_duplicates()
-
     @classmethod
     def from_identifiers(cls, identifiers: List[Union[str, int]]):
         """Construct Corpus from list of identifiers"""
@@ -322,7 +309,7 @@ class Corpus(DhlabObj):
             raise ValueError("Corpus is empty.")
 
         # Check for the presence of essential columns
-        required_columns = ["urn", "dhlabid", "author", "language", "genre"]
+        required_columns = ["urn", "dhlabid", "authors", "langs", "genres"]
         for col in required_columns:
             if col not in self.corpus.columns:
                 raise ValueError(f"Essential column '{col}' is missing.")
