@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dhlab"
-version = "2.30.0"
+version = "2.31.0"
 description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
 authors = ["The Digital Humanities Lab at The National Library of Norway (NB) <dh-lab@nb.no>"]
 license = "MIT"
@@ -22,7 +22,7 @@ exclude = ["docs/", "tests/"]
 "Tutorials" = "https://nationallibraryofnorway.github.io/digital_tekstanalyse/tutorial.html"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+python = ">=3.9"
 ipython = "^8.17.2"
 matplotlib = "^3.8.1"
 networkx = "^3.2.1"
@@ -31,7 +31,9 @@ python-louvain = "^0.16"
 requests = "^2.31.0"
 seaborn = "^0.13.0"
 scipy = "^1.11.3"
-bs4 = "^0.0.1"
+openpyxl = "^3.1.2"
+beautifulsoup4 = "^4.12.2"
+numpy = "^1.26.3"
 
 [tool.poetry.group.docs.dependencies]
 Sphinx = "^7.2.6"
@@ -56,6 +58,7 @@ isort = "^5.12.0"
 mypy = "^1.6.1"
 pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
+pytest-mock = "^3.12.0"
 
 [tool.poetry-dynamic-versioning]
 enable = false
