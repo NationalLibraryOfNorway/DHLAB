@@ -1,3 +1,11 @@
+"""The dhlab python library provides functions and objects
+to retrieve and analyze image and text data from the digital collection of the National Library of Norway.
+
+You can build text corpora, retrieve their metadata, search for images, and do quantitative analyses.
+
+The dhlab python package calls the [DHLAB API](https://api.nb.no/dhlab/) under the hood to retrieve data.
+"""
+
 # api
 from dhlab.api.dhlab_api import totals
 
