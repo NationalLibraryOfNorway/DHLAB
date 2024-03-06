@@ -627,7 +627,7 @@ def get_urn_frequencies(urns: List[str] = None, dhlabid: List = None) -> DataFra
     :param list dhlabid: list of numbers for dhlabid:
         ``[1000001, 2000003]``
     """
-    if dhlabid == None:
+    if dhlabid is None:
         params = {"urns": urns}
     else:
         params = {"dhlabid": dhlabid}
