@@ -1,6 +1,5 @@
 "Query service for natbib metadata"
 
-
 import requests
 
 
@@ -19,9 +18,7 @@ class QueryBuilder:
 
     """
 
-    endpoint = (
-        "https://api.nb.no/dhlab/metadata_query2" 
-    )
+    endpoint = "https://api.nb.no/dhlab/metadata_query2"
 
     def __init__(self):
         self.query = {"fields": [], "returnFields": [], "limit": None}

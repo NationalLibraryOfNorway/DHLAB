@@ -1,6 +1,7 @@
 import pandas as pd
-from dhlab.text.dhlab_object import DhlabObj
+
 from dhlab.api.dhlab_api import get_dispersion
+from dhlab.text.dhlab_object import DhlabObj
 
 
 class Dispersion(DhlabObj):

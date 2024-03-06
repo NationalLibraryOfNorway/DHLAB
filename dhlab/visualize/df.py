@@ -1,4 +1,5 @@
 """Viz tools for for pandas DataFrame"""
+
 import pandas as pd
 import seaborn as sns
 

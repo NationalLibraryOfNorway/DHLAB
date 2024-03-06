@@ -1,6 +1,6 @@
 import pandas as pd
 
-from dhlab.api.dhlab_api import geo_lookup, get_places, ner_from_urn
+from dhlab.api.dhlab_api import geo_lookup
 from dhlab.text.parse import NER, Models
 
 
@@ -26,7 +26,7 @@ class GeoData:
                 "Please provide a document URN to fill the ``place_names`` dataframe attribute."
             )
             place_names = pd.DataFrame()
-        except IndexError as error:
+        except IndexError:
             print("GeoData couldn't load any SpaCy NER models.")
             place_names = pd.DataFrame()
         except Exception as error:

@@ -24,7 +24,7 @@ class Ngram(pd.DataFrame):
         doctype="bok",
         mode="relative",
         lang="nob",
-        **kwargs
+        **kwargs,
     ):
         res = nb_ngram(
             terms=", ".join(words),
@@ -44,7 +44,7 @@ class Ngram(pd.DataFrame):
         city=None,
         from_year=1950,
         to_year=datetime.now().year,
-        **kwargs
+        **kwargs,
     ):
         res = ngram_news(word=words, period=(from_year, to_year))
 
@@ -62,7 +62,7 @@ class Ngram(pd.DataFrame):
         to_year=datetime.now().year,
         ddk=None,
         subject=None,
-        **kwargs
+        **kwargs,
     ):
         res = ngram_book(
             word=words,

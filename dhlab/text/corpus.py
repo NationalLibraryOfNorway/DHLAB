@@ -104,7 +104,7 @@ class Corpus(DhlabObj):
             self.corpus = pd.DataFrame(columns=["urn"])
 
         super().__init__(self.corpus)
-        
+
         if not allow_duplicates:
             self._check_for_urn_duplicates()
 
@@ -143,7 +143,7 @@ class Corpus(DhlabObj):
 
     @staticmethod
     def _urn_id_in_dataframe_cols(
-        dataframe: Union[DataFrame, type("Corpus")]
+        dataframe: Union[DataFrame, type("Corpus")],
     ) -> DataFrame:
         """Checks if dataframe contains URN column"""
         if "urn" in dataframe.columns:

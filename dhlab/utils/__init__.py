@@ -1,4 +1,5 @@
 """Utility functions."""
+
 import re
 
 
@@ -28,9 +29,11 @@ def _is_documented_by(original):
        def target(args):
            ...
     """
+
     def wrapper(target):
         target.__doc__ = original.__doc__
         return target
+
     return wrapper
 
 
@@ -44,16 +47,17 @@ def _docstring_parameters_from(original, drop: str = None):
     """
 
     def _remove_param_desc(text, skip):
-        regx = re.compile(fr'(\s*:param.+{skip}:\s.+\n\s *.+)(?=\n\s*:param)')
+        regx = re.compile(rf"(\s*:param.+{skip}:\s.+\n\s *.+)(?=\n\s*:param)")
         skip_str = re.search(regx, text).group()
         return text.replace(skip_str, "")
 
     def wrapper(target):
         docstr = original.__doc__
-        parameters = docstr[docstr.index("\n\n    :param"):]
+        parameters = docstr[docstr.index("\n\n    :param") :]
         if drop is not None:
             for skip in drop.split(","):
                 parameters = _remove_param_desc(parameters, skip)
         target.__doc__ += "\n" + parameters
         return target
+
     return wrapper
