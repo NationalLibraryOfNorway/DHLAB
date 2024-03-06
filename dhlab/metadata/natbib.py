@@ -34,7 +34,7 @@ def _api_call_deco(service):
 @_api_call_deco("metadata_query")
 def metadata_query(conditions, limit=5):
     """Query the Norwegian National Bibliography using Marc 21 fields and values
-    
+
     Example:
     conditions = [
         ["245", "a", "kongen"],
