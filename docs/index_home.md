@@ -24,3 +24,4 @@ Install the latest version of the [`dhlab`](https://pypi.org/project/dhlab/) pyt
 pip install -U dhlab
 ```
 <!-- end installation -->
+

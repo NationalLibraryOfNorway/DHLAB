@@ -1,7 +1,6 @@
 This pages gives an overview of objects available at the top level of the package,
 that can be imported directly from `dhlab.*`, for example: `from dhlab import Corpus`
 
-
 ### Classes and functions
 
 !!! info inline end
@@ -17,9 +16,9 @@ that can be imported directly from `dhlab.*`, for example: `from dhlab import Co
 - [`Corpus`][dhlab.text.corpus.Corpus]
 - [`Ngram`][dhlab.ngram.ngram.Ngram]
 - [`Chunks`][dhlab.text.chunking.Chunks]
-- [`Collocations`][dhlab.text.collocations.Collocations]
-- [`Concordance`][dhlab.text.concordance.Concordance]
-- [`Frequencies`][dhlab.text.frequencies.Frequencies]
+- [`Collocations`][dhlab.text.conc_coll.Collocations]
+- [`Concordance`][dhlab.text.conc_coll.Concordance]
+- [`Counts`][dhlab.text.conc_coll.Counts]
 - [`WildcardWordSearch`][dhlab.text.wildcard.WildcardWordSearch]
 - [`metadata_from_urn`][dhlab.metadata.natbib.metadata_from_urn]
 - [`metadata_query`][dhlab.metadata.natbib.metadata_query]

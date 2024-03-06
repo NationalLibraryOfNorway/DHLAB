@@ -54,9 +54,12 @@ markdown_extensions:
   - pymdownx.snippets
   - toc:
       permalink: true
+      baselevel: 2
 
 nav:
-  - Home: index.md
+  - Home: index_home.md
+  - Examples: docs_example_use.md
+  - Terms: term_definitions.md
   - Code Reference:
     - reference.md
     - api.md
