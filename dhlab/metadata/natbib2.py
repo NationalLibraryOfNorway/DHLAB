@@ -1,6 +1,5 @@
 "Query service for natbib metadata"
 
-
 import requests
 
 

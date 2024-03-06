@@ -1,4 +1,5 @@
 """Tools for querying the Norwegian National Bibliography Marc 21"""
+
 import os
 from functools import wraps
 

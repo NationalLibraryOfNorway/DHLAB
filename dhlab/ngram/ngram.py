@@ -16,7 +16,7 @@ class Ngram(DhlabObj):
         doctype="bok",
         mode="relative",
         lang="nob",
-        **kwargs
+        **kwargs,
     ):
         """Ngram builder class.
 
@@ -117,7 +117,7 @@ class NgramBook(Ngram):
         to_year=None,
         ddk=None,
         subject=None,
-        **kwargs
+        **kwargs,
     ):
         """Create Dhlab Ngram from metadata
 
@@ -149,7 +149,7 @@ class NgramBook(Ngram):
             to_year=to_year,
             lang=lang,
             doctype="bok",
-            **kwargs
+            **kwargs,
         )
         self.date = datetime.now()
         if to_year is None:

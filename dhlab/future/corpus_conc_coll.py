@@ -1,4 +1,5 @@
 """Possible future funcs"""
+
 import re
 
 import pandas as pd
