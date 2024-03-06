@@ -14,7 +14,7 @@ from dhlab.api.nb_search_api import (
 def pages(urn, scale=800):
     a = iiif_manifest(urn)
     return [
-        page["images"][0]["resource"]["@id"].replace(f"full/full/", "full/0,{s}/")
+        page["images"][0]["resource"]["@id"].replace("full/full/", "full/0,{s}/")
         for page in a["sequences"][0]["canvases"]
     ]
 
@@ -95,7 +95,7 @@ def get_metadata_from_url(url):
     triple = iiif_manifest(urn)
     # print(urn, triple)
     r = dict()
-    if not "error" in triple:
+    if "error" not in triple:
         r = {x["label"]: x["value"] for x in triple["metadata"] if "label" in x}
     else:
         r = triple["error"]

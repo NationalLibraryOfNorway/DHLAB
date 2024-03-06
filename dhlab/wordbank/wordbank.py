@@ -9,7 +9,6 @@ from dhlab.api.dhlab_api import (
     word_lemma_many,
     word_paradigm,
     word_paradigm_many,
-    word_variant,
 )
 
 

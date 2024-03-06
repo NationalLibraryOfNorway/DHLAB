@@ -327,7 +327,7 @@ def _ngram_doc(
         # assume a comma separated string
         word = [w.strip() for w in word.split(",")]
     params["word"] = tuple(word)
-    params = {x: params[x] for x in params if not params[x] is None}
+    params = {x: params[x] for x in params if params[x] is not None}
     r = requests.post(BASE_URL + "/ngram_" + doctype, json=params)
     # print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
@@ -413,7 +413,7 @@ def _ngram_doc(
         # assume a comma separated string
         word = [w.strip() for w in word.split(",")]
     params["word"] = tuple(word)
-    params = {x: params[x] for x in params if not params[x] is None}
+    params = {x: params[x] for x in params if params[x] is not None}
     r = requests.post(BASE_URL + "/ngram_" + doctype, json=params)
     # print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
@@ -465,7 +465,7 @@ def ngram_book(
         # assume a comma separated string
         word = [w.strip() for w in word.split(",")]
     params["word"] = tuple(word)
-    params = {x: params[x] for x in params if not params[x] is None}
+    params = {x: params[x] for x in params if params[x] is not None}
     r = requests.post(BASE_URL + "/ngram_book", json=params)
     # print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
@@ -515,7 +515,7 @@ def ngram_periodicals(
         # assume a comma separated string
         word = [w.strip() for w in word.split(",")]
     params["word"] = tuple(word)
-    params = {x: params[x] for x in params if not params[x] is None}
+    params = {x: params[x] for x in params if params[x] is not None}
     r = requests.post(BASE_URL + "/ngram_periodicals", json=params)
     # print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
@@ -552,7 +552,7 @@ def ngram_news(
         # assume a comma separated string
         word = [w.strip() for w in word.split(",")]
     params["word"] = tuple(word)
-    params = {x: params[x] for x in params if not params[x] is None}
+    params = {x: params[x] for x in params if params[x] is not None}
     r = requests.post(BASE_URL + "/ngram_newspapers", json=params)
     # print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
@@ -685,7 +685,7 @@ def document_corpus(
     :return: a ``pandas.DataFrame`` with the corpus information.
     """
     parms = locals()
-    params = {x: parms[x] for x in parms if not parms[x] is None}
+    params = {x: parms[x] for x in parms if parms[x] is not None}
 
     r = requests.post(BASE_URL + "/build_corpus", json=params)
 

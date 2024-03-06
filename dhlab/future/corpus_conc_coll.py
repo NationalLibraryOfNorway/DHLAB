@@ -5,7 +5,6 @@ import re
 import pandas as pd
 from IPython.display import HTML
 
-import dhlab as dh
 from dhlab.api.dhlab_api import (
     concordance,
     document_corpus,
