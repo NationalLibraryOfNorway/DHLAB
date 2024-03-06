@@ -30,7 +30,7 @@ pandas = "^2.1.2"
 python-louvain = "^0.16"
 requests = "^2.31.0"
 seaborn = "^0.13.0"
-scipy = "^1.11.3"
+scipy = { version = "^1.11.3", python = ">=3.9,<3.13" }
 openpyxl = "^3.1.2"
 beautifulsoup4 = "^4.12.2"
 numpy = "^1.26.3"
@@ -44,7 +44,11 @@ sphinx-copybutton = "^0.5.2"
 sphinx-togglebutton = "^0.3.2"
 sphinx_design = "^0.5.0"
 sphinx_inline_tabs = "^2023.4.21"
-numpy = "^1.26.1"
+mkdocs = "^1.5.2"
+mkdocstrings = {extras = ["python"], version = "^0.22.0"}
+mkdocs-material = "^9.1.21"
+mkdocs-section-index = "^0.3.5"
+mkdocs-autorefs = "^0.5.0"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.26.0"
@@ -66,6 +70,10 @@ enable = false
 bump  = false
 vcs = "git"
 format = "v{base}{stage}{revision}"
+
+
+[tool.poetry-dynamic-versioning.substitution]
+files = ["dhlab/_version.py"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]

@@ -1,0 +1,67 @@
+site_name: dhlab documentation
+
+
+theme:
+  name: "material"
+  logo: _images/NB-symbol-farge.png
+  favicon: _images/nb_symbol_farge_z5B_icon.ico
+  palette:
+    primary: "white"
+    accent: "red"
+  features:
+    - content.code.copy
+    - navigation.footer
+    - navigation.path
+
+repo_url: https://github.com/NationalLibraryOfNorway/DHLAB
+repo_name: NationalLibraryOfNorway/DHLAB
+
+extra:
+  social:
+    - icon: material/home
+      link: https://www.nb.no/
+      name: National Library of Norway
+    - icon: material/book-search
+      link: https://www.nb.no/search/
+      name: Online library search
+    - icon: simple/streamlit
+      link: https://www.nb.no/dh-lab/apper/
+      name: dhlab streamlit apps
+    - icon: fontawesome/brands/github
+      link: https://github.com/NationalLibraryOfNorway/DHLAB
+    - icon: simple/python
+      link: https://pypi.org/project/dhlab/
+      name: pypi.org
+    - icon: material/bug
+      link: https://github.com/NationalLibraryOfNorway/DHLAB/issues
+      name: bug tracker
+
+plugins:
+  - mkdocstrings
+  - search
+  - autorefs
+  - section-index
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Code Reference:
+    - reference.md
+    - api.md
+    - images.md
+    - metadata.md
+    - ngram.md
+    - text.md
+
