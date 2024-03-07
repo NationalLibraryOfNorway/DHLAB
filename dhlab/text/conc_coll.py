@@ -101,18 +101,22 @@ class Collocations(DhlabObj):
         if isinstance(words, str):
             words = [words]
 
-        coll = pd.concat(
-            [
-                urn_collocation(
-                    urns=urnlist(corpus),
-                    word=w,
-                    before=before,
-                    after=after,
-                    samplesize=samplesize,
-                )
-                for w in words
-            ]
-        )[["counts"]]
+        if corpus is not None and words is not None:  
+            coll = pd.concat(
+                [
+                    urn_collocation(
+                        urns=urnlist(corpus),
+                        word=w,
+                        before=before,
+                        after=after,
+                        samplesize=samplesize,
+                    )
+                    for w in words
+                ]
+            )[["counts"]]
+        else:
+            coll = pd.DataFrame()    
+        
 
         if alpha:
             coll = coll.loc[[x for x in coll.index if x.isalpha()]]
@@ -151,8 +155,8 @@ class Collocations(DhlabObj):
         :param df: DataFrame
         :return: Collocation
         """
-        obj = Counts()
-        obj.counts = df
+        obj = Collocations()
+        obj.coll = df
         obj.frame = df
         return obj
 
