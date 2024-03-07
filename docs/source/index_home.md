@@ -1,9 +1,6 @@
 
 # [![DH-LAB logo](_images/DHlab_logo_web_en_black.png)](https://www.nb.no/dh-lab/)
 
-<!-- 
-::: dhlab
--->
 
 ```{include} ../../README.md
 :start-after: <!-- start dhlab-intro -->
