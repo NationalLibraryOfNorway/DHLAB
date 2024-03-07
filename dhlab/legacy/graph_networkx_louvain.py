@@ -10,17 +10,23 @@ from matplotlib import colors as mcolors
 from matplotlib.pylab import rcParams
 from networkx.algorithms.community import k_clique_communities
 
-from dhlab.legacy.nbtext import urn_coll, urn_coll_words, frame, get_freq, make_graph_from_result
+from dhlab.legacy.nbtext import (
+    urn_coll,
+    urn_coll_words,
+    frame,
+    get_freq,
+    make_graph_from_result,
+)
 
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
-rcParams['figure.figsize'] = 15, 10
+rcParams["figure.figsize"] = 15, 10
 
 
 def cutdown(x):
     return x.subgraph([n[0] for n in x.degree() if n[1] > 1])
 
 
-def make_graph_corp(word, corpus='eng'):
+def make_graph_corp(word, corpus="eng"):
     query = (
         f"http://www.nb.no/sp_tjenester/beta/ngram_1/galaxies/query"
         f"?terms={word}&lang=all&corpus={corpus}"
@@ -35,35 +41,56 @@ def make_graph(word):
     return make_graph_from_result(result)
 
 
-def draw_graph(G, nodelist: list = None, h=15, v=10, fontsize=12, layout=nx.spring_layout,
-               arrows=False, node_color='orange', node_size=100,
-               font_color='black'):
+def draw_graph(
+    G,
+    nodelist: list = None,
+    h=15,
+    v=10,
+    fontsize=12,
+    layout=nx.spring_layout,
+    arrows=False,
+    node_color="orange",
+    node_size=100,
+    font_color="black",
+):
     if nodelist is not None:
         G = G.subgraph(nodelist)
-    x, y = rcParams['figure.figsize']
-    rcParams['figure.figsize'] = h, v
+    x, y = rcParams["figure.figsize"]
+    rcParams["figure.figsize"] = h, v
     pos = layout(G)
     ax = plt.subplot()
     ax.set_xticks([])
     ax.set_yticks([])
     nx.draw_networkx_labels(G, pos, font_size=fontsize, font_color=font_color)
-    nx.draw_networkx_nodes(G, pos, alpha=0.1, node_color=node_color,
-                           node_size=node_size)
-    nx.draw_networkx_edges(G, pos, alpha=0.7, arrows=arrows,
-                           edge_color='lightblue')
+    nx.draw_networkx_nodes(
+        G, pos, alpha=0.1, node_color=node_color, node_size=node_size
+    )
+    nx.draw_networkx_edges(G, pos, alpha=0.7, arrows=arrows, edge_color="lightblue")
 
-    rcParams['figure.figsize'] = x, y
+    rcParams["figure.figsize"] = x, y
 
 
-def draw_graph_centrality(G, h=15, v=10, deltax=0, deltay=0, fontsize=18, k=0.2,
-                          arrows=False, node_alpha=0.3, l_alpha=1,
-                          node_color='blue', centrality=nx.degree_centrality,
-                          font_color='black', threshold=0.01, multi=3000):
+def draw_graph_centrality(
+    G,
+    h=15,
+    v=10,
+    deltax=0,
+    deltay=0,
+    fontsize=18,
+    k=0.2,
+    arrows=False,
+    node_alpha=0.3,
+    l_alpha=1,
+    node_color="blue",
+    centrality=nx.degree_centrality,
+    font_color="black",
+    threshold=0.01,
+    multi=3000,
+):
     node_dict = centrality(G)
-    subnodes = dict(
-        {x: node_dict[x] for x in node_dict if node_dict[x] >= threshold})
-    x, y = rcParams['figure.figsize']
-    rcParams['figure.figsize'] = h, v
+    subnodes = dict({x: node_dict[x] for x in node_dict if node_dict[x] >= threshold})
+    x, y = rcParams["figure.figsize"]
+    rcParams["figure.figsize"] = h, v
 
     ax = plt.subplot()
     ax.set_xticks([])
@@ -74,30 +101,46 @@ def draw_graph_centrality(G, h=15, v=10, deltax=0, deltay=0, fontsize=18, k=0.2,
     # print(labelpos)
     # print(pos)
     if l_alpha <= 1:
-        nx.draw_networkx_labels(G, labelpos, font_size=fontsize, alpha=l_alpha,
-                                font_color=font_color)
-    nx.draw_networkx_nodes(G, pos, alpha=node_alpha,
-                           node_color=range(len(subnodes.keys())),
-                           # Cannot find reference 'Blues' in 'cm.py'
-                           cmap=plt.cm.Blues, nodelist=subnodes.keys(),
-                           node_size=[v * multi for v in subnodes.values()])
-    nx.draw_networkx_edges(G, pos, alpha=0.4, arrows=arrows,
-                           edge_color='lightblue')
+        nx.draw_networkx_labels(
+            G, labelpos, font_size=fontsize, alpha=l_alpha, font_color=font_color
+        )
+    nx.draw_networkx_nodes(
+        G,
+        pos,
+        alpha=node_alpha,
+        node_color=range(len(subnodes.keys())),
+        # Cannot find reference 'Blues' in 'cm.py'
+        cmap=plt.cm.Blues,
+        nodelist=subnodes.keys(),
+        node_size=[v * multi for v in subnodes.values()],
+    )
+    nx.draw_networkx_edges(G, pos, alpha=0.4, arrows=arrows, edge_color="lightblue")
 
-    rcParams['figure.figsize'] = x, y
+    rcParams["figure.figsize"] = x, y
 
 
-def draw_graph_centrality2(G, Subsets=None, h=15, v=10, deltax=0, deltay=0,
-                           fontsize=18, k=0.2, arrows=False,
-                           node_alpha=0.3, l_alpha=1, node_color='blue',
-                           centrality=nx.degree_centrality,
-                           font_color='black',
-                           threshold=0.01,
-                           multi=3000,
-                           edge_color='olive',
-                           edge_alpha=0.1,
-                           colstart=0.2,
-                           coldark=0.5):
+def draw_graph_centrality2(
+    G,
+    Subsets=None,
+    h=15,
+    v=10,
+    deltax=0,
+    deltay=0,
+    fontsize=18,
+    k=0.2,
+    arrows=False,
+    node_alpha=0.3,
+    l_alpha=1,
+    node_color="blue",
+    centrality=nx.degree_centrality,
+    font_color="black",
+    threshold=0.01,
+    multi=3000,
+    edge_color="olive",
+    edge_alpha=0.1,
+    colstart=0.2,
+    coldark=0.5,
+):
     if Subsets is None:
         Subsets = []
     # W0621: Redefining name 'colors' from outer scope (line 16)
@@ -105,10 +148,9 @@ def draw_graph_centrality2(G, Subsets=None, h=15, v=10, deltax=0, deltay=0,
     # W0612: Unused variable 'colors'
     colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
     node_dict = centrality(G)
-    subnodes = {x: node_dict[x]
-                for x in node_dict if node_dict[x] >= threshold}
-    x, y = rcParams['figure.figsize']
-    rcParams['figure.figsize'] = h, v
+    subnodes = {x: node_dict[x] for x in node_dict if node_dict[x] >= threshold}
+    x, y = rcParams["figure.figsize"]
+    rcParams["figure.figsize"] = h, v
 
     ax = plt.subplot()
     ax.set_xticks([])
@@ -120,8 +162,9 @@ def draw_graph_centrality2(G, Subsets=None, h=15, v=10, deltax=0, deltay=0,
     # print(labelpos)
     # print(pos)
     if l_alpha <= 1:
-        nx.draw_networkx_labels(G, labelpos, font_size=fontsize, alpha=l_alpha,
-                                font_color=font_color)
+        nx.draw_networkx_labels(
+            G, labelpos, font_size=fontsize, alpha=l_alpha, font_color=font_color
+        )
     sub_color = 0  # W0612: Unused variable 'sub_color' (unused-variable)
     if Subsets != []:
         i = 0
@@ -134,21 +177,30 @@ def draw_graph_centrality2(G, Subsets=None, h=15, v=10, deltax=0, deltay=0,
             sub_col = colpalette[i]
             # print(i, sub_col, sublist.keys())
             # print(i, sub_col)
-            nx.draw_networkx_nodes(G, pos, alpha=node_alpha,
-                                   node_color=[sub_col],
-                                   nodelist=list(sublist.keys()),
-                                   node_size=[v * multi for v in
-                                              sublist.values()])
+            nx.draw_networkx_nodes(
+                G,
+                pos,
+                alpha=node_alpha,
+                node_color=[sub_col],
+                nodelist=list(sublist.keys()),
+                node_size=[v * multi for v in sublist.values()],
+            )
             i += 1
     else:
-        nx.draw_networkx_nodes(G, pos, alpha=node_alpha, node_color=glob_col,
-                               nodelist=subnodes.keys(),
-                               node_size=[v * multi for v in subnodes.values()])
+        nx.draw_networkx_nodes(
+            G,
+            pos,
+            alpha=node_alpha,
+            node_color=glob_col,
+            nodelist=subnodes.keys(),
+            node_size=[v * multi for v in subnodes.values()],
+        )
 
-    nx.draw_networkx_edges(G, pos, alpha=edge_alpha, arrows=arrows,
-                           edge_color=edge_color)
+    nx.draw_networkx_edges(
+        G, pos, alpha=edge_alpha, arrows=arrows, edge_color=edge_color
+    )
 
-    rcParams['figure.figsize'] = x, y
+    rcParams["figure.figsize"] = x, y
 
 
 # Set palette using: sns.hls_palette(10, h=.6, l=.1)
@@ -172,8 +224,7 @@ def mcommunity(Graph, random=10):
     list_nodes = []
     for com in set(m_partition.values()):
         list_nodes += [
-            {nodes for nodes in m_partition.keys(
-            ) if m_partition[nodes] == com}
+            {nodes for nodes in m_partition.keys() if m_partition[nodes] == com}
         ]
     return list_nodes
 
@@ -194,15 +245,15 @@ def kcliques(agraph):
 
 
 def subsetgraph(comms, centrals, labels=2):
-    """comms is communities """
+    """comms is communities"""
     subgraph = nx.DiGraph()
     comkeys = sorted(comms.keys(), key=lambda x: x[0], reverse=True)
     for i, top in enumerate(comkeys):
         label_small = str(top[0]) + str(top[1])
-        small_ordered = Counter(
-            {r: centrals[r] for r in comms[top]}).most_common(labels)
-        label_small = label_small + ' ' + ' '.join(
-            [x[0] for x in small_ordered])
+        small_ordered = Counter({r: centrals[r] for r in comms[top]}).most_common(
+            labels
+        )
+        label_small = label_small + " " + " ".join([x[0] for x in small_ordered])
         subgraph.add_node(label_small)
         j = i + 1
         found = False
@@ -213,10 +264,12 @@ def subsetgraph(comms, centrals, labels=2):
             # print(top,comkeys[j], found)
             if found:
                 label_large = str(comkeys[j][0]) + str(comkeys[j][1])
-                large_ordered = Counter(
-                    {r: centrals[r] for r in nodej}).most_common(labels)
-                label_large = label_large + ' ' + ' '.join(
-                    [x[0] for x in large_ordered])
+                large_ordered = Counter({r: centrals[r] for r in nodej}).most_common(
+                    labels
+                )
+                label_large = (
+                    label_large + " " + " ".join([x[0] for x in large_ordered])
+                )
                 # print(label_small, label_large)
                 subgraph.add_edge(label_small, label_large)
             j += 1
@@ -310,7 +363,8 @@ def tree_pos(x, G, level, spacing, num, left_edge, level_increment=1):
                 spacing,
                 i,
                 d_left,
-                level_increment=level_increment)
+                level_increment=level_increment,
+            )
             i += 1
             d_left += spacing + d_width
             positions.update(d_positions)
@@ -339,11 +393,18 @@ def node_set(root, G):
     return span
 
 
-def draw_tree(G, node_size=1, node_color='slategrey', n=2, m=1, h=10, v=10):
+def draw_tree(G, node_size=1, node_color="slategrey", n=2, m=1, h=10, v=10):
     # plt.subplot()
-    draw_graph(G, h=h, v=v, layout=lambda g: tree_positions(g, n, increment=m),
-               node_color=node_color, node_size=node_size, fontsize=18,
-               arrows=False)
+    draw_graph(
+        G,
+        h=h,
+        v=v,
+        layout=lambda g: tree_positions(g, n, increment=m),
+        node_color=node_color,
+        node_size=node_size,
+        fontsize=18,
+        arrows=False,
+    )
     fmin, fmax = plt.xlim()
     plt.xlim(fmin - 10, fmax + 10)
     # ax.set_xticks([])
@@ -376,17 +437,18 @@ def draw_forest(F, spacing, h=15, v=10, save_name=False):
 
 def print_list_of_sets(los):
     for x in los:
-        print(', '.join(x), '\n')
+        print(", ".join(x), "\n")
 
 
 def print_sets(graph):
     for x in graph[1]:
-        print(x, ', '.join(graph[1][x]), '\n')
+        print(x, ", ".join(graph[1][x]), "\n")
     return True
 
 
-def make_collocation_graph(target, top=15, urns=None, cutoff=0, cut_val=2,
-                           before=4, after=4, limit=1000):
+def make_collocation_graph(
+    target, top=15, urns=None, cutoff=0, cut_val=2, before=4, after=4, limit=1000
+):
     """Make a cascaded network from collocations"""
     if urns is None:
         urns = []
@@ -394,24 +456,23 @@ def make_collocation_graph(target, top=15, urns=None, cutoff=0, cut_val=2,
     for urn in urns:
         antall += get_freq(urn[0], top=0, cutoff=0)
 
-    korpus_totalen = frame(antall, 'total')
+    korpus_totalen = frame(antall, "total")
     Total = korpus_totalen[korpus_totalen > cut_val]
 
     if isinstance(target, str):
         target = target.split()
 
-    I = urn_coll_words(target, urns=urns, before=before, after=after,
-                       limit=limit)
-    toppis = frame(I[0] ** 1.2 / Total['total'], target[0]).sort_values(
-        by=target[0], ascending=False)
+    I = urn_coll_words(target, urns=urns, before=before, after=after, limit=limit)
+    toppis = frame(I[0] ** 1.2 / Total["total"], target[0]).sort_values(
+        by=target[0], ascending=False
+    )
 
     # toppis[:top].index
 
     isgraf = {}
     for word in toppis[:top].index:
         if word.isalpha():
-            isgraf[word] = urn_coll(
-                word, urns=urns, before=before, after=after)
+            isgraf[word] = urn_coll(word, urns=urns, before=before, after=after)
 
     isframe = {}
     for w, value in isgraf.items():
@@ -421,10 +482,11 @@ def make_collocation_graph(target, top=15, urns=None, cutoff=0, cut_val=2,
     if len(target) == 1:
         tops[target[0]] = toppis
     else:
-        tops['_'.join(target[:2])] = toppis
+        tops["_".join(target[:2])] = toppis
     for w, value in isframe.items():
-        tops[w] = frame(value[w] ** 1.2 / Total['total'], w).sort_values(
-            by=w, ascending=False)
+        tops[w] = frame(value[w] ** 1.2 / Total["total"], w).sort_values(
+            by=w, ascending=False
+        )
 
     edges = []
     for w, value in tops.items():
@@ -438,21 +500,22 @@ def make_collocation_graph(target, top=15, urns=None, cutoff=0, cut_val=2,
 
 
 def show_graph(G, spread=0.2, fontsize=10, deltax=0, deltay=0):
-    return draw_graph_centrality2(G, mcommunity(G), k=spread, fontsize=fontsize,
-                                  deltax=deltax, deltay=deltay)
+    return draw_graph_centrality2(
+        G, mcommunity(G), k=spread, fontsize=fontsize, deltax=deltax, deltay=deltay
+    )
 
 
 def show_cliques(G):
     C = make_cliques_from_graph(G.to_undirected())
     for t in C[1]:
-        print(t, ', '.join(C[1][t]))
+        print(t, ", ".join(C[1][t]))
         print()
 
 
 def show_community(G):
     MC = mcommunity(G)
     for i, element in enumerate(MC):
-        print(i + 1, ', '.join(element))
+        print(i + 1, ", ".join(element))
         print()
     return True
 
@@ -465,14 +528,14 @@ def community_dict(G):
         # print(l)
         l.sort(key=lambda i: i[1], reverse=True)
         # print(l)
-        cd['-'.join([x[0] for x in l[:2]])] = [x[0] for x in l]
+        cd["-".join([x[0] for x in l[:2]])] = [x[0] for x in l]
     return cd
 
 
 def show_communities(G):
     Gc = community_dict(G)
     for c, value in Gc.items():
-        print(c, ': ', ', '.join(value))
+        print(c, ": ", ", ".join(value))
         print()
 
 
@@ -480,7 +543,7 @@ def reduce_MxM_graph(G, words, factor=0.01):
     Gm = nx.Graph()
     edges = []
     for x in G.edges(data=True):
-        w = x[2]['weight']
+        w = x[2]["weight"]
         w1 = x[0]
         w2 = x[1]
         new_weight = w / (int(words.loc[w1]) * int(words.loc[w2]))

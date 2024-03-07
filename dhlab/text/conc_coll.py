@@ -101,7 +101,7 @@ class Collocations(DhlabObj):
         if isinstance(words, str):
             words = [words]
 
-        if corpus is not None and words is not None:  
+        if corpus is not None and words is not None:
             coll = pd.concat(
                 [
                     urn_collocation(
@@ -115,8 +115,7 @@ class Collocations(DhlabObj):
                 ]
             )[["counts"]]
         else:
-            coll = pd.DataFrame()    
-        
+            coll = pd.DataFrame()
 
         if alpha:
             coll = coll.loc[[x for x in coll.index if x.isalpha()]]
