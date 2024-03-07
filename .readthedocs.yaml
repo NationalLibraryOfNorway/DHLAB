@@ -33,11 +33,6 @@ sphinx:
 formats:
   - pdf
 
-
-mkdocs:
-  configuration: docs/mkdocs.yml
-  fail_on_warning: false
-
 python:
   install:
   - requirements: docs/requirements.txt
