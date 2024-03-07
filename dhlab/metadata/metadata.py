@@ -1,4 +1,5 @@
-from typing import List
+"""Retrieve metadata from objects in the digital archive."""
+from typing import List, Optional
 
 import pandas as pd
 import requests
@@ -6,10 +7,12 @@ import requests
 from dhlab.constants import BASE_URL
 
 
-def get_metadata(urns: List = None):
+def get_metadata(urns: Optional[List] = None):
     """Fetch metadata from a list of urns.
 
-    :param list urns: uniform resource names, example: ``["URN:NBN:no-nb_digibok_2011051112001", ...]``
+    Args:
+        urns: uniform resource names, example:
+            `["URN:NBN:no-nb_digibok_2011051112001"]`
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/get_metadata", json=params)

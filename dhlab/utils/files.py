@@ -1,3 +1,5 @@
+"""Fetch raw files from Github and write them to working directory."""
+
 import contextlib
 import os
 from pathlib import Path
@@ -22,13 +24,14 @@ def download_from_github(
 ):
     """Fetch a file from Github and write it to working directory.
 
-    :param filename:     Filename, including file extension (e.g. `.py` or `.txt`)
-    :param user:         Github username of the repo owner.
-    :param repository:   Github repository name.
-    :param branch:       Name of the repo branch. Defaults to 'master'.
-    :param overwrite:    Whether to overwrite existing files in working directory. Defaults to not
-                         overwrite.
-    :param silent:       Whether to output logging messages to stdout. Default is not silent.
+    Args:
+        filename: Filename, including file extension (e.g. `.py` or `.txt`)
+        user: Github username of the repo owner.
+        repository: Github repository name.
+        branch: Name of the repo branch. Defaults to 'master'.
+        overwrite: Whether to overwrite existing files in working
+            directory. Defaults to not overwrite.
+        silent: Whether to output logging messages to stdout.
     """
 
     nba = requests.get(
@@ -60,8 +63,10 @@ def get_file_from_github(url, overwrite=False, silent=False):
     it is enough with reference
     it will look in raw user content for the file.
 
-    :param overwrite: defaults to no overwrite
-    :param silent: default is not silent"""
+    Args:
+        overwrite: defaults to no overwrite
+        silent: default is not silent
+    """
 
     if url.startswith("https://github.com/") or url.startswith("github.com"):
         trail = url.split("github.com")[-1].replace("blob/", "")

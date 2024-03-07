@@ -12,6 +12,3 @@ def test_concordance_corpus():
     r = Concordance(c, "og")
     assert r is not None
     assert r.size > 0
-
-
-

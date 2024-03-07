@@ -1,4 +1,5 @@
 import pandas as pd
+from pandas import DataFrame
 
 from dhlab.api.nb_ngram_api import get_ngram
 
@@ -11,16 +12,13 @@ def nb_ngram(
     mode: str = "relative",
     lang: str = "nob",
 ):
-    """Extract N-gram frequencies from given ``terms`` and ``years``.
+    """Extract N-gram frequencies from given `terms` and `years`.
     `lang` param is not supported for corpus=`avis` and will be set to None if `avis` is passed.
 
-    :param terms: comma
-    :param corpus:
-    :param smooth:
-    :param years:
-    :param mode:
-    :param lang:
-    :return: A sorted Pandas DataFrame index
+    The `lang` param is not supported for `corpus="avis"` and will be set to None if `avis` is passed.
+
+    Returns:
+        A sorted Pandas DataFrame indexed by year, with columns for each term.
 
     :meta private:
     """
@@ -41,14 +39,8 @@ def nb_ngram(
 ## tar tilbake til original den her virker ikke LGJ
 def ngram_conv_old(
     ngrams, smooth: int = 1, years: tuple = (1810, 2013), mode: str = "relative"
-):
+) -> DataFrame:
     """Construct a dataframe with ngram mean frequencies per year over a given time period.
-
-    :param ngrams: TODO: FIll in appropriate type and description.
-    :param smooth: Smoothing factor for the graph visualisation.
-    :param years: Tuple with start and end years for the time period of interest
-    :param mode: Frequency measure. Defaults to 'relative'.
-    :return: pandas dataframe with mean values for each year
 
     :meta private:
     """
@@ -68,14 +60,22 @@ def ngram_conv_old(
     return pd.DataFrame(ngc).rolling(window=smooth, win_type="triang").mean()
 
 
-def ngram_conv(ngrams, smooth=1, years=(1810, 2013), mode="relative"):
+def ngram_conv(
+    ngrams,
+    smooth: int = 1,
+    years: tuple = (1810, 2013),
+    mode: str = "relative",
+) -> DataFrame:
     """Construct a dataframe with ngram mean frequencies per year over a given time period.
 
-    :param ngrams: TODO: FIll in appropriate type and description.
-    :param smooth: Smoothing factor for the graph visualisation.
-    :param years: Tuple with start and end years for the time period of interest
-    :param mode: Frequency measure. Defaults to 'relative'.
-    :return: pandas dataframe with mean values for each year
+    Args:
+        ngrams: To be filled in.
+        smooth: Smoothing factor for the graph visualisation.
+        years: Tuple with start and end years for the time period of interest
+        mode: Frequency measure.
+
+    Returns:
+        pandas dataframe with mean values for each year
 
     :meta private:
     """

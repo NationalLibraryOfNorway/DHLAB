@@ -8,10 +8,12 @@ class WildcardWordSearch(DhlabObj):
     """
 
     def __init__(self, word, factor=2, freq_limit=10, limit=50):
-        """:param word: word from a mixture of * and characters
-        :factor int: the additional length of words to be returned
-        :freq_lim: the frequency of returned words lower limit
-        :limit int: number of words returned
+        """
+        Args:
+            word: word from a mixture of * and characters
+            factor: the additional length of words to be returned
+            freq_limit: the frequency of returned words lower limit
+            limit: number of words returned
         """
         self.words = wildcard_search(
             word, factor=factor, freq_limit=freq_limit, limit=limit
