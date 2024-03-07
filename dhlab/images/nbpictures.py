@@ -153,5 +153,7 @@ def display_finds(r):
      </table>
      </body>
      </html>
-     """.format(rows=" ".join(rows))
+     """.format(
+            rows=" ".join(rows)
+        )
     )

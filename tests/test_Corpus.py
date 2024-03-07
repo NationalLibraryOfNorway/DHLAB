@@ -51,13 +51,14 @@ class TestCorpus:
         c.extend_from_identifiers(d.frame)
         assert c.size == 11
 
+
 class TestCorpusConc:
     def test_corpus_conc(self):
         c = dh.Corpus(doctype="digavis", limit=2)
         conc = c.conc("og")
         assert len(conc) > 0
         assert len(conc.frame.columns) == 3
-        
+
     def test_corpus_conc_all_doctypes(self):
         for doctype in dh.Corpus.doctypes:
             c = dh.Corpus(doctype=doctype, limit=2)
@@ -65,14 +66,13 @@ class TestCorpusConc:
             assert isinstance(conc, dh.Concordance)
             assert len(conc.frame.columns) == 3
 
+
 class TestCorpusColl:
     def test_corpus_coll(self):
-       for doctype in dh.Corpus.doctypes:
+        for doctype in dh.Corpus.doctypes:
             c = dh.Corpus(doctype=doctype, limit=2)
             coll = c.coll(".", samplesize=2)
             assert len(coll) > 0
-            
-    
 
 
 class TestCorpusIntegrityCheck:
@@ -92,30 +92,26 @@ class TestCorpusIntegrityCheck:
         c = dh.Corpus.from_df(pd.DataFrame({"urn": ["123", "456"]}))
         with pytest.raises(ValueError) as exc_info:
             c.check_integrity()
-            
+
+
 class TestCheckForUrnDuplicates:
     test_urns: List[str] = [["URN:NBN:no-nb_digibok_2008040104069"]]
-    test_str: List[str] = ["Undersøgelseskomiteens Indberetning sammenholdt med de virkelige Begivenheder i 1884 og 1893"]
-    
-    
+    test_str: List[str] = [
+        "Undersøgelseskomiteens Indberetning sammenholdt med de virkelige Begivenheder i 1884 og 1893"
+    ]
+
     @pytest.mark.parametrize("txt", test_str)
     def test_corpus_from_str_w_duplicates(self, txt):
         c = dh.Corpus(title=txt, allow_duplicates=True)
         assert len(c) == 2
-        
+
     @pytest.mark.parametrize("txt", test_str)
     def test_corpus_from_str_wo_duplicates(self, txt):
         c = dh.Corpus(title=txt, allow_duplicates=False)
         assert len(c) == 1
-    
+
     @pytest.mark.parametrize("urn", test_urns)
     def test_extend_w_deduplication(self, urn):
         c = dh.Corpus()
         c.extend_from_identifiers(urn)
         assert len(c) == 1
-        
-
-    
-    
-    
-    

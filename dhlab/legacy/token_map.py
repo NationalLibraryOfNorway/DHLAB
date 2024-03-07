@@ -11,12 +11,12 @@ from dhlab.legacy.nbtext import (
     names,
     token_map,
     pure_urn,
-    metadata
+    metadata,
 )
 
 
 def names_from_corpus(korpus):
-    """Find names in a larger corpus korpus is a frame with a column urn, or a list of urns """
+    """Find names in a larger corpus korpus is a frame with a column urn, or a list of urns"""
 
     # urner = list(korpus['urn'])
     urner = pure_urn(korpus)
@@ -36,13 +36,14 @@ def count_names_corpus(korpus, token_map_):
             res[urn] = count_name_strings(str(urn), token_map_).to_dict()[0]
         except BaseException:
             try:
-                print('feil med:',
-                      ', '.join([str(x) for x in metadata(str(urn))[0]]),
-                      sys.exc_info()[0])
+                print(
+                    "feil med:",
+                    ", ".join([str(x) for x in metadata(str(urn))[0]]),
+                    sys.exc_info()[0],
+                )
             except BaseException:
-                print('Kunne ikke hente data for:', urn)
-    return pd.DataFrame(
-        pd.DataFrame(res).sum(axis=1).sort_values(ascending=False))
+                print("Kunne ikke hente data for:", urn)
+    return pd.DataFrame(pd.DataFrame(res).sum(axis=1).sort_values(ascending=False))
 
 
 def names_from_excel(excelfil):
@@ -63,29 +64,26 @@ def names_from_excel(excelfil):
 
 
 def token_map_names(tmap):
-    return [
-        [z[0][0] for z in (tmap) if len(z[0]) == 1]
-    ] + [
-        [z[0] for z in (tmap) if len(z[0]) == 2]
-    ] + [
-        [z[0] for z in (tmap) if len(z[0]) == 3]
-    ] + [
-        [z[0] for z in (tmap) if len(z[0]) == 4]
-    ]
+    return (
+        [[z[0][0] for z in (tmap) if len(z[0]) == 1]]
+        + [[z[0] for z in (tmap) if len(z[0]) == 2]]
+        + [[z[0] for z in (tmap) if len(z[0]) == 3]]
+        + [[z[0] for z in (tmap) if len(z[0]) == 4]]
+    )
 
 
 # create a character network with only tokens in tokenmap
 # see nb.make_network_name_graph in nbtext
 
+
 def check_exit_conditions(filename):
-    if filename == '':
-        raise ValueError('Angi et filnavn')
+    if filename == "":
+        raise ValueError("Angi et filnavn")
     if os.path.exists(filename):
-        raise FileExistsError(
-            f'Filen {filename} eksisterer - prøv et nytt filnavn')
+        raise FileExistsError(f"Filen {filename} eksisterer - prøv et nytt filnavn")
 
 
-def names_to_token_map_file(wp, filename='', orient='column'):
+def names_to_token_map_file(wp, filename="", orient="column"):
     """Save token map to file for editing, exit if file exists"""
 
     # check  exit conditions
@@ -101,35 +99,34 @@ def names_to_token_map_file(wp, filename='', orient='column'):
     # print(wp)
     tmap = token_map(wp)
     # print(tmap)
-    for (name, target) in tmap:
-        x_str = ' '.join(target)
-        y_str = ' '.join(name)
+    for name, target in tmap:
+        x_str = " ".join(target)
+        y_str = " ".join(name)
         table_names.setdefault(x_str, []).append(y_str)
 
     dfs = [pd.DataFrame({key: value}) for key, value in table_names.items()]
 
     df = pd.concat(dfs, axis=1)
-    if orient == 'row':
+    if orient == "row":
         df = df.transpose()
     rv = True
-    if filename.endswith('csv'):
+    if filename.endswith("csv"):
         df.to_csv(filename)
-    elif filename.endswith('xls'):
+    elif filename.endswith("xls"):
         df.to_excel(filename, index=orient == "row")
     else:
         rv = df
     return rv
 
 
-def read_token_map_file(filename, sep=', ', orient='column'):
+def read_token_map_file(filename, sep=", ", orient="column"):
     """Read a token map from file, either xls or csv"""
 
-    if filename.endswith('xls'):
-        res = pd.read_excel(filename, index_col=0).dropna(how='all').fillna('')
-    elif filename.endswith('csv'):
-        res = pd.read_csv(filename, sep=sep, index_col=0).dropna(
-            how='all').fillna('')
-    if orient.startswith('row'):
+    if filename.endswith("xls"):
+        res = pd.read_excel(filename, index_col=0).dropna(how="all").fillna("")
+    elif filename.endswith("csv"):
+        res = pd.read_csv(filename, sep=sep, index_col=0).dropna(how="all").fillna("")
+    if orient.startswith("row"):
         res = res.transpose()
     result = []
     for x in res:
@@ -145,15 +142,15 @@ def show_names(wp):
     """Display found names with frequency"""
     i = 1
     for c in wp:
-        print('Lag', i)
+        print("Lag", i)
         print("=========")
         print()
         i += 1
         for x in c.most_common():
             if isinstance(x[0], str):
-                print("   ", x[0] + ' - ' + str(x[1]))
+                print("   ", x[0] + " - " + str(x[1]))
             else:
-                print("   ", ' '.join(x[0]) + ' - ' + str(x[1]))
+                print("   ", " ".join(x[0]) + " - " + str(x[1]))
         print()
 
 
@@ -164,7 +161,7 @@ def character_network(urn, token_map_, names_=None):
 
 
 def count_name_strings(urn, token_map_, names_=None):
-    """ return a count of the names in tokenmap"""
+    """return a count of the names in tokenmap"""
     if names_ is None:
         names_ = token_map_names(token_map_)
 
@@ -175,9 +172,10 @@ def count_name_strings(urn, token_map_, names_=None):
     # if isinstance(tokens[0], dict):
     #    tokens = [list(x.keys()) for x in tokens]
 
-    res = requests.post("https://api.nb.no/ngram/word_counts",
-                        json={'urn': urn, 'tokens': names_,
-                              'tokenmap': token_map_})
+    res = requests.post(
+        "https://api.nb.no/ngram/word_counts",
+        json={"urn": urn, "tokens": names_, "tokenmap": token_map_},
+    )
     # print(r.text)
 
     return pd.read_json(res.json()).sort_values(by=0, ascending=False)
@@ -213,7 +211,7 @@ def filter_names(tm_names, gazetteers):
         res = False
         if w in gazetteer:
             res = True
-        elif w[-1] == 's' and w[:-1] in gazetteer:
+        elif w[-1] == "s" and w[:-1] in gazetteer:
             res = True
         return res
 
@@ -299,5 +297,7 @@ def filter_names(tm_names, gazetteers):
         else:
             quad_remove[w] = quads[w]
 
-    return {'filtered': tuple(name_structure),
-            'removed': (single_remove, double_remove, triple_names, quad_names)}
+    return {
+        "filtered": tuple(name_structure),
+        "removed": (single_remove, double_remove, triple_names, quad_names),
+    }

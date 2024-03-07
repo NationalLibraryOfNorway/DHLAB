@@ -13,6 +13,7 @@ def test_concordance_corpus():
     assert r is not None
     assert r.size > 0
 
+
 def test_concordance_sort():
     c = Corpus(doctype="digibok", limit=2)
     r = Concordance(c, "og")
@@ -22,4 +23,3 @@ def test_concordance_sort():
     assert sorted.frame is not None
     assert sorted.frame.columns is not None
     assert "concordance" in sorted.frame.columns
-
