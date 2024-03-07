@@ -36,7 +36,6 @@ Try some of our [examples](./docs_example_use.md) to get started.
 :maxdepth: 1
 
 docs_example_use
-reference
 apidocs/index
 term_definitions
 ```
