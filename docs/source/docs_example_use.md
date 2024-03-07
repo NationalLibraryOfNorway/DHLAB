@@ -10,26 +10,26 @@ Here are some of the text mining and automatic analyses you can do with `dhlab`:
 
 ## Build a corpus
 
-Build a [corpus](#dhlab.Corpus) from bibliographic metadata about publications, e.g. books published between 1980 and 2005:
+Build a [corpus](#text.corpus.Corpus) from bibliographic metadata about publications, e.g. books published between 1980 and 2005:
 
 ```{code-block}
 import dhlab as dh
 
-book_corpus = dh.Corpus(doctype="digibok", from_year=1980, to_year=2005)
+corpus = dh.Corpus(doctype="digibok", from_year=1980, to_year=2005)
 ```
 
 ## Word frequencies
 
-Retrieve word (token) [frequencies](#dhlab.Corpus.count) from a corpus:
+Retrieve word (token) [frequencies](#text.corpus.Corpus.count) from a corpus:
 
 ```{code-block}
 # Frequencies of each word (rows) per book, referenced by their unique ID (columns) 
-book_corpus.count()
+corpus.count()
 ```
 
 ## Bags of words
 
-Fetch [chunks of text](#dhlab.Chunks) (paragraphs) as bag of words from a specific publication:
+Fetch [chunks of text](#text.chunking.Chunks) (paragraphs) as bag of words from a specific publication:
 
 ```{code-block}
 
@@ -43,23 +43,23 @@ c.chunks[1] # Second bag-of-words is a paragraph, with word counts
 
 ## Concordance
 
-Extract [concordances](#dhlab.Concordance) from the corpus:
+Extract [concordances](#text.conc_coll.Concordance) from the corpus:
 
 ```{code-block}
-c = book_corpus.conc(words="troll")
+concs = corpus.conc(words="troll")
 
-c.concordance  
+concs.concordance  
 # Output is a pandas Dataframe, 
 # including links to the concordance's positions in books on nb.no
 ```
 
 ## Collocations
 
-Compute [collocations](#dhlab.Collocations), a ranking of relevant words to a given word:
+Compute [collocations](#text.conc_coll.Collocations), a ranking of relevant words to a given word:
 
 ```{code-block}
-c = book_corpus.coll(words="sol")
-c.coll.sort_values("counts", ascending=False).head(10) # The top 10 most relevant words to "sol" in our corpus
+colls = corpus.coll(words="sol")
+colls.coll.sort_values("counts", ascending=False).head(10) # The top 10 most relevant words to "sol" in our corpus
        counts
 ,          10
 .           9
@@ -75,10 +75,11 @@ ein         3
 
 ## N-grams
 
-Retrieve [n-gram](#dhlab.ngram.nb_ngram) frequencies per year in a time period.
+Retrieve [n-gram](#ngram.nb_ngram.nb_ngram) frequencies per year in a time period.
 
 ```{code-block}
-n = dh.ngram.nb_ngram.nb_ngram("sol,troll,skog")
+from dhlab.ngram.nb_gram import nb_ngram
+n= ng_ngram("sol,troll,skog")
 n.plot()
 ```
 
@@ -89,16 +90,18 @@ Check out our [N-gram app](https://www.nb.no/ngram/#1_1_1__1_1_3_1810%2C2022_2_2
 
 ## Named Entity Recognition
 
-Extract occurrences of [named entities](#dhlab.NER), for example place names:
+Extract occurrences of [named entities](#text.parse.NER), for example place names:
 
 ```{code-block}
+from dhlab import NER
+
 docid = 'URN:NBN:no-nb_digibok_2007091701028'
-ner = dh.api.dhlab_api.get_places(docid)
+ner = NER(docid)
 ```
 
 ## Word dispersions
 
-Plot narrative graphs of word [dispersions](#dhlab.text.dispersion.Dispersion) in a publication, for instance in "Kristin Lavransdatter":
+Plot narrative graphs of word [dispersions](#text.dispersion.Dispersion) in a publication, for instance in "Kristin Lavransdatter":
 
 ```{code-block}
 from dhlab.text.dispersion import Dispersion

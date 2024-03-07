@@ -300,27 +300,27 @@ def _ngram_doc(
 ) -> DataFrame:
     """Count occurrences of one or more words over a time period.
 
-    The type of document to search through is decided by the ``doctype``.
+    The type of document to search through is decided by the `doctype`.
     Filter the selection of documents with metadata.
-    Use % as wildcard where appropriate - no wildcards in ``word`` or ``lang``.
+    Use % as wildcard where appropriate - no wildcards in `word` or `lang`.
 
-    :param str doctype: API endpoint for the document type to get ngrams for.
-        Can be ``'book'``, ``'periodicals'``, or ``'newspapers'``.
-    :param word: Word(s) to search for.
-        Can be several words in a single string, separated by comma, e.g. ``"ord,ordene,orda"``.
-    :type word: str or list of str
-    :param str title: Title of a specific document to search through.
-    :param period: Start and end years or dates of a time period,
-        given as ``(YYYY, YYYY)`` or ``(YYYYMMDD, YYYYMMDD)``.
-    :type period: tuple of ints
-    :param str publisher: Name of a publisher.
-    :param str lang: Language as a 3-letter ISO code (e.g. ``"nob"`` or ``"nno"``)
-    :param str city: City of publication.
-    :param str ddk: `Dewey Decimal Classification
-        <https://no.wikipedia.org/wiki/Deweys_desimalklassifikasjon>`_ identifier.
-    :param str topic: Topic of the documents.
-    :return: a ``pandas.DataFrame`` with the resulting frequency counts of the word(s),
-        spread across years. One year per row.
+    Args:
+        doctype: API endpoint for the document type to get ngrams for.
+            Can be `'book'`, `'periodicals'`, or `'newspapers'`.
+        word: Word(s) to search for.
+            Can be several words in a single string, separated by comma, e.g. `"ord,ordene,orda"`.
+        title: Title of a specific document to search through.
+        period: Start and end years or dates of a time period,
+            given as `(YYYY, YYYY)`` or `(YYYYMMDD, YYYYMMDD)`.
+        publisher: Name of a publisher.
+        lang: Language as a 3-letter ISO code (e.g. `"nob"` or `"nno"`)
+        city: City of publication.
+        ddk: [Dewey Decimal Classification](https://no.wikipedia.org/wiki/Deweys_desimalklassifikasjon) identifier.
+        topic: Topic of the documents.
+
+    Returns:
+        a `pandas.DataFrame` with the resulting frequency counts of the word(s),
+            spread across years. One year per row.
     """
     params = locals()
     if isinstance(word, str):
