@@ -19,21 +19,11 @@ Head to our [official homepage](https://www.nb.no/dh-lab/) for tutorials, how-to
 
 Ensure that you already have  [Python](https://www.python.org/downloads/) >=3.9 installed.
 
-<!-- start installation -->
-
 Install the latest version of the [`dhlab`](https://pypi.org/project/dhlab/) python package in your (Unix) terminal with pip:
 
 ```shell
 pip install -U dhlab
 ```
-<!-- end installation -->
-
-
-<!--
-```{include} ./docs_functionality.md
-:start-after: start docs-functionality
-:end-before: end docs-functionality
-```-->
 
 ```{include} ./docs_functionality.md
 :heading-offset: 1
@@ -41,11 +31,6 @@ relative-docs: docs/source/
 ```
 
 Try some of our [examples](./docs_example_use.md) to get started.
-
-<!-- ```{contents} Table of Contents
-:depth: 3
-``` -->
-
 
 ```{toctree}
 :name: contents
@@ -55,5 +40,6 @@ Try some of our [examples](./docs_example_use.md) to get started.
 
 docs_example_use
 reference
+apidocs/index
 term_definitions
 ```

@@ -12,7 +12,9 @@ from importlib import metadata
 import pathlib
 import sys
 
-sys.path.insert(0, pathlib.Path(__file__).parent.resolve().as_posix())
+root_dir = pathlib.Path(__file__).parent.parent.parent.resolve().as_posix()
+sys.path.insert(0, root_dir)
+print(root_dir)
 
 project = "dhlab"
 author = "The National Library of Norway"
@@ -31,6 +33,10 @@ today_fmt = "%d %B %Y"
 extensions = [
     "myst_parser",  # Markdownparser
     "autodoc2",
+    "sphinx_togglebutton",
+    "sphinx_copybutton",
+    "sphinx_design",
+    "sphinx_inline_tabs",
 ]
 
 
@@ -46,42 +52,60 @@ exclude_patterns = [
 
 # -- Extension configurations -----------------
 myst_enable_extensions = [
-    #    "amsmath",
-    #   "attrs_inline",
+    "amsmath",
+    "attrs_inline",
     "attrs_block",
     "colon_fence",
     "deflist",
-    #  "dollarmath",
+    "dollarmath",
     "fieldlist",
-    #  "html_admonition",
-    #  "html_image",
-    #  "linkify",
-    #  "replacements",
-    #  "smartquotes",
-    #  "strikethrough",
-    #  "substitution",
-    #  "tasklist",
+    "html_admonition",
+    "html_image",
+    "linkify",
+    "replacements",
+    "smartquotes",
+    "strikethrough",
+    "substitution",
+    "tasklist",
 ]
 
 autodoc2_packages = [
-    {
-        "path": "../dhlab",
-        "exclude_files": [
-            "ngram/ngram.py",
-            "graph_networkx_louvain.py",
-            "module_update.py",
-            "nbpictures.py",
-            "constants.py",
-            "nbtext.py",
-            "nbtokenizer.py",
-            "token_map.py",
-            "__init__.py",
-            "legacy",
-            "css_style_sheets",
-        ],
-        "auto_mode": True,
-    }
+    "../../dhlab/api",
+    "../../dhlab/future",
+    "../../dhlab/images",
+    "../../dhlab/ngram",
+    "../../dhlab/metadata",
+    "../../dhlab/text",
+    "../../dhlab/visualize",
+    "../../dhlab/wordbank",
+    # { "module": "dhlab/__init__.py",
+    #     "exclude_files": [
+    #         "ngram/ngram.py",
+    #         "graph_networkx_louvain.py",
+    #         "module_update.py",
+    #         "nbpictures.py",
+    #         "constants.py",
+    #         "nbtext.py",
+    #         "nbtokenizer.py",
+    #         "token_map.py",
+    #         "__init__.py",
+    #         "legacy",
+    #         "css_style_sheets",
+    #     ],
+    #     "auto_mode": True,
+    # },
 ]
+
+autodoc2_replace_annotations = [
+    (
+        "package.MyClass",
+        "package.module.MyClass",
+    )
+]
+autodoc2_replace_bases = [
+    ("package.MyClass", "package.module.MyClass"),
+]
+autodoc2_render_plugin = "myst"
 
 pygments_style = "sphinx"
 pygments_dark_style = "monokai"
