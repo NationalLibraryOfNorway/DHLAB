@@ -6,9 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-from datetime import datetime
+import datetime
 import html
-from importlib import metadata
+import importlib
 import pathlib
 import sys
 
@@ -19,9 +19,9 @@ print(root_dir)
 project = "dhlab"
 author = "The National Library of Norway"
 email = "dh-lab@nb.no"
-copyright = f"{datetime.now().year}, {author}"
-version = metadata.version("dhlab")
-
+copyright = f"{datetime.datetime.now().year}, {author}"
+# version = importlib.metadata.version("dhlab")
+version = "2.31.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
