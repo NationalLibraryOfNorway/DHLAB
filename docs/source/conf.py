@@ -71,7 +71,6 @@ myst_enable_extensions = [
 
 autodoc2_packages = [
     "../../dhlab/api",
-    "../../dhlab/future",
     "../../dhlab/images",
     "../../dhlab/ngram",
     "../../dhlab/metadata",
@@ -79,18 +78,21 @@ autodoc2_packages = [
     "../../dhlab/visualize",
     "../../dhlab/wordbank",
     {
-        "path": "../../dhlab",
+        "path": "../../dhlab/__init__.py",
         "exclude_files": [
             "ngram/ngram.py",
             "graph_networkx_louvain.py",
             "module_update.py",
             "nbpictures.py",
-            "constants.py",
             "nbtext.py",
             "nbtokenizer.py",
+            "text/nbtokenizer.py",
             "token_map.py",
             "__init__.py",
+        ],
+        "exclude_dirs": [
             "legacy",
+            "future",
             "css_style_sheets",
         ],
         "auto_mode": True,

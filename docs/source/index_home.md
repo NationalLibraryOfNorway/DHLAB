@@ -24,7 +24,7 @@ pip install -U dhlab
 
 ```{include} ./docs_functionality.md
 :heading-offset: 1
-relative-docs: docs/source/
+:relative-docs: docs/
 ```
 
 Try some of our [examples](./docs_example_use.md) to get started.
