@@ -1,11 +1,10 @@
 
-# [![DH-LAB logo](_images/DHlab_logo_web_en_black.png)](https://www.nb.no/dh-lab/)
+# dhlab documentation 
 
 
 ```{include} ../../README.md
 :start-after: <!-- start dhlab-intro -->
 :end-before: <!-- end dhlab-intro -->
-:relative-docs: 
 :relative-images:
 ``` 
 

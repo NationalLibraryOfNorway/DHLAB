@@ -7,7 +7,6 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 import datetime
-import html
 import importlib
 import pathlib
 import sys
@@ -70,15 +69,9 @@ myst_enable_extensions = [
 ]
 
 autodoc2_packages = [
-    "../../dhlab/api",
-    "../../dhlab/images",
-    "../../dhlab/ngram",
-    "../../dhlab/metadata",
-    "../../dhlab/text",
-    "../../dhlab/visualize",
-    "../../dhlab/wordbank",
     {
-        "path": "../../dhlab/__init__.py",
+        "path": "../../dhlab/",
+        "module": "dhlab",
         "exclude_files": [
             "ngram/ngram.py",
             "graph_networkx_louvain.py",
@@ -88,7 +81,6 @@ autodoc2_packages = [
             "nbtokenizer.py",
             "text/nbtokenizer.py",
             "token_map.py",
-            "__init__.py",
         ],
         "exclude_dirs": [
             "legacy",
@@ -136,18 +128,18 @@ html_theme_options = {
     "source_repository": "https://github.com/NationalLibraryOfNorway/DHLAB",
     "source_branch": "main",
     "source_directory": "docs/",
-    # "light_logo": "",
-    # "light_css_variables": {
-    #     "color-brand-primary": "#cf2e2e",
-    #     "color-brand-content": "#0693e3",
-    #     "color-admonition-background": "#edeae5",
-    # },
-    # "dark_logo": "",
-    # "dark_css_variables": {
-    #     "color-brand-primary": "#cf2e2e",
-    #     "color-brand-content": "#0693e3",
-    #     "color-admonition-background": "#7b715e",
-    # },
+    # "light_logo": "light-DHLAB-logo-no-eng-blaa-0044ba.png",
+    "light_css_variables": {
+        "color-brand-primary": "#0044ba",  # "#cf2e2e", #015edf;
+        "color-brand-content": "#0044ba",  # 00215c",  # "#0693e3",
+        "color-admonition-background": "#70a6ff",  # "#edeae5",
+    },
+    # "dark_logo": "_images/NB-symbol-logo_blaa_mork_100width.png",
+    "dark_css_variables": {
+        "color-brand-primary": "#70a6ff",
+        "color-brand-content": "#70a6ff",
+        "color-admonition-background": "#0044ba",
+    },
     # "top_of_page_button": "edit",
     # For components/edit-this-page.html
 }
@@ -173,11 +165,18 @@ html_short_title = "dhlab"
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "_images/NB_logo_small.png"
+# html_logo = "_images/DHLAB-logo-no-eng-blaa-0044ba.png"  # blue
+# html_logo = "_images/NB-symbol-logo_blaa_mork.png"
+# html_logo = "_images/NB-symbol-logo_blaa_mork_100width.png"
+# html_logo = "_images/DHlab_logo_web_en_black.png"
+html_logo = "_images/dhlab_logo.png"  # red
+
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = "_images/nb_symbol_farge_z5B_icon.ico"
+# html_favicon = "_images/nb_symbol_farge_z5B_icon.ico"  # red
+# html_favicon = "https://www.nb.no/content/uploads/2024/01/cropped-Nasjonalbiblioteket-—-Logo-—-Bla-—-Hvit-bakgrunn-32x32.png"  # bright blue
+html_favicon = "_images/NB-symbol-logo_blaa_mork.png"  # dark blue #0044ba
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.

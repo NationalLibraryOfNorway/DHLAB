@@ -23,7 +23,7 @@ N-gram
 
 {.glossary}
 Corpus
-: A collection of texts. The DH-lab [Corpus](#dhlab.Corpus) is represented by a list of the publication metadata for each document in the collection.
+: A collection of texts. The DH-lab [Corpus](#text.corpus.Corpus) is represented by a list of the publication metadata for each document in the collection.
 
 {.glossary}
 Concordance
