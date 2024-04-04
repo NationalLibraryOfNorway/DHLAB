@@ -20,7 +20,7 @@ author = "The National Library of Norway"
 email = "dh-lab@nb.no"
 copyright = f"{datetime.datetime.now().year}, {author}"
 # version = importlib.metadata.version("dhlab")
-version = "2.31.0"
+version = "2.32.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -113,7 +113,7 @@ togglebutton_hint_hide = "Hide"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 # html_theme = "furo"
-html_theme = "sphinx_book_theme"
+# html_theme = "sphinx_book_theme"
 html_static_path = ["_static"]
 
 html_theme = "furo"
