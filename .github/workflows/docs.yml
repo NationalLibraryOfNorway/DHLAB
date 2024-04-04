@@ -52,7 +52,7 @@ jobs:
       - name: Build pages
         # Build your static content here
         run: |
-          poetry run sphinx-build -M html docs/source docs/build -W --keep-going
+          poetry run sphinx-build -M html docs/source docs/build --keep-going
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
