@@ -25,7 +25,7 @@ version = "2.31.0"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-root_doc = "index_home"
+root_doc = "index"
 
 today_fmt = "%d %B %Y"
 
