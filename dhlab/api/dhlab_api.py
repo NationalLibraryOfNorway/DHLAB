@@ -704,7 +704,7 @@ def concordance(
     :return: a table of concordances
     """
     if words is None:
-        return {}  # exit condition
+        return pd.DataFrame(columns=["index", "docid", "urn", "conc"])  # exit condition
     else:
         params = {"urns": urns, "query": words, "window": window, "limit": limit}
         r = requests.post(BASE_URL + "/conc", json=params)
@@ -728,7 +728,7 @@ def concordance_counts(
     :return: a table of counts
     """
     if words is None:
-        return {}  # exit condition
+        return pd.DataFrame(columns=["freq"])  # exit condition
     else:
         params = {"urns": urns, "query": words, "window": window, "limit": limit}
         r = requests.post(BASE_URL + "/conccount", json=params)
