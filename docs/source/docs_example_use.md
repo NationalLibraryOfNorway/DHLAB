@@ -96,8 +96,9 @@ ein         3
 Retrieve [n-gram](#ngram.nb_ngram.nb_ngram) frequencies per year in a time period.
 
 ```{code-block}
-from dhlab.ngram.nb_gram import nb_ngram
-n= ng_ngram("sol,troll,skog")
+from dhlab.ngram.nb_ngram import nb_ngram
+
+n= nb_ngram("sol,troll,skog")
 n.plot()
 ```
 
