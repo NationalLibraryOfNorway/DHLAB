@@ -1,9 +1,14 @@
 import re
-
 import pandas as pd
-
-import dhlab as dh
-from dhlab.api.dhlab_api import concordance, get_document_frequencies, urn_collocation
+from pandas import DataFrame
+from typing import List
+from dhlab.api.dhlab_api import (
+    concordance,
+    get_document_frequencies,
+    urn_collocation,
+    word_concordance,
+    concordance_counts,
+)
 from dhlab.text.dhlab_object import DhlabObj
 from dhlab.text.utils import urnlist
 
@@ -231,3 +236,95 @@ class Counts(DhlabObj):
     def counts(self):
         "Legacy property for freq"
         return self.freq
+
+
+class WordConc(DhlabObj):
+    def __init__(
+        self,
+        frame: DataFrame = None,
+        urn: list = None,
+        dhlabid: list = None,
+        words: List[str] = None,
+        before: int = 12,
+        after: int = 12,
+        limit: int = 100,
+        samplesize: int = 50000,
+    ):
+        """Wrapper for word_concordance function
+
+        Args:
+            frame (DataFrame, optional): Use to typecast Dataframe with data to this class. Defaults to None.
+            urn (list, optional): NB URN identifiers for target text objects. Defaults to None.
+            dhlabid (list, optional): DHLAB identifiers for target books. Defaults to None.
+            words (List[str], optional): Target words. Defaults to None.
+            before (int, optional): Window of tokens before target word to return. Defaults to 12.
+            after (int, optional): Window of tokens after target word to return. Defaults to 12.
+            limit (int, optional): Limit returned results. Defaults to 100.
+            samplesize (int, optional): Size of sample. Defaults to 50000.
+        """
+        params = {
+            "urn": urn,
+            "dhlabid": dhlabid,
+            "words": words,
+            "before": before,
+            "after": after,
+            "limit": limit,
+            "samplesize": samplesize,
+        }
+
+        if (
+            frame is None
+            and words is not None
+            and (urn is not None or dhlabid is not None)
+        ):
+            frame = word_concordance(**params)
+
+        if frame is None:
+            frame = DataFrame()
+
+        super().__init__(frame)
+
+
+class ConcCounts(DhlabObj):
+    def __init__(
+        self,
+        frame: DataFrame = None,
+        urn: list = None,
+        dhlabid: list = None,
+        words: str = None,
+        window: int = 25,
+        limit: int = 100,
+    ):
+        """Wrapper for concordance_counts function
+
+        Args:
+            frame (DataFrame, optional): Concordance data. Use to typecast to CountCounts. Defaults to None.
+            urn (list, optional): NB URN identifiers. Defines which objects to search. Defaults to None.
+            dhlabid (list, optional): DHLAB identifiers. Defines which objects to search. Defaults to None.
+            words (str, optional): String with SQLite ft search with target words. Defaults to None.
+            window (int, optional): text window around target words to return. Defaults to 25.
+            limit (int, optional): Number of results to return. Defaults to 100.
+        """
+        params = {
+            "urns": urn,
+            "words": words,
+            "window": window,
+            "limit": limit,
+        }
+
+        if dhlabid is not None:
+            print("Dhlabid not (yet) supported for concordance_counts")
+
+        if isinstance(words, list):
+            params["words"] = " OR ".join(words)
+            print(
+                f"words supports a SQLite fulltext query. Converting to 'OR' query: {params['words']}"
+            )
+
+        if frame is None and words is not None and urn is not None:
+            frame = concordance_counts(**params)
+
+        if frame is None:
+            frame = DataFrame()
+
+        super().__init__(frame)
