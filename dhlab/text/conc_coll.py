@@ -228,11 +228,23 @@ class Counts(DhlabObj):
 
         # Needed since Pandas seems to make sparse matrices dense when summing
         if self.is_sparse() == True:
-            freqDict = dict()
-            for x in self.freq.iterrows():
-                freqDict[x[0]] = x[1].sum()
+            # convert to coo matrix for iteration
+            coo_matrix = self.freq.sparse.to_coo()
 
-            df = pd.DataFrame(freqDict.items(), columns=["word", "freq"]).set_index("word")
+            # get the words and their indices
+            rowidx = {idx: word for idx, word in enumerate(list(self.freq.index))}
+
+            # build a freq dictionary by looping
+            freqDict = dict()
+
+            for i,j,v in zip(coo_matrix.row, coo_matrix.col, coo_matrix.data):
+                word = rowidx[i]
+                if word in freqDict:
+                    freqDict[word] += v
+                else:
+                    freqDict[word] = v
+
+            df = pd.DataFrame(freqDict.items(), columns=["word", "freq"]).set_index("word").sort_values(by="freq", ascending=False)
             df.index.name = None
             return self.from_df(df)
         else:
