@@ -168,11 +168,12 @@ class Collocations(DhlabObj):
 class Counts(DhlabObj):
     """Provide counts for a corpus - shouldn't be too large"""
 
-    def __init__(self, corpus=None, words=None):
+    def __init__(self, corpus=None, words=None, cutoff=0):
         """Get frequency list for Corpus
 
         :param corpus: target Corpus, defaults to None
         :param words: list of words to be counted, defaults to None
+        :param cutoff: frequency cutoff, will not include words with frequency <= cutoff
         """
         if corpus is None and words is None:
             self.freq = pd.DataFrame()
@@ -189,7 +190,7 @@ class Counts(DhlabObj):
             # count - if words is none result will be as if counting all words
             # in the corpus
             self.freq = get_document_frequencies(
-                urns=urnlist(corpus), cutoff=0, words=words
+                urns=urnlist(corpus), cutoff=cutoff, words=words
             )
 
             # Include dhlab and title link in object

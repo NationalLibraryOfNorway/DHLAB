@@ -218,13 +218,13 @@ class Corpus(DhlabObj):
             ignore_caps=ignore_caps,
         )
 
-    def count(self, words=None):
+    def count(self, words=None, cutoff=0):
         """Get word frequencies for corpus"""
-        return dh.Counts(self, words)
+        return dh.Counts(self, words, cutoff)
 
-    def freq(self, words=None):
+    def freq(self, words=None, cutoff=0):
         """Get word frequencies for corpus"""
-        return dh.Counts(self, words)
+        return dh.Counts(self, words, cutoff)
 
     @staticmethod
     def _is_Corpus(corpus: "Corpus") -> bool:
