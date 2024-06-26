@@ -209,12 +209,34 @@ class Counts(DhlabObj):
 
         super().__init__(self.freq)
 
+    def is_sparse(self):
+        """Function to report sparsity of counts frame"""
+        try:
+            density = self.freq.sparse.density
+            if density:
+                sparse = True
+            else:
+                sparse = False
+        except:
+            sparse = False
+        return sparse
+
     def sum(self):
         """Summarize Corpus frequencies
-
         :return: frequency list for Corpus
         """
-        return self.from_df(self.counts.sum(axis=1).to_frame("freq"))
+
+        # Needed since Pandas seems to make sparse matrices dense when summing
+        if self.is_sparse() == True:
+            freqDict = dict()
+            for x in self.freq.iterrows():
+                freqDict[x[0]] = x[1].sum()
+
+            df = pd.DataFrame(freqDict.items(), columns=["word", "freq"]).set_index("word")
+            df.index.name = None
+            return self.from_df(df)
+        else:
+            return self.from_df(self.counts.sum(axis=1).to_frame("freq"))
 
     def display_names(self):
         "Display data with record names as column titles."
