@@ -8,6 +8,7 @@ import requests
 from pandas import DataFrame, Series
 
 from dhlab.constants import BASE_URL
+from scipy.sparse import dok_matrix
 
 pd.options.display.max_rows = 100
 
@@ -512,9 +513,35 @@ def ngram_news(
     # df.index = df.index.map(pd.Timestamp)
     return df
 
+def create_sparse_matrix(structure):
+    """Create a sparse matrix from an API counts object"""
+
+    # fetch all words
+    words = list(set(word for dct in structure.values() for word in dct))
+    # fetch all dhlabids
+    dhlabids = list(structure.keys())
+    # create an int/dhlabid mapping
+    dhlabid_to_col = {dhlabid: idx for idx, dhlabid in enumerate(dhlabids)}
+    # create an int/word mapping
+    word_to_row = {word: idx for idx, word in enumerate(words)}
+
+    # construct the matrix with each word as a row and each dhlabid as a column (DTM)
+    num_cols = len(dhlabids)
+    num_rows = len(words)
+    sparse_matrix = dok_matrix((num_rows, num_cols), dtype=int)
+
+    # incrementally fill the sparse matrix from dictionary
+    for col_idx, dhlabid in enumerate(dhlabids):
+        dct = structure[dhlabid]
+        for word, value in dct.items():
+            row_idx = word_to_row[word]
+            sparse_matrix[row_idx, col_idx] = value
+
+    df_sparse = pd.DataFrame.sparse.from_spmatrix(sparse_matrix, index=words, columns=dhlabids)
+    return df_sparse
 
 def get_document_frequencies(
-    urns: List[str] = None, cutoff: int = 0, words: List[str] = None
+    urns: List[str] = None, cutoff: int = 0, words: List[str] = None, sparse: bool = False
 ) -> DataFrame:
     """Fetch frequency counts of ``words`` in documents (``urns``).
 
@@ -525,6 +552,7 @@ def get_document_frequencies(
         ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]``
     :param int cutoff: minimum frequency of a word to be counted
     :param list words: a list of words to be counted - if left None, whole document is returned. If not None both the counts and their relative frequency is returned.
+    :param bool sparse: create a sparse matrix for memory efficiency
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/frequencies", json=params)
@@ -537,7 +565,12 @@ def get_document_frequencies(
                 structure[u[0][0]] = dict([(x[1], x[2]) for x in u])
             except IndexError:
                 pass
-        df = pd.DataFrame(structure)
+
+        if sparse == True:
+            df = create_sparse_matrix(structure)
+        else:
+            df = pd.DataFrame(structure)
+        
         df = df.sort_values(by=df.columns[0], ascending=False).fillna(0)
     else:
         df = pd.DataFrame(result)
