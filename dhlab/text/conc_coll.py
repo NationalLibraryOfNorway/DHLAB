@@ -173,7 +173,7 @@ class Counts(DhlabObj):
 
         :param corpus: target Corpus, defaults to None
         :param words: list of words to be counted, defaults to None
-        :param cutoff: frequency cutoff, will not include words with frequency <= cutoff
+        :param cutoff: frequency cutoff, will not include words with frequency < cutoff
         """
         if corpus is None and words is None:
             self.freq = pd.DataFrame()
