@@ -43,7 +43,7 @@ jobs:
 
       - name: Permacache Poetry
         id: cache-poetry
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.poetry
           key: poetry
@@ -51,11 +51,15 @@ jobs:
       - name: Install Poetry
         if: steps.cache-poetry.outputs.cache-hit != 'true'
         run: |
-          curl -sSL https://install.python-poetry.org | python - -y
-
-      - name: Add poetry to PATH
+          pipx install poetry==1.8.3
+        shell: bash
+        
+      - name: Ensure Pipx Paths
         run: |
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          pipx ensurepath
+          # Optionally check which packages were restored from the cache:
+          pipx list
+        shell: bash
 
       - name: Bump version and add to env vars
         id: bump-version
