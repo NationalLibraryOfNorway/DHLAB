@@ -168,12 +168,13 @@ class Collocations(DhlabObj):
 class Counts(DhlabObj):
     """Provide counts for a corpus - shouldn't be too large"""
 
-    def __init__(self, corpus=None, words=None, cutoff=0):
+    def __init__(self, corpus=None, words=None, cutoff=0, sparse=False):
         """Get frequency list for Corpus
 
         :param corpus: target Corpus, defaults to None
         :param words: list of words to be counted, defaults to None
-        :param cutoff: frequency cutoff, will not include words with frequency <= cutoff
+        :param cutoff: frequency cutoff, will not include words with frequency < cutoff
+        :param sparse: return a sparse matrix for memory efficiency
         """
         if corpus is None and words is None:
             self.freq = pd.DataFrame()
@@ -190,7 +191,7 @@ class Counts(DhlabObj):
             # count - if words is none result will be as if counting all words
             # in the corpus
             self.freq = get_document_frequencies(
-                urns=urnlist(corpus), cutoff=cutoff, words=words
+                urns=urnlist(corpus), cutoff=cutoff, words=words, sparse=sparse
             )
 
             # Include dhlab and title link in object
@@ -208,12 +209,46 @@ class Counts(DhlabObj):
 
         super().__init__(self.freq)
 
+    def is_sparse(self):
+        """Function to report sparsity of counts frame"""
+        try:
+            density = self.freq.sparse.density
+            if density:
+                sparse = True
+            else:
+                sparse = False
+        except:
+            sparse = False
+        return sparse
+
     def sum(self):
         """Summarize Corpus frequencies
-
         :return: frequency list for Corpus
         """
-        return self.from_df(self.counts.sum(axis=1).to_frame("freq"))
+
+        # Needed since Pandas seems to make sparse matrices dense when summing
+        if self.is_sparse() == True:
+            # convert to coo matrix for iteration
+            coo_matrix = self.freq.sparse.to_coo()
+
+            # get the words and their indices
+            rowidx = {idx: word for idx, word in enumerate(list(self.freq.index))}
+
+            # build a freq dictionary by looping
+            freqDict = dict()
+
+            for i,j,v in zip(coo_matrix.row, coo_matrix.col, coo_matrix.data):
+                word = rowidx[i]
+                if word in freqDict:
+                    freqDict[word] += v
+                else:
+                    freqDict[word] = v
+
+            df = pd.DataFrame(freqDict.items(), columns=["word", "freq"]).set_index("word").sort_values(by="freq", ascending=False)
+            df.index.name = None
+            return self.from_df(df)
+        else:
+            return self.from_df(self.counts.sum(axis=1).to_frame("freq"))
 
     def display_names(self):
         "Display data with record names as column titles."
