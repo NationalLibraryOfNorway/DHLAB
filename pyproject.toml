@@ -13,7 +13,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-include = ["CHANGELOG.md", "LICENSE"]
+include = ["CHANGELOG.md", "LICENSE", "dhlab.env"]
 exclude = ["docs/", "tests/"]
 
 [tool.poetry.urls]
