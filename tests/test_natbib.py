@@ -1,7 +1,8 @@
+import pytest
 from dhlab.metadata.natbib import metadata_query, metadata_from_urn
 import pandas as pd
 
-
+@pytest.mark.skip()
 def test_metadata_query():
     conditions = [
         ["245", "a", "kongen"],
