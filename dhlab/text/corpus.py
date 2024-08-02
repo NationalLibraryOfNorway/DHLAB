@@ -41,6 +41,8 @@ class Corpus(DhlabObj):
         title=None,
         ddk=None,
         subject=None,
+        publisher=None,
+        city=None,
         lang=None,
         limit=10,
         order_by="random",
@@ -65,6 +67,8 @@ class Corpus(DhlabObj):
             <https://no.wikipedia.org/wiki/Deweys_desimalklassifikasjon>`\
                 _ identifier.
         :param str subject: subject (keywords) of the publication.
+        :param str publisher: Name of publisher.
+        :param str city: place of publication.
         :param str lang: Language of the publication, as a 3-letter ISO code.
             Example: ``"nob"`` or ``"nno"``
         :param int limit: number of items to sample.
@@ -82,6 +86,8 @@ class Corpus(DhlabObj):
             or title
             or ddk
             or lang
+            or publisher
+            or city
         ):
             self.corpus = document_corpus(
                 doctype,
@@ -95,6 +101,8 @@ class Corpus(DhlabObj):
                 title,
                 ddk,
                 subject,
+                publisher,
+                city,
                 lang,
                 limit,
                 order_by,
