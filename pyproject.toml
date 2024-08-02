@@ -13,7 +13,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-include = ["CHANGELOG.md", "LICENSE", "dhlab.env"]
+include = ["CHANGELOG.md", "LICENSE"]
 exclude = ["docs/", "tests/"]
 
 [tool.poetry.urls]
@@ -34,7 +34,6 @@ scipy = { version = "^1.11.3", python = ">=3.9,<3.13" }
 openpyxl = "^3.1.2"
 beautifulsoup4 = "^4.12.2"
 numpy = "^1.26.3"
-python-dotenv = "^1.0.1"
 
 [tool.poetry.group.docs.dependencies]
 Sphinx = "^7.2.6"
