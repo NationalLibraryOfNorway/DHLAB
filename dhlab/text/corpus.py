@@ -30,7 +30,7 @@ class Corpus(DhlabObj):
 
     def __init__(
         self,
-        doctype=None,
+        doctype="digibok",
         author=None,
         freetext=None,
         fulltext=None,
