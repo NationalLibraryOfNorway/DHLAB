@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dhlab"
-version = "2.38.0"
+version = "2.38.1"
 description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
 authors = ["The Digital Humanities Lab at The National Library of Norway (NB) <dh-lab@nb.no>"]
 license = "MIT"
