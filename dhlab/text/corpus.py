@@ -42,6 +42,8 @@ class Corpus(DhlabObj):
         ddk=None,
         subject=None,
         publisher=None,
+        literaryform=None,
+        genres=None,
         city=None,
         lang=None,
         limit=10,
@@ -68,6 +70,8 @@ class Corpus(DhlabObj):
                 _ identifier.
         :param str subject: subject (keywords) of the publication.
         :param str publisher: Name of publisher.
+        :param str literaryform: literary form of the publication (books)
+        :param str genres: genre of the publication.
         :param str city: place of publication.
         :param str lang: Language of the publication, as a 3-letter ISO code.
             Example: ``"nob"`` or ``"nno"``
@@ -87,6 +91,8 @@ class Corpus(DhlabObj):
             or ddk
             or lang
             or publisher
+            or literaryform
+            or genres
             or city
         ):
             self.corpus = document_corpus(
@@ -102,6 +108,8 @@ class Corpus(DhlabObj):
                 ddk,
                 subject,
                 publisher,
+                literaryform,
+                genres,
                 city,
                 lang,
                 limit,
