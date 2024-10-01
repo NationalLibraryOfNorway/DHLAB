@@ -168,7 +168,7 @@ class Collocations(DhlabObj):
 class Counts(DhlabObj):
     """Provide counts for a corpus - shouldn't be too large"""
 
-    def __init__(self, corpus=None, words=None, cutoff=0, sparse=False):
+    def __init__(self, corpus=None, words=None, cutoff=0, sparse=True):
         """Get frequency list for Corpus
 
         :param corpus: target Corpus, defaults to None
