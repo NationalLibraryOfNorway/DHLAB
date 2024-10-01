@@ -638,6 +638,8 @@ def document_corpus(
     ddk: str = None,
     subject: str = None,
     publisher: str = None,
+    literaryform: str = None,
+    genres: str = None,
     city: str = None,
     lang: str = None,
     limit: int = None,
@@ -663,7 +665,9 @@ def document_corpus(
         <https://no.wikipedia.org/wiki/Deweys_desimalklassifikasjon>`_ identifier.
     :param str subject: subject (keywords) of the publication.
     :param str publisher: Name of publisher.
-    :param str city: place of publication.
+    :param str literaryform: literary form of the publication (books)
+    :param str genres: genre of the publication.
+    :param str city: place of publication
     :param str lang: Language of the publication, as a 3-letter ISO code.
         Example: ``"nob"`` or ``"nno"``
     :param int limit: number of items to sample.
