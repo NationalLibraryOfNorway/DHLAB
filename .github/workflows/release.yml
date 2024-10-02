@@ -10,10 +10,8 @@ on:
         options:
           - patch
           - minor
-          - major
-          - premajor
-          - preminor
           - prepatch
+          - preminor
           - prerelease
       no_release:
         description: "Don't create a Github Release or tag with the new version number"
