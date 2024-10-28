@@ -2,6 +2,7 @@ from typing import List, Union
 
 import pandas as pd
 from pandas import DataFrame
+from tqdm import tqdm
 
 # import dhlab as dh
 # from dhlab.text.conc_coll import Concordance, Collocations, Counts
@@ -47,6 +48,7 @@ class Corpus(DhlabObj):
         city=None,
         lang=None,
         limit=10,
+        limit_by_year=False,
         order_by="random",
         allow_duplicates=False,
     ):
@@ -76,6 +78,7 @@ class Corpus(DhlabObj):
         :param str lang: Language of the publication, as a 3-letter ISO code.
             Example: ``"nob"`` or ``"nno"``
         :param int limit: number of items to sample.
+        :param bool limit_by_year: sample from each year in the query year range.
         """
 
         if (
@@ -95,26 +98,62 @@ class Corpus(DhlabObj):
             or genres
             or city
         ):
-            self.corpus = document_corpus(
-                doctype,
-                author,
-                freetext,
-                fulltext,
-                from_year,
-                to_year,
-                from_timestamp,
-                to_timestamp,
-                title,
-                ddk,
-                subject,
-                publisher,
-                literaryform,
-                genres,
-                city,
-                lang,
-                limit,
-                order_by,
-            )
+
+            if limit_by_year == True and from_year and to_year:
+                year_range = range(from_year, to_year)
+
+                years = []
+
+                for year in tqdm(year_range):
+                    from_year = year
+                    to_year = year+1
+
+                    year_corpus = document_corpus(
+                        doctype,
+                        author,
+                        freetext,
+                        fulltext,
+                        from_year,
+                        to_year,
+                        from_timestamp,
+                        to_timestamp,
+                        title,
+                        ddk,
+                        subject,
+                        publisher,
+                        literaryform,
+                        genres,
+                        city,
+                        lang,
+                        limit,
+                        order_by,
+                    )
+
+                    years.append(year_corpus)
+                
+                self.corpus = pd.concat(years).reset_index(drop=True)
+
+            else:
+                self.corpus = document_corpus(
+                    doctype,
+                    author,
+                    freetext,
+                    fulltext,
+                    from_year,
+                    to_year,
+                    from_timestamp,
+                    to_timestamp,
+                    title,
+                    ddk,
+                    subject,
+                    publisher,
+                    literaryform,
+                    genres,
+                    city,
+                    lang,
+                    limit,
+                    order_by,
+                )
 
         else:
             self.corpus = pd.DataFrame(columns=["urn"])
