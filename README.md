@@ -7,7 +7,7 @@
 
 <!-- end dhlab-intro -->
 
-Check out our [documentation](https://dhlab.readthedocs.io/en/latest/) for more info.
+Check out our [documentation](https://nationallibraryofnorway.github.io/DHLAB/) for more info.
 
 <!-- start installation -->
 ## Installation with pip
