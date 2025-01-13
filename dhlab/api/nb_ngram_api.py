@@ -6,7 +6,7 @@ import requests
 from dhlab.constants import GALAXY_API, NGRAM_API
 
 
-def get_ngram(terms: str, corpus: str = "avis", lang: str = "nob") -> dict:
+def get_ngram(terms: str, corpus: str = "avis", lang: str = "nob", session: requests.Session | None = None) -> dict:
     """Fetch raw and relative frequencies for the ``terms``.
 
     Call the :py:data:`NGRAM_API`.
@@ -16,7 +16,10 @@ def get_ngram(terms: str, corpus: str = "avis", lang: str = "nob") -> dict:
     :param str corpus: type of documents to search through
     :return: table of annual frequency counts per term
     """
-    req = requests.get(
+    if session is None:
+        session = requests.Session()
+
+    req = session.get(
         NGRAM_API, params={"terms": terms, "corpus": corpus, "lang": lang}
     )
     if req.status_code == 200:
@@ -27,7 +30,7 @@ def get_ngram(terms: str, corpus: str = "avis", lang: str = "nob") -> dict:
 
 
 def make_word_graph(
-    words: str, corpus: str = "all", cutoff: int = 16, leaves: int = 0
+    words: str, corpus: str = "all", cutoff: int = 16, leaves: int = 0, session: requests.Session | None = None
 ) -> nx.DiGraph:
     """Get galaxy from ngram-database.
 
@@ -39,19 +42,24 @@ def make_word_graph(
     :param int leaves: Set leaves=1 to get the leaves.
     :return: A `networkx.DiGraph` with the results.
     """
+    if session is None:
+        session = requests.Session()
 
     params = dict()
     params["terms"] = words
     params["corpus"] = corpus
     params["limit"] = cutoff
     params["leaves"] = leaves
-    result = requests.get(GALAXY_API, params=params)
+    result = session.get(GALAXY_API, params=params)
+
     G = nx.DiGraph()
     edgelist = []
+
     if result.status_code == 200:
         graph = json.loads(result.text)
         nodes = graph["nodes"]
         edges = graph["links"]
+
         for edge in edges:
             edgelist += [
                 (
