@@ -6,7 +6,6 @@ import pandas as pd
 def test_metadata_query():
     conditions = [
         ["245", "a", "kongen"],
-        # ["008", "", "nno"]
     ]
     res = metadata_query(conditions)
     assert len(res) > 0

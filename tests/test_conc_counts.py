@@ -39,5 +39,3 @@ class TestConcCounts:
 
     def test_super(self):
         c = ConcCounts(urn=urn_books, words=words)
-        # assert c.head(1) is not None
-        # assert c.tail(1) is not None

@@ -98,8 +98,6 @@ def draw_graph_centrality(
     G = G.subgraph(subnodes)
     pos = nx.spring_layout(G, k=k)
     labelpos = {k: (v[0] + deltax, v[1] + deltay) for k, v in pos.items()}
-    # print(labelpos)
-    # print(pos)
     if l_alpha <= 1:
         nx.draw_networkx_labels(
             G, labelpos, font_size=fontsize, alpha=l_alpha, font_color=font_color
@@ -155,12 +153,9 @@ def draw_graph_centrality2(
     ax = plt.subplot()
     ax.set_xticks([])
     ax.set_yticks([])
-    # G = G.subgraph(subnodes)
     glob_col = sns.hls_palette(len(G), h=colstart, l=coldark)[0]
     pos = nx.spring_layout(G, k=k)
     labelpos = {k: (v[0] + deltax, v[1] + deltay) for k, v in pos.items()}
-    # print(labelpos)
-    # print(pos)
     if l_alpha <= 1:
         nx.draw_networkx_labels(
             G, labelpos, font_size=fontsize, alpha=l_alpha, font_color=font_color
@@ -169,14 +164,9 @@ def draw_graph_centrality2(
     if Subsets != []:
         i = 0
         colpalette = sns.hls_palette(len(Subsets), h=colstart, l=coldark)
-        # print(colpalette)
         for Sub in Subsets:
             sublist = dict({x: subnodes[x] for x in subnodes if x in Sub})
-            # print(sublist)
-            # sub_col = list(colors.values())[np.random.randint(20,100)]
             sub_col = colpalette[i]
-            # print(i, sub_col, sublist.keys())
-            # print(i, sub_col)
             nx.draw_networkx_nodes(
                 G,
                 pos,
@@ -207,11 +197,6 @@ def draw_graph_centrality2(
 
 
 def sentrale(Graph, top=20):
-    # mc = Counter([('ord',0)])
-    # SubGraph = nx.Graph()
-    # SubGraph.add_edges_from([(x,y) for (x,y) in Graph.edges() \
-    #   if Graph.degree(x)>1 and Graph.degree(y)>1])
-    # if Graph.__len__() > 0:
     mc = Counter(nx.closeness_centrality(Graph)).most_common(top)
     return mc
 
@@ -220,7 +205,6 @@ def mcommunity(Graph, random=10):
     G = Graph.to_undirected()
 
     m_partition = community_louvain.best_partition(G, random_state=random)
-    # print(m_partition)
     list_nodes = []
     for com in set(m_partition.values()):
         list_nodes += [
@@ -234,7 +218,6 @@ def kcliques(agraph):
     x = list(k_clique_communities(agraph, i))
     comms = {}
     while x and isinstance(x, list):
-        # print(x)
         j = 1
         for el in x:
             comms[(i, j)] = el
@@ -261,7 +244,6 @@ def subsetgraph(comms, centrals, labels=2):
             nodej = comms[comkeys[j]]
 
             found = comms[top].issubset(nodej)
-            # print(top,comkeys[j], found)
             if found:
                 label_large = str(comkeys[j][0]) + str(comkeys[j][1])
                 large_ordered = Counter({r: centrals[r] for r in nodej}).most_common(
@@ -270,7 +252,6 @@ def subsetgraph(comms, centrals, labels=2):
                 label_large = (
                     label_large + " " + " ".join([x[0] for x in large_ordered])
                 )
-                # print(label_small, label_large)
                 subgraph.add_edge(label_small, label_large)
             j += 1
     return subgraph
@@ -369,7 +350,6 @@ def tree_pos(x, G, level, spacing, num, left_edge, level_increment=1):
             d_left += spacing + d_width
             positions.update(d_positions)
             vals += [d_positions[d][0]]
-            # print(vals)
         averagex = np.mean(vals)
         positions[x] = (averagex, level)
     return positions, d_left
@@ -394,7 +374,6 @@ def node_set(root, G):
 
 
 def draw_tree(G, node_size=1, node_color="slategrey", n=2, m=1, h=10, v=10):
-    # plt.subplot()
     draw_graph(
         G,
         h=h,
@@ -407,32 +386,6 @@ def draw_tree(G, node_size=1, node_color="slategrey", n=2, m=1, h=10, v=10):
     )
     fmin, fmax = plt.xlim()
     plt.xlim(fmin - 10, fmax + 10)
-    # ax.set_xticks([])
-    # ax.set_yticks([])
-    # plt.savefig('krig.svg')
-
-
-'''
-def draw_forest(F, spacing, h=15, v=10, save_name=False):
-    """Denne funksjonen vil ikke fungere uten refaktorering.
-
-    Se kommentarer på/over de aktuelle linjene.
-    """
-    # rows = len(F)
-    # row = 1
-    # plt.figsize=(15,10)
-    for tree in F:
-        # print(tree.nodes())
-        # plt.subplot(rows,row,1)
-        # plt.figure(row)
-        # row += 1
-
-        # Expected type 'int', got 'float' instead for node_size
-        draw_tree(tree, node_size=0.5, h=h, v=v)
-        if save_name:
-            # E0602: Undefined variable 'row' (undefined-variable)
-            plt.savefig(f'{save_name}-{row}.png', dpi=300)
-'''
 
 
 def print_list_of_sets(los):
@@ -466,8 +419,6 @@ def make_collocation_graph(
     toppis = frame(I[0] ** 1.2 / Total["total"], target[0]).sort_values(
         by=target[0], ascending=False
     )
-
-    # toppis[:top].index
 
     isgraf = {}
     for word in toppis[:top].index:
@@ -525,9 +476,7 @@ def community_dict(G):
     cd = {}
     for c in mcommunity(G):
         l = [(x, sorter[x]) for x in c if sorter[x] > 0]
-        # print(l)
         l.sort(key=lambda i: i[1], reverse=True)
-        # print(l)
         cd["-".join([x[0] for x in l[:2]])] = [x[0] for x in l]
     return cd
 

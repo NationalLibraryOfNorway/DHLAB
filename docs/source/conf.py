@@ -19,7 +19,6 @@ project = "dhlab"
 author = "The National Library of Norway"
 email = "dh-lab@nb.no"
 copyright = f"{datetime.datetime.now().year}, {author}"
-# version = importlib.metadata.version("dhlab")
 version = "2.32.0"
 
 # -- General configuration ---------------------------------------------------
@@ -112,8 +111,6 @@ togglebutton_hint_hide = "Hide"
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-# html_theme = "furo"
-# html_theme = "sphinx_book_theme"
 html_static_path = ["_static"]
 
 html_theme = "furo"
@@ -122,28 +119,24 @@ html_theme = "furo"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    # "announcement": "Welcome to the dhlab documentation!",
     "sidebar_hide_name": True,
     "navigation_with_keys": True,
     "source_repository": "https://github.com/NationalLibraryOfNorway/DHLAB",
     "source_branch": "main",
     "source_directory": "docs/",
-    # "light_logo": "light-DHLAB-logo-no-eng-blaa-0044ba.png",
     "light_css_variables": {
-        "color-brand-primary": "#0044ba",  # "#cf2e2e", #015edf;
-        "color-brand-content": "#0044ba",  # 00215c",  # "#0693e3",
-        "color-admonition-background": "#70a6ff",  # "#edeae5",
+        "color-brand-primary": "#0044ba",
+        "color-brand-content": "#0044ba",
+        "color-admonition-background": "#70a6ff",
         "font-stack": "'DM Sans', sans-serif",
         "font-stack--monospace": "Courier, monospace",
         "font-stack--headings": "'DM Mono', monospace",
     },
-    # "dark_logo": "_images/NB-symbol-logo_blaa_mork_100width.png",
     "dark_css_variables": {
         "color-brand-primary": "#70a6ff",
         "color-brand-content": "#70a6ff",
         "color-admonition-background": "#0044ba",
     },
-    # "top_of_page_button": "edit",
     # For components/edit-this-page.html
     "footer_icons": [
         {
@@ -167,9 +160,6 @@ html_css_files = [
     "dhlab/css_style_sheets/nb_notebook_blue.css",
     "dhlab/css_style_sheets/nb_notebook.css",
 ]
-
-# Add any paths that contain custom themes here, relative to this directory.
-# html_theme_path = []
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".

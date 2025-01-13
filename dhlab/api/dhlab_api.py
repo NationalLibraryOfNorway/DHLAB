@@ -20,7 +20,6 @@ def wildcard_search(word, factor=2, freq_limit=10, limit=50):
         f"{BASE_URL}/wildcard_word_search",
         params={"word": word, "factor": factor, "freq_lim": freq_limit, "limit": limit},
     )
-    # columns = ["key", "name", "alternatename", "latitude", "longitude", "feature class", "feature code"]
     return pd.DataFrame.from_dict(res.json(), orient="index", columns=["freq"])
 
 
@@ -79,10 +78,8 @@ def show_spacy_models() -> List:
     """Show available SpaCy model names."""
     try:
         r = requests.get(f"{BASE_URL}/ner_models")
-        # r.raise_for_status()
         res = r.json()
     except:  # (HTTPError, JSONDecodeError, ConnectionError) as error:
-        # print(error.__doc__, error)
         print("Server-request gikk ikke gjennom. Kan ikke vise SpaCy-modellnavn.")
         res = []
     return res
@@ -98,7 +95,6 @@ def get_places(urn: str) -> DataFrame:
     """
     params = locals()
     r = requests.post(f"{BASE_URL}/places", json=params)
-    # print(r.status_code)
     return pd.DataFrame(r.json())
 
 
@@ -330,13 +326,11 @@ def _ngram_doc(
     params["word"] = tuple(word)
     params = {x: params[x] for x in params if params[x] is not None}
     r = requests.post(BASE_URL + "/ngram_" + doctype, json=params)
-    # print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
-    # df.index = df.index.map(pd.Timestamp)
     return df
 
 
@@ -417,13 +411,11 @@ def ngram_book(
     params["word"] = tuple(word)
     params = {x: params[x] for x in params if params[x] is not None}
     r = requests.post(BASE_URL + "/ngram_book", json=params)
-    # print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
-    # df.index = df.index.map(pd.Timestamp)
     return df
 
 
@@ -467,13 +459,11 @@ def ngram_periodicals(
     params["word"] = tuple(word)
     params = {x: params[x] for x in params if params[x] is not None}
     r = requests.post(BASE_URL + "/ngram_periodicals", json=params)
-    # print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
-    # df.index = df.index.map(pd.Timestamp)
     return df
 
 
@@ -504,13 +494,11 @@ def ngram_news(
     params["word"] = tuple(word)
     params = {x: params[x] for x in params if params[x] is not None}
     r = requests.post(BASE_URL + "/ngram_newspapers", json=params)
-    # print(r.status_code)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
-    # df.index = df.index.map(pd.Timestamp)
     return df
 
 def create_sparse_matrix(structure):
@@ -946,6 +934,5 @@ def query_imagination_corpus(
     """Fetch data from imagination corpus"""
     params = locals()
     params = {key: params[key] for key in params if params[key] is not None}
-    # print(params)
     r = requests.get(f"{BASE_URL}/imagination", params=params)
     return r.json()

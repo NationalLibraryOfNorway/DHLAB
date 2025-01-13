@@ -373,7 +373,6 @@ def get_picture_from_urn(urn, width=0, height=300):
             url = f"{url_prefix}/{urn}/full/full/0/native.jpg"
         else:
             url = f"{url_prefix}/{urn}/full/{width},{height}/0/native.jpg"
-        # print(url)
     return Image.open(load_picture(url))
 
 
@@ -384,7 +383,6 @@ def get_picture_from_url(url, width=0, height=300):
 def get_metadata_from_url(url):
     urn = re.findall("(URN.*?)(?:/)", url)[0]
     triple = iiif_manifest(urn)
-    # print(urn, triple)
     r = {}  # Local variable 'r' value is not used
     if "error" not in triple:
         r = {x["label"]: x["value"] for x in triple["metadata"] if "label" in x}
