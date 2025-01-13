@@ -35,7 +35,7 @@ def images(text=None, part=True):
     :param delta: if part=True then show additional pixels around image
     :parsm hits: number of images"""
 
-    params = locals()
+    params = {"text": text, "part": part}
     r = requests.get(f"{BASE_URL}/images", params=params)
     js = r.json()
     return js
@@ -52,7 +52,7 @@ def ner_from_urn(
     :return: Dataframe with annotations and their frequencies
     """
 
-    params = locals()
+    params = {"urn": urn, "model": model, "start_page": start_page, "to_page": to_page}
     r = requests.get(f"{BASE_URL}/ner_urn", params=params)
     df = pd.read_json(r.json())
     return df
@@ -68,7 +68,7 @@ def pos_from_urn(
         Check which models are available with :func:`show_spacy_models`
     :return: Dataframe with annotations and their frequencies
     """
-    params = locals()
+    params = {"urn": urn, "model": model, "start_page": start_page, "to_page": to_page}
     r = requests.get(f"{BASE_URL}/pos_urn", params=params)
     df = pd.read_json(r.json())
     return df
@@ -93,7 +93,7 @@ def get_places(urn: str) -> DataFrame:
 
     :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
     """
-    params = locals()
+    params = {"urn": urn}
     r = requests.post(f"{BASE_URL}/places", json=params)
     return pd.DataFrame(r.json())
 
@@ -148,7 +148,7 @@ def get_dispersion(
     :param int pr: defaults to 100.
     :return: a ``pandas.Series`` with frequency counts of the words in the URN object.
     """
-    params = locals()
+    params = {"pr": pr, "urn": urn, "window": window, "words": words}
     r = requests.post(f"{BASE_URL}/dispersion", json=params)
     return pd.Series(r.json())
 
@@ -162,7 +162,7 @@ def get_metadata(urns: List[str] = None) -> DataFrame:
     :param list urns: list of uniform resource name strings, for example:
         ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]``
     """
-    params = locals()
+    params = {"urns": urns}
     r = requests.post(f"{BASE_URL}/get_metadata", json=params)
     return DataFrame(r.json())
 
@@ -190,7 +190,8 @@ def get_chunks(urn: str = None, chunk_size: int = 300) -> Union[Dict, List]:
 
     if urn is None:
         return {}
-    r = requests.get(f"{BASE_URL}/chunks", params=locals())
+    params = {"urn": urn, "chunk_size": chunk_size}
+    r = requests.get(f"{BASE_URL}/chunks", params=params)
     if r.status_code == 200:
         result = r.json()
     else:
@@ -210,7 +211,8 @@ def get_chunks_para(urn: str = None) -> Union[Dict, List]:
 
     if urn is None:
         return {}
-    r = requests.get(f"{BASE_URL}/chunks_para", params=locals())
+    params = {"urn": urn}
+    r = requests.get(f"{BASE_URL}/chunks_para", params=params)
     if r.status_code == 200:
         result = r.json()
     else:
@@ -256,7 +258,7 @@ def get_reference(
     :param int limit: Maximum number of most frequent words.
     :return: A ``pandas.DataFrame`` with the results.
     """
-    params = locals()
+    params = {"corpus": corpus, "from_year": from_year, "to_year": to_year, "lang": lang, "limit": limit}
     r = requests.get(BASE_URL + "/reference_corpus", params=params)
     if r.status_code == 200:
         result = r.json()
@@ -275,7 +277,7 @@ def find_urns(docids: Union[Dict, DataFrame] = None, mode: str = "json") -> Data
     :param str mode: Default 'json'.
     :return: the URNs that were found, in a ``pandas.DataFrame``.
     """
-    params = locals()
+    params = {"docids": docids, "mode": mode}
     r = requests.post(BASE_URL + "/find_urn", json=params)
     if r.status_code == 200:
         res = pd.DataFrame.from_dict(r.json(), orient="index", columns=["urn"])
@@ -319,7 +321,8 @@ def _ngram_doc(
         a `pandas.DataFrame` with the resulting frequency counts of the word(s),
             spread across years. One year per row.
     """
-    params = locals()
+    params = {"doctype": doctype, "word": word, "title": title, "period": period,
+              "publisher": publisher, "lang": lang, "city": city, "ddk": ddk, "topic": topic}
     if isinstance(word, str):
         # assume a comma separated string
         word = [w.strip() for w in word.split(",")]
@@ -359,7 +362,7 @@ def reference_words(
     :param int to_year: last year of publication
     :return: a DataFrame with the words' frequency data
     """
-    params = locals()
+    params = {"words": words, "doctype": doctype, "from_year": from_year, "to_year": to_year}
     r = requests.post(f"{BASE_URL}/reference_words", json=params)
     print(r.status_code, BASE_URL)
     if r.status_code == 200:
@@ -404,7 +407,8 @@ def ngram_book(
     :return: a ``pandas.DataFrame`` with the resulting frequency counts of the word(s),
         spread across years. One year per row.
     """
-    params = locals()
+    params = {"word": word, "title": title, "period": period, "publisher": publisher,
+              "lang": lang, "city": city, "ddk": ddk, "topic": topic}
     if isinstance(word, str):
         # assume a comma separated string
         word = [w.strip() for w in word.split(",")]
@@ -452,7 +456,8 @@ def ngram_periodicals(
     :return: a ``pandas.DataFrame`` with the resulting frequency counts of the word(s),
         spread across years. One year per row.
     """
-    params = locals()
+    params = {"word": word, "title": title, "period": period, "publisher": publisher,
+              "lang": lang, "city": city, "ddk": ddk, "topic": topic}
     if isinstance(word, str):
         # assume a comma separated string
         word = [w.strip() for w in word.split(",")]
@@ -487,7 +492,7 @@ def ngram_news(
     :return: a ``pandas.DataFrame`` with the resulting frequency counts of the word(s),
         spread across the dates given in the time period. Either one year or one day per row.
     """
-    params = locals()
+    params = {"word": word, "title": title, "period": period}
     if isinstance(word, str):
         # assume a comma separated string
         word = [w.strip() for w in word.split(",")]
@@ -542,7 +547,7 @@ def get_document_frequencies(
     :param list words: a list of words to be counted - if left None, whole document is returned. If not None both the counts and their relative frequency is returned.
     :param bool sparse: create a sparse matrix for memory efficiency
     """
-    params = locals()
+    params = {"urns": urns, "cutoff": cutoff, "words": words}
     r = requests.post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
     # check if words are passed - return differs a bit
@@ -662,7 +667,13 @@ def document_corpus(
     :param str order_by: order of elements in the corpus object. Typically used in combination with a limit. Example ``"random"`` (random order, the slowest), ``"rank"`` (ordered by relevance, faster) or ``"first"`` (breadth-first, using the order in the database table, the fastest method)
     :return: a ``pandas.DataFrame`` with the corpus information.
     """
-    parms = locals()
+    parms = {"doctype": doctype, "author": author, "freetext": freetext,
+             "fulltext": fulltext, "from_year": from_year, "to_year": to_year,
+             "from_timestamp": from_timestamp, "to_timestamp": to_timestamp,
+             "title": title, "ddk": ddk, "subject": subject, "publisher": publisher,
+             "literaryform": literaryform, "genres": genres, "city": city,
+             "lang": lang, "limit": limit, "order_by": order_by}
+
     params = {x: parms[x] for x in parms if parms[x] is not None}
 
     r = requests.post(BASE_URL + "/build_corpus", json=params)
@@ -768,7 +779,7 @@ def konkordans(
     urns: list = None, words: str = None, window: int = 25, limit: int = 100
 ):
     """Wrapper for :func:`concordance`."""
-    return concordance(**locals())
+    return concordance(urns, words, window, limit)
 
 
 def word_concordance(
@@ -932,7 +943,8 @@ def query_imagination_corpus(
     oversatt=None,
 ):
     """Fetch data from imagination corpus"""
-    params = locals()
+    params = {"category": category, "author": author, "title": title, "year": year,
+              "publisher": publisher, "place": place, "oversatt": oversatt}
     params = {key: params[key] for key in params if params[key] is not None}
     r = requests.get(f"{BASE_URL}/imagination", params=params)
     return r.json()

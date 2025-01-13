@@ -14,6 +14,6 @@ def get_metadata(urns: Optional[List] = None):
         urns: uniform resource names, example:
             `["URN:NBN:no-nb_digibok_2011051112001"]`
     """
-    params = locals()
+    params = {"urns": urns}
     r = requests.post(f"{BASE_URL}/get_metadata", json=params)
     return pd.DataFrame(r.json())
