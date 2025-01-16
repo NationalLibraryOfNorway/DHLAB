@@ -161,7 +161,6 @@ html_css_files = [
     "dhlab/css_style_sheets/nb_notebook.css",
 ]
 
-# TODO: Remove comments?
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
 html_title = "dhlab"
