@@ -79,8 +79,7 @@ def show_spacy_models() -> List:
     try:
         r = requests.get(f"{BASE_URL}/ner_models")
         res = r.json()
-    # TODO?
-    except:  # (HTTPError, JSONDecodeError, ConnectionError) as error:
+    except:
         print("Server-request gikk ikke gjennom. Kan ikke vise SpaCy-modellnavn.")
         res = []
     return res
