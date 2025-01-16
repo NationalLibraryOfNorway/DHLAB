@@ -19,7 +19,7 @@ project = "dhlab"
 author = "The National Library of Norway"
 email = "dh-lab@nb.no"
 copyright = f"{datetime.datetime.now().year}, {author}"
-version = "2.32.0"
+version = importlib.metadata.version("dhlab")
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
