@@ -5,24 +5,23 @@ on: pull_request
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.10", "3.11", "3.12" ]
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with: 
-          python-version: "3.9"
-      - name: Permacache Poetry
-        id: cache-poetry
-        uses: actions/cache@v3
+      - uses: actions/checkout@v4
+      - name: Setup PDM
+        uses: pdm-project/setup-pdm@v4
         with:
-          path: ~/.poetry
-          key: poetry
-      - name: Install Poetry
-        if: steps.cache-poetry.outputs.cache-hit != 'true'
-        run: curl -sSL https://install.python-poetry.org | python - -y
-      - name: Add Poetry to path
-        run: echo "${HOME}/.poetry/bin" >> $GITHUB_PATH
-      - name: Install venv
-        run: poetry install --with test
-      - name: Test
-        run: poetry run pytest tests --cov=dhlab
+          python-version: ${{ matrix.python-version }}
   
+      - name: Install dependencies
+        run: |
+          pdm sync -d -G test
+  
+      - name: Run Tests
+        run: |
+          pdm run -v pytest tests --cov=dhlab
