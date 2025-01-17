@@ -20,8 +20,9 @@ jobs:
   
       - name: Install dependencies
         run: |
+          pdm lock
           pdm sync -d -G test
   
       - name: Run Tests
         run: |
-          pdm run -v pytest tests --cov=dhlab
+          pdm run pytest -v tests --cov=dhlab
