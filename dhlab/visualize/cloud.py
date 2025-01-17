@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 try:
     from wordcloud import WordCloud
-except BaseException:
+except ImportError:
     print("wordcloud er ikke installert, kan ikke lage ordskyer")
 
 
