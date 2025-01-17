@@ -50,7 +50,6 @@ def make_word_graph(
     edgelist = []
     if result.status_code == 200:
         graph = json.loads(result.text)
-        # print(graph)
         nodes = graph["nodes"]
         edges = graph["links"]
         for edge in edges:
@@ -61,6 +60,5 @@ def make_word_graph(
                     abs(edge["value"]),
                 )
             ]
-    # print(edgelist)
     G.add_weighted_edges_from(edgelist)
     return G

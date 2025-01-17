@@ -8,7 +8,6 @@ def load_picture(url: str):
     """Load the raw image object from a URL."""
     r = requests.get(url, stream=True)
     r.raw.decode_content = True
-    # print(r.status_code)
     return r.raw
 
 
@@ -72,7 +71,6 @@ def get_df(phrases: Iterable, title: str = "aftenposten"):
         "q": querystring,
         "size": 1,
         "aggs": "year",
-        # 'filter':'mediatype:{mt}'.format(mt=media),
         "filter": f"title:{title}",
     }
     r = requests.get("https://api.nb.no/catalog/v1/items", params=query)
@@ -87,9 +85,7 @@ def get_json(phrases, mediatype="aviser"):
         "size": 1,
         "snippets": mediatype,
         "aggs": "year",
-        #        'filter':'mediatype:{mt}'.format(mt=mediatype),
         "searchType": "FULL_TEXT_SEARCH",
-        # 'filter':'title:{title}'.format(title=title)
     }
     r = requests.get("https://api.nb.no/catalog/v1/items", params=query)
     aggs = r.json()
@@ -115,7 +111,6 @@ def get_data_and(frases, title="aftenposten", media="avis"):
         "q": querystring,
         "size": 1,
         "aggs": "year",
-        # 'filter':'mediatype:{mt}'.format(mt=media),
         "filter": "title:{title}".format(title=title),
     }
     r = requests.get("https://api.nb.no/catalog/v1/items", params=query)

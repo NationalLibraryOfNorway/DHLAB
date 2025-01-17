@@ -22,7 +22,7 @@ from matplotlib.pylab import rcParams
 try:
     from wordcloud import WordCloud
 except BaseException:
-    pass  # print(f"wordcloud er ikke installert, kan ikke lage ordskyer")
+    pass
 
 
 # ************** For defining wordbag search
@@ -42,7 +42,6 @@ def def2dict(ddef):
     for d in defs:
         lex = d.split(":")
         if len(lex) == 2:
-            # print('#'.join(lex))
             hyper = lex[0].strip()
             occurrences = [x.strip() for x in lex[1].split(",")]
             res[hyper] = occurrences
@@ -279,7 +278,6 @@ def urn_from_text(T):
 def metadata(urn: str = None):
     """Return a list of metadata entries for given URN."""
     urns = pure_urn(urn)
-    # print(urns)
     r = requests.post("https://api.nb.no/ngram/meta", json={"urn": urns})
     return r.json()
 
@@ -429,7 +427,6 @@ def df_combine(array_df):
     # E0602: Undefined variable 'a' (undefined-variable).
     # Antar at 'a' skulle være array_df
     for i in enumerate(array_df):
-        # print(i)
         if array_df[i].columns[0] in cols:
             array_df[i].columns = [array_df[i].columns[0] + "_" + str(i)]
         cols.append(array_df[i].columns[0])
@@ -571,7 +568,6 @@ def refine_book_urn(
     }
     query["year"] = period[0]
     query["next"] = period[1] - period[0]
-    # print(query)
     return refine_urn(urns, query)
 
 
@@ -793,7 +789,6 @@ def get_aggregated_corpus(urns, top=0, cutoff=0):
     if isinstance(urns[0], list):
         urns = [u[0] for u in urns]
     for u in urns:
-        # print(u)
         res += get_freq(u, top=top, cutoff=cutoff)
     return pd.DataFrame.from_dict(res, orient="index").sort_values(
         by=0, ascending=False
@@ -990,7 +985,6 @@ def get_corpus_text(urns, top=0, cutoff=0):
         # assume it is a single urn, text or number
         urns = [urns]
     for u in urns:
-        # print(u)
         k[u] = get_freq(u, top=top, cutoff=cutoff)
     df = pd.DataFrame(k)
     res = df.sort_values(by=df.columns[0], ascending=False)
@@ -1002,7 +996,6 @@ def normalize_corpus_dataframe(df: pd.DataFrame) -> bool:
     Changes `df` in situ, and returns `True`."""
     colsums = df.sum()
     for x in colsums.index:
-        # print(x)
         df[x] = df[x].fillna(0) / colsums[x]
     return True
 
@@ -1172,7 +1165,6 @@ class Cluster:
         with open(filename, "r", encoding="utf-8") as infile:
             try:
                 model = json.loads(infile.read())
-                # print(model['word'])
                 self.word = model["word"]
                 self.period = model["period"]
                 self.corpus = model["corpus"]
@@ -1290,7 +1282,6 @@ def make_network_name_graph(urn, tokens, tokenmap=None, cutoff=2):
         "https://api.nb.no/ngram/word_graph",
         json={"urn": urn, "tokens": tokens, "tokenmap": tokenmap},
     )
-    # print(r.text)
     G = nx.Graph()
     G.add_weighted_edges_from(
         [(x, y, z) for (x, y, z) in r.json() if z > cutoff and x != y]
@@ -1338,7 +1329,6 @@ def token_map(tokens, strings=False, sep="_", arrow="==>"):
     # convert tokens to tuples and put them all in one list
     tokens = [(x,) for x in tokens[0]] + tokens[1] + tokens[2] + tokens[3]
     tm = []
-    # print(tokens)
     for token in tokens:
         if isinstance(token, str):
             trep = (token,)
@@ -1348,20 +1338,16 @@ def token_map(tokens, strings=False, sep="_", arrow="==>"):
         else:
             trep = token
         n = len(trep)
-        # print(trep)
 
         if trep[-1].endswith("s"):
             cp = list(trep[: n - 1])
             cp.append(trep[-1][:-1])
             cp = tuple(cp)
 
-            # print('copy', cp, trep)
             if cp in tokens:
-                # print(trep, cp)
                 trep = cp
 
         larger = [ts for ts in tokens if set(ts) >= set(trep)]
-        # print(trep, ' => ', larger)
         larger.sort(key=len, reverse=True)
         tm.append((token, larger[0]))
         res = tm
@@ -1494,7 +1480,6 @@ def make_cloud(
         font_path=font_path,
         background_color=background,
         width=width,
-        # color_func=my_colorfunc,
         ranks_only=True,
         height=height,
     ).generate_from_frequencies(pairs)
@@ -1625,10 +1610,8 @@ class Corpus:
             else:
                 target_corpus_def = get_urn(params)
 
-            # print("Antall bøker i målkorpus ", len(målkorpus_def))
             if isinstance(target_corpus_def[0], list):
                 target_corpus_urn = [str(x[0]) for x in target_corpus_def]
-                # print(målkorpus_urn)
             else:
                 target_corpus_urn = target_corpus_def
             if len(target_corpus_urn) > max_books > 0:
@@ -1649,7 +1632,6 @@ class Corpus:
                     }
                 )
 
-            # print("Antall bøker i referanse: ", len(referansekorpus_def))
             # referansen skal være distinkt fra målkorpuset
             referanse_urn = [str(x[0]) for x in referansekorpus_def]
             self.reference_urn = referanse_urn
@@ -1729,11 +1711,8 @@ class Corpus:
         with open(filename, encoding="utf-8") as infile:
             try:
                 model = json.loads(infile.read())
-                # print(model['word'])
                 self.params = model["params"]
-                # print(self.params)
                 self.target_corpus_tot = pd.read_json(model["target"])
-                # print(self.målkorpus_tot[:10])
                 self.combo_tot = pd.read_json(model["combo"])
                 self.target_docf = pd.read_json(model["target_df"])
                 self.combo_docf = pd.read_json(model["combo_df"])
@@ -1966,7 +1945,6 @@ def nb_ngram(
 
 def get_ngram(terms="", corpus="avis"):
     reqs = f"https://api.nb.no/dhlab/nb_ngram/ngram/query?terms={terms}&lang=nor&case_sens=0&freq=rel&corpus={corpus}"
-    # print(reqs)
     req = requests.get(reqs)
     if req.status_code == 200:
         res = req.text
@@ -2020,7 +1998,6 @@ def make_graph_from_result(result):
     edgelist = []
     if result.status_code == 200:
         graph = json.loads(result.text)
-        # print(graph)
         nodes = graph["nodes"]
         edges = graph["links"]
         for edge in edges:
@@ -2138,7 +2115,6 @@ def get_konk(word, params=None, kind="html"):
                     a=x["after"],
                 )
         else:
-            # print(r.json())
             for x in r.json():
                 rows += row_template.format(
                     kw=word,
@@ -2164,7 +2140,6 @@ def get_konk(word, params=None, kind="html"):
         # W0702: No exception type(s) specified (bare-except)
         except BaseException:
             res = pd.DataFrame()
-        # r = r.style.set_properties(subset=['after'],**{'text-align':'left'})
     return res
 
 
@@ -2235,7 +2210,6 @@ def get_urnkonk(word, params: dict = None, html: bool = True):
     else:
         res = pd.DataFrame(r.json())
         res = res[["urn", "before", "word", "after"]]
-        # r = r.style.set_properties(subset=['after'],**{'text-align':'left'})
     return res
 
 
@@ -2292,7 +2266,6 @@ def get_urns_from_text(document):
     """Find all URNs in a plain text file (``.txt``)"""
     with open(document, encoding="utf-8") as fp:
         text = fp.read()
-    # print(text)
     return re.findall("[0-9]{13}", text)
 
 
@@ -2307,7 +2280,6 @@ def get_urns_from_files(mappe: str, file_type="txt") -> Dict:
     urns = {}
     for f in files:
         fn = os.path.join(froot, f)
-        # print(fn)
         if f.endswith(".docx"):
             urns[f] = get_urns_from_docx(fn)
         elif f.endswith(".txt"):
