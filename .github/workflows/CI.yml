@@ -20,8 +20,8 @@ jobs:
   
       - name: Install dependencies
         run: |
-          pdm lock
-          pdm sync -d -G test
+          pdm add -G test
+
   
       - name: Run Tests
         run: |
