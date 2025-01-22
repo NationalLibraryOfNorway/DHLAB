@@ -751,6 +751,9 @@ def concordance(
     return pd.DataFrame(r.json())
 
 
+konkordans = concordance # Function alias
+
+
 def concordance_counts(
     urns: list = None, words: str = None, window: int = 25, limit: int = 100
 ) -> DataFrame:
@@ -773,13 +776,6 @@ def concordance_counts(
         params = {"urns": urns, "query": words, "window": window, "limit": limit}
         r = requests.post(BASE_URL + "/conccount", json=params)
     return pd.DataFrame(r.json())
-
-
-def konkordans(
-    urns: list = None, words: str = None, window: int = 25, limit: int = 100
-):
-    """Wrapper for :func:`concordance`."""
-    return concordance(urns, words, window, limit)
 
 
 def word_concordance(
