@@ -93,8 +93,7 @@ def get_places(urn: str) -> DataFrame:
 
     :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
     """
-    params = {"urn": urn}
-    r = requests.post(f"{BASE_URL}/places", json=params)
+    r = requests.post(f"{BASE_URL}/places", json={"urn": urn})
     return pd.DataFrame(r.json())
 
 
@@ -162,8 +161,7 @@ def get_metadata(urns: List[str] = None) -> DataFrame:
     :param list urns: list of uniform resource name strings, for example:
         ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]``
     """
-    params = {"urns": urns}
-    r = requests.post(f"{BASE_URL}/get_metadata", json=params)
+    r = requests.post(f"{BASE_URL}/get_metadata", json={"urns": urns})
     return DataFrame(r.json())
 
 
@@ -211,8 +209,7 @@ def get_chunks_para(urn: str = None) -> Union[Dict, List]:
 
     if urn is None:
         return {}
-    params = {"urn": urn}
-    r = requests.get(f"{BASE_URL}/chunks_para", params=params)
+    r = requests.get(f"{BASE_URL}/chunks_para", params={"urn": urn})
     if r.status_code == 200:
         result = r.json()
     else:
