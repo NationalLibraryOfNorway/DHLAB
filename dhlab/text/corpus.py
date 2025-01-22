@@ -347,8 +347,11 @@ class Corpus(DhlabObj):
 
         def test_dhlabid_series(series: pd.Series) -> bool:
             """Check if dhlabid series is valid"""
-            if not series.apply(lambda x: isinstance(x, int)).all():
+            try:
+                series = series.apply(lambda x: int(x))
+            except ValueError:
                 return False
+
             if not ((series >= 1e8) & (series < 1e9)).all():
                 return False
 
@@ -358,11 +361,7 @@ class Corpus(DhlabObj):
             """Check if URN series is valid"""
             if series.str.startswith("URN:NBN:no-nb_").all():
                 return True
-            try:
-                series = series.apply(lambda x: int(x))
-                return test_dhlabid_series(series)
-            except:
-                return False
+            return False
 
         # Check if the DataFrame is empty
         if self.corpus.empty:
@@ -379,7 +378,8 @@ class Corpus(DhlabObj):
             raise ValueError("Some dhlabid values are in an incorrect format.")
 
         # Validate URN format
-        if not test_urn_series(self.corpus["urn"]):
+        if not (test_urn_series(self.corpus["urn"])
+                or test_dhlabid_series(self.corpus["urn"])):
             raise ValueError("Some URN values are in an incorrect format.")
 
         return True
