@@ -36,7 +36,7 @@ Repository = "https://github.com/NationalLibraryOfNorway/DHLAB"
 Issues = "https://github.com/NationalLibraryOfNorway/DHLAB/issues"
 Tutorials = "https://nationallibraryofnorway.github.io/digital_tekstanalyse/tutorial.html"
 
-[project.optional-dependencies]
+[dependency-groups]
 docs = [
     "Sphinx>=7.2.6",
     "furo>=2023.9.10",
