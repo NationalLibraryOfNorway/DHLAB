@@ -13,7 +13,7 @@ Head to our [official homepage](https://www.nb.no/dh-lab/) for tutorials, how-to
 
 ## Installation
 
-Ensure that you already have  [Python](https://www.python.org/downloads/) >=3.9 installed.
+Ensure that you already have  [Python](https://www.python.org/downloads/) >=3.10 installed.
 
 Install the latest version of the [`dhlab`](https://pypi.org/project/dhlab/) python package in your (Unix) terminal with pip:
 
