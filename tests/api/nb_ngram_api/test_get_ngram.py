@@ -1,6 +1,7 @@
 import requests
 import unittest.mock
 from dhlab.api.nb_ngram_api import get_ngram
+from dhlab.api.utils import DHLabApiError
 import pytest
 
 
@@ -12,7 +13,8 @@ def test_empty_list_on_non_200_status(status_code: int) -> None:
     session = unittest.mock.MagicMock(spec=requests.Session)
     session.get.return_value.status_code = status_code
 
-    assert get_ngram("test", session=session) == []
+    with pytest.raises(DHLabApiError):
+        get_ngram("test", session=session)
 
 
 def test_deserialised_on_200_status() -> None:
