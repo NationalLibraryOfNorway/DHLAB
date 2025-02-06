@@ -22,3 +22,12 @@ def api_get(url, params: dict | None = None, session: requests.Session | None = 
 
     return res
 
+def api_post(url, json: dict | None = None, session: requests.Session | None = None):
+    if session is None:
+        session = requests.Session()
+
+    res = session.post(url, json=json)
+    validate_response_status(res)
+
+    return res
+
