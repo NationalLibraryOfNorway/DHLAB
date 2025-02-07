@@ -226,11 +226,10 @@ class Corpus(DhlabObj):
     def add(self, new_corpus: Union[DataFrame, Corpus]):
         """Utility for appending Corpus or DataFrame to self"""
         if isinstance(new_corpus, Corpus):
-            new_corpus = new_corpus.frame
+            new_corpus = new_corpus.corpus
         self.frame = pd.concat([self.frame, new_corpus])
         self.corpus = self.frame
         self._drop_urn_duplicates()
-        # self.size = len(self.frame)
 
     def sample(self, n: int = 5):
         """Create random subkorpus with `n` entries"""
