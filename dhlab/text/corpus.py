@@ -1,11 +1,12 @@
+# Allow lazy evaluation of parent class type within staticmethod
+from __future__ import annotations
+
 from typing import List, Union
 
 import pandas as pd
 from pandas import DataFrame
 from tqdm import tqdm
 
-# import dhlab as dh
-# from dhlab.text.conc_coll import Concordance, Collocations, Counts
 import dhlab.text.conc_coll as dh
 from dhlab.api.dhlab_api import document_corpus, evaluate_documents, get_metadata
 from dhlab.text.dhlab_object import DhlabObj
@@ -171,7 +172,7 @@ class Corpus(DhlabObj):
         return corpus
 
     @classmethod
-    def from_df(cls, df: DataFrame, check_for_urn: bool = False):
+    def from_df(cls, df: DataFrame, check_for_urn: bool = False) -> Corpus | pd.Series:
         """Typecast Pandas DataFrame to Corpus class
 
         DataFrame most contain URN column"""
@@ -198,15 +199,17 @@ class Corpus(DhlabObj):
 
     @staticmethod
     def _urn_id_in_dataframe_cols(
-        dataframe: Union[DataFrame, type("Corpus")],
+        dataframe: Union[DataFrame, Corpus],
     ) -> DataFrame:
         """Checks if dataframe contains URN column"""
+        if isinstance(dataframe, Corpus):
+            dataframe = dataframe.corpus
         if "urn" in dataframe.columns:
             if dataframe.urn.str.contains("^URN:NBN:no-nb_.+").all():
                 return dataframe
         raise ValueError("No'urn'-column in dataframe.")
 
-    def extend_from_identifiers(self, identifiers: list = None):
+    def extend_from_identifiers(self, identifiers: list | None = None):
         new_corpus = get_metadata(urnlist(identifiers))
         self.add(new_corpus)
 
@@ -220,7 +223,7 @@ class Corpus(DhlabObj):
         df = df.set_index("urn")
         return df[cols].fillna(0)
 
-    def add(self, new_corpus: Union[DataFrame, type("Corpus")]):
+    def add(self, new_corpus: Union[DataFrame, Corpus]):
         """Utility for appending Corpus or DataFrame to self"""
         if isinstance(new_corpus, Corpus):
             new_corpus = new_corpus.frame
@@ -297,7 +300,7 @@ class Corpus(DhlabObj):
 
         return new
 
-    def _make_subcorpus(self, **kwargs) -> "Corpus":
+    def _make_subcorpus(self, **kwargs) -> Corpus | pd.Series | None:
         dct = kwargs.copy()
         year_range = dct.pop("year_range", None)
 
@@ -322,7 +325,7 @@ class Corpus(DhlabObj):
 
         return self.from_df(res)
 
-    def make_subcorpus(self, authors: str = None, title: str = None) -> "Corpus":
+    def make_subcorpus(self, authors: str | None = None, title: str | None = None) -> Corpus | pd.Series | None:
         """Make subcorpus based on author and title
 
         Args:
