@@ -627,10 +627,6 @@ def get_urn_frequencies(urns: List[str] | None = None, dhlabid: List[int] | None
     return df
 
 
-def get_document_corpus(**kwargs):
-    return document_corpus(**kwargs)
-
-
 def document_corpus(
     doctype: str | None = None,
     author: str | None = None,
@@ -692,6 +688,9 @@ def document_corpus(
     r = api_post(BASE_URL + "/build_corpus", json=params)
 
     return pd.DataFrame(r.json())
+
+
+get_document_corpus = document_corpus # Function alias
 
 
 def urn_collocation(
