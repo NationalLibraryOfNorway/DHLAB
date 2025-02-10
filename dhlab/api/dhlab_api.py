@@ -519,7 +519,7 @@ def ngram_news(
     df.columns = columns
     return df
 
-def create_sparse_matrix(structure):
+def _create_sparse_matrix(structure):
     """Create a sparse matrix from an API counts object"""
 
     # fetch all words
@@ -573,7 +573,7 @@ def get_document_frequencies(
                 pass
 
         if sparse == True:
-            df = create_sparse_matrix(structure)
+            df = _create_sparse_matrix(structure)
         else:
             df = pd.DataFrame(structure)
         
