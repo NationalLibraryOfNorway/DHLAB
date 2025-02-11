@@ -27,18 +27,18 @@ def wildcard_search(word, factor=2, freq_limit=10, limit=50):
 # fetch metadata
 
 
-def images(text=None, part=True):
+def images(text: str | None = None, part: int | None = True, hits: int | None = 500, delta: int | None = 0):
     """Retrive images from bokhylla
 
-    :param text: fulltext query expression for sqlite
-    :param part: if a number the whole page is shown
-    ... bug prevents these from going thru
-    :param delta: if part=True then show additional pixels around image
-    :parsm hits: number of images
+    :param text: Fulltext query expression for sqlite.
+    :param part: If a number, the whole page is shown. If True, get auto-scaled image.
+    :param delta: If part==True, show `delta` additional pixels on each side of image
+    :param hits: Number of images
     """
+
     resp = api_get(
         f"{BASE_URL}/images",
-        params={"text": text, "part": part}
+        params = {"text": text, "part": part, "hits": hits, "delta": delta}
     )
 
     return resp.json()
