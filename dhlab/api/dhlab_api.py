@@ -302,8 +302,8 @@ def find_urns(docids: Union[Dict, DataFrame] | None = None, mode: str = "json") 
 
 
 def _ngram_doc(
-    doctype: str | None = None,
-    word: Union[List, str] = ["."],
+    doctype: str = "",
+    word: List | str | None = None,
     title: str | None = None,
     period: Tuple[int, int] | None = None,
     publisher: str | None = None,
@@ -336,6 +336,9 @@ def _ngram_doc(
         a `pandas.DataFrame` with the resulting frequency counts of the word(s),
             spread across years. One year per row.
     """
+    if word is None:
+        word = ["."]
+
     params = {"doctype": doctype, "word": word, "title": title, "period": period,
               "publisher": publisher, "lang": lang, "city": city, "ddk": ddk, "topic": topic}
     if isinstance(word, str):
