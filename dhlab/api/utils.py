@@ -13,7 +13,7 @@ def validate_response_status(response: requests.Response) -> None:
             + " persists, then please leave an issue at https://github.com/NationalLibraryOfNorway/DHLAB/issues/."
         )
 
-def api_get(url, params: dict | None = None, session: requests.Session | None = None):
+def api_get(url: str, params: dict | None = None, session: requests.Session | None = None):
     if session is None:
         session = requests.Session()
 
@@ -22,7 +22,7 @@ def api_get(url, params: dict | None = None, session: requests.Session | None = 
 
     return res
 
-def api_post(url, json: dict | None = None, session: requests.Session | None = None):
+def api_post(url: str, json: dict | None = None, session: requests.Session | None = None):
     if session is None:
         session = requests.Session()
 
