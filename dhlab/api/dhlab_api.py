@@ -82,9 +82,7 @@ def pos_from_urn(
 
 def show_spacy_models() -> List:
     """Show available SpaCy model names."""
-    resp = api_get(
-        f"{BASE_URL}/ner_models",
-    )
+    resp = api_get(f"{BASE_URL}/ner_models")
 
     return resp.json()
 
