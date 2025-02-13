@@ -13,21 +13,24 @@ def validate_response_status(response: requests.Response) -> None:
             + " persists, then please leave an issue at https://github.com/NationalLibraryOfNorway/DHLAB/issues/."
         )
 
-def api_get(url: str, params: dict | None = None, session: requests.Session | None = None):
+def api_request(
+    method: str,
+    url: str,
+    params: dict | None = None,
+    json: dict | None = None,
+    session: requests.Session | None = None
+):
     if session is None:
         session = requests.Session()
 
-    res = session.get(url, params=params)
+    res = session.request(method, url, params=params, json=json)
     validate_response_status(res)
 
     return res
+
+def api_get(url: str, params: dict | None = None, session: requests.Session | None = None):
+    return api_request("GET", url, params=params, session=session)
 
 def api_post(url: str, json: dict | None = None, session: requests.Session | None = None):
-    if session is None:
-        session = requests.Session()
-
-    res = session.post(url, json=json)
-    validate_response_status(res)
-
-    return res
+    return api_request("POST", url, json=json, session=session)
 
