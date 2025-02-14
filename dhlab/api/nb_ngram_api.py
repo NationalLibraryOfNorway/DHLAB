@@ -4,6 +4,7 @@ import networkx as nx
 import requests
 
 from dhlab.constants import GALAXY_API, NGRAM_API
+from dhlab.api.utils import api_get
 
 
 def get_ngram(terms: str, corpus: str = "avis", lang: str = "nob", session: requests.Session | None = None) -> dict:
@@ -16,17 +17,14 @@ def get_ngram(terms: str, corpus: str = "avis", lang: str = "nob", session: requ
     :param str corpus: type of documents to search through
     :return: table of annual frequency counts per term
     """
-    if session is None:
-        session = requests.Session()
 
-    req = session.get(
-        NGRAM_API, params={"terms": terms, "corpus": corpus, "lang": lang}
+    resp = api_get(
+        NGRAM_API,
+        params={"terms": terms, "corpus": corpus, "lang": lang},
+        session=session
     )
-    if req.status_code == 200:
-        res = req.text
-    else:
-        res = "[]"
-    return json.loads(res)
+
+    return json.loads(resp.text)
 
 
 def make_word_graph(
@@ -42,31 +40,30 @@ def make_word_graph(
     :param int leaves: Set leaves=1 to get the leaves.
     :return: A `networkx.DiGraph` with the results.
     """
-    if session is None:
-        session = requests.Session()
-
     params = dict()
     params["terms"] = words
     params["corpus"] = corpus
     params["limit"] = cutoff
     params["leaves"] = leaves
-    result = session.get(GALAXY_API, params=params)
+
+    resp = api_get(GALAXY_API, params=params, session=session)
 
     G = nx.DiGraph()
     edgelist = []
 
-    if result.status_code == 200:
-        graph = json.loads(result.text)
-        nodes = graph["nodes"]
-        edges = graph["links"]
+    graph = json.loads(resp.text)
+    nodes = graph["nodes"]
+    edges = graph["links"]
 
-        for edge in edges:
-            edgelist += [
-                (
-                    nodes[edge["source"]]["name"],
-                    nodes[edge["target"]]["name"],
-                    abs(edge["value"]),
-                )
-            ]
+    for edge in edges:
+        edgelist += [
+            (
+                nodes[edge["source"]]["name"],
+                nodes[edge["target"]]["name"],
+                abs(edge["value"]),
+            )
+        ]
+
     G.add_weighted_edges_from(edgelist)
+
     return G

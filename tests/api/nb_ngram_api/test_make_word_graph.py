@@ -36,8 +36,8 @@ def test_deserialises_di_graph() -> None:
     }
 
     session = unittest.mock.MagicMock(spec=requests.Session)
-    session.get.return_value.status_code = 200
-    session.get.return_value.text = json.dumps(data)
+    session.request.return_value.status_code = 200
+    session.request.return_value.text = json.dumps(data)
 
     word_graph = make_word_graph(words="mocked,data", session=session)
     assert len(word_graph.nodes) == len(data["nodes"])
