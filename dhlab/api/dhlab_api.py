@@ -166,10 +166,10 @@ def get_metadata(urns: List[str] | None = None) -> DataFrame:
 
 
 def get_identifiers(identifiers: list | None = None) -> list:
+    """Convert a list of identifiers, oaiid, sesamid, urns or isbn10 to dhlabids"""
     if identifiers is None:
         identifiers = []
 
-    """Convert a list of identifiers, oaiid, sesamid, urns or isbn10 to dhlabids"""
     res = requests.post(
         f"{BASE_URL}/identifiers",
         json={"identifiers": [i for i in identifiers if i != ""]},
@@ -728,7 +728,7 @@ def totals(top_words: int = 50000) -> DataFrame:
 
 
 def concordance(
-    urns: list | None= None, words: str | None = None, window: int = 25, limit: int = 100
+    urns: list | None = None, words: str | None = None, window: int = 25, limit: int = 100
 ) -> DataFrame:
     """Get a list of concordances from the National Library's database.
 
