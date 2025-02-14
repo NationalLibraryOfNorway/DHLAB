@@ -37,7 +37,7 @@ def _is_documented_by(original):
     return wrapper
 
 
-def _docstring_parameters_from(original, drop: str = None):
+def _docstring_parameters_from(original, drop: str | None = None):
     """Extract only parameter descriptions from ``original``'s docstring.
 
     Optionally, specify a ``drop`` parameter to skip in the parameter list,

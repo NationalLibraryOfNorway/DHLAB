@@ -8,7 +8,7 @@ class Dispersion(DhlabObj):
     """Count occurrences of words in the given URN object."""
 
     def __init__(
-        self, urn: str = None, wordbag: list = None, window: int = 1000, pr: int = 100
+        self, urn: str | None = None, wordbag: list | None = None, window: int = 1000, pr: int = 100
     ):
         """Wrapper class for get_dispersion
 

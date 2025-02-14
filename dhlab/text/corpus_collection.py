@@ -1,4 +1,5 @@
 from typing import Dict, Optional
+import pandas as pd
 
 from dhlab.text.corpus import Corpus
 
@@ -51,7 +52,7 @@ class CorpusCollection:
         """Show the corpora in the collection."""
         return self.corpora
 
-    def concat_corpora(self) -> Corpus:
+    def concat_corpora(self) -> Corpus | pd.Series:
         """Concatenate all corpora in the collection into a single corpus."""
         new_corpus = Corpus()
         for c in self.corpora.values():
