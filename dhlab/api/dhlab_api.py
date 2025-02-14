@@ -7,7 +7,7 @@ import pandas as pd
 from pandas import DataFrame, Series
 
 from dhlab.constants import BASE_URL
-from dhlab.api.utils import api_get, api_post
+from dhlab.api.utils import api_get, api_post, DHLabApiError
 from scipy.sparse import dok_matrix
 
 pd.options.display.max_rows = 100
@@ -348,7 +348,8 @@ def _ngram_doc(
     r = api_post(BASE_URL + "/ngram_" + doctype, json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
-    assert isinstance(df.index, pd.MultiIndex)
+    if not isinstance(df.index, pd.MultiIndex):
+        raise DHLabApiError(f"{isinstance(df.index, pd.MultiIndex)=}")
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
@@ -435,7 +436,8 @@ def ngram_book(
     r = api_post(BASE_URL + "/ngram_book", json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
-    assert isinstance(df.index, pd.MultiIndex)
+    if not isinstance(df.index, pd.MultiIndex):
+        raise DHLabApiError(f"{isinstance(df.index, pd.MultiIndex)=}")
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
@@ -485,7 +487,8 @@ def ngram_periodicals(
     r = api_post(BASE_URL + "/ngram_periodicals", json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
-    assert isinstance(df.index, pd.MultiIndex)
+    if not isinstance(df.index, pd.MultiIndex):
+        raise DHLabApiError(f"{isinstance(df.index, pd.MultiIndex)=}")
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
@@ -521,7 +524,8 @@ def ngram_news(
     r = api_post(BASE_URL + "/ngram_newspapers", json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
-    assert isinstance(df.index, pd.MultiIndex)
+    if not isinstance(df.index, pd.MultiIndex):
+        raise DHLabApiError(f"{isinstance(df.index, pd.MultiIndex)=}")
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
