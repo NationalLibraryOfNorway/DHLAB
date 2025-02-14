@@ -355,6 +355,7 @@ def _ngram_doc(
     r = requests.post(BASE_URL + "/ngram_" + doctype, json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
+    assert isinstance(df.index, pd.MultiIndex)
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
@@ -441,6 +442,7 @@ def ngram_book(
     r = requests.post(BASE_URL + "/ngram_book", json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
+    assert isinstance(df.index, pd.MultiIndex)
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
@@ -490,6 +492,7 @@ def ngram_periodicals(
     r = requests.post(BASE_URL + "/ngram_periodicals", json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
+    assert isinstance(df.index, pd.MultiIndex)
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
@@ -525,6 +528,7 @@ def ngram_news(
     r = requests.post(BASE_URL + "/ngram_newspapers", json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
+    assert isinstance(df.index, pd.MultiIndex)
     columns = df.index.levels[0]
     df = pd.concat([df.loc[x] for x in columns], axis=1)
     df.columns = columns
