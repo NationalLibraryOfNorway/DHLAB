@@ -2,12 +2,12 @@ from io import StringIO
 from typing import Dict, List, Tuple, Union
 
 import pandas as pd
-import requests
 
 # from requests import HTTPError, JSONDecodeError, ConnectionError
 from pandas import DataFrame, Series
 
 from dhlab.constants import BASE_URL
+from dhlab.api.utils import api_get, api_post
 from scipy.sparse import dok_matrix
 
 pd.options.display.max_rows = 100
@@ -16,11 +16,12 @@ pd.options.display.max_rows = 100
 
 
 def wildcard_search(word, factor=2, freq_limit=10, limit=50):
-    res = requests.get(
+    resp = api_get(
         f"{BASE_URL}/wildcard_word_search",
         params={"word": word, "factor": factor, "freq_lim": freq_limit, "limit": limit},
     )
-    return pd.DataFrame.from_dict(res.json(), orient="index", columns=["freq"])
+
+    return pd.DataFrame.from_dict(resp.json(), orient="index", columns=["freq"])
 
 
 # fetch metadata
@@ -33,12 +34,14 @@ def images(text=None, part=True):
     :param part: if a number the whole page is shown
     ... bug prevents these from going thru
     :param delta: if part=True then show additional pixels around image
-    :parsm hits: number of images"""
+    :parsm hits: number of images
+    """
+    resp = api_get(
+        f"{BASE_URL}/images",
+        params={"text": text, "part": part}
+    )
 
-    params = {"text": text, "part": part}
-    r = requests.get(f"{BASE_URL}/images", params=params)
-    js = r.json()
-    return js
+    return resp.json()
 
 
 def ner_from_urn(
@@ -51,11 +54,12 @@ def ner_from_urn(
         Check which models are available with :func:`show_spacy_models`
     :return: Dataframe with annotations and their frequencies
     """
+    resp = api_get(
+        f"{BASE_URL}/ner_urn",
+        params={"urn": urn, "model": model, "start_page": start_page, "to_page": to_page}
+    )
 
-    params = {"urn": urn, "model": model, "start_page": start_page, "to_page": to_page}
-    r = requests.get(f"{BASE_URL}/ner_urn", params=params)
-    df = pd.read_json(r.json())
-    return df
+    return pd.read_json(resp.json())
 
 
 def pos_from_urn(
@@ -68,21 +72,19 @@ def pos_from_urn(
         Check which models are available with :func:`show_spacy_models`
     :return: Dataframe with annotations and their frequencies
     """
-    params = {"urn": urn, "model": model, "start_page": start_page, "to_page": to_page}
-    r = requests.get(f"{BASE_URL}/pos_urn", params=params)
-    df = pd.read_json(r.json())
-    return df
+    resp = api_get(
+        f"{BASE_URL}/pos_urn",
+        params={"urn": urn, "model": model, "start_page": start_page, "to_page": to_page}
+    )
+
+    return pd.read_json(r.json())
 
 
 def show_spacy_models() -> List:
     """Show available SpaCy model names."""
-    try:
-        r = requests.get(f"{BASE_URL}/ner_models")
-        res = r.json()
-    except:
-        print("Server-request gikk ikke gjennom. Kan ikke vise SpaCy-modellnavn.")
-        res = []
-    return res
+    resp = api_get(f"{BASE_URL}/ner_models")
+
+    return resp.json()
 
 
 def get_places(urn: str) -> DataFrame:
@@ -93,7 +95,7 @@ def get_places(urn: str) -> DataFrame:
 
     :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
     """
-    r = requests.post(f"{BASE_URL}/places", json={"urn": urn})
+    r = api_post(f"{BASE_URL}/places", json={"urn": urn})
     return pd.DataFrame(r.json())
 
 
@@ -110,7 +112,7 @@ def geo_lookup(
     :param str feature_code: which GeoNames feature code to return. Example: ``PPL``
     :param str field: which name field to match - default "alternatename".
     """
-    res = requests.post(
+    res = api_post(
         f"{BASE_URL}/geo_data",
         json={
             "words": places,
@@ -148,7 +150,7 @@ def get_dispersion(
     :return: a ``pandas.Series`` with frequency counts of the words in the URN object.
     """
     params = {"pr": pr, "urn": urn, "window": window, "words": words}
-    r = requests.post(f"{BASE_URL}/dispersion", json=params)
+    r = api_post(f"{BASE_URL}/dispersion", json=params)
     return pd.Series(r.json())
 
 
@@ -161,16 +163,17 @@ def get_metadata(urns: List[str] | None = None) -> DataFrame:
     :param list urns: list of uniform resource name strings, for example:
         ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]``
     """
-    r = requests.post(f"{BASE_URL}/get_metadata", json={"urns": urns})
+    r = api_post(f"{BASE_URL}/get_metadata", json={"urns": urns})
     return DataFrame(r.json())
 
 
 def get_identifiers(identifiers: list | None = None) -> list:
     """Convert a list of identifiers, oaiid, sesamid, urns or isbn10 to dhlabids"""
+
     if identifiers is None:
         identifiers = []
 
-    res = requests.post(
+    res = api_post(
         f"{BASE_URL}/identifiers",
         json={"identifiers": [i for i in identifiers if i != ""]},
     )
@@ -188,16 +191,12 @@ def get_chunks(urn: str | None = None, chunk_size: int = 300) -> Union[Dict, Lis
     :param int chunk_size: Number of tokens to include in each chunk.
     :return: list of dicts with the resulting chunk frequencies, or an empty dict
     """
+    resp = api_get(
+        f"{BASE_URL}/chunks",
+        params={"urn": urn, "chunk_size": chunk_size}
+    )
 
-    if urn is None:
-        return {}
-    params = {"urn": urn, "chunk_size": chunk_size}
-    r = requests.get(f"{BASE_URL}/chunks", params=params)
-    if r.status_code == 200:
-        result = r.json()
-    else:
-        result = {}
-    return result
+    return resp.json()
 
 
 def get_chunks_para(urn: str | None = None) -> Union[Dict, List]:
@@ -209,15 +208,12 @@ def get_chunks_para(urn: str | None = None) -> Union[Dict, List]:
     :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
     :return: list of dicts with the resulting chunk frequencies, or an empty dict
     """
+    resp = api_get(
+        f"{BASE_URL}/chunks_para",
+        params={"urn": urn}
+    )
 
-    if urn is None:
-        return {}
-    r = requests.get(f"{BASE_URL}/chunks_para", params={"urn": urn})
-    if r.status_code == 200:
-        result = r.json()
-    else:
-        result = {}
-    return result
+    return resp.json()
 
 
 def evaluate_documents(wordbags: Dict | None = None, urns: List[str] | None = None) -> DataFrame:
@@ -230,7 +226,7 @@ def evaluate_documents(wordbags: Dict | None = None, urns: List[str] | None = No
     :return: a ``pandas.DataFrame`` with the topics as columns, indexed by the dhlabids of the
         documents.
     """
-    res = requests.post(
+    res = api_post(
         f"{BASE_URL}/evaluate", json={"wordbags": wordbags, "urns": urns}
     )
     df = pd.DataFrame(res.json()).transpose()
@@ -258,13 +254,12 @@ def get_reference(
     :param int limit: Maximum number of most frequent words.
     :return: A ``pandas.DataFrame`` with the results.
     """
-    params = {"corpus": corpus, "from_year": from_year, "to_year": to_year, "lang": lang, "limit": limit}
-    r = requests.get(BASE_URL + "/reference_corpus", params=params)
-    if r.status_code == 200:
-        result = r.json()
-    else:
-        result = []
-    return pd.DataFrame(result, columns=["word", "freq"]).set_index("word")
+    resp = api_get(
+        BASE_URL + "/reference_corpus",
+        params={"corpus": corpus, "from_year": from_year, "to_year": to_year, "lang": lang, "limit": limit}
+    )
+
+    return pd.DataFrame(resp.json(), columns=["word", "freq"]).set_index("word")
 
 
 def find_urns(docids: Union[Dict, DataFrame] | None = None, mode: str = "json") -> DataFrame:
@@ -278,7 +273,7 @@ def find_urns(docids: Union[Dict, DataFrame] | None = None, mode: str = "json") 
     :return: the URNs that were found, in a ``pandas.DataFrame``.
     """
     params = {"docids": docids, "mode": mode}
-    r = requests.post(BASE_URL + "/find_urn", json=params)
+    r = api_post(BASE_URL + "/find_urn", json=params)
     if r.status_code == 200:
         res = pd.DataFrame.from_dict(r.json(), orient="index", columns=["urn"])
     else:
@@ -328,7 +323,7 @@ def _ngram_doc(
         word = [w.strip() for w in word.split(",")]
     params["word"] = tuple(word)
     params = {x: params[x] for x in params if params[x] is not None}
-    r = requests.post(BASE_URL + "/ngram_" + doctype, json=params)
+    r = api_post(BASE_URL + "/ngram_" + doctype, json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
@@ -363,7 +358,7 @@ def reference_words(
     :return: a DataFrame with the words' frequency data
     """
     params = {"words": words, "doctype": doctype, "from_year": from_year, "to_year": to_year}
-    r = requests.post(f"{BASE_URL}/reference_words", json=params)
+    r = api_post(f"{BASE_URL}/reference_words", json=params)
     print(r.status_code, BASE_URL)
     if r.status_code == 200:
         res = pd.DataFrame(r.json(), columns=["word", "freq", "relative"])
@@ -414,7 +409,7 @@ def ngram_book(
         word = [w.strip() for w in word.split(",")]
     params["word"] = tuple(word)
     params = {x: params[x] for x in params if params[x] is not None}
-    r = requests.post(BASE_URL + "/ngram_book", json=params)
+    r = api_post(BASE_URL + "/ngram_book", json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
@@ -463,7 +458,7 @@ def ngram_periodicals(
         word = [w.strip() for w in word.split(",")]
     params["word"] = tuple(word)
     params = {x: params[x] for x in params if params[x] is not None}
-    r = requests.post(BASE_URL + "/ngram_periodicals", json=params)
+    r = api_post(BASE_URL + "/ngram_periodicals", json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
@@ -498,7 +493,7 @@ def ngram_news(
         word = [w.strip() for w in word.split(",")]
     params["word"] = tuple(word)
     params = {x: params[x] for x in params if params[x] is not None}
-    r = requests.post(BASE_URL + "/ngram_newspapers", json=params)
+    r = api_post(BASE_URL + "/ngram_newspapers", json=params)
     df = pd.DataFrame.from_dict(r.json(), orient="index")
     df.index = df.index.map(lambda x: tuple(x.split()))
     columns = df.index.levels[0]
@@ -548,7 +543,7 @@ def get_document_frequencies(
     :param bool sparse: create a sparse matrix for memory efficiency
     """
     params = {"urns": urns, "cutoff": cutoff, "words": words}
-    r = requests.post(f"{BASE_URL}/frequencies", json=params)
+    r = api_post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
     # check if words are passed - return differs a bit
     if words is None:
@@ -606,7 +601,7 @@ def get_urn_frequencies(urns: List[str] | None = None, dhlabid: List[int] | None
         params = {"urns": urns}
     else:
         params = {"dhlabid": dhlabid}
-    r = requests.post(f"{BASE_URL}/urn_frequencies", json=params)
+    r = api_post(f"{BASE_URL}/urn_frequencies", json=params)
     result = r.json()
     # check if words are passed - return differs a bit
     df = pd.DataFrame(result)
@@ -676,7 +671,7 @@ def document_corpus(
 
     params = {x: parms[x] for x in parms if parms[x] is not None}
 
-    r = requests.post(BASE_URL + "/build_corpus", json=params)
+    r = api_post(BASE_URL + "/build_corpus", json=params)
 
     return pd.DataFrame(r.json())
 
@@ -710,7 +705,7 @@ def urn_collocation(
         "after": after,
         "samplesize": samplesize,
     }
-    r = requests.post(BASE_URL + "/urncolldist_urn", json=params)
+    r = api_post(BASE_URL + "/urncolldist_urn", json=params)
     return pd.read_json(StringIO(r.json()))
 
 
@@ -723,8 +718,9 @@ def totals(top_words: int = 50000) -> DataFrame:
     :param int top_words: The number of words to get total frequencies for.
     :return: a ``pandas.DataFrame`` with the most frequent words.
     """
-    r = requests.get(BASE_URL + f"/totals/{top_words}")
-    return pd.DataFrame.from_dict(dict(r.json()), orient="index", columns=["freq"])
+    resp = api_get(BASE_URL + f"/totals/{top_words}")
+
+    return pd.DataFrame.from_dict(dict(resp.json()), orient="index", columns=["freq"])
 
 
 def concordance(
@@ -747,7 +743,7 @@ def concordance(
         return pd.DataFrame(columns=["index", "docid", "urn", "conc"])  # exit condition
     else:
         params = {"urns": urns, "query": words, "window": window, "limit": limit}
-        r = requests.post(BASE_URL + "/conc", json=params)
+        r = api_post(BASE_URL + "/conc", json=params)
     return pd.DataFrame(r.json())
 
 
@@ -774,7 +770,7 @@ def concordance_counts(
         return pd.DataFrame(columns=["freq"])  # exit condition
     else:
         params = {"urns": urns, "query": words, "window": window, "limit": limit}
-        r = requests.post(BASE_URL + "/conccount", json=params)
+        r = api_post(BASE_URL + "/conccount", json=params)
     return pd.DataFrame(r.json())
 
 
@@ -831,7 +827,7 @@ def word_concordance(
             "samplesize": samplesize,
         }
 
-    r = requests.post(BASE_URL + "/conc_word_urn", json=params)
+    r = api_post(BASE_URL + "/conc_word_urn", json=params)
 
     return pd.DataFrame(
         [x for y in r.json() for x in y],
@@ -856,7 +852,7 @@ def collocation(
         "before": before,
         "after": after,
     }
-    r = requests.post(BASE_URL + "/urncolldist", json=params)
+    r = api_post(BASE_URL + "/urncolldist", json=params)
     return pd.read_json(r.json())
 
 
@@ -875,10 +871,12 @@ def word_variant(word: str, form: str, lang: str = "nob") -> list:
         `"Orbanken" <https://www.nb.no/sprakbanken/ressurskatalog/oai-nb-no-sbr-5/>`_.
     :param str lang: either "nob" or "nno"
     """
-    r = requests.get(
-        f"{BASE_URL}/variant_form", params={"word": word, "form": form, "lang": lang}
+    resp = api_get(
+        f"{BASE_URL}/variant_form",
+        params={"word": word, "form": form, "lang": lang}
     )
-    return r.json()
+
+    return resp.json()
 
 
 def word_paradigm(word: str, lang: str = "nob") -> list:
@@ -897,31 +895,43 @@ def word_paradigm(word: str, lang: str = "nob") -> list:
     :param str word: any word string
     :param str lang: either "nob" or "nno"
     """
-    r = requests.get(f"{BASE_URL}/paradigm", params={"word": word, "lang": lang})
-    return r.json()
+    resp = api_get(
+        f"{BASE_URL}/paradigm",
+        params={"word": word, "lang": lang}
+    )
+
+    return resp.json()
 
 
 def word_paradigm_many(wordlist: list, lang: str = "nob") -> list:
     """Find alternative forms for a list of words."""
-    r = requests.post(f"{BASE_URL}/paradigms", json={"words": wordlist, "lang": lang})
+    r = api_post(f"{BASE_URL}/paradigms", json={"words": wordlist, "lang": lang})
     return r.json()
 
 
 def word_form(word: str, lang: str = "nob") -> list:
     """Look up the morphological feature specification of a ``word`` form."""
-    r = requests.get(f"{BASE_URL}/word_form", params={"word": word, "lang": lang})
-    return r.json()
+    resp = api_get(
+        f"{BASE_URL}/word_form",
+        params={"word": word, "lang": lang}
+    )
+
+    return resp.json()
 
 
 def word_form_many(wordlist: list, lang: str = "nob") -> list:
     """Look up the morphological feature specifications for word forms in a ``wordlist``."""
-    r = requests.post(f"{BASE_URL}/word_forms", json={"words": wordlist, "lang": lang})
+    r = api_post(f"{BASE_URL}/word_forms", json={"words": wordlist, "lang": lang})
     return r.json()
 
 
 def word_lemma(word: str, lang: str = "nob") -> list:
     """Find the list of possible lemmas for a given ``word`` form."""
-    r = requests.get(f"{BASE_URL}/word_lemma", params={"word": word, "lang": lang})
+    r = api_get(
+        f"{BASE_URL}/word_lemma",
+        params={"word": word, "lang": lang}
+    )
+
     return r.json()
 
 
@@ -942,5 +952,6 @@ def query_imagination_corpus(
     params = {"category": category, "author": author, "title": title, "year": year,
               "publisher": publisher, "place": place, "oversatt": oversatt}
     params = {key: params[key] for key in params if params[key] is not None}
-    r = requests.get(f"{BASE_URL}/imagination", params=params)
-    return r.json()
+
+    resp = api_get(f"{BASE_URL}/imagination", params=params)
+    return resp.json()
