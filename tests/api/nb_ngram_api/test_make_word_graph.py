@@ -2,11 +2,10 @@ import requests
 import unittest.mock
 from dhlab.api.nb_ngram_api import make_word_graph
 import json
-import networkx as nx
 from typing import Literal
 
 
-def _links_to_edge_view(nodes: list[str], links: list[dict[str, int]]) -> dict[tuple[str, str], dict[Literal["value", int]]]:
+def _links_to_edge_view(nodes: list[str], links: list[dict[str, int]]) -> dict[tuple[str, str], dict[Literal["weight"], int]]:
     """Converts nodes and links as returned by the API to a dictionary with the same structure as nx.OutEdgeView
 
     Example
@@ -40,7 +39,7 @@ def test_deserialises_di_graph() -> None:
     session.request.return_value.status_code = 200
     session.request.return_value.text = json.dumps(data)
 
-    word_graph = make_word_graph(words=["mocked", "data"], session=session)
+    word_graph = make_word_graph(words="mocked,data", session=session)
     assert len(word_graph.nodes) == len(data["nodes"])
     assert set(word_graph.nodes) == {node["name"] for node in data["nodes"]}
     assert dict(word_graph.edges) == _links_to_edge_view(data["nodes"], data["links"])

@@ -277,10 +277,10 @@ class Counts(DhlabObj):
 class WordConc(DhlabObj):
     def __init__(
         self,
-        frame: DataFrame = None,
-        urn: list = None,
-        dhlabid: list = None,
-        words: List[str] = None,
+        frame: DataFrame | None = None,
+        urn: list | None = None,
+        dhlabid: list | None = None,
+        words: List[str] | None = None,
         before: int = 12,
         after: int = 12,
         limit: int = 100,
@@ -324,10 +324,10 @@ class WordConc(DhlabObj):
 class ConcCounts(DhlabObj):
     def __init__(
         self,
-        frame: DataFrame = None,
-        urn: list = None,
-        dhlabid: list = None,
-        words: str = None,
+        frame: DataFrame | None = None,
+        urn: list | None = None,
+        dhlabid: list | None = None,
+        words: str | None = None,
         window: int = 25,
         limit: int = 100,
     ):
