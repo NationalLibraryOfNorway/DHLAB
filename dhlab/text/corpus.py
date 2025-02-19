@@ -226,11 +226,10 @@ class Corpus(DhlabObj):
     def add(self, new_corpus: Union[DataFrame, Corpus]):
         """Utility for appending Corpus or DataFrame to self"""
         if isinstance(new_corpus, Corpus):
-            new_corpus = new_corpus.frame
+            new_corpus = new_corpus.corpus
         self.frame = pd.concat([self.frame, new_corpus])
         self.corpus = self.frame
         self._drop_urn_duplicates()
-        # self.size = len(self.frame)
 
     def sample(self, n: int = 5):
         """Create random subkorpus with `n` entries"""
@@ -348,8 +347,11 @@ class Corpus(DhlabObj):
 
         def test_dhlabid_series(series: pd.Series) -> bool:
             """Check if dhlabid series is valid"""
-            if not series.apply(lambda x: isinstance(x, int)).all():
+            try:
+                series = series.apply(lambda x: int(x))
+            except ValueError:
                 return False
+
             if not ((series >= 1e8) & (series < 1e9)).all():
                 return False
 
@@ -359,11 +361,7 @@ class Corpus(DhlabObj):
             """Check if URN series is valid"""
             if series.str.startswith("URN:NBN:no-nb_").all():
                 return True
-            try:
-                series = series.apply(lambda x: int(x))
-                return test_dhlabid_series(series)
-            except:
-                return False
+            return False
 
         # Check if the DataFrame is empty
         if self.corpus.empty:
@@ -380,7 +378,8 @@ class Corpus(DhlabObj):
             raise ValueError("Some dhlabid values are in an incorrect format.")
 
         # Validate URN format
-        if not test_urn_series(self.corpus["urn"]):
+        if not (test_urn_series(self.corpus["urn"])
+                or test_dhlabid_series(self.corpus["urn"])):
             raise ValueError("Some URN values are in an incorrect format.")
 
         return True
