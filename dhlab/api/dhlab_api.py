@@ -77,7 +77,7 @@ def pos_from_urn(
         params={"urn": urn, "model": model, "start_page": start_page, "to_page": to_page}
     )
 
-    return pd.read_json(r.json())
+    return pd.read_json(resp.json())
 
 
 def show_spacy_models() -> List:
