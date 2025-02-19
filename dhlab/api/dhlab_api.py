@@ -530,33 +530,6 @@ def ngram_news(
     df.columns = columns
     return df
 
-def _create_sparse_matrix(structure):
-    """Create a sparse matrix from an API counts object"""
-
-    # fetch all words
-    words = list(set(word for dct in structure.values() for word in dct))
-    # fetch all dhlabids
-    dhlabids = list(structure.keys())
-    # create an int/dhlabid mapping
-    dhlabid_to_col = {dhlabid: idx for idx, dhlabid in enumerate(dhlabids)}
-    # create an int/word mapping
-    word_to_row = {word: idx for idx, word in enumerate(words)}
-
-    # construct the matrix with each word as a row and each dhlabid as a column (DTM)
-    num_cols = len(dhlabids)
-    num_rows = len(words)
-    sparse_matrix = dok_matrix((num_rows, num_cols), dtype=int)
-
-    # incrementally fill the sparse matrix from dictionary
-    for col_idx, dhlabid in enumerate(dhlabids):
-        dct = structure[dhlabid]
-        for word, value in dct.items():
-            row_idx = word_to_row[word]
-            sparse_matrix[row_idx, col_idx] = value
-
-    df_sparse = pd.DataFrame.sparse.from_spmatrix(sparse_matrix, index=words, columns=dhlabids)
-    return df_sparse
-
 def get_document_frequencies(
     urns: List[str] | None = None, cutoff: int = 0, words: List[str] | None = None, sparse: bool = False
 ) -> DataFrame:
@@ -571,6 +544,33 @@ def get_document_frequencies(
     :param list words: a list of words to be counted - if left None, whole document is returned. If not None both the counts and their relative frequency is returned.
     :param bool sparse: create a sparse matrix for memory efficiency
     """
+    def _create_sparse_matrix(structure):
+        """Create a sparse matrix from an API counts object"""
+
+        # fetch all words
+        words = list(set(word for dct in structure.values() for word in dct))
+        # fetch all dhlabids
+        dhlabids = list(structure.keys())
+        # create an int/dhlabid mapping
+        dhlabid_to_col = {dhlabid: idx for idx, dhlabid in enumerate(dhlabids)}
+        # create an int/word mapping
+        word_to_row = {word: idx for idx, word in enumerate(words)}
+
+        # construct the matrix with each word as a row and each dhlabid as a column (DTM)
+        num_cols = len(dhlabids)
+        num_rows = len(words)
+        sparse_matrix = dok_matrix((num_rows, num_cols), dtype=int)
+
+        # incrementally fill the sparse matrix from dictionary
+        for col_idx, dhlabid in enumerate(dhlabids):
+            dct = structure[dhlabid]
+            for word, value in dct.items():
+                row_idx = word_to_row[word]
+                sparse_matrix[row_idx, col_idx] = value
+
+        df_sparse = pd.DataFrame.sparse.from_spmatrix(sparse_matrix, index=words, columns=dhlabids)
+        return df_sparse
+
     params = {"urns": urns, "cutoff": cutoff, "words": words}
     r = api_post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
