@@ -272,13 +272,12 @@ def find_urns(docids: Union[Dict, DataFrame] | None = None, mode: str = "json") 
     :param str mode: Default 'json'.
     :return: the URNs that were found, in a ``pandas.DataFrame``.
     """
-    params = {"docids": docids, "mode": mode}
-    r = api_post(BASE_URL + "/find_urn", json=params)
-    if r.status_code == 200:
-        res = pd.DataFrame.from_dict(r.json(), orient="index", columns=["urn"])
-    else:
-        res = pd.DataFrame()
-    return res
+    resp = api_post(
+        BASE_URL + "/find_urn",
+        json={"docids": docids, "mode": mode}
+    )
+
+    return pd.DataFrame.from_dict(resp.json(), orient="index", columns=["urn"])
 
 
 def _ngram_doc(
@@ -357,14 +356,12 @@ def reference_words(
     :param int to_year: last year of publication
     :return: a DataFrame with the words' frequency data
     """
-    params = {"words": words, "doctype": doctype, "from_year": from_year, "to_year": to_year}
-    r = api_post(f"{BASE_URL}/reference_words", json=params)
-    print(r.status_code, BASE_URL)
-    if r.status_code == 200:
-        res = pd.DataFrame(r.json(), columns=["word", "freq", "relative"])
-    else:
-        res = pd.DataFrame()
-    return res
+    resp = api_post(
+        f"{BASE_URL}/reference_words",
+        json={"words": words, "doctype": doctype, "from_year": from_year, "to_year": to_year}
+    )
+
+    return pd.DataFrame(resp.json(), columns=["word", "freq", "relative"])
 
 
 # @_docstring_parameters_from(_ngram_doc, drop="doctype")
