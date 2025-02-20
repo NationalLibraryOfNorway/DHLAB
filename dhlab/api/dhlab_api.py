@@ -64,7 +64,7 @@ def images(text: str | None = None, part: int | None = True, hits: int | None = 
 
 
 def ner_from_urn(
-    urn: str | None = None, model: str | None = None, start_page: int | None = 0, to_page: int | None = 0
+    urn: str | None = None, model: str | None = None, start_page: int = 0, to_page: int  = 0
 ) -> DataFrame:
     """Get NER annotations for a text (``urn``) using a spacy ``model``.
 
@@ -82,7 +82,7 @@ def ner_from_urn(
 
 
 def pos_from_urn(
-    urn: str | None = None, model: str | None = None, start_page: int | None = 0, to_page: int | None = 0
+    urn: str | None = None, model: str | None = None, start_page: int = 0, to_page: int = 0
 ) -> DataFrame:
     """Get part of speech tags and dependency parse annotations for a text (``urn``) with a SpaCy ``model``.
 
