@@ -15,7 +15,25 @@ pd.options.display.max_rows = 100
 # wildcard search for words
 
 
-def wildcard_search(word, factor=2, freq_limit=10, limit=50):
+def wildcard_search(word: str, factor: int | None = 2, freq_limit: int | None = 10, limit: int | None = 50) -> DataFrame:
+    """Get words, with frequencies, using '*' as a wildcard.
+
+    For example, searching "ord*en*" might return:
+        ```
+                      freq
+        ordbogen       874
+        ordboken     10604
+        ...
+        ordningen   368131
+        ordnmgen       722
+        ...
+        ```
+
+    :param word: Word to search, allowing (potentially multiple) '*' as a wildcard
+    :param factor: Max length of matched words, as a factor of `word`
+    :param freq_limit: Lower frequency limit of returned matched words
+    :param limit: Max number of returned results, prioritized by frequency
+    """
     resp = api_get(
         f"{BASE_URL}/wildcard_word_search",
         params={"word": word, "factor": factor, "freq_lim": freq_limit, "limit": limit},
@@ -27,25 +45,26 @@ def wildcard_search(word, factor=2, freq_limit=10, limit=50):
 # fetch metadata
 
 
-def images(text=None, part=True):
+def images(text: str | None = None, part: int | None = True, hits: int | None = 500, delta: int | None = 0):
     """Retrive images from bokhylla
 
-    :param text: fulltext query expression for sqlite
-    :param part: if a number the whole page is shown
-    ... bug prevents these from going thru
-    :param delta: if part=True then show additional pixels around image
-    :parsm hits: number of images
+    :param text: Fulltext query expression for sqlite.
+    :param part: If a number, the whole page is shown. If True, get auto-scaled image.
+    :param delta: If part==True, show `delta` additional pixels on each side of image
+    :param hits: Number of images
+    :return: Requests `res.json()` return value
     """
+
     resp = api_get(
         f"{BASE_URL}/images",
-        params={"text": text, "part": part}
+        params = {"text": text, "part": part, "hits": hits, "delta": delta}
     )
 
     return resp.json()
 
 
 def ner_from_urn(
-    urn: str | None = None, model: str | None = None, start_page=0, to_page=0
+    urn: str | None = None, model: str | None = None, start_page: int = 0, to_page: int  = 0
 ) -> DataFrame:
     """Get NER annotations for a text (``urn``) using a spacy ``model``.
 
@@ -63,13 +82,15 @@ def ner_from_urn(
 
 
 def pos_from_urn(
-    urn: str | None = None, model: str | None = None, start_page=0, to_page=0
+    urn: str | None = None, model: str | None = None, start_page: int = 0, to_page: int = 0
 ) -> DataFrame:
     """Get part of speech tags and dependency parse annotations for a text (``urn``) with a SpaCy ``model``.
 
     :param str urn: uniform resource name, example: ``URN:NBN:no-nb_digibok_2011051112001``
     :param str model: name of a spacy model.
         Check which models are available with :func:`show_spacy_models`
+    :param int start_page:
+    :param int to_page:
     :return: Dataframe with annotations and their frequencies
     """
     resp = api_get(
@@ -901,13 +922,19 @@ def word_paradigm(word: str, lang: str = "nob") -> list:
 
 
 def word_paradigm_many(wordlist: list, lang: str = "nob") -> list:
-    """Find alternative forms for a list of words."""
+    """Find alternative forms for a list of words.
+    :param wordlist: `List` of words
+    :param lang: Language
+    """
     r = api_post(f"{BASE_URL}/paradigms", json={"words": wordlist, "lang": lang})
     return r.json()
 
 
 def word_form(word: str, lang: str = "nob") -> list:
-    """Look up the morphological feature specification of a ``word`` form."""
+    """Look up the morphological feature specification of a ``word`` form.
+    :param word: Word
+    :param lang: Language
+    """
     resp = api_get(
         f"{BASE_URL}/word_form",
         params={"word": word, "lang": lang}
@@ -917,13 +944,19 @@ def word_form(word: str, lang: str = "nob") -> list:
 
 
 def word_form_many(wordlist: list, lang: str = "nob") -> list:
-    """Look up the morphological feature specifications for word forms in a ``wordlist``."""
+    """Look up the morphological feature specifications for word forms in a ``wordlist``.
+    :param wordlist: `List` of words
+    :param lang: Language
+    """
     r = api_post(f"{BASE_URL}/word_forms", json={"words": wordlist, "lang": lang})
     return r.json()
 
 
 def word_lemma(word: str, lang: str = "nob") -> list:
-    """Find the list of possible lemmas for a given ``word`` form."""
+    """Find the list of possible lemmas for a given ``word`` form.
+    :param word: Word to find lemmas for
+    :param lang: Language
+    """
     r = api_get(
         f"{BASE_URL}/word_lemma",
         params={"word": word, "lang": lang}
