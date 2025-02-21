@@ -817,8 +817,8 @@ def totals(top_words: int = 50000, session: requests.Session | None = None) -> D
 
 
 def concordance(
-    urns: list | None = None,
-    words: str | None = None,
+    urns: list,
+    words: str,
     window: int = 25,
     limit: int = 100,
     session: requests.Session | None = None
@@ -836,11 +836,8 @@ def concordance(
     :param int limit: max. number of concordances per document. Maximum value is 1000.
     :return: a table of concordances
     """
-    if words is None:
-        return pd.DataFrame(columns=["index", "docid", "urn", "conc"])  # exit condition
-    else:
-        params = {"urns": urns, "query": words, "window": window, "limit": limit}
-        r = api_post(BASE_URL + "/conc", json=params, session=session)
+    params = {"urns": urns, "query": words, "window": window, "limit": limit}
+    r = api_post(BASE_URL + "/conc", json=params, session=session)
     return pd.DataFrame(r.json())
 
 
@@ -848,8 +845,8 @@ konkordans = concordance # Function alias
 
 
 def concordance_counts(
-    urns: list | None = None,
-    words: str | None = None,
+    urns: list,
+    words: str,
     window: int = 25,
     limit: int = 100,
     session: requests.Session | None = None
@@ -867,11 +864,9 @@ def concordance_counts(
     :param int limit: max. number of concordances per document. Maximum value is 1000.
     :return: a table of counts
     """
-    if words is None:
-        return pd.DataFrame(columns=["freq"])  # exit condition
-    else:
-        params = {"urns": urns, "query": words, "window": window, "limit": limit}
-        r = api_post(BASE_URL + "/conccount", json=params, session=session)
+    params = {"urns": urns, "query": words, "window": window, "limit": limit}
+    r = api_post(BASE_URL + "/conccount", json=params, session=session)
+
     return pd.DataFrame(r.json())
 
 
