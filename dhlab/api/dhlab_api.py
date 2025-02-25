@@ -59,14 +59,14 @@ def images(
     hits: int | None = 500,
     delta: int | None = 0,
     session: requests.Session | None = None
-):
+) -> list[str]:
     """Retrive images from bokhylla
 
     :param text: Fulltext query expression for sqlite.
     :param part: If a number, the whole page is shown. If True, get auto-scaled image.
     :param delta: If part==True, show `delta` additional pixels on each side of image
     :param hits: Number of images
-    :return: Requests `res.json()` return value
+    :return: List of image URLs
     """
 
     resp = api_get(
