@@ -1,6 +1,13 @@
 import requests
 from unittest.mock import MagicMock
 
+TEST_URN_DIGIBOK = "URN:NBN:no-nb_digibok_2008091004038"
+TEST_URN_LIST = [TEST_URN_DIGIBOK] # TODO: Add more URNs
+TEST_PLACENAMES = ["Oslo", "London"]
+TEST_WORDS = ["og", "eller"]
+TEST_WORDS_COMMA_SEPARATED = ",".join(TEST_WORDS)
+TEST_WORD = TEST_WORDS[0]
+INVALID_URN = "Invalid URN 36b43144-94fc-43b2-ba26-f67570a217d9" # Randomly generated UUID
 
 def _mocked_request_fn(
     request_fn,
