@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import functools
-from typing import Any, Callable, Protocol
+from typing import Any, Callable
 from unittest.mock import MagicMock
 import warnings
 import inspect
@@ -10,10 +10,6 @@ from typeguard import typechecked
 from dhlab.api.utils import DHLabApiError
 import tests.api.utils as apitest
 
-
-@pytest.fixture(params=(404, 500, 504, 418,))
-def _error_status_code(request):
-    return request.param
 
 class DHLabTest(ABC):
     api_ret = {}
