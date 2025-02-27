@@ -83,3 +83,6 @@ class DHLabTest(ABC):
         with pytest.raises(DHLabApiError):
             self.api_fn(session=session)
 
+    def test_call(self):
+        self.call_api_fn(_cache=False)
+
