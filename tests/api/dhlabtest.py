@@ -61,7 +61,7 @@ class DHLabTest(ABC):
             ret = self.api_fn(**kwargs)
         except DHLabApiError:
             # args/kwargs from the partial function are shown at `{self.api_fn}`
-            warnings.warn(f"Server error when calling {self.api_fn}, {kwargs=}. Skipping test.")
+            warnings.warn(f"Server error when calling {self.api_fn}, extra kwargs: {kwargs}. Skipping test.")
             pytest.skip()
 
         if _cache:
