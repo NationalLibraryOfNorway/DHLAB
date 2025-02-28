@@ -1,13 +1,13 @@
 import pytest
-
+from tests.api.utils import TestFunctionAlias
 import dhlab.api.dhlab_api as api
-from tests.api.dhlabtest import DHLabTest
 
-class TestKonkordans(DHLabTest):
+class TestGetDocumentCorpus(TestFunctionAlias):
     @pytest.fixture(autouse=True)
-    def api_fn_fixture(self):
-        self.api_fn = self.init_api_fn(
-            api.konkordans,
-            aliased_fn=api.concordance
-        )
+    def fn_alias(self):
+        self.fn_alias = api.konkordans
+
+    @pytest.fixture(autouse=True)
+    def fn_orig(self):
+        self.fn_alias = api.concordance
 

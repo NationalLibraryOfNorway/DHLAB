@@ -1,3 +1,6 @@
+from abc import abstractmethod
+from typing import Callable
+import pytest
 import requests
 from unittest.mock import MagicMock
 
@@ -60,4 +63,20 @@ def mock_api_call(
     session.request = _mocked_request_fn(session.request, response, method, url)
 
     return session
+
+class TestFunctionAlias():
+    @abstractmethod
+    @pytest.fixture(autouse=True)
+    def fn_alias(self):
+        ...
+
+    @abstractmethod
+    @pytest.fixture(autouse=True)
+    def fn_orig(self):
+        ...
+
+    def test_alias_fn(self, fn_alias: Callable, fn_orig: Callable):
+        assert fn_alias is fn_orig
+
+        # TODO: assert original function is tested?
 

@@ -3,7 +3,6 @@ import functools
 from typing import Any, Callable
 from unittest.mock import MagicMock
 import warnings
-import inspect
 import pytest
 import requests
 from typeguard import typechecked
@@ -21,26 +20,13 @@ class DHLabTest(ABC):
         ...
 
     @staticmethod
-    def _test_alias_fn(fn_alias: Callable, fn_orig: Callable):
-        assert inspect.isfunction(fn_alias)
-        assert inspect.isfunction(fn_orig)
-        assert fn_alias is fn_orig
-
-        # TODO: assert original function is tested?
-
-    @staticmethod
     def init_api_fn(
         api_fn: Callable,
         args: list | None = None,
         kwargs: dict[str, Any] | None = None,
         typecheck: bool = True,
-        aliased_fn: Callable | None = None,
     ):
         """api_fn needs to be defined as a pytest fixture in every file containing an inheriting class."""
-        if aliased_fn:
-            DHLabTest._test_alias_fn(api_fn, aliased_fn)
-            pytest.skip(allow_module_level=True)
-
         if args is None:
             args = []
         if kwargs is None:
