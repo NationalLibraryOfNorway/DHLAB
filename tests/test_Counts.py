@@ -1,4 +1,4 @@
-import dhlab as dh
+import dhlab.text as dh
 from dhlab.text.utils import urnlist
 
 

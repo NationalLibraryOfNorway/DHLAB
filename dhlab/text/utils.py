@@ -1,6 +1,6 @@
 from pandas import DataFrame, Series
 
-import dhlab as dh
+import dhlab.text as dh
 
 
 def urnlist(corpus):
