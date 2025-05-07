@@ -5,6 +5,6 @@ from .conc_coll import Collocations, Concordance, Counts
 from .corpus import Corpus
 from .dispersion import Dispersion
 from .geo_data import GeoData
-from .nbtokenizer import Tokens, tokenize
+from nb_tokenizer import Tokens, tokenize
 from .parse import NER, POS, Models
 from .wildcard import WildcardWordSearch
