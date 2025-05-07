@@ -1,6 +1,37 @@
 """Utility functions."""
 
+import importlib
 import re
+
+
+class LazyLoader:
+    """Thin shell class to wrap modules.
+    Load real module on first access and pass through.
+
+    Code from Stackoverflow: https://stackoverflow.com/a/78312617
+    """
+
+    def __init__(me, modname):
+        me._modname = modname
+        me._mod = None
+
+    def __getattr__(me, attr):
+        "import module on first attribute access"
+
+        try:
+            return getattr(me._mod, attr)
+
+        except Exception as e:
+            if me._mod is None:
+                # module is unset, load it
+                me._mod = importlib.import_module(me._modname)
+            else:
+                # module is set, got different exception from getattr ().  reraise it
+                raise e
+
+        # retry getattr if module was just loaded for first time
+        # call this outside exception handler in case it raises new exception
+        return getattr(me._mod, attr)
 
 
 def _is_documented_by(original):
