@@ -519,7 +519,7 @@ def ngram_news(
     df.columns = columns
     return df
 
-def create_sparse_matrix(structure):
+def _create_sparse_matrix(structure):
     """Create a sparse matrix from an API counts object"""
 
     # fetch all words
@@ -573,7 +573,7 @@ def get_document_frequencies(
                 pass
 
         if sparse == True:
-            df = create_sparse_matrix(structure)
+            df = _create_sparse_matrix(structure)
         else:
             df = pd.DataFrame(structure)
         
@@ -625,10 +625,6 @@ def get_urn_frequencies(urns: List[str] | None = None, dhlabid: List[int] | None
     df = pd.DataFrame(result)
     df.columns = ["urn", "freq"]
     return df
-
-
-def get_document_corpus(**kwargs):
-    return document_corpus(**kwargs)
 
 
 def document_corpus(
@@ -692,6 +688,9 @@ def document_corpus(
     r = api_post(BASE_URL + "/build_corpus", json=params)
 
     return pd.DataFrame(r.json())
+
+
+get_document_corpus = document_corpus # Function alias
 
 
 def urn_collocation(

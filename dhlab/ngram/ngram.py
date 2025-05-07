@@ -64,7 +64,7 @@ class Ngram(DhlabObj):
         if doctype == "avis":
             lang = None
 
-        ngrm = nb_ngram(
+        ngram_df = nb_ngram(
             terms=", ".join(words),
             corpus=doctype,
             years=(from_year, to_year),
@@ -72,16 +72,24 @@ class Ngram(DhlabObj):
             lang=lang,
             mode=mode,
         )
-        ngrm.index = ngrm.index.astype(str)
-        self.ngram = ngrm
+        ngram_df.index = ngram_df.index.astype(str)
+        self.frame = ngram_df
 
         self.kwargs = kwargs
 
-        super().__init__(self.ngram)
+        super().__init__(self.frame)
+
+    @property
+    def ngram(self):
+        return self.frame
+
+    @ngram.setter
+    def ngram(self, frame):
+        self.frame = frame
 
     def plot(self, smooth=4, **kwargs):
         """:param smooth: smoothing the curve"""
-        grf = self.ngram.rolling(window=smooth, win_type="triang").mean()
+        grf = self.frame.rolling(window=smooth, win_type="triang").mean()
         grf.plot(**kwargs)
 
     def compare(self, another_ngram):
@@ -92,9 +100,9 @@ class Ngram(DhlabObj):
         end_year = min(
             datetime(self.to_year, 1, 1), datetime(another_ngram.to_year, 1, 1)
         ).year
-        transposed_ngram = self.ngram.loc[str(start_year) : str(end_year)].transpose()
+        transposed_ngram = self.frame.loc[str(start_year) : str(end_year)].transpose()
         sum_other_ngram = (
-            another_ngram.ngram[str(start_year) : str(end_year)].transpose().sum()
+            another_ngram.frame[str(start_year) : str(end_year)].transpose().sum()
         )
         compare = (transposed_ngram / sum_other_ngram).transpose()
         return compare
@@ -165,7 +173,7 @@ class NgramBook(Ngram):
         self.lang = lang
         self.ddk = ddk
         self.subject = subject
-        self.ngram = ngram_book(
+        self.frame = ngram_book(
             word=words,
             title=title,
             publisher=publisher,
@@ -175,8 +183,6 @@ class NgramBook(Ngram):
             ddk=ddk,
             topic=subject,
         )
-        # update frame attribute
-        self.frame = self.ngram
         # self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
 
 
@@ -192,7 +198,5 @@ class NgramNews(Ngram):
         self.to_year = self.date.year if to_year is None else to_year
         self.words = words
         self.title = title
-        self.ngram = ngram_news(word=words, title=title, period=(from_year, to_year))
         # update frame attribute
-        self.frame = self.ngram
         # self.cohort =  (self.ngram.transpose()/self.ngram.transpose().sum()).transpose()
