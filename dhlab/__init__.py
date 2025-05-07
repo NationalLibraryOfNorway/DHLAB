@@ -9,6 +9,7 @@ The dhlab python package calls the [DHLAB API](https://api.nb.no/dhlab/) under t
 # api
 from dhlab.api.dhlab_api import totals
 
+<<<<<<< HEAD
 # legacy code
 from dhlab.legacy import (
     graph_networkx_louvain,
@@ -19,6 +20,8 @@ from dhlab.legacy import (
     token_map,
 )
 
+=======
+>>>>>>> 034c12e (import legacy code lazily at top level)
 # metadata
 from dhlab.metadata.natbib import metadata_from_urn, metadata_query
 
@@ -26,7 +29,11 @@ from dhlab.metadata.natbib import metadata_from_urn, metadata_query
 from dhlab.ngram.ngram import Ngram, NgramBook, NgramNews
 
 # text
+<<<<<<< HEAD
 from dhlab.text import nbtokenizer
+=======
+import nb_tokenizer as nbtokenizer
+>>>>>>> 034c12e (import legacy code lazily at top level)
 from dhlab.text.chunking import Chunks
 from dhlab.text.conc_coll import Collocations, Concordance, Counts
 from dhlab.text.corpus import Corpus
@@ -39,3 +46,18 @@ from dhlab.utils.files import download_from_github, get_file_from_github
 
 # wordbank
 from dhlab.wordbank.wordbank import WordForm, WordLemma, WordParadigm
+<<<<<<< HEAD
+=======
+
+# legacy code
+from dhlab.utils import LazyLoader
+
+graph_networkx_louvain = LazyLoader(
+    "dhlab.legacy.graph_networkx_louvain"
+)  # equivalent to : from dhlab.legacy import graph_networkx_louvain
+module_update = LazyLoader("dhlab.legacy.module_update")
+nb_external_files = LazyLoader("dhlab.legacy.nb_external_files")
+nbpictures = LazyLoader("dhlab.legacy.nbpictures")
+nbtext = LazyLoader("dhlab.legacy.nbtext")
+token_map = LazyLoader("dhlab.legacy.token_map")
+>>>>>>> 034c12e (import legacy code lazily at top level)
