@@ -158,6 +158,8 @@ dhlab/_version.py
 # project management
 *.lock
 .pdm-python
+.pdm-build
+.*_cache
 
 # documentation legacy files
 docs/new_conf.py
