@@ -78,7 +78,6 @@ class TestCorpusColl:
 class TestCorpusIntegrityCheck:
     def test_with_empty_corpus(self):
         c = dh.Corpus()
-        # assert c.check_integrity() == True
         with pytest.raises(ValueError) as exc_info:
             c.check_integrity()
         assert "Corpus is empty." in str(exc_info.value)

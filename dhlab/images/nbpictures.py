@@ -80,7 +80,6 @@ def get_picture_from_urn(urn: Union[int, str], width: int = 0, height: int = 300
             url = f"https://www.nb.no/services/image/resolver/{urn}/full/full/0/native.jpg"
         else:
             url = f"https://www.nb.no/services/image/resolver/{urn}/full/{width},{height}/0/native.jpg"
-        # print(url)
     return Image.open(load_picture(url))
 
 
@@ -93,7 +92,6 @@ def get_metadata_from_url(url):
 
     urn = re.findall("(URN.*?)(?:/)", url)[0]
     triple = iiif_manifest(urn)
-    # print(urn, triple)
     r = dict()
     if "error" not in triple:
         r = {x["label"]: x["value"] for x in triple["metadata"] if "label" in x}
