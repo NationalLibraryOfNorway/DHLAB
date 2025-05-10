@@ -26,7 +26,7 @@ Here are some of the text mining and automatic analyses you can do with `dhlab`:
 Build a [corpus](#text.corpus.Corpus) from bibliographic metadata about publications, e.g. books published between 1980 and 2005:
 
 ```{code-block}
-import dhlab as dh
+import dhlab.dhlab as dh
 
 corpus = dh.Corpus(doctype="digibok", from_year=1980, to_year=2005)
 ```
