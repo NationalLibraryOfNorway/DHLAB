@@ -53,13 +53,12 @@ class Concordance(DhlabObj):
         super().__init__(self.concordance)
 
     def show(self, n=10, style=True):
+        result = self.concordance.sample(min(n, self.size))
+
         if style:
-            result = self.concordance.sample(min(n, self.size))[
-                ["link", "concordance"]
-            ].style
+            return result[["link", "concordance"]].style
         else:
-            result = self.concordance.sample(min(n, self.size))
-        return result
+            return result
 
     @classmethod
     def from_df(cls, df):
