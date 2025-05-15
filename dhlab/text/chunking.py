@@ -6,7 +6,7 @@ from dhlab.api.dhlab_api import get_chunks, get_chunks_para
 class Chunks:
     """Create chunks from a text."""
 
-    def __init__(self, urn=None, chunks=1000):
+    def __init__(self, urn: str | None = None, chunks: int = 1000):
         """
         :param urn: str or list
         :param chunks: {'para', 'avsn'} or int

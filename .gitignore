@@ -164,3 +164,13 @@ dhlab/_version.py
 # documentation legacy files
 docs/new_conf.py
 docs/orig_conf.py
+
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
