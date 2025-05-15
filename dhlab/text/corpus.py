@@ -32,26 +32,26 @@ class Corpus(DhlabObj):
 
     def __init__(
         self,
-        doctype=None,
-        author=None,
-        freetext=None,
-        fulltext=None,
-        from_year=None,
-        to_year=None,
-        from_timestamp=None,
-        to_timestamp=None,
-        title=None,
-        ddk=None,
-        subject=None,
-        publisher=None,
-        literaryform=None,
-        genres=None,
-        city=None,
-        lang=None,
-        limit=10,
-        limit_by_year=False,
-        order_by="random",
-        allow_duplicates=False,
+        doctype: str | None = None,
+        author: str | None = None,
+        freetext: str | None = None,
+        fulltext: str | None = None,
+        from_year: int | None = None,
+        to_year: int | None = None,
+        from_timestamp: int | None = None,
+        to_timestamp: int | None = None,
+        title: str | None = None,
+        ddk: str | None = None,
+        subject: str | None = None,
+        publisher: str | None = None,
+        literaryform: str | None = None,
+        genres: str | None = None,
+        city: str | None = None,
+        lang: str | None = None,
+        limit: int | None = 10,
+        limit_by_year: bool = False,
+        order_by: str | None = "random",
+        allow_duplicates: bool = False,
     ):
         """Create Corpus
 
@@ -221,7 +221,7 @@ class Corpus(DhlabObj):
         new_corpus = get_metadata(urnlist(identifiers))
         self.add(new_corpus)
 
-    def evaluate_words(self, wordbags=None):
+    def evaluate_words(self, wordbags: dict | None = None):
         df = evaluate_documents(wordbags=wordbags, urns=list(self.frame.urn))
         df.index = df.index.astype(int)
         cols = df.columns
@@ -254,7 +254,7 @@ class Corpus(DhlabObj):
         mask = self.frame.langs.apply(lambda x: len(x.split("/"))) == 1
         return self.from_df(self.frame[mask])
 
-    def conc(self, words, window: int = 20, limit: int = 500) -> dh.Concordance:
+    def conc(self, words: str | None, window: int = 20, limit: int = 500) -> dh.Concordance:
         """Get concodances of `words` in corpus"""
         return dh.Concordance(
             corpus=self.frame, query=words, window=window, limit=limit
@@ -262,13 +262,13 @@ class Corpus(DhlabObj):
 
     def coll(
         self,
-        words=None,
-        before=10,
-        after=10,
-        reference=None,
-        samplesize=20000,
-        alpha=False,
-        ignore_caps=False,
+        words: str | list[str] | None = None,
+        before: int = 10,
+        after: int = 10,
+        reference: pd.DataFrame | None = None,
+        samplesize: int = 20000,
+        alpha: bool = False,
+        ignore_caps: bool = False,
     ) -> dh.Collocations:
         """Get collocations of `words` in corpus"""
         return dh.Collocations(
@@ -282,14 +282,15 @@ class Corpus(DhlabObj):
             ignore_caps=ignore_caps,
         )
 
-    def count(self, words=None, cutoff=0, sparse=True):
+    def count(self, words: list[str] | None = None, cutoff: int = 0, sparse: bool = True):
         """Get word frequencies for corpus"""
         return dh.Counts(self, words, cutoff, sparse)
 
-    def freq(self, words=None, cutoff=0, sparse=True):
+    def freq(self, words: list[str] | None = None, cutoff: int = 0, sparse: bool = True):
         """Get word frequencies for corpus"""
         return dh.Counts(self, words, cutoff, sparse)
 
+    # TODO: Is this `corpus: "Corpus"` annotation style deliberate? We're already importing __future__.annotations.
     @staticmethod
     def _is_Corpus(corpus: "Corpus") -> bool:
         """Check if `input` is Corpus or DataFrame"""
@@ -297,7 +298,8 @@ class Corpus(DhlabObj):
             raise TypeError("Input is not Corpus or DataFrame")
         return isinstance(corpus, Corpus) | isinstance(corpus, DataFrame)
 
-    def __add__(self, other):
+    # TODO: Is this `corpus: "Corpus"` annotation style deliberate? We're already importing __future__.annotations.
+    def __add__(self, other: "Corpus"):
         """Add two Corpus objects"""
         if not self._is_Corpus(other):
             raise TypeError("Input is not Corpus or DataFrame")
