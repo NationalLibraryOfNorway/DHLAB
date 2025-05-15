@@ -10,6 +10,7 @@ from dhlab.api.dhlab_api import (
     concordance_counts,
 )
 from dhlab.text.dhlab_object import DhlabObj
+from dhlab.text.corpus import Corpus
 from dhlab.text.utils import urnlist
 
 
@@ -27,7 +28,13 @@ def find_hits(x):
 class Concordance(DhlabObj):
     """Wrapper for concordance function"""
 
-    def __init__(self, corpus=None, query=None, window=20, limit=500):
+    def __init__(
+        self,
+        corpus: Corpus | None = None,
+        query: str | None = None,
+        window: int = 20,
+        limit: int = 500
+):
         """Get concordances for word(s) in corpus
 
         :param corpus: Target corpus, defaults to None
@@ -48,11 +55,10 @@ class Concordance(DhlabObj):
             self.concordance = self.concordance[["link", "urn", "conc"]]
             self.concordance.columns = ["link", "urn", "concordance"]
             self.corpus = corpus
-        # self.size = len(self.concordance)
 
         super().__init__(self.concordance)
 
-    def show(self, n=10, style=True):
+    def show(self, n: int = 10, style: bool = True):
         result = self.concordance.sample(min(n, self.size))
 
         if style:
@@ -61,7 +67,7 @@ class Concordance(DhlabObj):
             return result
 
     @classmethod
-    def from_df(cls, df):
+    def from_df(cls, df: pd.DataFrame):
         "Typecast DataFrame to Concordance"
         obj = Concordance()
         obj.concordance = df
@@ -74,14 +80,14 @@ class Collocations(DhlabObj):
 
     def __init__(
         self,
-        corpus=None,
-        words=None,
-        before=10,
-        after=10,
-        reference=None,
-        samplesize=20000,
-        alpha=False,
-        ignore_caps=False,
+        corpus: Corpus | None = None,
+        words: str | list[str] | None = None,
+        before: int = 10,
+        after: int = 10,
+        reference: pd.DataFrame | None = None,
+        samplesize: int = 20000,
+        alpha: bool = False,
+        ignore_caps: bool = False,
     ):
         """Create collocations object
 
@@ -136,23 +142,23 @@ class Collocations(DhlabObj):
         self.before = before
         self.after = after
 
-        if reference is not None:
+        if self.reference is not None:
             teller = self.coll.counts / self.coll.counts.sum()
             divisor = self.reference.iloc[:, 0] / self.reference.iloc[:, 0].sum()
             self.coll["relevance"] = teller / divisor
 
         super().__init__(self.coll)
 
-    def show(self, sortby="counts", n=20):
+    def show(self, sortby: str = "counts", n: int = 20):
         return self.coll.sort_values(by=sortby, ascending=False).head(n)
 
-    def keywordlist(self, top=200, counts=5, relevance=10):
+    def keywordlist(self, top: int = 200, counts: int = 5, relevance: float = 10):
         mask = self.coll[self.coll.counts > counts]
         mask = mask[mask.relevance > relevance]
         return list(mask.sort_values(by="counts", ascending=False).head(200).index)
 
     @classmethod
-    def from_df(cls, df):
+    def from_df(cls, df: pd.DataFrame):
         """Typecast DataFrame to Collocation
 
         :param df: DataFrame
@@ -167,7 +173,13 @@ class Collocations(DhlabObj):
 class Counts(DhlabObj):
     """Provide counts for a corpus - shouldn't be too large"""
 
-    def __init__(self, corpus=None, words=None, cutoff=0, sparse=True):
+    def __init__(
+        self,
+        corpus: Corpus | None = None,
+        words: list[str] | None = None,
+        cutoff: int = 0,
+        sparse: bool = True
+):
         """Get frequency list for Corpus
 
         :param corpus: target Corpus, defaults to None
@@ -259,7 +271,7 @@ class Counts(DhlabObj):
         return self.relfreq.rename(self.title_dct, axis=1)
 
     @classmethod
-    def from_df(cls, df):
+    def from_df(cls, df: pd.DataFrame):
         obj = Counts()
         obj.freq = df
         obj.frame = df
