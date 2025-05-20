@@ -36,8 +36,6 @@ from dhlab.text.dispersion import Dispersion
 from dhlab.text.geo_data import GeoData, GeoNames
 from dhlab.text.parse import NER, POS, Models
 from dhlab.text.wildcard import WildcardWordSearch
-from dhlab.utils.display import css
-from dhlab.utils.files import download_from_github, get_file_from_github
 
 # wordbank
 from dhlab.wordbank.wordbank import WordForm, WordLemma, WordParadigm
