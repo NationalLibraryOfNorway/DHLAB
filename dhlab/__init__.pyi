@@ -18,3 +18,9 @@ from .legacy import (
 )
 
 from .api.dhlab_api import totals as totals
+
+from .ngram.ngram import (
+    Ngram as Ngram,
+    NgramBook as NgramBook,
+    NgramNews as NgramNews,
+)

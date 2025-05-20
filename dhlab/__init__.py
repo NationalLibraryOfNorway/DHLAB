@@ -27,9 +27,6 @@ __getattr__, __dir__, __all__ = lazy_loader.attach_stub(__name__, __file__)
 
 from dhlab.metadata.natbib import metadata_from_urn, metadata_query
 
-# ngram
-from dhlab.ngram.ngram import Ngram, NgramBook, NgramNews
-
 # text
 from dhlab.text import nbtokenizer
 from dhlab.text.chunking import Chunks
