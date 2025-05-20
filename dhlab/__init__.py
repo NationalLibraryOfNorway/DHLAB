@@ -25,8 +25,6 @@ import lazy_loader
 #         `dhlab/__init__.pyi`
 __getattr__, __dir__, __all__ = lazy_loader.attach_stub(__name__, __file__)
 
-from dhlab.metadata.natbib import metadata_from_urn, metadata_query
-
 # text
 from dhlab.text import nbtokenizer
 from dhlab.text.chunking import Chunks
