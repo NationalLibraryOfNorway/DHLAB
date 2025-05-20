@@ -16,3 +16,5 @@ from .legacy import (
     nbtext                  as nbtext,
     token_map               as token_map,
 )
+
+from .api.dhlab_api import totals as totals

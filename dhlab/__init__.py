@@ -15,8 +15,7 @@ import lazy_loader
 #     static analyzers (LSP/code completion, mypy, etc) knowledge of the
 #     lazy-loaded modules.
 #
-#   - A submodule's `__init__.py` still needs to explicitly expose the
-#     modules/attributes.
+#   - A submodule's `__init__.py` needs to explicitly expose any submodules.
 #         Do this using `lazy_loader.attach(...)` (or `lazy_loader.attach_stub(...)
 #         in the case of further nesting) to retain lazy-loading.
 #         See: `dhlab/legacy/__init__.py`
@@ -26,10 +25,6 @@ import lazy_loader
 #         `dhlab/__init__.pyi`
 __getattr__, __dir__, __all__ = lazy_loader.attach_stub(__name__, __file__)
 
-# api
-from dhlab.api.dhlab_api import totals
-
-# metadata
 from dhlab.metadata.natbib import metadata_from_urn, metadata_query
 
 # ngram
