@@ -37,6 +37,7 @@ numpy = "^1.26.3"
 jinja2 = "^3.1.4"
 tqdm = "^4.66.6"
 nb-tokenizer = { version = "^0.1.0", python = ">=3.10, <4.0"}
+lazy-loader = "0.4"
 
 [tool.poetry.group.docs.dependencies]
 Sphinx = "^7.2.6"

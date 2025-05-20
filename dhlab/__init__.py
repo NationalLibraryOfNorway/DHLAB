@@ -6,18 +6,28 @@ You can build text corpora, retrieve their metadata, search for images, and do q
 The dhlab python package calls the [DHLAB API](https://api.nb.no/dhlab/) under the hood to retrieve data.
 """
 
+# Lazy imports - https://scientific-python.org/specs/spec-0001/
+import lazy_loader
+
+# `lazy_loader.attach_stub(...)` looks for imports in `__init__.pyi`, and lazily
+# imports them.
+#   - Must be used in favor of `lazy_loader.attach(...)` in order to give
+#     static analyzers (LSP/code completion, mypy, etc) knowledge of the
+#     lazy-loaded modules.
+#
+#   - A submodule's `__init__.py` still needs to explicitly expose the
+#     modules/attributes.
+#         Do this using `lazy_loader.attach(...)` (or `lazy_loader.attach_stub(...)
+#         in the case of further nesting) to retain lazy-loading.
+#         See: `dhlab/legacy/__init__.py`
+#
+#   - More information:
+#         https://scientific-python.org/specs/spec-0001/#type-checkers
+#         `dhlab/__init__.pyi`
+__getattr__, __dir__, __all__ = lazy_loader.attach_stub(__name__, __file__)
+
 # api
 from dhlab.api.dhlab_api import totals
-
-# legacy code
-from dhlab.legacy import (
-    graph_networkx_louvain,
-    module_update,
-    nb_external_files,
-    nbpictures,
-    nbtext,
-    token_map,
-)
 
 # metadata
 from dhlab.metadata.natbib import metadata_from_urn, metadata_query
