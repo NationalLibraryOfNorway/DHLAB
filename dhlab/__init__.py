@@ -10,7 +10,7 @@ The dhlab python package calls the [DHLAB API](https://api.nb.no/dhlab/) under t
 import lazy_loader
 
 # For backwards-compatibility (not a heavy import).
-nbtokenizer = lazy_loader.load("nb_tokenizer")
+import nb_tokenizer as nbtokenizer
 
 # `lazy_loader.attach_stub(...)` looks for imports in `__init__.pyi`, and lazily
 # imports them.

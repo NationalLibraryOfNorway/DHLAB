@@ -1,8 +1,3 @@
-from nb_tokenizer import (
-    Tokens as Tokens,
-    tokenize as tokenize,
-)
-
 from .chunking import Chunks as Chunks
 from .conc_coll import (
     Collocations as Collocations,

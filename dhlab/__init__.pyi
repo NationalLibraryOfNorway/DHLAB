@@ -35,7 +35,6 @@ from .ngram.ngram import (
     NgramNews as NgramNews,
 )
 
-import nb_tokenizer as nbtokenizer
 from .text.chunking import Chunks as Chunks
 from .text.conc_coll import (
     Collocations as Collocations,
