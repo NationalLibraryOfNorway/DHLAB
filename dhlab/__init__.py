@@ -6,11 +6,11 @@ You can build text corpora, retrieve their metadata, search for images, and do q
 The dhlab python package calls the [DHLAB API](https://api.nb.no/dhlab/) under the hood to retrieve data.
 """
 
-# For backwards-compatibility (lightweight import).
-import nb_tokenizer as nbtokenizer
-
 # Lazy imports - https://scientific-python.org/specs/spec-0001/
 import lazy_loader
+
+# For backwards-compatibility (not a heavy import).
+nbtokenizer = lazy_loader.load("nb_tokenizer")
 
 # `lazy_loader.attach_stub(...)` looks for imports in `__init__.pyi`, and lazily
 # imports them.
