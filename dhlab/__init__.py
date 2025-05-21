@@ -27,6 +27,3 @@ import lazy_loader
 #         https://scientific-python.org/specs/spec-0001/#type-checkers
 #         `dhlab/__init__.pyi`
 __getattr__, __dir__, __all__ = lazy_loader.attach_stub(__name__, __file__)
-
-# wordbank
-from dhlab.wordbank.wordbank import WordForm, WordLemma, WordParadigm

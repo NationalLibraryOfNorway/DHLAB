@@ -56,3 +56,9 @@ from .utils.files import (
     download_from_github as download_from_github,
     get_file_from_github as get_file_from_github,
 )
+
+from .wordbank.wordbank import (
+    WordForm as WordForm,
+    WordLemma as WordLemma,
+    WordParadigm as WordParadigm,
+)
