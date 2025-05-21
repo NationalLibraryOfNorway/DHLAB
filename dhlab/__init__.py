@@ -6,6 +6,9 @@ You can build text corpora, retrieve their metadata, search for images, and do q
 The dhlab python package calls the [DHLAB API](https://api.nb.no/dhlab/) under the hood to retrieve data.
 """
 
+# For backwards-compatibility (lightweight import).
+import nb_tokenizer as nbtokenizer
+
 # Lazy imports - https://scientific-python.org/specs/spec-0001/
 import lazy_loader
 
@@ -24,16 +27,6 @@ import lazy_loader
 #         https://scientific-python.org/specs/spec-0001/#type-checkers
 #         `dhlab/__init__.pyi`
 __getattr__, __dir__, __all__ = lazy_loader.attach_stub(__name__, __file__)
-
-# text
-from dhlab.text import nbtokenizer
-from dhlab.text.chunking import Chunks
-from dhlab.text.conc_coll import Collocations, Concordance, Counts
-from dhlab.text.corpus import Corpus
-from dhlab.text.dispersion import Dispersion
-from dhlab.text.geo_data import GeoData, GeoNames
-from dhlab.text.parse import NER, POS, Models
-from dhlab.text.wildcard import WildcardWordSearch
 
 # wordbank
 from dhlab.wordbank.wordbank import WordForm, WordLemma, WordParadigm

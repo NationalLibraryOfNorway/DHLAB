@@ -35,6 +35,22 @@ from .ngram.ngram import (
     NgramNews as NgramNews,
 )
 
+from .text.chunking import Chunks as Chunks
+from .text.conc_coll import (
+    Collocations as Collocations,
+    Concordance as Concordance,
+    Counts as Counts,
+)
+from .text.corpus import Corpus as Corpus
+from .text.dispersion import Dispersion as Dispersion
+from .text.geo_data import GeoData as GeoData
+from .text.parse import (
+    NER as NER,
+    POS as POS,
+    Models as Models,
+)
+from .text.wildcard import WildcardWordSearch as WildcardWordSearch
+
 from .utils.display import css as css
 from .utils.files import (
     download_from_github as download_from_github,
