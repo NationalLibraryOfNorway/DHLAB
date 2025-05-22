@@ -572,14 +572,23 @@ def get_document_frequencies(
     :param bool sparse: create a sparse matrix for memory efficiency
     """
     params = {"urns": urns, "cutoff": cutoff, "words": words}
+
     r = api_post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
+
     # check if words are passed - return differs a bit
     if words is None:
-        structure = dict()
-        for u in result:
+        structure = {}
+
+        # result: [
+        #   [ [dhlabid_1, word, frequency], [dhlabid_1, ...], ...]
+        #   [ [dhlabid_2, word, frequency], [dhlabid_2, ...], ...]
+        # ]
+        for res_for_urn in result:
             try:
-                structure[u[0][0]] = dict([(x[1], x[2]) for x in u])
+                # structure: {dhlabid: {word: frequency, ...}, ...}
+                dhlabid = res_for_urn[0][0]
+                structure[dhlabid] = {x[1]: x[2] for x in res_for_urn}
             except IndexError:
                 pass
 
