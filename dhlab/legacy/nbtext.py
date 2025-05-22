@@ -21,8 +21,9 @@ from matplotlib.pylab import rcParams
 
 try:
     from wordcloud import WordCloud
-except BaseException:
+except ImportError:
     pass
+
 
 
 # ************** For defining wordbag search

@@ -154,6 +154,13 @@ dhlab/_version.py
 
 # vscode settings
 .vscode
-poetry.lock
+
+# project management
+*.lock
+.pdm-python
+.pdm-build
+.*_cache
+
+# documentation legacy files
 docs/new_conf.py
 docs/orig_conf.py
