@@ -132,10 +132,10 @@ class Corpus(DhlabObj):
 
                     years.append(year_corpus)
                 
-                self.corpus = pd.concat(years).reset_index(drop=True)
+                self.frame = pd.concat(years).reset_index(drop=True)
 
             else:
-                self.corpus = document_corpus(
+                self.frame = document_corpus(
                     doctype,
                     author,
                     freetext,
@@ -157,12 +157,20 @@ class Corpus(DhlabObj):
                 )
 
         else:
-            self.corpus = pd.DataFrame(columns=["urn"])
+            self.frame = pd.DataFrame(columns=["urn"])
 
-        super().__init__(self.corpus)
+        super().__init__(self.frame)
 
         if not allow_duplicates:
             self._check_for_urn_duplicates()
+
+    @property
+    def corpus(self):
+        return self.frame
+
+    @corpus.setter
+    def corpus(self, frame: pd.DataFrame):
+        self.frame = frame
 
     @classmethod
     def from_identifiers(cls, identifiers: List[Union[str, int]]):
@@ -185,10 +193,10 @@ class Corpus(DhlabObj):
 
         corpus = Corpus()
         if check_for_urn:
-            corpus.corpus = cls._urn_id_in_dataframe_cols(df)
+            corpus.frame = cls._urn_id_in_dataframe_cols(df)
         else:
-            corpus.corpus = df
-        corpus.frame = corpus.corpus
+            corpus.frame = df
+        corpus.frame = corpus.frame
         return corpus
 
     @classmethod
@@ -203,7 +211,7 @@ class Corpus(DhlabObj):
     ) -> DataFrame:
         """Checks if dataframe contains URN column"""
         if isinstance(dataframe, Corpus):
-            dataframe = dataframe.corpus
+            dataframe = dataframe.frame
         if "urn" in dataframe.columns:
             if dataframe.urn.str.contains("^URN:NBN:no-nb_.+").all():
                 return dataframe
@@ -214,11 +222,11 @@ class Corpus(DhlabObj):
         self.add(new_corpus)
 
     def evaluate_words(self, wordbags=None):
-        df = evaluate_documents(wordbags=wordbags, urns=list(self.corpus.urn))
+        df = evaluate_documents(wordbags=wordbags, urns=list(self.frame.urn))
         df.index = df.index.astype(int)
         cols = df.columns
         df = pd.concat(
-            [df, self.corpus[["dhlabid", "urn"]].set_index("dhlabid")], axis=1
+            [df, self.frame[["dhlabid", "urn"]].set_index("dhlabid")], axis=1
         )
         df = df.set_index("urn")
         return df[cols].fillna(0)
@@ -228,14 +236,12 @@ class Corpus(DhlabObj):
         if isinstance(new_corpus, Corpus):
             new_corpus = new_corpus.frame
         self.frame = pd.concat([self.frame, new_corpus])
-        self.corpus = self.frame
         self._drop_urn_duplicates()
-        # self.size = len(self.frame)
 
     def sample(self, n: int = 5):
         """Create random subkorpus with `n` entries"""
         n = min(n, self.size)
-        sample = self.corpus.sample(n).copy()
+        sample = self.frame.sample(n).copy()
         return self.from_df(sample)
 
     def only_one_author(self):
@@ -348,8 +354,11 @@ class Corpus(DhlabObj):
 
         def test_dhlabid_series(series: pd.Series) -> bool:
             """Check if dhlabid series is valid"""
-            if not series.apply(lambda x: isinstance(x, int)).all():
+            try:
+                series = series.apply(lambda x: int(x))
+            except ValueError:
                 return False
+
             if not ((series >= 1e8) & (series < 1e9)).all():
                 return False
 
@@ -359,28 +368,25 @@ class Corpus(DhlabObj):
             """Check if URN series is valid"""
             if series.str.startswith("URN:NBN:no-nb_").all():
                 return True
-            try:
-                series = series.apply(lambda x: int(x))
-                return test_dhlabid_series(series)
-            except:
-                return False
+            return False
 
         # Check if the DataFrame is empty
-        if self.corpus.empty:
+        if self.frame.empty:
             raise ValueError("Corpus is empty.")
 
         # Check for the presence of essential columns
         required_columns = ["urn", "dhlabid", "authors", "langs", "genres"]
         for col in required_columns:
-            if col not in self.corpus.columns:
+            if col not in self.frame.columns:
                 raise ValueError(f"Essential column '{col}' is missing.")
 
         # Validate dhlabid format
-        if not test_dhlabid_series(self.corpus["dhlabid"]):
+        if not test_dhlabid_series(self.frame["dhlabid"]):
             raise ValueError("Some dhlabid values are in an incorrect format.")
 
         # Validate URN format
-        if not test_urn_series(self.corpus["urn"]):
+        if not (test_urn_series(self.frame["urn"])
+                or test_dhlabid_series(self.frame["urn"])):
             raise ValueError("Some URN values are in an incorrect format.")
 
         return True
@@ -404,4 +410,3 @@ class Corpus(DhlabObj):
         self.frame.drop_duplicates(subset="urn", inplace=True, keep="last")
         if reset_index:
             self.frame.reset_index(drop=True, inplace=True)
-        self.corpus = self.frame
