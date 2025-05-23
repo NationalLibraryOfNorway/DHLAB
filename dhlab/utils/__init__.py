@@ -1,5 +1,14 @@
 """Utility functions."""
 
+import lazy_loader
+__getattr__, __dir__, _ = lazy_loader.attach(
+    __name__,
+    submodules = [
+        "files",
+        "display",
+    ],
+)
+
 import re
 
 
