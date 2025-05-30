@@ -48,6 +48,11 @@ class TestCounts:
     def test_head(self):
         boker = dh.Corpus(doctype="digibok", limit=5)
         counts = dh.Counts(boker)
-        head = counts.head()
-        assert len(head.frame) == 5
-        assert len(head.frame.columns) == 5
+        head = counts.head(5)
+
+        if len(counts.frame >= 5):
+            assert len(head.frame) == 5
+        else:
+            assert len(head.frame) == len(counts.frame)
+
+        assert head.frame.columns.equals(counts.frame.columns)
