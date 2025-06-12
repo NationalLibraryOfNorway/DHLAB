@@ -4,11 +4,10 @@ from typing import Dict, List, Tuple, Union
 import pandas as pd
 
 # from requests import HTTPError, JSONDecodeError, ConnectionError
-from pandas import DataFrame, Series
+from pandas import DataFrame, Series, SparseDtype
 
 from dhlab.constants import BASE_URL
 from dhlab.api.utils import api_get, api_post, DHLabApiError
-from scipy.sparse import dok_matrix
 
 pd.options.display.max_rows = 100
 
@@ -530,32 +529,26 @@ def ngram_news(
     df.columns = columns
     return df
 
-def _create_sparse_matrix(structure):
-    """Create a sparse matrix from an API counts object"""
+def _create_sparse_matrix(structure: dict[str, dict[str, int]]):
+    """Create a sparse DataFrame from an API counts object."""
 
-    # fetch all words
-    words = list(set(word for dct in structure.values() for word in dct))
-    # fetch all dhlabids
-    dhlabids = list(structure.keys())
-    # create an int/dhlabid mapping
-    dhlabid_to_col = {dhlabid: idx for idx, dhlabid in enumerate(dhlabids)}
-    # create an int/word mapping
-    word_to_row = {word: idx for idx, word in enumerate(words)}
+    # TODO: This should maybe be sorted
+    all_words = list(set(word for dct in structure.values() for word in dct))
 
-    # construct the matrix with each word as a row and each dhlabid as a column (DTM)
-    num_cols = len(dhlabids)
-    num_rows = len(words)
-    sparse_matrix = dok_matrix((num_rows, num_cols), dtype=int)
+    # sparse_cols: {dhlabid: sparse_series, ...}
+    # https://pandas.pydata.org/docs/reference/api/pandas.SparseDtype.html
+    sparse_cols = {}
 
-    # incrementally fill the sparse matrix from dictionary
-    for col_idx, dhlabid in enumerate(dhlabids):
-        dct = structure[dhlabid]
-        for word, value in dct.items():
-            row_idx = word_to_row[word]
-            sparse_matrix[row_idx, col_idx] = value
+    for dhlabid, wordfreqs in structure.items():
+        sparse_cols[dhlabid] = pd.Series(
+            wordfreqs,
+            index=all_words,
+            dtype=int # See below
+        # SparseDtype(int) does not allow NaN. Convert NaN to 0 first.
+        ).fillna(0).astype(SparseDtype(int, 0))
 
-    df_sparse = pd.DataFrame.sparse.from_spmatrix(sparse_matrix, index=words, columns=dhlabids)
-    return df_sparse
+    # Sparse DataFrame
+    return pd.DataFrame(sparse_cols)
 
 def get_document_frequencies(
     urns: List[str] | None = None, cutoff: int = 0, words: List[str] | None = None, sparse: bool = False
@@ -572,14 +565,23 @@ def get_document_frequencies(
     :param bool sparse: create a sparse matrix for memory efficiency
     """
     params = {"urns": urns, "cutoff": cutoff, "words": words}
+
     r = api_post(f"{BASE_URL}/frequencies", json=params)
     result = r.json()
+
     # check if words are passed - return differs a bit
     if words is None:
-        structure = dict()
-        for u in result:
+        structure = {}
+
+        # result: [
+        #   [ [dhlabid_1, word, frequency], [dhlabid_1, ...], ...]
+        #   [ [dhlabid_2, word, frequency], [dhlabid_2, ...], ...]
+        # ]
+        for res_for_urn in result:
             try:
-                structure[u[0][0]] = dict([(x[1], x[2]) for x in u])
+                # structure: {dhlabid: {word: frequency, ...}, ...}
+                dhlabid = res_for_urn[0][0]
+                structure[dhlabid] = {x[1]: x[2] for x in res_for_urn}
             except IndexError:
                 pass
 
