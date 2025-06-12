@@ -1,0 +1,25 @@
+[project]
+name = "dhlab-core"
+version = "1.0.0"
+description = ""
+authors = [
+    {name = "The Digital Humanities Lab at The National Library of Norway (NB)", email = "dh-lab@nb.no"},
+]
+dependencies = [
+    "dhlab-api",
+    "pandas>=2.2.3", "tqdm>=4.67.1", "networkx>=3.4.2"
+]
+requires-python = ">=3.10"
+# readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+includes = ["src/dhlab"]

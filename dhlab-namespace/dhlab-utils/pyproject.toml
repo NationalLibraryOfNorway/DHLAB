@@ -1,0 +1,22 @@
+[project]
+name = "dhlab-utils"
+version = "1.0.0"
+description = ""
+authors = [
+    {name = "The Digital Humanities Lab at The National Library of Norway (NB)", email = "dh-lab@nb.no"},
+]
+dependencies = ["pandas>=2.2.3", "requests>=2.32.3", "IPython>=8.36.0", "seaborn>=0.13.2", "matplotlib>=3.10.3", "pillow>=11.2.1"]
+requires-python = ">=3.10"
+# readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+includes = ["src/dhlab"]
