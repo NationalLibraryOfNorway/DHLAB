@@ -5,7 +5,7 @@ import pandas as pd
 
 from dhlab.api.nb_search_api import get_df, get_konks
 from dhlab.legacy.nbtext import frame, frame_sort
-from dhlab.text.nbtokenizer import tokenize
+from nb_tokenizer import tokenize
 
 
 def phrase_plots(
