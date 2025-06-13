@@ -1,0 +1,49 @@
+[project]
+name = "dhlab"
+version = "2.42.0"
+description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
+authors = [
+    {name = "The Digital Humanities Lab at The National Library of Norway (NB)", email = "dh-lab@nb.no"},
+]
+dependencies = [
+    "dhlab-api",
+    "dhlab-core",
+    "dhlab-future",
+    "dhlab-legacy",
+    "dhlab-utils",
+]
+requires-python = ">=3.10"
+# readme = "README.md"
+license = {text = "MIT"}
+
+[dependency-groups]
+docs = [
+    "Sphinx>=7.2.6",
+    "furo",
+    "myst-parser",
+    "readthedocs-sphinx-search",
+    "sphinx-copybutton",
+    "sphinx-togglebutton",
+    "sphinx_design",
+    "sphinx_inline_tabs",
+    "mkdocs",
+    # "mkdocstrings",
+    # "mkdocs-material",
+    # "mkdocs-section-index",
+    "mkdocs-autorefs",
+    "sphinx-autodoc2",
+    "sphinx-book-theme",
+    "linkify-it-py",
+]
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
+
+# [tool.pdm.build]
+# includes = ["src"]
+# package-dir = "src"

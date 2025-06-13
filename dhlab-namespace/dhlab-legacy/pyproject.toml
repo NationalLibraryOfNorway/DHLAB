@@ -1,0 +1,25 @@
+[project]
+name = "dhlab-legacy"
+version = "1.0.0"
+description = ""
+authors = [
+    {name = "The Digital Humanities Lab at The National Library of Norway (NB)", email = "dh-lab@nb.no"},
+]
+requires-python = ">=3.10"
+dependencies = [
+    "dhlab-core",
+    "IPython>=8.36.0", "requests>=2.32.3", "beautifulsoup4>=4.13.4", "pandas>=2.2.3", "pillow>=11.2.1", "networkx>=3.4.2", "numpy>=2.2.6", "seaborn>=0.13.2", "matplotlib>=3.10.3", "python-louvain>=0.16"
+]
+# readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+includes = ["src/dhlab"]
