@@ -8,5 +8,6 @@ __getattr__, __dir__, _ = lazy_loader.attach(
         "dhlab_api",
         "nb_ngram_api",
         "nb_search_api",
+        "utils",
     ]
 )
