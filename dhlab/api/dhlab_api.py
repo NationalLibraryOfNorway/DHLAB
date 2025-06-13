@@ -551,7 +551,7 @@ def _create_sparse_matrix(structure: dict[str, dict[str, int]]):
     return pd.DataFrame(sparse_cols)
 
 def get_document_frequencies(
-    urns: List[str] | None = None, cutoff: int = 0, words: List[str] | None = None, sparse: bool = False
+    urns: List[str], cutoff: int = 0, words: List[str] | None = None, sparse: bool = False
 ) -> DataFrame:
     """Fetch frequency counts of ``words`` in documents (``urns``).
 
@@ -602,7 +602,7 @@ def get_document_frequencies(
 
 
 def get_word_frequencies(
-    urns: List[str] | None = None, cutoff: int = 0, words: List[str] | None = None
+    urns: List[str], cutoff: int = 0, words: List[str] | None = None
 ) -> DataFrame:
     """Fetch frequency numbers for ``words`` in documents (``urns``).
 
@@ -617,7 +617,7 @@ def get_word_frequencies(
     return get_document_frequencies(urns, cutoff, words)
 
 
-def get_urn_frequencies(urns: List[str] | None = None, dhlabid: List[int] | None = None) -> DataFrame:
+def get_urn_frequencies(urns: List[str], dhlabid: List[int] | None = None) -> DataFrame:
     """Fetch frequency counts of documents as URNs or DH-lab ids.
 
     Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
@@ -665,6 +665,8 @@ def document_corpus(
     Call the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
     `/build_corpus <https://api.nb.no/dhlab/#/default/post_build_corpus>`_.
 
+    At least one filter argument must be set.
+
     :param str doctype: ``"digibok"``, ``"digavis"``, ``"digitidsskrift"`` or ``"digistorting"``
     :param str author: Name of an author.
     :param str freetext: any of the parameters, for example: ``"digibok AND Ibsen"``.
@@ -697,6 +699,9 @@ def document_corpus(
              "lang": lang, "limit": limit, "order_by": order_by}
 
     params = {x: parms[x] for x in parms if parms[x] is not None}
+
+    if not any(params.values()):
+        raise ValueError("`document_corpus` needs at least one filter argument.")
 
     r = api_post(BASE_URL + "/build_corpus", json=params)
 
