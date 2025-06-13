@@ -16,19 +16,18 @@ jobs:
       - uses: actions/setup-python@v4
         with: 
           python-version: ${{ matrix.python-version }}
-      - name: Permacache Poetry
-        id: cache-poetry
+      - name: Permacache PDM
+        id: cache-pdm
         uses: actions/cache@v3
         with:
-          path: ~/.poetry
-          key: poetry
-      - name: Install Poetry
-        if: steps.cache-poetry.outputs.cache-hit != 'true'
-        run: curl -sSL https://install.python-poetry.org | python - -y
-      - name: Add Poetry to path
-        run: echo "${HOME}/.poetry/bin" >> $GITHUB_PATH
+          path: ~/.pdm
+          key: pdm
+      - name: Install PDM
+        if: steps.cache-pdm.outputs.cache-hit != 'true'
+        run: curl -sSL https://pdm-project.org/install-pdm.py | python3 -
+      - name: Add PDM to path
+        run: echo "${HOME}/.pdm/bin" >> $GITHUB_PATH
       - name: Install venv
-        run: poetry install --with test
+        run: pdm install --with test
       - name: Test
-        run: poetry run pytest tests --cov=dhlab
-
+        run: pdm run pytest
