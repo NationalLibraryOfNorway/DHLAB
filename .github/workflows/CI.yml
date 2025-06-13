@@ -28,6 +28,6 @@ jobs:
       - name: Add PDM to path
         run: echo "${HOME}/.pdm/bin" >> $GITHUB_PATH
       - name: Install venv
-        run: pdm install --with test
+        run: pdm install --with test --with dhlab-namespace --with dhlab-meta
       - name: Test
         run: pdm run pytest
