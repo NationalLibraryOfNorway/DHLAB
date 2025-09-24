@@ -8,11 +8,9 @@ on:
         required: true
         type: choice
         options:
-          - patch
+          - major
           - minor
-          - prepatch
-          - preminor
-          - prerelease
+          - patch
       no_release:
         description: "Don't create a Github Release or tag with the new version number"
         required: true
@@ -26,56 +24,40 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    environment:
+      name: deploy
     permissions:
       contents: write
+      id-token: write
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
-          ref: ${{ github.head_ref }}  
+          ref: ${{ github.head_ref }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.10"
+          enable-cache: true
 
-      - name: Permacache Poetry
-        id: cache-poetry
-        uses: actions/cache@v4
-        with:
-          path: ~/.poetry
-          key: poetry
-
-      - name: Install Poetry
-        if: steps.cache-poetry.outputs.cache-hit != 'true'
-        run: |
-          pipx install poetry==1.8.3
-        shell: bash
-        
-      - name: Ensure Pipx Paths
-        run: |
-          pipx ensurepath
-          # Optionally check which packages were restored from the cache:
-          pipx list
-        shell: bash
+      - name: Install Python
+        run: uv python install 3.12
 
       - name: Bump version and add to env vars
         id: bump-version
         run: |
-          poetry version ${{ inputs.version_bump_command }}
-          echo "NEW_VERSION=$( poetry version --short )" >> "$GITHUB_ENV"
+          uv version --bump ${{ inputs.version_bump_command }}
+          echo "NEW_VERSION=$( uv version --short )" >> "$GITHUB_ENV"
 
-      - name: Check Version
+      - name: Check if version is pre-release
         id: check-version
         run: |
           [[ "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || echo prerelease=true >> "$GITHUB_OUTPUT"
 
-      - name: Check pyproject.toml validity
-        run: poetry check --no-interaction
-
       - name: Commit the changes to pyproject.toml
         if: ${{ !inputs.no_release }}
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: "ci: bump version to ${{ env.NEW_VERSION }} [skip-ci]"
           file_pattern: 'pyproject.toml'
@@ -90,9 +72,8 @@ jobs:
           default_prerelease_bump: false
           custom_tag: ${{ env.NEW_VERSION }} 
   
-      - name: Build project for distribution
-        run: |
-          poetry build
+      - name: Build project
+        run: uv build
 
       - name: Create Release
         if: ${{ !inputs.no_release }}
@@ -110,13 +91,8 @@ jobs:
 
       - name: Publish to testPyPI
         if: ${{ !inputs.no_publish }}
-        run: |
-          poetry config repositories.testpypi https://test.pypi.org/legacy/
-          poetry config pypi-token.testpypi ${{ secrets.TESTPYPI_API_TOKEN }}  
-          poetry publish -r testpypi
+        run: uv publish --index testpypi
 
       - name: Publish to Pypi
         if: ${{ !inputs.no_publish }}
-        run: |
-          poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
-          poetry publish
+        run: uv publish

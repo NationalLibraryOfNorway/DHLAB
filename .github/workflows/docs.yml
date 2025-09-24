@@ -22,44 +22,49 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Python Poetry Action
+      uses: abatilo/actions-poetry@v4
+    - name: Setup a local virtual environment
+      run: |
+        poetry config virtualenvs.create true --local
+        poetry config virtualenvs.in-project true --local
+    - uses: actions/cache@v4
+      name: Define a cache for the virtual environment based on the dependencies lock file
+      with:
+        path: ./.venv
+        key: venv-${{ hashFiles('poetry.lock') }}
+    - name: Install the project dependencies
+      run: poetry install --with docs
+    - name: Setup Pages
+      uses: actions/configure-pages@v5
+    - name: Build pages
+      # Build your static content here
+      run: |
+        poetry run sphinx-build -M html docs/source docs/build --keep-going
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v4
+      with:
+        # Upload entire repository
+        #path: '.'
+        # Upload only the build directory
+        path: 'docs/build/html'
   deploy:
+    needs: build
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Python Poetry Action
-        uses: abatilo/actions-poetry@v3.0.0
-      - name: Setup a local virtual environment
-        run: |
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
-      - uses: actions/cache@v4
-        name: Define a cache for the virtual environment based on the dependencies lock file
-        with:
-          path: ./.venv
-          key: venv-${{ hashFiles('poetry.lock') }}
-      - name: Install the project dependencies
-        run: poetry install --with docs
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Build pages
-        # Build your static content here
-        run: |
-          poetry run sphinx-build -M html docs/source docs/build --keep-going
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          #path: '.'
-          # Upload only the build directory
-          path: 'docs/build/html'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

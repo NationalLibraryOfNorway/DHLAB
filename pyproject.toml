@@ -1,107 +1,73 @@
-[tool.poetry]
+[project]
+authors = [
+    {name = "The Digital Humanities Lab at The National Library of Norway (NB)", email = "dh-lab@nb.no"},
+]
+license = {text = "MIT"}
+requires-python = ">=3.10,<4.0"
+dependencies = [
+    "ipython",
+    "matplotlib",
+    "networkx",
+    "pandas",
+    "python-louvain",
+    "requests",
+    "seaborn",
+    "openpyxl",
+    "beautifulsoup4",
+    "jinja2",
+    "tqdm",
+    "nb-tokenizer",
+    "lazy-loader",
+]
 name = "dhlab"
-version = "2.41.0"
+version = "2.42.0"
 description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
-authors = ["The Digital Humanities Lab at The National Library of Norway (NB) <dh-lab@nb.no>"]
-license = "MIT"
 readme = "README.md"
-homepage = "https://www.nb.no/dh-lab/"
-documentation = "https://dhlab.readthedocs.io/en/stable/"
-repository = "https://github.com/NationalLibraryOfNorway/DHLAB"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-include = ["CHANGELOG.md", "LICENSE"]
-exclude = ["docs/", "tests/"]
 
-[tool.poetry.urls]
+[project.urls]
 "Bug Tracker" = "https://github.com/NationalLibraryOfNorway/DHLAB/issues"
-"Changelog" = "https://github.com/NationalLibraryOfNorway/DHLAB/blob/main/CHANGELOG.md"
-"Tutorials" = "https://nationallibraryofnorway.github.io/digital_tekstanalyse/tutorial.html"
-
-[tool.poetry.dependencies]
-python = ">=3.10"
-ipython = "^8.17.2"
-matplotlib = "^3.8.1"
-networkx = "^3.2.1"
-pandas = "^2.1.2" # NOTE: Synchronize pandas and pandas-stubs version
-python-louvain = "^0.16"
-requests = "^2.31.0" # NOTE: Synchronize requests and types-requests version
-seaborn = "^0.13.0"
-openpyxl = "^3.1.2"
-beautifulsoup4 = "^4.12.2"
-numpy = "^1.26.3"
-jinja2 = "^3.1.4"
-tqdm = "^4.66.6"
-nb-tokenizer = { version = "^0.1.0", python = ">=3.10, <4.0"}
-lazy-loader = "0.4"
-
-[tool.poetry.group.docs.dependencies]
-Sphinx = "^7.2.6"
-furo = "^2023.9.10"
-myst-parser = "^2.0.0"
-readthedocs-sphinx-search = "^0.3.1"
-sphinx-copybutton = "^0.5.2"
-sphinx-togglebutton = "^0.3.2"
-sphinx_design = "^0.5.0"
-sphinx_inline_tabs = "^2023.4.21"
-mkdocs = "^1.5.2"
-mkdocstrings = {extras = ["python"], version = "^0.22.0"}
-mkdocs-material = "^9.1.21"
-mkdocs-section-index = "^0.3.5"
-mkdocs-autorefs = "^0.5.0"
-sphinx-autodoc2 = "^0.5.0"
-sphinx-book-theme = "^1.1.2"
-linkify-it-py = "^2.0.3"
-
-
-[tool.poetry.group.dev.dependencies]
-ipykernel = "^6.26.0"
-pytest = "^7.4.3"
-pytest-cov = "^4.1.0"
-mypy = "^1.6.1"
-black = "^23.10.1"
-isort = "^5.12.0"
-ruff = "^0.3.0"
-pandas-stubs = "^2.1.2" # NOTE: Synchronize pandas and pandas-stubs version
-types-requests = "^2.31.0" # NOTE: Synchronize requests and types-requests version
-
-[tool.poetry.group.test.dependencies]
-mypy = "^1.6.1"
-pytest = "^7.4.3"
-pytest-cov = "^4.1.0"
-pytest-mock = "^3.12.0"
-
-[tool.poetry-dynamic-versioning]
-enable = false
-bump  = false
-vcs = "git"
-format = "v{base}{stage}{revision}"
-
-
-[tool.poetry-dynamic-versioning.substitution]
-files = ["dhlab/_version.py"]
+homepage = "https://www.nb.no/dh-lab/"
+repository = "https://github.com/NationalLibraryOfNorway/DHLAB"
+documentation = "https://nationallibraryofnorway.github.io/DHLAB/"
 
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
-build-backend = "poetry_dynamic_versioning.backend"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
-[tool.isort]
-profile = "black"
-
-[tool.mypy]
-files = "tests"
-mypy_path = "dhlab"
-namespace_packages = true
-explicit_package_bases = false
-show_error_codes = true
-warn_unused_configs = true
-strict = true
-enable_error_code = [
-    "ignore-without-code",
-    "redundant-expr",
-    "truthy-bool",
+[dependency-groups]
+docs = [
+    "Sphinx",
+    "furo",
+    "myst-parser",
+    "readthedocs-sphinx-search",
+    "sphinx-copybutton",
+    "sphinx-togglebutton",
+    "sphinx-design",
+    "sphinx-inline-tabs",
+    "mkdocs",
+    "mkdocstrings[python]",
+    "mkdocs-material",
+    "mkdocs-section-index",
+    "mkdocs-autorefs",
+    "sphinx-autodoc2",
+    "sphinx-book-theme",
+    "linkify-it-py",
+]
+dev = [
+    "ipykernel",
+    "ruff",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
 ]
 
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true
