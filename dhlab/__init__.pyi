@@ -9,12 +9,12 @@
 # necessary due to PEP 484.
 #     More information: https://scientific-python.org/specs/spec-0001/#type-checkers
 from .legacy import (
-    graph_networkx_louvain  as graph_networkx_louvain,
-    module_update           as module_update,
-    nb_external_files       as nb_external_files,
-    nbpictures              as nbpictures,
-    nbtext                  as nbtext,
-    token_map               as token_map,
+    graph_networkx_louvain as graph_networkx_louvain,
+    module_update as module_update,
+    nb_external_files as nb_external_files,
+    nbpictures as nbpictures,
+    nbtext as nbtext,
+    token_map as token_map,
 )
 
 from .api.dhlab_api import totals as totals
@@ -22,11 +22,6 @@ from .api.dhlab_api import totals as totals
 from .metadata.natbib import (
     metadata_from_urn as metadata_from_urn,
     metadata_query as metadata_query,
-)
-
-from .metadata.natbib import (
-    metadata_from_urn       as metadata_from_urn,
-    metadata_query          as metadata_query,
 )
 
 from .ngram.ngram import (

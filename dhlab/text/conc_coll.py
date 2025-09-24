@@ -1,7 +1,7 @@
 import re
 import pandas as pd
 from pandas import DataFrame
-from typing import List
+from typing import List, TYPE_CHECKING
 from dhlab.api.dhlab_api import (
     concordance,
     get_document_frequencies,
@@ -10,8 +10,10 @@ from dhlab.api.dhlab_api import (
     concordance_counts,
 )
 from dhlab.text.dhlab_object import DhlabObj
-from dhlab.text.corpus import Corpus
 from dhlab.text.utils import urnlist
+
+if TYPE_CHECKING:
+    from dhlab.text.corpus import Corpus
 
 
 # convert cell to a link
@@ -30,11 +32,11 @@ class Concordance(DhlabObj):
 
     def __init__(
         self,
-        corpus: Corpus | None = None,
+        corpus: "Corpus | None" = None,
         query: str | None = None,
         window: int = 20,
-        limit: int = 500
-):
+        limit: int = 500,
+    ):
         """Get concordances for word(s) in corpus
 
         :param corpus: Target corpus, defaults to None
@@ -80,7 +82,7 @@ class Collocations(DhlabObj):
 
     def __init__(
         self,
-        corpus: Corpus | None = None,
+        corpus: "Corpus | None" = None,
         words: str | list[str] | None = None,
         before: int = 10,
         after: int = 10,
@@ -175,11 +177,11 @@ class Counts(DhlabObj):
 
     def __init__(
         self,
-        corpus: Corpus | None = None,
+        corpus: "Corpus | None" = None,
         words: list[str] | None = None,
         cutoff: int = 0,
-        sparse: bool = True
-):
+        sparse: bool = True,
+    ):
         """Get frequency list for Corpus
 
         :param corpus: target Corpus, defaults to None
@@ -248,14 +250,18 @@ class Counts(DhlabObj):
             # build a freq dictionary by looping
             freqDict = dict()
 
-            for i,j,v in zip(coo_matrix.row, coo_matrix.col, coo_matrix.data):
+            for i, j, v in zip(coo_matrix.row, coo_matrix.col, coo_matrix.data):
                 word = rowidx[i]
                 if word in freqDict:
                     freqDict[word] += v
                 else:
                     freqDict[word] = v
 
-            df = pd.DataFrame(freqDict.items(), columns=["word", "freq"]).set_index("word").sort_values(by="freq", ascending=False)
+            df = (
+                pd.DataFrame(freqDict.items(), columns=["word", "freq"])
+                .set_index("word")
+                .sort_values(by="freq", ascending=False)
+            )
             df.index.name = None
             return self.from_df(df)
         else:
