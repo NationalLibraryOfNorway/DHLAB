@@ -89,9 +89,9 @@ python = ">=3.10"
 ipython = "^8.17"
 matplotlib = "^3.8"
 networkx = "^3.2"
-pandas = "^2.1" # NOTE: Synchronize pandas and pandas-stubs version
+pandas = "^2.1"
 python-louvain = "^0.16"
-requests = "^2.31" # NOTE: Synchronize requests and types-requests version
+requests = "^2.31"
 seaborn = "^0.13"
 openpyxl = "^3.1"
 beautifulsoup4 = "^4.12"
@@ -99,13 +99,6 @@ jinja2 = "^3.1"
 tqdm = "^4.66"
 nb-tokenizer = { version = "^0.1.0", python = ">=3.10, <4.0"}
 lazy-loader = "^0.4"
-
-
-[tool.poetry.group.test.dependencies]
-mypy = "^1.6.1"
-pytest = "^7.4.3"
-pytest-cov = "^4.1.0"
-pytest-mock = "^3.12.0"
 
 [tool.poetry-dynamic-versioning]
 enable = false
