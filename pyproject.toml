@@ -3,7 +3,7 @@ authors = [
     {name = "The Digital Humanities Lab at The National Library of Norway (NB)", email = "dh-lab@nb.no"},
 ]
 license = {text = "MIT"}
-requires-python = ">=3.10"
+requires-python = ">=3.10,<4.0"
 dependencies = [
     "ipython",
     "matplotlib",
@@ -66,44 +66,8 @@ dev = [
     "pytest-mock",
 ]
 
-[tool.poetry]
-name = "dhlab"
-version = "2.42.0"
-description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
-authors = ["The Digital Humanities Lab at The National Library of Norway (NB) <dh-lab@nb.no>"]
-license = "MIT"
-readme = "README.md"
-homepage = "https://www.nb.no/dh-lab/"
-repository = "https://github.com/NationalLibraryOfNorway/DHLAB"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-]
-exclude = ["docs/", "tests/"]
-
-[tool.poetry.dependencies]
-python = ">=3.10"
-ipython = "^8.17"
-matplotlib = "^3.8"
-networkx = "^3.2"
-pandas = "^2.1"
-python-louvain = "^0.16"
-requests = "^2.31"
-seaborn = "^0.13"
-openpyxl = "^3.1"
-beautifulsoup4 = "^4.12"
-jinja2 = "^3.1"
-tqdm = "^4.66"
-nb-tokenizer = { version = "^0.1.0", python = ">=3.10, <4.0"}
-lazy-loader = "^0.4"
-
-[tool.poetry-dynamic-versioning]
-enable = false
-bump  = false
-vcs = "git"
-format = "v{base}{stage}{revision}"
-
-[tool.poetry-dynamic-versioning.substitution]
-files = ["dhlab/_version.py"]
-
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true
