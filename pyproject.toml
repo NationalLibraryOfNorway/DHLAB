@@ -61,8 +61,6 @@ docs = [
 dev = [
     "ipykernel",
     "ruff",
-]
-test = [
     "pytest",
     "pytest-cov",
     "pytest-mock",
