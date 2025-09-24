@@ -39,7 +39,6 @@ documentation = "https://nationallibraryofnorway.github.io/DHLAB/"
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
-
 [dependency-groups]
 docs = [
     "Sphinx",
@@ -61,11 +60,7 @@ docs = [
 ]
 dev = [
     "ipykernel",
-    "pytest",
-    "pytest-cov",
     "ruff",
-    "pandas-stubs",
-    "types-requests",
 ]
 test = [
     "pytest",
