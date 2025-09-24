@@ -160,6 +160,7 @@ dhlab/_version.py
 .pdm-python
 .pdm-build
 .*_cache
+pylock.toml
 
 # documentation legacy files
 docs/new_conf.py
