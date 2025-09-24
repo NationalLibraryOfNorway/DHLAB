@@ -13,14 +13,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
-        with: 
+      - name: Install uv and set the Python version
+        uses: astral-sh/setup-uv@v6
+        with:
           python-version: ${{ matrix.python-version }}
-      - name: Setup PDM
-        uses: pdm-project/setup-pdm@v4
-        # You are now able to use PDM in your workflow
-      - name: Install dependencies
-        run: pdm install
-      - name: Test
-        run: pdm run pytest tests --cov=dhlab
+          enable-cache: true
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
+
+      - name: Run tests
+        run: uv run pytest tests --cov=dhlab
 
