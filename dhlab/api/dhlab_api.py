@@ -1,5 +1,5 @@
 from io import StringIO
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Tuple, Union, Optional
 
 import pandas as pd
 
@@ -174,16 +174,30 @@ def get_dispersion(
     return pd.Series(r.json())
 
 
-def get_metadata(urns: List[str] | None = None) -> DataFrame:
-    """Get metadata for a list of URNs.
+def get_metadata(
+    urns: Optional[List[str]] = None,
+    dhlabids: Optional[List[int]] = None
+) -> pd.DataFrame:
+    """Get metadata for a list of URNs or dhlabids.
 
     Calls the API :py:obj:`~dhlab.constants.BASE_URL` endpoint
     `/get_metadata <https://api.nb.no/dhlab/#/default/post_get_metadata>`_.
 
+    If both `urns` and `dhlabid` are provided, `dhlabid` will be used.
+
     :param list urns: list of uniform resource name strings, for example:
         ``["URN:NBN:no-nb_digibok_2008051404065", "URN:NBN:no-nb_digibok_2010092120011"]``
+    :param dhlabids: list of dhlabids, e.g. ``[100508798, 100614513]``
     """
-    r = api_post(f"{BASE_URL}/get_metadata", json={"urns": urns})
+
+    if dhlabids is not None:
+        payload = {"dhlabids": dhlabids}
+    elif urns is not None:
+        payload = {"urns": urns}
+    else:
+        raise ValueError("You must provide either `urns` or `dhlabids`")
+
+    r = api_post(f"{BASE_URL}/get_metadata", json=payload)
     return DataFrame(r.json())
 
 
