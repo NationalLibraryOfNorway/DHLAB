@@ -18,6 +18,8 @@ dependencies = [
     "tqdm",
     "nb-tokenizer",
     "lazy-loader",
+    "wordcloud",
+    "scipy",
 ]
 name = "dhlab"
 version = "2.42.0"
