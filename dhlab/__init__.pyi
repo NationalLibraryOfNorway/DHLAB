@@ -19,11 +19,6 @@ from .legacy import (
 
 from .api.dhlab_api import totals as totals
 
-from .metadata.natbib import (
-    metadata_from_urn as metadata_from_urn,
-    metadata_query as metadata_query,
-)
-
 from .ngram.ngram import (
     Ngram as Ngram,
     NgramBook as NgramBook,
