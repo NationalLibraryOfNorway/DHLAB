@@ -1,6 +1,4 @@
 import json
-
-import networkx as nx
 import requests
 
 from dhlab.constants import GALAXY_API, NGRAM_API
@@ -48,7 +46,6 @@ def make_word_graph(
 
     resp = api_get(GALAXY_API, params=params, session=session)
 
-    G = nx.DiGraph()
     edgelist = []
 
     graph = json.loads(resp.text)
@@ -64,6 +61,4 @@ def make_word_graph(
             )
         ]
 
-    G.add_weighted_edges_from(edgelist)
-
-    return G
+    return edgelist
