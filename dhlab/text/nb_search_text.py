@@ -1,6 +1,4 @@
 from collections import Counter
-
-import networkx as nx
 import pandas as pd
 
 from dhlab.api.nb_search_api import get_df, get_konks
@@ -51,9 +49,8 @@ def graph_from_df(df, threshold=100):
         if x != y:
             if df.stack()[(x, y)] > threshold:
                 edges.append([x, y, df.stack()[(x, y)] / normalizer[(x, y)]])
-    G = nx.Graph()
-    G.add_weighted_edges_from(edges)
-    return G
+
+    return edges
 
 
 def get_all_konks(term, urns):

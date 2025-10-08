@@ -7,11 +7,8 @@ requires-python = ">=3.10,<4.0"
 dependencies = [
     "ipython",
     "matplotlib",
-    "networkx",
     "pandas",
-    "python-louvain",
     "requests",
-    "seaborn",
     "openpyxl",
     "beautifulsoup4",
     "jinja2",
@@ -34,6 +31,9 @@ classifiers = [
 homepage = "https://www.nb.no/dh-lab/"
 repository = "https://github.com/NationalLibraryOfNorway/DHLAB"
 documentation = "https://nationallibraryofnorway.github.io/DHLAB/"
+
+[project.optional-dependencies]
+legacy = ["networkx", "seaborn", "python-louvain"]
 
 [build-system]
 requires = ["pdm-backend"]
