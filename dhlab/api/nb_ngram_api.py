@@ -27,7 +27,7 @@ def get_ngram(terms: str, corpus: str = "avis", lang: str = "nob", session: requ
 
 def make_word_graph(
     words: str, corpus: str = "all", cutoff: int = 16, leaves: int = 0, session: requests.Session | None = None
-) -> nx.DiGraph:
+) -> list:
     """Get galaxy from ngram-database.
 
     Call the :py:obj:`~dhlab.constants.GALAXY_API` endpoint.
@@ -36,7 +36,7 @@ def make_word_graph(
     :param str corpus: document type: ``'book'``, ``'avis'``, or ``'all'``,
     :param int cutoff: Number of nodes to include.
     :param int leaves: Set leaves=1 to get the leaves.
-    :return: A `networkx.DiGraph` with the results.
+    :return: A list of edges that can be used as input to networkx.
     """
     params = dict()
     params["terms"] = words
