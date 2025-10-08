@@ -36,6 +36,7 @@ class Corpus(DhlabObj):
         author: str | None = None,
         freetext: str | None = None,
         fulltext: str | None = None,
+        unigram: str | None = None,
         from_year: int | None = None,
         to_year: int | None = None,
         from_timestamp: int | None = None,
@@ -60,7 +61,8 @@ class Corpus(DhlabObj):
         :param str author: Name of an author.
         :param str freetext: any of the parameters, for example:\
             ``"digibok AND Ibsen"``.
-        :param str fulltext: words within the publication.
+        :param str fulltext: fulltext within the publication.
+        :param str unigram: words within the publication.
         :param int from_year: Start year for time period of interest.
         :param int to_year: End year for time period of interest.
         :param int from_timestamp: Start date for time period of interest.
@@ -87,6 +89,7 @@ class Corpus(DhlabObj):
             or author
             or freetext
             or fulltext
+            or unigram
             or from_year
             or to_year
             or from_timestamp
@@ -114,6 +117,7 @@ class Corpus(DhlabObj):
                         author,
                         freetext,
                         fulltext,
+                        unigram,
                         from_year,
                         to_year,
                         from_timestamp,
@@ -140,6 +144,7 @@ class Corpus(DhlabObj):
                     author,
                     freetext,
                     fulltext,
+                    unigram,
                     from_year,
                     to_year,
                     from_timestamp,
