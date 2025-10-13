@@ -22,7 +22,7 @@ dependencies = [
     "scipy",
 ]
 name = "dhlab"
-version = "2.42.0"
+version = "2.42.1"
 description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
 readme = "README.md"
 classifiers = [
