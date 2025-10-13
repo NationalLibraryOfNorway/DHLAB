@@ -659,6 +659,7 @@ def document_corpus(
     author: str | None = None,
     freetext: str | None = None,
     fulltext: str | None = None,
+    unigram: str | None = None,
     from_year: int | None = None,
     to_year: int | None = None,
     from_timestamp: int | None = None,
@@ -684,7 +685,8 @@ def document_corpus(
     :param str doctype: ``"digibok"``, ``"digavis"``, ``"digitidsskrift"`` or ``"digistorting"``
     :param str author: Name of an author.
     :param str freetext: any of the parameters, for example: ``"digibok AND Ibsen"``.
-    :param str fulltext: words within the publication.
+    :param str fulltext: fulltext within the publication.
+    :param str unigram: words within the publication.
     :param int from_year: Start year for time period of interest.
     :param int to_year: End year for time period of interest.
     :param int from_timestamp: Start date for time period of interest.
@@ -706,7 +708,7 @@ def document_corpus(
     :return: a ``pandas.DataFrame`` with the corpus information.
     """
     parms = {"doctype": doctype, "author": author, "freetext": freetext,
-             "fulltext": fulltext, "from_year": from_year, "to_year": to_year,
+             "fulltext": fulltext, "unigram": unigram, "from_year": from_year, "to_year": to_year,
              "from_timestamp": from_timestamp, "to_timestamp": to_timestamp,
              "title": title, "ddk": ddk, "subject": subject, "publisher": publisher,
              "literaryform": literaryform, "genres": genres, "city": city,
