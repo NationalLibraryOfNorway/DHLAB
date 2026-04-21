@@ -54,8 +54,8 @@ class Concordance(DhlabObj):
                 urns=urnlist(corpus), words=query, window=window, limit=limit
             )
             self.concordance["link"] = self.concordance.urn.apply(make_link)
-            self.concordance = self.concordance[["link", "urn", "conc"]]
-            self.concordance.columns = ["link", "urn", "concordance"]
+            self.concordance = self.concordance[["link", "urn", "docid", "conc"]]
+            self.concordance.columns = ["link", "urn", "dhlabid", "concordance"]
             self.corpus = corpus
 
         super().__init__(self.concordance)

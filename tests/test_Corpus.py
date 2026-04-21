@@ -57,14 +57,14 @@ class TestCorpusConc:
         c = dh.Corpus(doctype="digavis", limit=2)
         conc = c.conc("og")
         assert len(conc) > 0
-        assert len(conc.frame.columns) == 3
+        assert len(conc.frame.columns) == 4
 
     def test_corpus_conc_all_doctypes(self):
         for doctype in dh.Corpus.doctypes:
             c = dh.Corpus(doctype=doctype, limit=2)
             conc = c.conc('"."', limit=2)
             assert isinstance(conc, dh.Concordance)
-            assert len(conc.frame.columns) == 3
+            assert len(conc.frame.columns) == 4
 
 
 class TestCorpusColl:
