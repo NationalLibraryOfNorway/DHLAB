@@ -8,7 +8,6 @@ on:
         required: true
         type: choice
         options:
-          - major
           - minor
           - patch
       no_release:
