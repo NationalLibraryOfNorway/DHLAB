@@ -3,7 +3,7 @@ authors = [
     {name = "The Digital Humanities Lab at The National Library of Norway (NB)", email = "dh-lab@nb.no"},
 ]
 license = {text = "MIT"}
-requires-python = ">=3.10,<4.0"
+requires-python = ">=3.12,<4.0"
 dependencies = [
     "ipython",
     "matplotlib",
@@ -22,7 +22,7 @@ dependencies = [
     "scipy",
 ]
 name = "dhlab"
-version = "2.42.1"
+version = "2.43"
 description = "Text and image analysis of the digital collection (books, newspapers, periodicals, and images) at the National Library of Norway"
 readme = "README.md"
 classifiers = [
