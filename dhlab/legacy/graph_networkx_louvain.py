@@ -500,3 +500,8 @@ def reduce_MxM_graph(G, words, factor=0.01):
             edges.append((w1, w2, new_weight))
     Gm.add_weighted_edges_from(edges)
     return Gm
+
+def return_networkx_digraph(edgelist):
+	G = nx.DiGraph()
+	G.add_weighted_edges_from(edgelist)
+	return G
